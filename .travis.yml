@@ -1,0 +1,20 @@
+language: python
+dist: xenial
+python:
+  - 3.7
+install:
+  - pip install -e ".[dev]"
+script:
+  - py.test --cov . --cov-report xml:coverage.xml
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID=0db60626f2135f100c5fdf995860ae26904132d238480bb3a3e8825673181681
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

@@ -1,0 +1,13 @@
+__pycache__/
+docs/build/
+build/
+dist/
+venv/
+
+cov.xml
+.coverage
+.DS_Store
+*.egg-info
+.pytest_cache
+.vagrant
+local.sh
