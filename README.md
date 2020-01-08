@@ -1,4 +1,4 @@
-## Python 3.7+ library for Crypto.com exchange API using asyncio and aiohttp 
+# Python 3.7+ library for crypto.com/exchange API using asyncio and aiohttp 
 
 [![Docs Build Status](https://readthedocs.org/projects/cryptocom-exchange/badge/?version=latest&style=flat)](https://readthedocs.org/projects/cryptocom-exchange)
 [![Build Status](https://travis-ci.org/goincrypto/cryptocom-exchange.svg?branch=master)](https://travis-ci.org/goincrypto/cryptocom-exchange)
@@ -14,3 +14,5 @@
 - provides all methods to access crypto.com/exchange API
 - full test coverage on real exchange with real money
 - simple async methods with custom retries and timeouts
+
+Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.rtfd.io)
