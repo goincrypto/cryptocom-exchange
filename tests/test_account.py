@@ -1,0 +1,97 @@
+import asyncio
+
+import pytest
+
+import cryptocom.exchange as cro
+
+
+@pytest.mark.asyncio
+async def test_account_get_balance(account: cro.Account):
+    data = await account.get_balance()
+    assert float(data['total_asset']) > 0
+    assert data['coin_list']
+
+
+@pytest.mark.asyncio
+async def test_account_buy_limit(
+        exchange: cro.Exchange, account: cro.Account):
+    buy_price = round(await exchange.get_price(cro.Symbol.CROUSDT) / 2, 4)
+
+    order_ids = [
+        await account.buy_limit(cro.Symbol.CROUSDT, 1, buy_price)
+        for i in range(3)
+    ]
+    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+
+    all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
+    await account.cancel_order(
+        order_ids[0], cro.Symbol.CROUSDT, wait_for_cancel=False)
+    order = await account.get_order(order_ids[0], cro.Symbol.CROUSDT)
+    assert order['status'] in (
+        cro.OrderStatus.CANCELED, cro.OrderStatus.PENDING_CANCEL)
+
+    for order_id in order_ids[1:]:
+        await account.cancel_order(order_id, cro.Symbol.CROUSDT)
+
+    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+    assert not open_orders
+
+    all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
+    assert all_orders[0]['id'] == order_ids[-1]
+
+
+@pytest.mark.asyncio
+async def test_account_sell_limit(
+        exchange: cro.Exchange, account: cro.Account):
+    sell_price = round(await exchange.get_price(cro.Symbol.CROUSDT) * 2, 4)
+    order_ids = [
+        await account.sell_limit(cro.Symbol.CROUSDT, 1, sell_price)
+        for _ in range(3)
+    ]
+
+    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+
+    all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
+    await account.cancel_open_orders(cro.Symbol.CROUSDT)
+
+    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+    while open_orders:
+        for order in open_orders:
+            assert order['status'] == cro.OrderStatus.PENDING_CANCEL
+        open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+
+    all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
+    assert all_orders[0]['id'] == order_ids[-1]
+
+
+async def make_trades(account, order_ids, sem):
+    async with sem:
+        # buy volume for 0.0001 cro
+        order_id = await account.buy_market(cro.Symbol.CROUSDT, 0.0001)
+        order = await account.get_order(order_id, cro.Symbol.CROUSDT)
+        assert order['status'] == cro.OrderStatus.FILLED
+        order_ids['buy'].append(order_id)
+
+        # sell volume for 0.002 usdt
+        order_id = await account.sell_market(cro.Symbol.CROUSDT, 0.002)
+        order = await account.get_order(order_id, cro.Symbol.CROUSDT)
+        assert order['status'] == cro.OrderStatus.FILLED
+        order_ids['sell'].append(order_id)
+
+
+@pytest.mark.asyncio
+async def test_account_market_orders(account: cro.Account):
+    order_ids = {'buy': [], 'sell': []}
+    sem = asyncio.Semaphore(10)
+    await asyncio.gather(*[
+        make_trades(account, order_ids, sem) for _ in range(20)
+    ])
+
+    trades = await account.get_trades(cro.Symbol.CROUSDT, page_size=40)
+    for trade in trades:
+        if trade['side'] == cro.OrderSide.BUY:
+            assert trade['id'] in order_ids['buy']
+            assert trade['id'] not in order_ids['sell']
+        elif trade['side'] == cro.OrderSide.SELL:
+            assert trade['id'] in order_ids['sell']
+            assert trade['id'] not in order_ids['buy']
