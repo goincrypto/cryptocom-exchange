@@ -56,12 +56,11 @@ class ApiProvider:
         data['sign'] = hashlib.sha256(sign.encode('utf-8')).hexdigest()
         return data
 
-    async def ws_listen(self, data, timeout: int = None, retries: int = None):
-        retries = retries or self.retries
+    async def ws_listen(self, data, timeout: int = None):
         timeout = aiohttp.ClientTimeout(self.timeout)
         count = 0
 
-        while count != retries:
+        while count != self.retries:
             async with aiohttp.ClientSession(timeout=timeout) as session:
                 try:
                     async with session.ws_connect(self.ws_root_url) as ws:
@@ -72,29 +71,25 @@ class ApiProvider:
                             yield data
                             count = 0
                 except asyncio.TimeoutError:
-                    if count == retries:
-                        raise ApiError(f"Timeout error, retries: {retries}")
+                    if count == self.retries:
+                        raise ApiError(
+                            f"Timeout error, retries: {self.retries}")
 
                     await asyncio.sleep(0.2)
                     count += 1
                     continue
 
-    async def ws_request(self, data, timeout: int = None, retries: int = None):
-        async for data in self.ws_listen(
-                data, timeout=timeout, retries=retries):
+    async def ws_request(self, data, timeout: int = None):
+        async for data in self.ws_listen(data, timeout=timeout):
             return data
 
-    async def request(
-            self, method, path, params=None, data=None, sign=False,
-            timeout: int = None, retries: int = None):
+    async def request(self, method, path, params=None, data=None, sign=False):
         if sign:
             data = self._sign(data)
 
-        timeout = timeout or self.timeout
-        retries = retries or self.retries
-        timeout = aiohttp.ClientTimeout(total=timeout)
+        timeout = aiohttp.ClientTimeout(total=self.timeout)
 
-        for count in range(retries + 1):
+        for count in range(self.retries + 1):
             try:
                 async with aiohttp.ClientSession(timeout=timeout) as session:
                     resp = await session.request(
@@ -103,8 +98,8 @@ class ApiProvider:
                     )
                     resp = await resp.json()
             except asyncio.TimeoutError:
-                if count == retries:
-                    raise ApiError(f"Timeout error, retries: {retries}")
+                if count == self.retries:
+                    raise ApiError(f"Timeout error, retries: {self.retries}")
 
                 await asyncio.sleep(0.5)
                 continue
@@ -115,9 +110,9 @@ class ApiProvider:
             if resp['code'] == '0':
                 return resp['data']
 
-            if count == retries:
+            if count == self.retries:
                 raise ApiError(
-                    f"System error, retries: {retries}. Data: {resp}")
+                    f"System error, retries: {self.retries}. Data: {resp}")
 
             await asyncio.sleep(0.5)
             continue
