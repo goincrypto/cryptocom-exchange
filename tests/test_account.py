@@ -21,7 +21,6 @@ async def test_account_buy_limit(
         await account.buy_limit(cro.Symbol.CROUSDT, 1, buy_price)
         for i in range(3)
     ]
-    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
 
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
     await account.cancel_order(
@@ -33,7 +32,11 @@ async def test_account_buy_limit(
     for order_id in order_ids[1:]:
         await account.cancel_order(order_id, cro.Symbol.CROUSDT)
 
-    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+    open_orders = [
+        order
+        for order in await account.get_open_orders(cro.Symbol.CROUSDT)
+        if order['id'] in order_ids
+    ]
     assert not open_orders
 
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
@@ -49,16 +52,28 @@ async def test_account_sell_limit(
         for _ in range(3)
     ]
 
-    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+    open_orders = [
+        order
+        for order in await account.get_open_orders(cro.Symbol.CROUSDT)
+        if order['id'] in order_ids
+    ]
 
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
     await account.cancel_open_orders(cro.Symbol.CROUSDT)
 
-    open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
     while open_orders:
         for order in open_orders:
-            assert order['status'] == cro.OrderStatus.PENDING_CANCEL
-        open_orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+            assert order['status'] in (
+                cro.OrderStatus.PENDING_CANCEL,
+                cro.OrderStatus.CANCELED,
+                cro.OrderStatus.NEW
+            )
+
+        open_orders = [
+            order
+            for order in await account.get_open_orders(cro.Symbol.CROUSDT)
+            if order['id'] in order_ids
+        ]
 
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
     assert all_orders[0]['id'] == order_ids[-1]

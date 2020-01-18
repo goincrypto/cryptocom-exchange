@@ -50,6 +50,7 @@ class Symbol(enum.Enum):
     XRPBTC = 'xrpbtc'
     LTCBTC = 'ltcbtc'
     EOSBTC = 'eosbtc'
+    XLMBTC = 'xlmbtc'
     BTCUSDT = 'btcusdt'
     CROUSDT = 'crousdt'
     MCOUSDT = 'mcousdt'
@@ -57,11 +58,13 @@ class Symbol(enum.Enum):
     XRPUSDT = 'xrpusdt'
     LTCUSDT = 'ltcusdt'
     EOSUSDT = 'eosusdt'
+    XLMUSDT = 'xlmusdt'
     MCOCRO = 'mcocro'
     ETHCRO = 'ethcro'
     XRPCRO = 'xrpcro'
     LTCCRO = 'ltccro'
     EOSCRO = 'eoscro'
+    XLMCRO = 'xlmcro'
 
 
 class Depth(enum.Enum):
