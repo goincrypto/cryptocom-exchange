@@ -97,9 +97,9 @@ async def make_trades(account, order_ids, sem):
 @pytest.mark.asyncio
 async def test_account_market_orders(account: cro.Account):
     order_ids = {'buy': [], 'sell': []}
-    sem = asyncio.Semaphore(10)
+    sem = asyncio.Semaphore(4)
     await asyncio.gather(*[
-        make_trades(account, order_ids, sem) for _ in range(20)
+        make_trades(account, order_ids, sem) for _ in range(8)
     ])
 
     trades = await account.get_trades(cro.Symbol.CROUSDT, page_size=40)
