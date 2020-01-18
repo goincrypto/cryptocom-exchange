@@ -7,3 +7,5 @@ __all__ = [
     'Exchange', 'Account', 'Candle',
     'ApiError', 'ApiProvider'
 ]
+
+VERSION = '0.1'

@@ -35,7 +35,7 @@ class Exchange:
     async def get_ticker(self, symbol: Symbol):
         return (await self.get_tickers()).get(symbol.value)
 
-    async def get_candles(self, symbol: Symbol, period: Period):
+    async def get_candles(self, symbol: Symbol, period: Period = Period.D1):
         """Get k-line data over a specified period."""
         data = await self.api.get(
             'klines', {'symbol': symbol.value, 'period': period.value})

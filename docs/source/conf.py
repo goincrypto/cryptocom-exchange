@@ -13,16 +13,18 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
+from cryptocom.exchange import VERSION
+
 # -- Project information -----------------------------------------------------
 
 project = 'cryptocom-exchange'
-copyright = '2019, change'
-author = 'change'
+copyright = '2020, goincrypto.com'
+author = 'Yaroslav Rudenok [MortySpace]'
 
 # The short X.Y version
-version = ''
+version = VERSION
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = VERSION
 
 
 # -- General configuration ---------------------------------------------------
@@ -79,7 +81,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -133,7 +135,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'cryptocom-exchange.tex', 'unv\\_template Documentation',
+    (master_doc, 'cryptocom-exchange.tex', 'cryptocom-exchange\\_template Documentation',
      'change', 'manual'),
 ]
 
@@ -154,7 +156,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'cryptocom-exchange', 'cryptocom-exchange Documentation',
+    (master_doc, 'cryptocom-exchange', 'cryptocom-exchange Documentati',
      author, 'cryptocom-exchange', 'One line description of project.',
      'Miscellaneous'),
 ]

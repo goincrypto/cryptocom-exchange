@@ -1,8 +1,18 @@
+from pathlib import Path
 from setuptools import setup, find_packages
+
+
+def get_version():
+    module_file = Path(
+        Path(__file__).parent, 'src',
+        *find_packages('src')[-1].split('.'), '__init__.py'
+    )
+    return module_file.read_text().split("VERSION = '")[1].split("'")[0]
+
 
 setup(
     name='cryptocom-exchange',
-    version='0.1',
+    version=get_version(),
     description="""Provide description""",
     url='https://github.com/goincrypto/cryptocom-exchange',
     author='Yaroslav Rudenok [Morty Space]',
@@ -35,9 +45,11 @@ setup(
             'pytest-asyncio',
             'pytest-cov',
             'pytest-env',
+            'pytest-doctestplus',
             'pytest-pythonpath',
             'autopep8',
             'sphinx',
+            'sphinx_rtd_theme',
             'setuptools',
             'wheel',
             'twine'

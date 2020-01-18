@@ -5,7 +5,8 @@ python:
 install:
   - pip install -e ".[dev]"
 script:
-  - py.test --cov . --cov-report xml:coverage.xml
+  - cd docs && make doctest
+  - pytest --cov . --cov-report xml:coverage.xml
 
 env:
   global:
