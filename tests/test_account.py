@@ -61,7 +61,7 @@ async def test_account_sell_limit(
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
     await account.cancel_open_orders(cro.Symbol.CROUSDT)
 
-    while open_orders:
+    for _ in range(10):
         for order in open_orders:
             assert order['status'] in (
                 cro.OrderStatus.PENDING_CANCEL,
@@ -74,6 +74,11 @@ async def test_account_sell_limit(
             for order in await account.get_open_orders(cro.Symbol.CROUSDT)
             if order['id'] in order_ids
         ]
+
+        if not open_orders:
+            break
+
+    assert not open_orders
 
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
     assert all_orders[0]['id'] == order_ids[-1]
