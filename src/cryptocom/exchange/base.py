@@ -2,7 +2,7 @@ import asyncio
 
 from dataclasses import dataclass
 
-from .api import ApiProvider
+from .api import ApiProvider, ApiError
 from .enums import (
     Symbol, Period, Depth, PeriodWebSocket, OrderSide, OrderStatus, OrderType
 )
@@ -178,9 +178,16 @@ class Account:
         statuses = (
             OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED
         )
-        while order['status'] not in statuses:
+
+        for _ in range(self.api.retries):
             await asyncio.sleep(delay)
             order = await self.get_order(order_id, symbol)
+            if order['status'] in statuses:
+                break
+
+        if order['status'] not in statuses:
+            raise ApiError(
+                f"Status not changed for: {order}, must be in: {statuses}")
 
     async def buy_market(
             self, symbol: Symbol, volume: float, wait_for_fill=True):
