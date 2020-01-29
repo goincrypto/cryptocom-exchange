@@ -30,6 +30,9 @@ class ApiProvider:
         self.timeout = timeout
         self.retries = retries
 
+        # NOTE: do not change this, due to crypto.com rate-limit 10-per second
+        self.semaphore = asyncio.Semaphore(8)
+
         if not auth_required:
             return
 
@@ -92,11 +95,12 @@ class ApiProvider:
         for count in range(self.retries + 1):
             try:
                 async with aiohttp.ClientSession(timeout=timeout) as session:
-                    resp = await session.request(
-                        method, urljoin(self.root_url, path),
-                        params=params, data=data
-                    )
-                    resp = await resp.json()
+                    async with self.semaphore:
+                        resp = await session.request(
+                            method, urljoin(self.root_url, path),
+                            params=params, data=data
+                        )
+                        resp = await resp.json()
             except asyncio.TimeoutError:
                 if count == self.retries:
                     raise ApiError(f"Timeout error, retries: {self.retries}")

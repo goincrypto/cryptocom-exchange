@@ -84,27 +84,25 @@ async def test_account_sell_limit(
     assert all_orders[0]['id'] == order_ids[-1]
 
 
-async def make_trades(account, order_ids, sem):
-    async with sem:
-        # buy volume for 0.0001 cro
-        order_id = await account.buy_market(cro.Symbol.CROUSDT, 0.0001)
-        order = await account.get_order(order_id, cro.Symbol.CROUSDT)
-        assert order['status'] == cro.OrderStatus.FILLED
-        order_ids['buy'].append(order_id)
+async def make_trades(account, order_ids):
+    # buy volume for 0.0001 cro
+    order_id = await account.buy_market(cro.Symbol.CROUSDT, 0.0001)
+    order = await account.get_order(order_id, cro.Symbol.CROUSDT)
+    assert order['status'] == cro.OrderStatus.FILLED
+    order_ids['buy'].append(order_id)
 
-        # sell volume for 0.002 usdt
-        order_id = await account.sell_market(cro.Symbol.CROUSDT, 0.002)
-        order = await account.get_order(order_id, cro.Symbol.CROUSDT)
-        assert order['status'] == cro.OrderStatus.FILLED
-        order_ids['sell'].append(order_id)
+    # sell volume for 0.002 usdt
+    order_id = await account.sell_market(cro.Symbol.CROUSDT, 0.002)
+    order = await account.get_order(order_id, cro.Symbol.CROUSDT)
+    assert order['status'] == cro.OrderStatus.FILLED
+    order_ids['sell'].append(order_id)
 
 
 @pytest.mark.asyncio
 async def test_account_market_orders(account: cro.Account):
     order_ids = {'buy': [], 'sell': []}
-    sem = asyncio.Semaphore(5)
     await asyncio.gather(*[
-        make_trades(account, order_ids, sem) for _ in range(20)
+        make_trades(account, order_ids) for _ in range(20)
     ])
 
     trades = await account.get_trades(cro.Symbol.CROUSDT, page_size=40)
