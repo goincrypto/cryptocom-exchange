@@ -20,7 +20,7 @@ class ApiProvider:
     """Provides HTTP-api requests and websocket requests."""
     def __init__(
             self, *, api_key='', api_secret='', from_env=False,
-            auth_required=True, timeout=5, retries=25,
+            auth_required=True, timeout=3, retries=20,
             root_url='https://api.crypto.com/v1/',
             ws_root_url='wss://ws.crypto.com/kline-api/ws'):
         self.api_key = api_key

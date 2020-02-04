@@ -39,8 +39,11 @@ async def test_account_buy_limit(
     ]
     assert not open_orders
 
+    # NOTE: note always orders populated fast after open orders so
+    # here we check on other direction
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
-    assert all_orders[0]['id'] == order_ids[-1]
+    for order in all_orders:
+        assert order['id'] in order_ids
 
 
 @pytest.mark.asyncio
