@@ -172,7 +172,7 @@ class Account:
         )
 
     async def wait_for_status(
-            self, order_id: int, symbol: Symbol, statuses, delay: int = 0.2):
+            self, order_id: int, symbol: Symbol, statuses, delay: int = 1):
         order = await self.get_order(order_id, symbol)
         statuses = (
             OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED
