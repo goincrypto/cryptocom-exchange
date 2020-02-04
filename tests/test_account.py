@@ -86,13 +86,13 @@ async def test_account_sell_limit(
 
 async def make_trades(account, order_ids):
     # buy volume for 0.0001 cro
-    order_id = await account.buy_market(cro.Symbol.CROUSDT, 0.0001)
+    order_id = await account.buy_market(cro.Symbol.CROUSDT, 0.01)
     order = await account.get_order(order_id, cro.Symbol.CROUSDT)
     assert order['status'] == cro.OrderStatus.FILLED
     order_ids['buy'].append(order_id)
 
     # sell volume for 0.002 usdt
-    order_id = await account.sell_market(cro.Symbol.CROUSDT, 0.002)
+    order_id = await account.sell_market(cro.Symbol.CROUSDT, 0.2)
     order = await account.get_order(order_id, cro.Symbol.CROUSDT)
     assert order['status'] == cro.OrderStatus.FILLED
     order_ids['sell'].append(order_id)
