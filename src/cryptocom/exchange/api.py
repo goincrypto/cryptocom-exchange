@@ -20,7 +20,7 @@ class ApiProvider:
     """Provides HTTP-api requests and websocket requests."""
     def __init__(
             self, *, api_key='', api_secret='', from_env=False,
-            auth_required=True, timeout=3, retries=10,
+            auth_required=True, timeout=5, retries=25,
             root_url='https://api.crypto.com/v1/',
             ws_root_url='wss://ws.crypto.com/kline-api/ws'):
         self.api_key = api_key
@@ -100,25 +100,35 @@ class ApiProvider:
                             method, urljoin(self.root_url, path),
                             params=params, data=data
                         )
-                        resp = await resp.json()
+                        resp_json = await resp.json()
+            except aiohttp.ClientConnectorError:
+                raise ApiError("Cannot connect to host {self.root_url}")
             except asyncio.TimeoutError:
                 if count == self.retries:
-                    raise ApiError(f"Timeout error, retries: {self.retries}")
+                    raise ApiError(
+                        f"Timeout error, retries: {self.retries}. "
+                        f"Code: {resp.status}. Data: {data}"
+                    )
 
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(1)
                 continue
             except ContentTypeError:
                 text = await resp.text()
-                raise ApiError(f"Can't decode json, content: {text}")
+                raise ApiError(
+                    f"Can't decode json, content: {text}. "
+                    f"Code: {resp.status}")
 
-            if resp['code'] == '0':
-                return resp['data']
+            if resp_json['code'] == '0':
+                return resp_json['data']
 
             if count == self.retries:
                 raise ApiError(
-                    f"System error, retries: {self.retries}. Data: {resp}")
+                    f"System error, retries: {self.retries}. "
+                    f"Code: {resp.status}. Json: {resp_json}. "
+                    f"Data: {data}"
+                )
 
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(1)
             continue
 
     async def get(self, path, params=None):
