@@ -9,7 +9,6 @@ install:
   - pip install -e ".[dev]"
 script:
   - cd docs && make doctest && cd ..
-  - pytest --co .
   - pytest -v --cov . --cov-report xml:coverage.xml
 
 env:
