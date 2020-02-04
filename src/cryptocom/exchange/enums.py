@@ -66,6 +66,7 @@ class OrderStatus(enum.IntEnum):
     .. data:: PENDING_CANCEL
     .. data:: EXPIRED
     """
+
     INIT = 0
     NEW = 1
     FILLED = 2
@@ -131,6 +132,7 @@ class Depth(enum.Enum):
     .. data:: MEDIUM
     .. data:: LOW
     """
+
     HIGH = 'step0'
     MEDIUM = 'step1'
     LOW = 'step2'

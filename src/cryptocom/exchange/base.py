@@ -39,8 +39,7 @@ class Exchange:
         """Get k-line data over a specified period."""
         data = await self.api.get(
             'klines', {'symbol': symbol.value, 'period': period.value})
-        for candle in reversed(data):
-            yield Candle(*candle)
+        return [Candle(*candle) for candle in reversed(data)]
 
     async def get_trades(self, symbol: Symbol):
         """Get last 200 trades in a specified market."""

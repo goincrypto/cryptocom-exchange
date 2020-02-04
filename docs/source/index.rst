@@ -33,10 +33,11 @@ Quick-start
 
     async def main():
         exchange = cro.Exchange()
-        candles = [
-            candle async for candle in exchange.get_candles(cro.Symbol.CROUSDT)
-        ]
-        assert len(candles) > 30
+        candles = await exchange.get_candles(cro.Symbol.CROUSDT)
+        avg_price = 0
+        for candle in candles:
+            avg_price += (candle.open + candle.close) / 2
+        avg_price /= len(candles)
 
     asyncio.run(main())
 
