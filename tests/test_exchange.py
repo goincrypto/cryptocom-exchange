@@ -23,8 +23,7 @@ async def test_get_tickers(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_get_candles(exchange: cro.Exchange):
-    candles = [candle async for candle in exchange.get_candles(
-        cro.Symbol.CROUSDT, cro.Period.D1)]
+    candles = await exchange.get_candles(cro.Symbol.CROUSDT, cro.Period.D1)
     assert len(candles) > 10
     assert isinstance(candles[-1], cro.Candle)
 
