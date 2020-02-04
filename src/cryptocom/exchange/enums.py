@@ -2,6 +2,21 @@ import enum
 
 
 class Period(enum.IntEnum):
+    """
+    Candles time period.
+
+    MIN - minutes H - hours D - days M - month W - weeks
+
+    .. data:: MIN1
+    .. data:: MIN5
+    .. data:: MIN15
+    .. data:: MIN30
+    .. data:: H1
+    .. data:: D1
+    .. data:: W1
+    .. data:: M1
+    """
+
     MIN1 = 1
     MIN5 = MIN1 * 5
     MIN15 = MIN5 * 3
@@ -24,16 +39,33 @@ class PeriodWebSocket(enum.Enum):
 
 
 class OrderSide(enum.Enum):
+    """
+    .. data:: BUY
+    .. data:: SELL
+    """
     BUY = 'BUY'
     SELL = 'SELL'
 
 
 class OrderType(enum.IntEnum):
+    """
+    .. data:: LIMIT
+    .. data:: MARKET
+    """
     LIMIT = 1
     MARKET = 2
 
 
 class OrderStatus(enum.IntEnum):
+    """
+    .. data:: INIT
+    .. data:: NEW
+    .. data:: FILLED
+    .. data:: PART_FILLED
+    .. data:: CANCELED
+    .. data:: PENDING_CANCEL
+    .. data:: EXPIRED
+    """
     INIT = 0
     NEW = 1
     FILLED = 2
@@ -44,6 +76,30 @@ class OrderStatus(enum.IntEnum):
 
 
 class Symbol(enum.Enum):
+    """
+    .. data:: CROBTC
+    .. data:: MCOBTC
+    .. data:: ETHBTC
+    .. data:: XRPBTC
+    .. data:: LTCBTC
+    .. data:: EOSBTC
+    .. data:: XLMBTC
+    .. data:: BTCUSDT
+    .. data:: CROUSDT
+    .. data:: MCOUSDT
+    .. data:: ETHUSDT
+    .. data:: XRPUSDT
+    .. data:: LTCUSDT
+    .. data:: EOSUSDT
+    .. data:: XLMUSDT
+    .. data:: MCOCRO
+    .. data:: ETHCRO
+    .. data:: XRPCRO
+    .. data:: LTCCRO
+    .. data:: EOSCRO
+    .. data:: XLMCRO
+    """
+
     CROBTC = 'crobtc'
     MCOBTC = 'mcobtc'
     ETHBTC = 'ethbtc'
@@ -68,6 +124,13 @@ class Symbol(enum.Enum):
 
 
 class Depth(enum.Enum):
+    """
+    Order-book depth, for example 2, 4, 6 decimals - [low, medium, high].
+
+    .. data:: HIGH
+    .. data:: MEDIUM
+    .. data:: LOW
+    """
     HIGH = 'step0'
     MEDIUM = 'step1'
     LOW = 'step2'
