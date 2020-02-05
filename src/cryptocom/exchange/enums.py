@@ -85,6 +85,7 @@ class Symbol(enum.Enum):
     .. data:: LTCBTC
     .. data:: EOSBTC
     .. data:: XLMBTC
+    .. data:: USDCUSDT
     .. data:: BTCUSDT
     .. data:: CROUSDT
     .. data:: MCOUSDT

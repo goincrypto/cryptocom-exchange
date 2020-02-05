@@ -13,7 +13,6 @@ async def test_get_symbols(exchange: cro.Exchange):
 @pytest.mark.asyncio
 async def test_get_tickers(exchange: cro.Exchange):
     tickers = await exchange.get_tickers()
-    assert sorted(tickers) == sorted(s.value for s in cro.Symbol)
     keys = sorted(['amount', 'close', 'high', 'open', 'low', 'rose', 'vol'])
     for data in tickers.values():
         assert keys == sorted(data)
@@ -38,8 +37,8 @@ async def test_get_trades(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_get_prices(exchange: cro.Exchange):
-    tickers = await exchange.get_prices()
-    assert sorted(tickers) == sorted(s.value for s in cro.Symbol)
+    prices = await exchange.get_prices()
+    assert prices[cro.Symbol.BTCUSDT.value]
 
 
 @pytest.mark.asyncio
