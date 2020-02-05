@@ -42,8 +42,8 @@ async def test_account_buy_limit(
     # NOTE: note always orders populated fast after open orders so
     # here we check on other direction
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
-    for order in all_orders:
-        assert order['id'] in order_ids
+    ids = [order['id'] for order in all_orders]
+    assert set(ids) & set(order_ids)
 
 
 @pytest.mark.asyncio
@@ -84,18 +84,19 @@ async def test_account_sell_limit(
     assert not open_orders
 
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
-    assert all_orders[0]['id'] == order_ids[-1]
+    ids = [order['id'] for order in all_orders]
+    assert set(ids) & set(order_ids)
 
 
 async def make_trades(account, order_ids):
     # buy volume for 0.0001 cro
-    order_id = await account.buy_market(cro.Symbol.CROUSDT, 0.01)
+    order_id = await account.buy_market(cro.Symbol.CROUSDT, 0.0001)
     order = await account.get_order(order_id, cro.Symbol.CROUSDT)
     assert order['status'] == cro.OrderStatus.FILLED
     order_ids['buy'].append(order_id)
 
     # sell volume for 0.002 usdt
-    order_id = await account.sell_market(cro.Symbol.CROUSDT, 0.2)
+    order_id = await account.sell_market(cro.Symbol.CROUSDT, 0.002)
     order = await account.get_order(order_id, cro.Symbol.CROUSDT)
     assert order['status'] == cro.OrderStatus.FILLED
     order_ids['sell'].append(order_id)
@@ -105,7 +106,7 @@ async def make_trades(account, order_ids):
 async def test_account_market_orders(account: cro.Account):
     order_ids = {'buy': [], 'sell': []}
     await asyncio.gather(*[
-        make_trades(account, order_ids) for _ in range(20)
+        make_trades(account, order_ids) for _ in range(15)
     ])
 
     trades = await account.get_trades(cro.Symbol.CROUSDT, page_size=40)
