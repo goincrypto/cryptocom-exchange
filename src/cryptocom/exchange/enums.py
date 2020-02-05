@@ -108,6 +108,7 @@ class Symbol(enum.Enum):
     LTCBTC = 'ltcbtc'
     EOSBTC = 'eosbtc'
     XLMBTC = 'xlmbtc'
+    USDCUSDT = 'usdcusdt'
     BTCUSDT = 'btcusdt'
     CROUSDT = 'crousdt'
     MCOUSDT = 'mcousdt'
