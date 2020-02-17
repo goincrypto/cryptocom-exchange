@@ -19,6 +19,7 @@ class Candle:
 
 
 class Exchange:
+    """Interface to base exchange methods."""
     def __init__(self, api: ApiProvider = None):
         self.api = api or ApiProvider(auth_required=False)
 
@@ -33,6 +34,7 @@ class Exchange:
         return response['data']
 
     async def get_ticker(self, symbol: Symbol):
+        """Get ticker info."""
         return (await self.get_tickers()).get(symbol.value)
 
     async def get_candles(self, symbol: Symbol, period: Period = Period.D1):
@@ -50,6 +52,7 @@ class Exchange:
         return await self.api.get('ticker/price')
 
     async def get_price(self, symbol: Symbol):
+        """Get latest price of symbol."""
         return float((await self.get_prices())[symbol.value])
 
     async def get_orderbook(self, symbol: Symbol, depth: Depth = Depth.LOW):
@@ -60,6 +63,7 @@ class Exchange:
 
     async def listen_candles(
             self, symbol: Symbol, period: Period = Period.MIN1):
+        """Open websocket and listen live candles."""
         period = PeriodWebSocket[period.name].value
         channel = {
             'event': 'sub',
@@ -79,6 +83,7 @@ class Exchange:
             )
 
     async def listen_trades(self, symbol: Symbol):
+        """Open websocket and listen live trades."""
         channel = {
             'event': 'sub',
             'params': {'channel': f'market_{symbol.value}_trade_ticker'}
@@ -90,6 +95,7 @@ class Exchange:
 
     async def listen_order_book(
             self, symbol: Symbol, depth: Depth = Depth.LOW):
+        """Open websocket and listen live order-book."""
         channel = {
             'event': 'sub',
             'params': {
@@ -106,6 +112,7 @@ class Exchange:
 
 
 class Account:
+    """Provides access to account actions and data. Balance, trades, orders."""
     def __init__(
             self, *, api_key: str = '', api_secret: str = '',
             from_env: bool = False, api: ApiProvider = None):
@@ -116,10 +123,12 @@ class Account:
             api_key=api_key, api_secret=api_secret, from_env=from_env)
 
     async def get_balance(self):
+        """Return balance."""
         return await self.api.post('account')
 
     async def get_orders(
             self, symbol: Symbol, page: int = 1, page_size: int = 20):
+        """Return all orders."""
         data = await self.api.post('allOrders', {
             'symbol': symbol.value,
             'pageSize': page_size,
@@ -129,6 +138,7 @@ class Account:
 
     async def get_open_orders(
             self, symbol: Symbol, page: int = 1, page_size: int = 20):
+        """Return open orders."""
         data = await self.api.post('openOrders', {
             'symbol': symbol.value,
             'pageSize': page_size,
@@ -138,6 +148,7 @@ class Account:
 
     async def get_trades(
             self, symbol: Symbol, page: int = 1, page_size: int = 20):
+        """Return trades."""
         data = await self.api.post('myTrades', {
             'symbol': symbol.value,
             'pageSize': page_size,
@@ -148,6 +159,7 @@ class Account:
     async def create_order(
             self, symbol: Symbol, side: OrderSide, type_: OrderType,
             volume: float, price: float = 0) -> int:
+        """Create raw order with buy or sell side."""
         data = {
             'symbol': symbol.value, 'side': side.value,
             'type': type_.value, 'volume': volume,
@@ -163,17 +175,20 @@ class Account:
         return int(resp['order_id'])
 
     async def buy_limit(self, symbol: Symbol, volume: float, price: float):
+        """Buy limit order."""
         return await self.create_order(
             symbol, OrderSide.BUY, OrderType.LIMIT, volume, price
         )
 
     async def sell_limit(self, symbol: Symbol, volume: float, price: float):
+        """Sell limit order."""
         return await self.create_order(
             symbol, OrderSide.SELL, OrderType.LIMIT, volume, price
         )
 
     async def wait_for_status(
             self, order_id: int, symbol: Symbol, statuses, delay: int = 1):
+        """Wait for order status."""
         order = await self.get_order(order_id, symbol)
         statuses = (
             OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED
@@ -191,6 +206,7 @@ class Account:
 
     async def buy_market(
             self, symbol: Symbol, volume: float, wait_for_fill=True):
+        """Buy market order."""
         order_id = await self.create_order(
             symbol, OrderSide.BUY, OrderType.MARKET, volume
         )
@@ -203,6 +219,7 @@ class Account:
 
     async def sell_market(
             self, symbol: Symbol, volume: float, wait_for_fill=True):
+        """Sell market order."""
         order_id = await self.create_order(
             symbol, OrderSide.SELL, OrderType.MARKET, volume
         )
@@ -215,12 +232,14 @@ class Account:
         return order_id
 
     async def get_order(self, order_id: int, symbol: Symbol):
+        """Get order info."""
         data = await self.api.post(
             'showOrder', {'order_id': order_id, 'symbol': symbol.value})
         return data['order_info']
 
     async def cancel_order(
             self, order_id: int, symbol: Symbol, wait_for_cancel=True):
+        """Cancel order."""
         await self.api.post(
             'orders/cancel', {'order_id': order_id, 'symbol': symbol.value})
 
@@ -232,4 +251,5 @@ class Account:
         ))
 
     async def cancel_open_orders(self, symbol: Symbol):
+        """Cancel all open orders."""
         return await self.api.post('cancelAllOrders', {'symbol': symbol.value})
