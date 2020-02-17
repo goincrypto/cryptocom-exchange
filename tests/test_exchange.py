@@ -54,8 +54,7 @@ async def test_get_orderbook(exchange: cro.Exchange):
 @pytest.mark.asyncio
 async def test_listen_candles(exchange: cro.Exchange):
     candles = []
-    async for candle in exchange.listen_candles(
-            cro.Symbol.CROUSDT, cro.Period.MIN1):
+    async for candle in exchange.listen_candles(cro.Symbol.CROUSDT):
         candles.append(candle)
         break
     assert isinstance(candles[-1], cro.Candle)

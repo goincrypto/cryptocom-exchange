@@ -58,7 +58,8 @@ class Exchange:
             'depth', {'symbol': symbol.value, 'type': depth.value})
         return data['tick']
 
-    async def listen_candles(self, symbol: Symbol, period: Period):
+    async def listen_candles(
+            self, symbol: Symbol, period: Period = Period.MIN1):
         period = PeriodWebSocket[period.name].value
         channel = {
             'event': 'sub',

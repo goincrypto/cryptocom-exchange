@@ -32,7 +32,7 @@ Create virtual environment, activate, install
 Userful examples
 ================
 
-- Get historical data
+- Get historical price data
 
 .. testcode::
 
@@ -46,16 +46,69 @@ Userful examples
         for candle in candles:
             avg_price += (candle.open + candle.close) / 2
         avg_price /= len(candles)
+        print(f'Avg price {round(avg_price, 4)} for {len(candles)} days')
 
     asyncio.run(main())
 
-- Watch latest candles live
+.. testoutput::
+    :hide:
 
-- Get orderbook
+    ...
 
-- Buy or Sell with LIMIT or MARKET orders
+- Listen latest candles live as they go (Websocket)
 
-- Get trades and orders
+.. testcode::
+
+    import asyncio
+    import cryptocom.exchange as cro
+
+    async def main():
+        exchange = cro.Exchange()
+        # NOTE: do not "break" if you need forever watch for new candles
+        async for candle in exchange.listen_candles(cro.Symbol.CROUSDT):
+            ohlc4 = candle.open + candle.high + candle.low + candle.close
+            ohlc4 /= 4
+            print(f'OHLC / 4 of last candle {ohlc4}')
+            break
+
+        # NOTE: wait to close background tasks, used only in docs
+        # you can delete this in your code in real file
+        await asyncio.sleep(1)
+
+    asyncio.run(main())
+
+.. testoutput::
+    :hide:
+
+    ...
+
+- Get account balance. You can provide env vars for auth keys.
+
+.. code-block:: bash
+
+    export CRYPTOCOM_API_KEY="***"
+    export CRYPTOCOM_API_SECRET="***"
+
+    python3 mybot.py
+
+or by providing attributes to :code:`Account(api_key='***', api_secret='***')`
+
+.. testcode::
+
+    import asyncio
+    import cryptocom.exchange as cro
+
+    async def main():
+        account = cro.Account(from_env=True)
+        data = await account.get_balance()
+        print(f'Account balance {data}')
+
+    asyncio.run(main())
+
+.. testoutput::
+    :hide:
+
+    ...
 
 Indices and tables
 ==================
