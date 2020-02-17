@@ -85,6 +85,7 @@ class Symbol(enum.Enum):
     .. data:: LTCBTC
     .. data:: EOSBTC
     .. data:: XLMBTC
+    .. data:: ATOMBTC
     .. data:: USDCUSDT
     .. data:: BTCUSDT
     .. data:: CROUSDT
@@ -94,12 +95,15 @@ class Symbol(enum.Enum):
     .. data:: LTCUSDT
     .. data:: EOSUSDT
     .. data:: XLMUSDT
+    .. data:: ATOMUSDT
     .. data:: MCOCRO
     .. data:: ETHCRO
     .. data:: XRPCRO
     .. data:: LTCCRO
     .. data:: EOSCRO
     .. data:: XLMCRO
+    .. data:: ATOMCRO
+    .. data:: CROUSDC
     """
 
     CROBTC = 'crobtc'
@@ -109,6 +113,7 @@ class Symbol(enum.Enum):
     LTCBTC = 'ltcbtc'
     EOSBTC = 'eosbtc'
     XLMBTC = 'xlmbtc'
+    ATOMBTC = 'atombtc'
     USDCUSDT = 'usdcusdt'
     BTCUSDT = 'btcusdt'
     CROUSDT = 'crousdt'
@@ -118,12 +123,15 @@ class Symbol(enum.Enum):
     LTCUSDT = 'ltcusdt'
     EOSUSDT = 'eosusdt'
     XLMUSDT = 'xlmusdt'
+    ATOMUSDT = 'atomusdt'
     MCOCRO = 'mcocro'
     ETHCRO = 'ethcro'
     XRPCRO = 'xrpcro'
     LTCCRO = 'ltccro'
     EOSCRO = 'eoscro'
     XLMCRO = 'xlmcro'
+    ATOMCRO = 'atomcro'
+    CROUSDC = 'crousdc'
 
 
 class Depth(enum.Enum):

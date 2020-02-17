@@ -8,23 +8,31 @@
     :caption: Contents:
 
     Home <self>
-    install
-    guide
     api
 
 Welcome to cryptocom-exchange documentation!
 ============================================
-Get started with "Installation" and then get an overview with the User's guide with helpful examples. Also you can find tests with examples of trading and exchange data usage.
-Full reference you can find in the API section. cryptocom-exchange depends on the aiohttp the documentation for this library can be found at: "link".
+This package provides interfaces to access a https://crypto.com/exchange API.
+Supports only **Python 3.7+** versions.
+You can find tests with examples of trading and exchange data usage at
+`github <https://github.com/goincrypto/cryptocom-exchange/tree/master/tests>`_.
+Full reference you can find in the API section.
 
 Quick-start
 ===========
 
-- python3 -m venv venv (create virutalenv)
-- source venv/bin/activate
-- pip3 install cryptocom-exchange
+Create virtual environment, activate, install
 
-- create simple file hello_crypto.py with contents
+.. code-block:: bash
+
+    python3 -m venv venv
+    source venv/bin/activate
+    pip3 install cryptocom-exchange
+
+Userful examples
+================
+
+- Get historical data
 
 .. testcode::
 
@@ -40,6 +48,14 @@ Quick-start
         avg_price /= len(candles)
 
     asyncio.run(main())
+
+- Watch latest candles live
+
+- Get orderbook
+
+- Buy or Sell with LIMIT or MARKET orders
+
+- Get trades and orders
 
 Indices and tables
 ==================

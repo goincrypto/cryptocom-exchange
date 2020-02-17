@@ -52,7 +52,8 @@ setup(
             'sphinx_rtd_theme',
             'setuptools',
             'wheel',
-            'twine'
+            'twine',
+            'doc8'
         ]
     },
     zip_safe=True
