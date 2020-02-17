@@ -16,7 +16,7 @@
             "label": "Python: Release package on PyPI",
             "type": "shell",
             "dependsOn": ["Python: Build"],
-            "command": "source activate.sh && twine upload dist/* -u mortyspace"
+            "command": "source activate.sh && twine upload dist/* -u goincrypto"
         },
         {
             "label": "Coverage: Make coverage",
