@@ -114,6 +114,8 @@ class Symbol(enum.Enum):
     EOSBTC = 'eosbtc'
     XLMBTC = 'xlmbtc'
     ATOMBTC = 'atombtc'
+    LINKBTC = 'linkbtc'
+    XTZBTC = 'xtzbtc'
     USDCUSDT = 'usdcusdt'
     BTCUSDT = 'btcusdt'
     CROUSDT = 'crousdt'
@@ -124,6 +126,8 @@ class Symbol(enum.Enum):
     EOSUSDT = 'eosusdt'
     XLMUSDT = 'xlmusdt'
     ATOMUSDT = 'atomusdt'
+    LINKUSDT = 'linkusdt'
+    XTZUSDT = 'xtzusdt'
     MCOCRO = 'mcocro'
     ETHCRO = 'ethcro'
     XRPCRO = 'xrpcro'
@@ -131,6 +135,8 @@ class Symbol(enum.Enum):
     EOSCRO = 'eoscro'
     XLMCRO = 'xlmcro'
     ATOMCRO = 'atomcro'
+    LINKCRO = 'linkcro'
+    XTZCRO = 'xtzcro'
     CROUSDC = 'crousdc'
 
 
