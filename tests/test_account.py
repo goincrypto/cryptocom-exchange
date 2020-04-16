@@ -23,6 +23,9 @@ async def test_account_buy_limit(
     ]
 
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
+
+    print(all_orders[0])
+
     await account.cancel_order(
         order_ids[0], cro.Symbol.CROUSDT, wait_for_cancel=False)
     order = await account.get_order(order_ids[0], cro.Symbol.CROUSDT)

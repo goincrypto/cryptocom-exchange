@@ -86,6 +86,9 @@ class Symbol(enum.Enum):
     .. data:: EOSBTC
     .. data:: XLMBTC
     .. data:: ATOMBTC
+    .. data:: LINKBTC
+    .. data:: XTZBTC
+    .. data:  BCHBTC
     .. data:: USDCUSDT
     .. data:: BTCUSDT
     .. data:: CROUSDT
@@ -96,6 +99,9 @@ class Symbol(enum.Enum):
     .. data:: EOSUSDT
     .. data:: XLMUSDT
     .. data:: ATOMUSDT
+    .. data:: LINKUSDT
+    .. data:: XTZUSDT
+    .. data:: BCHUSDT
     .. data:: MCOCRO
     .. data:: ETHCRO
     .. data:: XRPCRO
@@ -103,6 +109,9 @@ class Symbol(enum.Enum):
     .. data:: EOSCRO
     .. data:: XLMCRO
     .. data:: ATOMCRO
+    .. data:: LINKCRO
+    .. data:: XTZCRO
+    .. data:: BCHCRO
     .. data:: CROUSDC
     """
 
@@ -116,6 +125,8 @@ class Symbol(enum.Enum):
     ATOMBTC = 'atombtc'
     LINKBTC = 'linkbtc'
     XTZBTC = 'xtzbtc'
+    BCHBTC = 'bchbtc'
+
     USDCUSDT = 'usdcusdt'
     BTCUSDT = 'btcusdt'
     CROUSDT = 'crousdt'
@@ -128,6 +139,8 @@ class Symbol(enum.Enum):
     ATOMUSDT = 'atomusdt'
     LINKUSDT = 'linkusdt'
     XTZUSDT = 'xtzusdt'
+    BCHUSDT = 'bchusdt'
+
     MCOCRO = 'mcocro'
     ETHCRO = 'ethcro'
     XRPCRO = 'xrpcro'
@@ -137,6 +150,7 @@ class Symbol(enum.Enum):
     ATOMCRO = 'atomcro'
     LINKCRO = 'linkcro'
     XTZCRO = 'xtzcro'
+    BCHCRO = 'bchcro'
     CROUSDC = 'crousdc'
 
 
