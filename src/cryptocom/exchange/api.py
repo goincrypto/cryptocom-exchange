@@ -113,6 +113,9 @@ class ApiProvider:
                 await asyncio.sleep(1)
                 continue
             except ContentTypeError:
+                if resp.status == 429:
+                    await asyncio.sleep(1)
+                    continue
                 text = await resp.text()
                 raise ApiError(
                     f"Can't decode json, content: {text}. "
