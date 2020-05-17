@@ -126,6 +126,7 @@ class Symbol(enum.Enum):
     LINKBTC = 'linkbtc'
     XTZBTC = 'xtzbtc'
     BCHBTC = 'bchbtc'
+    VETBTC = 'vetbtc'
 
     USDCUSDT = 'usdcusdt'
     BTCUSDT = 'btcusdt'
@@ -140,6 +141,7 @@ class Symbol(enum.Enum):
     LINKUSDT = 'linkusdt'
     XTZUSDT = 'xtzusdt'
     BCHUSDT = 'bchusdt'
+    VETUSDT = 'vetusdt'
 
     MCOCRO = 'mcocro'
     ETHCRO = 'ethcro'
@@ -151,6 +153,8 @@ class Symbol(enum.Enum):
     LINKCRO = 'linkcro'
     XTZCRO = 'xtzcro'
     BCHCRO = 'bchcro'
+    VETCRO = 'vetcro'
+
     CROUSDC = 'crousdc'
 
 
