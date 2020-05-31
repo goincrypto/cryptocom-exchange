@@ -127,7 +127,7 @@ class Account:
         return await self.api.post('account')
 
     async def get_orders(
-            self, symbol: Symbol, page: int = 1, page_size: int = 20):
+            self, symbol: Symbol, page: int = 1, page_size: int = 1000):
         """Return all orders."""
         data = await self.api.post('allOrders', {
             'symbol': symbol.value,
@@ -137,7 +137,7 @@ class Account:
         return data.get('orderList') or []
 
     async def get_open_orders(
-            self, symbol: Symbol, page: int = 1, page_size: int = 20):
+            self, symbol: Symbol, page: int = 1, page_size: int = 1000):
         """Return open orders."""
         data = await self.api.post('openOrders', {
             'symbol': symbol.value,
@@ -147,7 +147,7 @@ class Account:
         return data.get('resultList') or []
 
     async def get_trades(
-            self, symbol: Symbol, page: int = 1, page_size: int = 20):
+            self, symbol: Symbol, page: int = 1, page_size: int = 1000):
         """Return trades."""
         data = await self.api.post('myTrades', {
             'symbol': symbol.value,

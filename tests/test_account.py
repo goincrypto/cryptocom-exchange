@@ -13,15 +13,29 @@ async def test_account_get_balance(account: cro.Account):
 
 
 @pytest.mark.asyncio
-async def test_account_buy_limit(
+async def test_no_dublicated_mass_limit_orders(
         exchange: cro.Exchange, account: cro.Account):
     buy_price = round(await exchange.get_price(cro.Symbol.CROUSDT) / 2, 4)
+    order_ids = await asyncio.gather(*[
+        account.buy_limit(
+            cro.Symbol.CROUSDT, 0.01,
+            round(buy_price / 2 + i / 10000.0, 4)
+        )
+        for i in range(400)
+    ])
 
-    order_ids = [
-        await account.buy_limit(cro.Symbol.CROUSDT, 1, buy_price)
-        for i in range(3)
-    ]
+    await asyncio.sleep(5)
+    orders = await account.get_open_orders(cro.Symbol.CROUSDT)
+    assert sorted(o['id'] for o in orders) == sorted(order_ids)
 
+
+@pytest.mark.asyncio
+async def test_account_buy_limit(exchange: cro.Exchange, account: cro.Account):
+    buy_price = round(await exchange.get_price(cro.Symbol.CROUSDT) / 2, 4)
+    order_ids = await asyncio.gather(*[
+        account.buy_limit(cro.Symbol.CROUSDT, 0.01, buy_price)
+        for i in range(10)
+    ])
     all_orders = await account.get_orders(cro.Symbol.CROUSDT, page_size=10)
 
     await account.cancel_order(
