@@ -99,6 +99,7 @@ async def make_trades(account, order_ids):
     order_id = await account.buy_market(cro.Pair.CROUSDT, 0.001)
     order = await account.get_order(order_id)
     assert order['status'] == cro.OrderStatus.FILLED.value
+    assert order['id']
     order_ids['buy'].append(order_id)
 
     order_id = await account.sell_market(cro.Pair.CROUSDT, 0.001)

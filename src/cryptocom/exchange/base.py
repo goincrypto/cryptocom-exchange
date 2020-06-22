@@ -210,6 +210,7 @@ class Account:
             'params': {'order_id': str(order_id)}
         })
         data['order_info']['trade_list'] = data.pop('trade_list', [])
+        data['order_info']['id'] = int(data['order_info'].pop('order_id'))
         return data['order_info']
 
     async def cancel_order(

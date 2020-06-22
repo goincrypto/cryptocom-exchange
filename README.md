@@ -17,6 +17,7 @@
 
 **Changelog**
 
+- **0.2.1** - fixed order_id in `get_order` func, still preparing for stable release
 - **0.2** - moved to new API v2, except for websockets
 
 Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.rtfd.io)
