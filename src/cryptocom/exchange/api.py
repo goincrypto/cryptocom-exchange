@@ -76,33 +76,6 @@ class ApiProvider:
         ).hexdigest()
         return data
 
-    async def ws_listen(self, data, timeout: int = None):
-        timeout = aiohttp.ClientTimeout(self.timeout)
-        count = 0
-
-        while count != self.retries:
-            async with aiohttp.ClientSession(timeout=timeout) as session:
-                try:
-                    async with session.ws_connect(self.ws_root_url) as ws:
-                        await ws.send_str(json.dumps(data))
-                        async for msg in ws:
-                            data = gzip.decompress(msg.data).decode('utf-8')
-                            data = json.loads(data)
-                            yield data
-                            count = 0
-                except asyncio.TimeoutError:
-                    if count == self.retries:
-                        raise ApiError(
-                            f"Timeout error, retries: {self.retries}")
-
-                    await asyncio.sleep(0.2)
-                    count += 1
-                    continue
-
-    async def ws_request(self, data, timeout: int = None):
-        async for data in self.ws_listen(data, timeout=timeout):
-            return data
-
     async def request(self, method, path, params=None, data=None, sign=False):
         if sign:
             data = self._sign(path, data)

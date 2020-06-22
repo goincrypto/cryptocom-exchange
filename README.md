@@ -15,8 +15,8 @@
 - full test coverage on real exchange with real money
 - simple async methods with custom retries and timeouts
 
-** Changelog **
+**Changelog**
 
-- [0.2] - moved to new API v2, except for websockets
+- **0.2** - moved to new API v2, except for websockets
 
 Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.rtfd.io)
