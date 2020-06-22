@@ -2,6 +2,7 @@ import os
 import json
 import gzip
 import time
+import hmac
 import asyncio
 import hashlib
 
@@ -21,8 +22,8 @@ class ApiProvider:
     def __init__(
             self, *, api_key='', api_secret='', from_env=False,
             auth_required=True, timeout=3, retries=20,
-            root_url='https://api.crypto.com/v1/',
-            ws_root_url='wss://ws.crypto.com/kline-api/ws'):
+            root_url='https://api.crypto.com/v2/',
+            ws_root_url='wss://stream.crypto.com/v2/'):
         self.api_key = api_key
         self.api_secret = api_secret
         self.root_url = root_url
@@ -30,8 +31,8 @@ class ApiProvider:
         self.timeout = timeout
         self.retries = retries
 
-        # NOTE: do not change this, due to crypto.com rate-limit 10-per second
-        self.semaphore = asyncio.Semaphore(20)
+        # NOTE: do not change this, due to crypto.com rate-limits
+        self.semaphore = asyncio.Semaphore(50)
 
         if not auth_required:
             return
@@ -50,13 +51,29 @@ class ApiProvider:
         if not self.api_secret:
             raise ValueError('Provide CRYPTOCOM_API_SECRET env value')
 
-    def _sign(self, data):
+    def _sign(self, path, data):
         data = data or {}
+        data['method'] = path
+
         sign_time = int(time.time() * 1000)
-        data.update({'time': sign_time, 'api_key': self.api_key})
-        sign = ''.join(f'{key}{data[key]}' for key in sorted(data))
-        sign = f'{sign}{self.api_secret}'
-        data['sign'] = hashlib.sha256(sign.encode('utf-8')).hexdigest()
+        data.update({'nonce': sign_time, 'api_key': self.api_key, 'id': 5959})
+
+        data_params = data.get('params', {})
+        if not data_params:
+            data['params'] = {}
+        params = ''.join(
+            f'{key}{data_params[key]}'
+            for key in sorted(data_params)
+        )
+
+        payload = f"{path}{data['id']}" \
+            f"{self.api_key}{params}{data['nonce']}"
+
+        data['sig'] = hmac.new(
+            self.api_secret.encode('utf-8'),
+            payload.encode('utf-8'),
+            hashlib.sha256
+        ).hexdigest()
         return data
 
     async def ws_listen(self, data, timeout: int = None):
@@ -88,17 +105,17 @@ class ApiProvider:
 
     async def request(self, method, path, params=None, data=None, sign=False):
         if sign:
-            data = self._sign(data)
+            data = self._sign(path, data)
 
         timeout = aiohttp.ClientTimeout(total=self.timeout)
-
         for count in range(self.retries + 1):
             try:
                 async with aiohttp.ClientSession(timeout=timeout) as session:
                     async with self.semaphore:
                         resp = await session.request(
                             method, urljoin(self.root_url, path),
-                            params=params, data=data
+                            params=params, json=data,
+                            headers={'content-type': 'application/json'}
                         )
                         resp_json = await resp.json()
                         if resp.status != 200:
@@ -124,8 +141,9 @@ class ApiProvider:
                     f"Can't decode json, content: {text}. "
                     f"Code: {resp.status}")
 
-            if resp_json['code'] == '0':
-                return resp_json['data']
+            if resp_json['code'] == 0:
+                result = resp_json.get('result', {})
+                return result.get('data', {}) or result
 
             if count == self.retries:
                 raise ApiError(

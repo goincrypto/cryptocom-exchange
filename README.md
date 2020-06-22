@@ -11,6 +11,8 @@
 [![PyPI version fury.io](https://badge.fury.io/py/cryptocom-exchange.svg)](https://pypi.python.org/pypi/cryptocom-exchange/)
 [![PyPI download month](https://img.shields.io/pypi/dm/cryptocom-exchange.svg)](https://pypi.python.org/pypi/cryptocom-exchange/)
 
+** migration to API v2 in progress **
+
 - provides all methods to access crypto.com/exchange API
 - full test coverage on real exchange with real money
 - simple async methods with custom retries and timeouts

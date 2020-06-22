@@ -1,11 +1,11 @@
-from .enums import Period, Depth, OrderSide, OrderStatus, OrderType, Symbol
+from .structs import Period, OrderSide, OrderStatus, OrderType, Pair
 from .base import Exchange, Account, Candle
 from .api import ApiError, ApiProvider
 
 __all__ = [
-    'Period', 'Depth', 'OrderSide', 'OrderStatus', 'OrderType', 'Symbol',
+    'Period', 'OrderSide', 'OrderStatus', 'OrderType', 'Pair',
     'Exchange', 'Account', 'Candle',
     'ApiError', 'ApiProvider'
 ]
 
-VERSION = '0.1.5'
+VERSION = '0.2'

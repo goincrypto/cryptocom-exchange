@@ -3,8 +3,8 @@ import asyncio
 from dataclasses import dataclass
 
 from .api import ApiProvider, ApiError
-from .enums import (
-    Symbol, Period, Depth, PeriodWebSocket, OrderSide, OrderStatus, OrderType
+from .structs import (
+    Pair, Period, PeriodWebSocket, OrderSide, OrderStatus, OrderType
 )
 
 
@@ -23,83 +23,88 @@ class Exchange:
     def __init__(self, api: ApiProvider = None):
         self.api = api or ApiProvider(auth_required=False)
 
-    async def get_symbols(self):
-        """List all available market symbols."""
-        return await self.api.get('symbols')
+    async def get_pairs(self):
+        """List all available market pairs."""
+        data = await self.api.get('public/get-instruments')
+        return {Pair(i.pop('instrument_name')): i for i in data['instruments']}
 
-    async def get_tickers(self):
+    async def get_tickers(self, pair: Pair = None):
         """Get tickers in all available markets."""
-        response = await self.api.ws_request(
-            {'event': 'req', 'params': {'channel': 'review'}})
-        return response['data']
+        params = {'instrument_name': pair.value} if pair else None
+        data = await self.api.get('public/get-ticker', params)
+        if pair:
+            data.pop('i')
+            return data
+        return {Pair(ticker.pop('i')): ticker for ticker in data}
 
-    async def get_ticker(self, symbol: Symbol):
-        """Get ticker info."""
-        return (await self.get_tickers()).get(symbol.value)
-
-    async def get_candles(self, symbol: Symbol, period: Period = Period.D1):
-        """Get k-line data over a specified period."""
-        data = await self.api.get(
-            'klines', {'symbol': symbol.value, 'period': period.value})
-        return [Candle(*candle) for candle in reversed(data)]
-
-    async def get_trades(self, symbol: Symbol):
+    async def get_trades(self, pair: Pair):
         """Get last 200 trades in a specified market."""
-        return await self.api.get('trades', {'symbol': symbol.value})
-
-    async def get_prices(self):
-        """Get latest execution price for all markets."""
-        return await self.api.get('ticker/price')
-
-    async def get_price(self, symbol: Symbol):
-        """Get latest price of symbol."""
-        return float((await self.get_prices())[symbol.value])
-
-    async def get_orderbook(self, symbol: Symbol, depth: Depth = Depth.LOW):
-        """Get the order book for a particular market."""
         data = await self.api.get(
-            'depth', {'symbol': symbol.value, 'type': depth.value})
-        return data['tick']
+            'public/get-trades', {'instrument_name': pair.value})
+        for trade in data:
+            trade.pop('i')
+            trade.pop('dataTime')
+        return data
+
+    async def get_price(self, pair: Pair):
+        """Get latest price of pair."""
+        data = await self.api.get('public/get-ticker', {
+            'instrument_name': pair.value
+        })
+        return float(data['a'])
+
+    async def get_orderbook(self, pair: Pair, depth: int = 150):
+        """Get the order book for a particular market."""
+        data = await self.api.get('public/get-book', {
+            'instrument_name': pair.value,
+            'depth': depth
+        })
+        return data[0]
 
     async def listen_candles(
-            self, symbol: Symbol, period: Period = Period.MIN1):
+            self, pair: Pair, period: Period = Period.MIN1):
         """Open websocket and listen live candles."""
-        period = PeriodWebSocket[period.name].value
-        channel = {
-            'event': 'sub',
-            'params': {'channel': f'market_{symbol.value}_kline_{period}'}
-        }
-        prev_id = None
-        async for data in self.api.ws_listen(channel):
-            if 'ping' in data:
-                continue
-            candle = data['tick']
-            if candle['id'] == prev_id:
-                continue
-            prev_id = candle['id']
-            yield Candle(
-                candle['id'], candle['open'], candle['high'],
-                candle['low'], candle['close'], candle['vol']
-            )
+        # TODO: websocket api
+        pass
+        # period = PeriodWebSocket[period.name].value
+        # channel = {
+        #     'event': 'sub',
+        #     'params': {'channel': f'market_{pair.value}_kline_{period}'}
+        # }
+        # prev_id = None
+        # async for data in self.api.ws_listen(channel):
+        #     if 'ping' in data:
+        #         continue
+        #     candle = data['tick']
+        #     if candle['id'] == prev_id:
+        #         continue
+        #     prev_id = candle['id']
+        #     yield Candle(
+        #         candle['id'], candle['open'], candle['high'],
+        #         candle['low'], candle['close'], candle['vol']
+        #     )
 
-    async def listen_trades(self, symbol: Symbol):
+    async def listen_trades(self, pair: Pair):
+        # TODO: websocket api
+        pass
         """Open websocket and listen live trades."""
         channel = {
             'event': 'sub',
-            'params': {'channel': f'market_{symbol.value}_trade_ticker'}
+            'params': {'channel': f'market_{pair.value}_trade_ticker'}
         }
         async for data in self.api.ws_listen(channel):
             if 'ping' in data:
                 continue
             yield data['tick']['data']
 
-    async def listen_order_book(
-            self, symbol: Symbol, depth: Depth = Depth.LOW):
+    async def listen_order_book(self, pair: Pair):
+        # TODO: websocket api
+        pass
         """Open websocket and listen live order-book."""
         channel = {
             'event': 'sub',
             'params': {
-                'channel': f'market_{symbol.value}_depth_{depth.value}',
+                'channel': f'market_{pair.value}',
                 'asks': 150,
                 'buys': 150
             }
@@ -124,46 +129,70 @@ class Account:
 
     async def get_balance(self):
         """Return balance."""
-        return await self.api.post('account')
+        data = await self.api.post('private/get-account-summary')
+        return {acc['currency']: acc for acc in data['accounts']}
 
     async def get_orders(
-            self, symbol: Symbol, page: int = 1, page_size: int = 1000):
+            self, pair: Pair, page: int = 0, page_size: int = 200):
         """Return all orders."""
-        data = await self.api.post('allOrders', {
-            'symbol': symbol.value,
-            'pageSize': page_size,
-            'page': page
+        data = await self.api.post('private/get-order-history', {
+            'params': {
+                'instrument_name': pair.value,
+                'page_size': page_size,
+                'page': page
+            }
         })
-        return data.get('orderList') or []
+        orders = data.get('order_list') or []
+        for order in orders:
+            order['id'] = int(order.pop('order_id'))
+        return orders
 
     async def get_open_orders(
-            self, symbol: Symbol, page: int = 1, page_size: int = 1000):
+            self, pair: Pair, page: int = 0, page_size: int = 200):
         """Return open orders."""
-        data = await self.api.post('openOrders', {
-            'symbol': symbol.value,
-            'pageSize': page_size,
-            'page': page
+        data = await self.api.post('private/get-open-orders', {
+            'params': {
+                'instrument_name': pair.value,
+                'page_size': page_size,
+                'page': page
+            }
         })
-        return data.get('resultList') or []
+        orders = data.get('order_list') or []
+        for order in orders:
+            order['id'] = int(order.pop('order_id'))
+        return orders
 
     async def get_trades(
-            self, symbol: Symbol, page: int = 1, page_size: int = 1000):
+            self, pair: Pair, page: int = 0, page_size: int = 200):
         """Return trades."""
-        data = await self.api.post('myTrades', {
-            'symbol': symbol.value,
-            'pageSize': page_size,
-            'page': page
+        data = await self.api.post('private/get-trades', {
+            'params': {
+                'instrument_name': pair.value,
+                'page_size': page_size,
+                'page': page
+            }
         })
-        return data.get('resultList') or []
+        orders = data.get('order_list') or []
+        for order in orders:
+            order['id'] = int(order.pop('order_id'))
+        return orders
 
     async def create_order(
-            self, symbol: Symbol, side: OrderSide, type_: OrderType,
-            volume: float, price: float = 0) -> int:
+            self, pair: Pair, side: OrderSide, type_: OrderType,
+            quantity: float, price: float = 0, client_id: int = None) -> int:
         """Create raw order with buy or sell side."""
         data = {
-            'symbol': symbol.value, 'side': side.value,
-            'type': type_.value, 'volume': volume,
+            'instrument_name': pair.value, 'side': side.value,
+            'type': type_.value
         }
+
+        if type_ == OrderType.MARKET and side == OrderSide.BUY:
+            data['notional'] = quantity
+        else:
+            data['quantity'] = quantity
+
+        if client_id:
+            data['client_oid'] = str(client_id)
 
         if price:
             if type_ == OrderType.MARKET:
@@ -171,85 +200,90 @@ class Account:
                     "Error, MARKET execution do not support price value")
             data['price'] = price
 
-        resp = await self.api.post('order', data)
+        resp = await self.api.post('private/create-order', {'params': data})
         return int(resp['order_id'])
 
-    async def buy_limit(self, symbol: Symbol, volume: float, price: float):
+    async def buy_limit(self, pair: Pair, quantity: float, price: float):
         """Buy limit order."""
         return await self.create_order(
-            symbol, OrderSide.BUY, OrderType.LIMIT, volume, price
+            pair, OrderSide.BUY, OrderType.LIMIT, quantity, price
         )
 
-    async def sell_limit(self, symbol: Symbol, volume: float, price: float):
+    async def sell_limit(self, pair: Pair, quantity: float, price: float):
         """Sell limit order."""
         return await self.create_order(
-            symbol, OrderSide.SELL, OrderType.LIMIT, volume, price
+            pair, OrderSide.SELL, OrderType.LIMIT, quantity, price
         )
 
     async def wait_for_status(
-            self, order_id: int, symbol: Symbol, statuses, delay: int = 1):
+            self, order_id: int, pair: Pair, statuses, delay: int = 0.5):
         """Wait for order status."""
-        order = await self.get_order(order_id, symbol)
-        statuses = (
-            OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED
-        )
+        order = await self.get_order(order_id)
 
         for _ in range(self.api.retries):
-            await asyncio.sleep(delay)
-            order = await self.get_order(order_id, symbol)
-            if order['status'] in statuses:
+            if OrderStatus(order['status']) in statuses:
                 break
 
-        if order['status'] not in statuses:
+            await asyncio.sleep(delay)
+            order = await self.get_order(order_id)
+
+        if OrderStatus(order['status']) not in statuses:
             raise ApiError(
                 f"Status not changed for: {order}, must be in: {statuses}")
 
     async def buy_market(
-            self, symbol: Symbol, volume: float, wait_for_fill=True):
+            self, pair: Pair, spend: float, wait_for_fill=False):
         """Buy market order."""
         order_id = await self.create_order(
-            symbol, OrderSide.BUY, OrderType.MARKET, volume
+            pair, OrderSide.BUY, OrderType.MARKET, spend
         )
         if wait_for_fill:
-            await self.wait_for_status(order_id, symbol, (
-                OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED
+            await self.wait_for_status(order_id, pair, (
+                OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED,
+                OrderStatus.REJECTED
             ))
 
         return order_id
 
     async def sell_market(
-            self, symbol: Symbol, volume: float, wait_for_fill=True):
+            self, pair: Pair, quantity: float, wait_for_fill=False):
         """Sell market order."""
         order_id = await self.create_order(
-            symbol, OrderSide.SELL, OrderType.MARKET, volume
+            pair, OrderSide.SELL, OrderType.MARKET, quantity
         )
 
         if wait_for_fill:
-            await self.wait_for_status(order_id, symbol, (
-                OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED
+            await self.wait_for_status(order_id, pair, (
+                OrderStatus.FILLED, OrderStatus.CANCELED, OrderStatus.EXPIRED,
+                OrderStatus.REJECTED
             ))
 
         return order_id
 
-    async def get_order(self, order_id: int, symbol: Symbol):
+    async def get_order(self, order_id: int):
         """Get order info."""
-        data = await self.api.post(
-            'showOrder', {'order_id': order_id, 'symbol': symbol.value})
+        data = await self.api.post('private/get-order-detail', {
+            'params': {'order_id': str(order_id)}
+        })
+        data['order_info']['trade_list'] = data.pop('trade_list', [])
         return data['order_info']
 
     async def cancel_order(
-            self, order_id: int, symbol: Symbol, wait_for_cancel=True):
+            self, order_id: int, pair: Pair, wait_for_cancel=False):
         """Cancel order."""
-        await self.api.post(
-            'orders/cancel', {'order_id': order_id, 'symbol': symbol.value})
+        await self.api.post('private/cancel-order', {
+            'params': {'order_id': order_id, 'instrument_name': pair.value}
+        })
 
         if not wait_for_cancel:
             return
 
-        await self.wait_for_status(order_id, symbol, (
-            OrderStatus.CANCELED, OrderStatus.EXPIRED
+        await self.wait_for_status(order_id, pair, (
+            OrderStatus.CANCELED, OrderStatus.EXPIRED, OrderStatus.REJECTED
         ))
 
-    async def cancel_open_orders(self, symbol: Symbol):
+    async def cancel_open_orders(self, pair: Pair):
         """Cancel all open orders."""
-        return await self.api.post('cancelAllOrders', {'symbol': symbol.value})
+        return await self.api.post('private/cancel-all-orders', {
+            'params': {'instrument_name': pair.value}
+        })

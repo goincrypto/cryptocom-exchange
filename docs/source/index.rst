@@ -41,7 +41,7 @@ Userful examples
 
     async def main():
         exchange = cro.Exchange()
-        candles = await exchange.get_candles(cro.Symbol.CROUSDT)
+        candles = await exchange.get_candles(cro.Pair.CROUSDT)
         avg_price = 0
         for candle in candles:
             avg_price += (candle.open + candle.close) / 2
@@ -65,7 +65,7 @@ Userful examples
     async def main():
         exchange = cro.Exchange()
         # NOTE: do not "break" if you need forever watch for new candles
-        async for candle in exchange.listen_candles(cro.Symbol.CROUSDT):
+        async for candle in exchange.listen_candles(cro.Pair.CROUSDT):
             ohlc4 = candle.open + candle.high + candle.low + candle.close
             ohlc4 /= 4
             print(f'OHLC / 4 of last candle {ohlc4}')
