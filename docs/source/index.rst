@@ -32,7 +32,7 @@ Create virtual environment, activate, install
 Userful examples
 ================
 
-- Get historical price data
+- Get current price data for pair
 
 .. testcode::
 
@@ -41,39 +41,8 @@ Userful examples
 
     async def main():
         exchange = cro.Exchange()
-        candles = await exchange.get_candles(cro.Pair.CROUSDT)
-        avg_price = 0
-        for candle in candles:
-            avg_price += (candle.open + candle.close) / 2
-        avg_price /= len(candles)
-        print(f'Avg price {round(avg_price, 4)} for {len(candles)} days')
-
-    asyncio.run(main())
-
-.. testoutput::
-    :hide:
-
-    ...
-
-- Listen latest candles live as they go (Websocket)
-
-.. testcode::
-
-    import asyncio
-    import cryptocom.exchange as cro
-
-    async def main():
-        exchange = cro.Exchange()
-        # NOTE: do not "break" if you need forever watch for new candles
-        async for candle in exchange.listen_candles(cro.Pair.CROUSDT):
-            ohlc4 = candle.open + candle.high + candle.low + candle.close
-            ohlc4 /= 4
-            print(f'OHLC / 4 of last candle {ohlc4}')
-            break
-
-        # NOTE: wait to close background tasks, used only in docs
-        # you can delete this in your code in real file
-        await asyncio.sleep(1)
+        price = await exchange.get_price(cro.Pair.CROUSDT)
+        print(f'CRO price {price}')
 
     asyncio.run(main())
 

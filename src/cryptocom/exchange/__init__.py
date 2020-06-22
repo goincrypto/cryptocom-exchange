@@ -1,10 +1,10 @@
-from .structs import Period, OrderSide, OrderStatus, OrderType, Pair
+from .structs import OrderSide, OrderStatus, OrderType, Pair
 from .base import Exchange, Account, Candle
 from .api import ApiError, ApiProvider
 
 __all__ = [
-    'Period', 'OrderSide', 'OrderStatus', 'OrderType', 'Pair',
-    'Exchange', 'Account', 'Candle',
+    'OrderSide', 'OrderStatus', 'OrderType', 'Pair',
+    'Exchange', 'Account',
     'ApiError', 'ApiProvider'
 ]
 

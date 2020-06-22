@@ -1,35 +1,6 @@
 import enum
 
 
-class Period(enum.IntEnum):
-    """
-    Candles time period.
-
-    MIN - minutes H - hours D - days W - weeks M - month
-    """
-
-    MIN1 = 1
-    MIN5 = MIN1 * 5
-    MIN15 = MIN5 * 3
-    MIN30 = MIN15 * 2
-    H1 = MIN30 * 2
-    D1 = H1 * 24
-    W1 = D1 * 7
-    W2 = W1 * 2
-    M1 = W1 * 4
-
-
-class PeriodWebSocket(enum.Enum):
-    MIN1 = '1min'
-    MIN5 = '5min'
-    MIN15 = '15min'
-    MIN30 = '30min'
-    H1 = '60min'
-    D1 = '1day'
-    W1 = '1week'
-    M1 = '1month'
-
-
 class OrderSide(enum.Enum):
     BUY = 'BUY'
     SELL = 'SELL'
@@ -64,6 +35,7 @@ class Coin(enum.Enum):
     VET = 'VET'
     ICX = 'ICX'
     ADA = 'ADA'
+    ENJ = 'ENJ'
 
     USDT = 'USDT'
     USDC = 'USDC'

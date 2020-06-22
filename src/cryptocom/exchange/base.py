@@ -3,9 +3,7 @@ import asyncio
 from dataclasses import dataclass
 
 from .api import ApiProvider, ApiError
-from .structs import (
-    Pair, Period, PeriodWebSocket, OrderSide, OrderStatus, OrderType
-)
+from .structs import Pair, OrderSide, OrderStatus, OrderType
 
 
 @dataclass
@@ -60,60 +58,6 @@ class Exchange:
             'depth': depth
         })
         return data[0]
-
-    async def listen_candles(
-            self, pair: Pair, period: Period = Period.MIN1):
-        """Open websocket and listen live candles."""
-        # TODO: websocket api
-        pass
-        # period = PeriodWebSocket[period.name].value
-        # channel = {
-        #     'event': 'sub',
-        #     'params': {'channel': f'market_{pair.value}_kline_{period}'}
-        # }
-        # prev_id = None
-        # async for data in self.api.ws_listen(channel):
-        #     if 'ping' in data:
-        #         continue
-        #     candle = data['tick']
-        #     if candle['id'] == prev_id:
-        #         continue
-        #     prev_id = candle['id']
-        #     yield Candle(
-        #         candle['id'], candle['open'], candle['high'],
-        #         candle['low'], candle['close'], candle['vol']
-        #     )
-
-    async def listen_trades(self, pair: Pair):
-        # TODO: websocket api
-        pass
-        """Open websocket and listen live trades."""
-        channel = {
-            'event': 'sub',
-            'params': {'channel': f'market_{pair.value}_trade_ticker'}
-        }
-        async for data in self.api.ws_listen(channel):
-            if 'ping' in data:
-                continue
-            yield data['tick']['data']
-
-    async def listen_order_book(self, pair: Pair):
-        # TODO: websocket api
-        pass
-        """Open websocket and listen live order-book."""
-        channel = {
-            'event': 'sub',
-            'params': {
-                'channel': f'market_{pair.value}',
-                'asks': 150,
-                'buys': 150
-            }
-        }
-        async for data in self.api.ws_listen(channel):
-            if 'ping' in data:
-                continue
-            data['tick']['bids'] = data['tick'].pop('buys')
-            yield data['tick']
 
 
 class Account:
