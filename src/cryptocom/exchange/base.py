@@ -116,7 +116,7 @@ class Account:
                 'page': page
             }
         })
-        orders = data.get('order_list') or []
+        orders = data.get('trade_list') or []
         for order in orders:
             order['id'] = int(order.pop('order_id'))
         return orders
