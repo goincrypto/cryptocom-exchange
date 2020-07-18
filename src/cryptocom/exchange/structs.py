@@ -57,6 +57,7 @@ class Pair(enum.Enum):
     ICXBTC = 'ICX_BTC'
     ADABTC = 'ADA_BTC'
     ENJBTC = 'ENJ_BTC'
+    ALGOBTC = "ALGO_BTC"
 
     USDCUSDT = 'USDC_USDT'
     BTCUSDT = 'BTC_USDT'
@@ -75,6 +76,7 @@ class Pair(enum.Enum):
     ICXUSDT = 'ICX_USDT'
     ADAUSDT = 'ADA_USDT'
     ENJUSDT = 'ENJ_USDT'
+    ALGOUSDT = 'ALGO_USDT'
 
     MCOCRO = 'MCO_CRO'
     ETHCRO = 'ETH_CRO'
@@ -90,5 +92,6 @@ class Pair(enum.Enum):
     ICXCRO = 'ICX_CRO'
     ADACRO = 'ADA_CRO'
     ENJCRO = 'ENJ_CRO'
+    ALGOCRO = 'ALGO_CRO'
 
     CROUSDC = 'CRO_USDC'
