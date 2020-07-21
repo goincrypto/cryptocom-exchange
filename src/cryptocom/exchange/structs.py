@@ -28,7 +28,7 @@ class Coin(enum.Enum):
     LTC = 'LTC'
     EOS = 'EOS'
     XLM = 'XLM'
-    ATO = 'ATOM'
+    ATOM = 'ATOM'
     LINK = 'LINK'
     XTZ = 'XTZ'
     BCH = 'BCH'
@@ -58,6 +58,7 @@ class Pair(enum.Enum):
     ADABTC = 'ADA_BTC'
     ENJBTC = 'ENJ_BTC'
     ALGOBTC = "ALGO_BTC"
+    KNCBTC = 'KNC_BTC'
 
     USDCUSDT = 'USDC_USDT'
     BTCUSDT = 'BTC_USDT'
@@ -77,6 +78,7 @@ class Pair(enum.Enum):
     ADAUSDT = 'ADA_USDT'
     ENJUSDT = 'ENJ_USDT'
     ALGOUSDT = 'ALGO_USDT'
+    KNCUSDT = 'KNC_USDT'
 
     MCOCRO = 'MCO_CRO'
     ETHCRO = 'ETH_CRO'
@@ -93,5 +95,6 @@ class Pair(enum.Enum):
     ADACRO = 'ADA_CRO'
     ENJCRO = 'ENJ_CRO'
     ALGOCRO = 'ALGO_CRO'
+    KNCCRO = 'KNC_CRO'
 
     CROUSDC = 'CRO_USDC'
