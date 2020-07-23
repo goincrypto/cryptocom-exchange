@@ -56,9 +56,7 @@ class Pair(enum.Enum):
     VETBTC = 'VET_BTC'
     ICXBTC = 'ICX_BTC'
     ADABTC = 'ADA_BTC'
-    ENJBTC = 'ENJ_BTC'
     ALGOBTC = "ALGO_BTC"
-    KNCBTC = 'KNC_BTC'
 
     USDCUSDT = 'USDC_USDT'
     BTCUSDT = 'BTC_USDT'
