@@ -3,6 +3,7 @@ import json
 import gzip
 import time
 import hmac
+import random
 import asyncio
 import hashlib
 
@@ -56,11 +57,10 @@ class ApiProvider:
         data['method'] = path
 
         sign_time = int(time.time() * 1000)
-        data.update({'nonce': sign_time, 'api_key': self.api_key, 'id': 5959})
+        data.update({'nonce': sign_time, 'api_key': self.api_key})
 
+        data['id'] = random.randint(1000, 10000)
         data_params = data.get('params', {})
-        if not data_params:
-            data['params'] = {}
         params = ''.join(
             f'{key}{data_params[key]}'
             for key in sorted(data_params)
@@ -77,11 +77,11 @@ class ApiProvider:
         return data
 
     async def request(self, method, path, params=None, data=None, sign=False):
-        if sign:
-            data = self._sign(path, data)
-
+        original_data = data
         timeout = aiohttp.ClientTimeout(total=self.timeout)
         for count in range(self.retries + 1):
+            if sign:
+                data = self._sign(path, original_data)
             try:
                 async with aiohttp.ClientSession(timeout=timeout) as session:
                     async with self.semaphore:
@@ -128,8 +128,60 @@ class ApiProvider:
             await asyncio.sleep(0.1)
             continue
 
-    async def get(self, path, params=None):
-        return await self.request('get', path, params=params)
+    async def get(self, path, params=None, sign=False):
+        return await self.request('get', path, params=params, sign=sign)
 
     async def post(self, path, data=None, sign=True):
         return await self.request('post', path, data=data, sign=sign)
+
+    async def ws_listen(self, url, *channels, sign=False):
+        timeout = aiohttp.ClientTimeout(10)
+        url = urljoin(self.ws_root_url, url)
+        sub_data = {
+            'id': random.randint(1000, 10000),
+            "method": "subscribe",
+            'params': {"channels": list(channels)},
+            "nonce": int(time.time())
+        }
+        auth_data = {}
+        if sign:
+            auth_data = self._sign('public/auth', auth_data)
+
+        sub_data_sent = False
+        auth_sent = False
+
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.ws_connect(url) as ws:
+                # [0] if not sign start connection with subscription
+                if not sign:
+                    await ws.send_str(json.dumps(sub_data))
+                    sub_data_sent = True
+
+                async for msg in ws:
+                    data = json.loads(msg.data)
+                    result = data.get('result')
+
+                    # [1] send heartbeat to keep connection alive
+                    if data['method'] == 'public/heartbeat':
+                        await ws.send_str(json.dumps({
+                            'id': data['id'],
+                            'method': 'public/respond-heartbeat'
+                        }))
+                    elif sub_data_sent:
+                        # [4] consume data
+                        if result:
+                            yield result
+                        continue
+
+                    # [2] sign auth request to listen private methods
+                    if sign and not auth_sent:
+                        await ws.send_str(json.dumps(auth_data))
+                        auth_sent = True
+
+                    # [3] subscribe to channels
+                    if (
+                            data['method'] == 'public/auth' and
+                            data['code'] == 0 and not sub_data_sent
+                    ):
+                        await ws.send_str(json.dumps(sub_data))
+                        sub_data_sent = True

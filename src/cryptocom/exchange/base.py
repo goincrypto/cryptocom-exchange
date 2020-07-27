@@ -73,7 +73,8 @@ class Account:
 
     async def get_balance(self):
         """Return balance."""
-        data = await self.api.post('private/get-account-summary')
+        data = await self.api.post(
+            'private/get-account-summary', {'params': {}})
         return {acc['currency']: acc for acc in data['accounts']}
 
     async def get_orders(
@@ -116,10 +117,10 @@ class Account:
                 'page': page
             }
         })
-        orders = data.get('order_list') or []
-        for order in orders:
-            order['id'] = int(order.pop('order_id'))
-        return orders
+        trades = data.get('trade_list') or []
+        for trade in trades:
+            trade['id'] = int(trade.pop('trade_id'))
+        return trades
 
     async def create_order(
             self, pair: Pair, side: OrderSide, type_: OrderType,
@@ -232,3 +233,20 @@ class Account:
         return await self.api.post('private/cancel-all-orders', {
             'params': {'instrument_name': pair.value}
         })
+
+    async def listen_balance(self):
+        async for data in self.api.ws_listen(
+                'user', 'user.balance', sign=True):
+            yield data
+
+    async def listen_orders(self, pair: Pair):
+        async for data in self.api.ws_listen(
+                'user', f'user.order.{pair.value}', sign=True):
+            for order in data.get('data', []):
+                order['id'] = int(order.pop('order_id'))
+                yield order
+
+    async def listen_trades(self, pair: Pair):
+        async for data in self.api.ws_listen(
+                'user', f'user.order.{pair.value}', sign=True):
+            yield data
