@@ -1,19 +1,11 @@
 import asyncio
 
-from dataclasses import dataclass
+from typing import List
 
 from .api import ApiProvider, ApiError
-from .structs import Pair, OrderSide, OrderStatus, OrderType
-
-
-@dataclass
-class Candle:
-    time: int
-    open: float
-    high: float
-    low: float
-    close: float
-    volume: float
+from .structs import (
+    Pair, OrderSide, OrderStatus, OrderType, Period, Candle, Trade
+)
 
 
 class Exchange:
@@ -58,6 +50,44 @@ class Exchange:
             'depth': depth
         })
         return data[0]
+
+    async def listen_candles(self, period: Period, *pairs: List[Pair]):
+        if not isinstance(period, Period):
+            raise ValueError(f'Provide Period enum not {period}')
+
+        channels = [
+            f'candlestick.{period.value}.{pair.value}'
+            for pair in pairs
+        ]
+        prev_time = {}
+
+        async for data in self.api.listen('market', *channels):
+            pair = Pair(data['instrument_name'])
+            for candle in data['data']:
+                current_time = int(candle['t'] / 1000)
+                if pair not in prev_time or current_time > prev_time[pair]:
+                    yield Candle(
+                        current_time,
+                        candle['o'], candle['h'], candle['l'],
+                        candle['c'], candle['v'],
+                        Pair(data['instrument_name'])
+                    )
+                    prev_time[pair] = current_time
+
+    async def listen_trades(self, *pairs: List[Pair]):
+        channels = [f'trade.{pair}' for pair in pairs]
+        async for data in self.api.listen('market', *channels):
+            for trade in data['data']:
+                trade.pop('dataTime')
+                yield Trade(
+                    trade['d'], int(trade['t'] / 100),
+                    trade['p'], trade['q'],
+                    OrderSide(trade['s'].upper()),
+                    Pair(data['instrument_name'])
+                )
+
+    async def listen_orderbook(self, *pairs: List[Pair]):
+        raise NotImplementedError('Will be implemented soon')
 
 
 class Account:
@@ -235,18 +265,18 @@ class Account:
         })
 
     async def listen_balance(self):
-        async for data in self.api.ws_listen(
+        async for data in self.api.listen(
                 'user', 'user.balance', sign=True):
             yield data
 
     async def listen_orders(self, pair: Pair):
-        async for data in self.api.ws_listen(
+        async for data in self.api.listen(
                 'user', f'user.order.{pair.value}', sign=True):
             for order in data.get('data', []):
                 order['id'] = int(order.pop('order_id'))
                 yield order
 
-    async def listen_trades(self, pair: Pair):
-        async for data in self.api.ws_listen(
-                'user', f'user.order.{pair.value}', sign=True):
-            yield data
+    # async def listen_trades(self, pair: Pair):
+    #     async for data in self.api.listen(
+    #             'user', f'user.order.{pair.value}', sign=True):
+    #         yield data

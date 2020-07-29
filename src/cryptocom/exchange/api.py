@@ -134,7 +134,15 @@ class ApiProvider:
     async def post(self, path, data=None, sign=True):
         return await self.request('post', path, data=data, sign=sign)
 
-    async def ws_listen(self, url, *channels, sign=False):
+    async def listen(self, url, *channels, sign=False):
+        while True:
+            try:
+                async for data in self.listen_once(url, *channels, sign=sign):
+                    yield data
+            except:
+                await asyncio.sleep(1)
+
+    async def listen_once(self, url, *channels, sign=False):
         timeout = aiohttp.ClientTimeout(10)
         url = urljoin(self.ws_root_url, url)
         sub_data = {
@@ -152,6 +160,9 @@ class ApiProvider:
 
         async with aiohttp.ClientSession(timeout=timeout) as session:
             async with session.ws_connect(url) as ws:
+                # sleep because too many requests from docs
+                await asyncio.sleep(1)
+
                 # [0] if not sign start connection with subscription
                 if not sign:
                     await ws.send_str(json.dumps(sub_data))

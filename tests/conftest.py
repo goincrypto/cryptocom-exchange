@@ -13,4 +13,4 @@ def exchange() -> cro.Exchange:
 async def account() -> cro.Account:
     acc = cro.Account(from_env=True)
     yield acc
-    await acc.cancel_open_orders(cro.Pair.CROUSDT)
+    await acc.cancel_open_orders(cro.Pair.CRO_USDT)

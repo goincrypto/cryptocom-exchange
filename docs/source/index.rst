@@ -41,7 +41,7 @@ Userful examples
 
     async def main():
         exchange = cro.Exchange()
-        price = await exchange.get_price(cro.Pair.CROUSDT)
+        price = await exchange.get_price(cro.Pair.CRO_USDT)
         print(f'CRO price {price}')
 
     asyncio.run(main())

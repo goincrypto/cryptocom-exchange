@@ -21,13 +21,13 @@ async def test_get_tickers(exchange: cro.Exchange):
     for data in tickers.values():
         assert keys == sorted(data)
     sorted(p.value for p in tickers) == sorted(p.value for p in cro.Pair)
-    ticker = await exchange.get_tickers(cro.Pair.BTCUSDT)
+    ticker = await exchange.get_tickers(cro.Pair.BTC_USDT)
     assert keys == sorted(ticker)
 
 
 @pytest.mark.asyncio
 async def test_get_trades(exchange: cro.Exchange):
-    trades = await exchange.get_trades(cro.Pair.CROUSDT)
+    trades = await exchange.get_trades(cro.Pair.CRO_USDT)
     keys = sorted(['p', 'q', 's', 'd', 't'])
     for trade in trades:
         assert sorted(trade) == keys
@@ -35,13 +35,13 @@ async def test_get_trades(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_get_price(exchange: cro.Exchange):
-    price = await exchange.get_price(cro.Pair.CROUSDT)
+    price = await exchange.get_price(cro.Pair.CRO_USDT)
     assert price > 0
 
 
 @pytest.mark.asyncio
 async def test_get_orderbook(exchange: cro.Exchange):
-    data = await exchange.get_orderbook(cro.Pair.CROUSDT, depth=50)
+    data = await exchange.get_orderbook(cro.Pair.CRO_USDT, depth=50)
     asks = data['asks']
     bids = data['bids']
     # price, quantity, number of orders
@@ -50,30 +50,45 @@ async def test_get_orderbook(exchange: cro.Exchange):
     assert len(bids[0]) == 3
 
 
-# web-sockets will be added soon
-# @pytest.mark.asyncio
-# async def test_listen_candles(exchange: cro.Exchange):
-#     candles = []
-#     async for candle in exchange.listen_candles(cro.Pair.CROUSDT):
-#         candles.append(candle)
-#         break
-#     assert isinstance(candles[-1], cro.Candle)
+@pytest.mark.asyncio
+async def test_listen_candles(exchange: cro.Exchange):
+    candles = []
+    pairs = (cro.Pair.CRO_USDC, cro.Pair.USDC_USDT, cro.Pair.BTC_USDT)
+    count = 0
+    default_count = 300
+
+    async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
+        candles.append(candle)
+        count += 1
+        if count == len(pairs) * default_count:
+            break
+
+    for pair in pairs:
+        assert len([
+            c for c in candles if c.pair == pair
+        ]) == default_count
 
 
-# @pytest.mark.asyncio
-# async def test_listen_trades(exchange: cro.Exchange):
-#     all_trades = []
-#     async for trades in exchange.listen_trades(cro.Pair.CROUSDT):
-#         all_trades.extend(trades)
-#         break
-#     keys = sorted(['amount', 'price', 'ds', 'id', 'side', 'ts', 'vol'])
-#     assert sorted(all_trades[0]) == keys
+@pytest.mark.asyncio
+async def test_listen_trades(exchange: cro.Exchange):
+    trades = []
+    count = 0
+    pairs = [cro.Pair.CRO_USDT, cro.Pair.BTC_USDT]
+    pairs_seen = set()
+    async for trade in exchange.listen_trades(*pairs):
+        trades.append(trade)
+        pairs_seen.add(trade.pair)
+        if count > 100:
+            break
+        count += 1
+
+    assert len(pairs_seen) == len(pairs)
 
 
 # @pytest.mark.asyncio
 # async def test_listen_orderbook(exchange: cro.Exchange):
 #     async for orders in exchange.listen_order_book(
-#             cro.Pair.CROUSDT):
+#             cro.Pair.CRO_USDT):
 #         asks = orders['asks']
 #         bids = orders['bids']
 #         assert asks and bids
