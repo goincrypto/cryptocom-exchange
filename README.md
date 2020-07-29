@@ -23,3 +23,12 @@
 
 Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.rtfd.io)
 Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-docs.crypto.com)
+
+**Donation**
+If this lib helped you achieve profits will be glad to receive some donation to continue support
+
+ERC20(CRO,MCO,USDT,ETH etc.): **0x348c268A563b0C809e4E21F4371E8cdFbD1f51bf**
+BTC: **3NxnzUbTDFrwCEChS4PMqXbxvESxkfU2UP**
+LTC: **MK3DtnQaMs2eSDdTygF618xdQd7Q9y7Nr2**
+NEO: **AdTApXpKjVh2YJUKuEHuWvoSdaSAzLakFF**
+
