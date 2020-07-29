@@ -17,7 +17,7 @@
 
 **Changelog**
 
-- **0.3** - added websocket support for public and private endpoints
+- **0.3** - added websocket support for public endpoints and supports `sign=True` for private endpoints
 - **0.2.1** - fixed order_id in `get_order` func, still preparing for stable release
 - **0.2** - moved to new API v2, except for websockets
 
