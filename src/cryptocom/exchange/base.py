@@ -149,6 +149,7 @@ class Account:
         })
         trades = data.get('trade_list') or []
         for trade in trades:
+            trade['order_id'] = int(trade['order_id'])
             trade['id'] = int(trade.pop('trade_id'))
         return trades
 

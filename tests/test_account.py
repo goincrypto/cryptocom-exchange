@@ -104,32 +104,34 @@ async def test_account_sell_limit(
     assert set(ids) & set(order_ids)
 
 
-async def make_trades(account, order_ids):
-    order_id = await account.buy_market(cro.Pair.CRO_USDT, 0.0001)
+async def make_trades(account, exchange, order_ids):
+    price = await exchange.get_price(cro.Pair.CRO_USDT)
+    order_id = await account.buy_market(cro.Pair.CRO_USDT, round(price, 4))
     order = await account.get_order(order_id)
     assert order['status'] == cro.OrderStatus.FILLED.value
     assert order['id']
     order_ids['buy'].append(order_id)
 
-    order_id = await account.sell_market(cro.Pair.CRO_USDT, 0.0001)
+    order_id = await account.sell_market(cro.Pair.CRO_USDT, 1)
     order = await account.get_order(order_id)
     assert order['status'] == cro.OrderStatus.FILLED.value
     order_ids['sell'].append(order_id)
 
 
 @pytest.mark.asyncio
-async def test_account_market_orders(account: cro.Account):
+async def test_account_market_orders(
+        account: cro.Account, exchange: cro.Exchange):
     order_ids = {'buy': [], 'sell': []}
     await asyncio.gather(*[
-        make_trades(account, order_ids) for _ in range(10)
+        make_trades(account, exchange, order_ids) for _ in range(10)
     ])
+    await asyncio.sleep(2)
 
-    trades = await account.get_trades(cro.Pair.CRO_USDT, page_size=40)
+    trades = await account.get_trades(cro.Pair.CRO_USDT, page_size=20)
     keys = sorted([
         'side', 'instrument_name', 'fee', 'id', 'create_time', 'traded_price',
         'traded_quantity', 'fee_currency', 'order_id'
     ])
-    assert trades
     assert keys == sorted(trades[0].keys())
 
     for trade in trades:
