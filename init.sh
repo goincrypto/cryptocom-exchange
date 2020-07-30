@@ -5,4 +5,5 @@ python3 -m venv ./venv
 source activate.sh
 
 pip install --upgrade pip
+pip install wheel
 pip install -e ".[dev]"

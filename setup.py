@@ -41,7 +41,7 @@ setup(
         'dev': [
             'pylint',
             'pycodestyle',
-            'pytest',
+            'pytest<6',
             'pytest-asyncio',
             'pytest-cov',
             'pytest-env',
@@ -51,7 +51,6 @@ setup(
             'sphinx',
             'sphinx_rtd_theme',
             'setuptools',
-            'wheel',
             'twine',
             'doc8'
         ]
