@@ -88,13 +88,17 @@ async def test_listen_trades(exchange: cro.Exchange):
     assert len(pairs_seen) == len(pairs)
 
 
-# @pytest.mark.asyncio
-# async def test_listen_orderbook(exchange: cro.Exchange):
-#     async for orders in exchange.listen_order_book(
-#             cro.Pair.CRO_USDT):
-#         asks = orders['asks']
-#         bids = orders['bids']
-#         assert asks and bids
-#         assert len(asks[0]) == 2
-#         assert len(bids[0]) == 2
-#         break
+@pytest.mark.asyncio
+async def test_listen_orderbook(exchange: cro.Exchange):
+    pairs = [cro.Pair.CRO_USDT, cro.Pair.BTC_USDT]
+    orderbooks = []
+
+    async for orderbook in exchange.listen_orderbook(*pairs):
+        orderbooks.append(orderbook)
+        if set(pairs) == set(o.pair for o in orderbooks):
+            break
+
+    for book in orderbooks:
+        assert book.buys and book.sells
+        assert book.sells[0].price > book.buys[0].price
+        assert book.spread > 0

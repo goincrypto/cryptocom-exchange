@@ -18,12 +18,15 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Description
 
+`pip install cryptocom-exchange`
+
 - provides all methods to access crypto.com/exchange API (except for websockets temporary)
 - full test coverage on real exchange with real money
 - simple async methods with custom retries and timeouts
 
 ### Changelog
 
+- **0.3.2** - added orderbook websocket method
 - **0.3.1** - fixed missing DAI pair
 - **0.3** - added websocket support for public endpoints and supports `sign=True` for private endpoints
 - **0.2.1** - fixed order_id in `get_order` func, still preparing for stable release

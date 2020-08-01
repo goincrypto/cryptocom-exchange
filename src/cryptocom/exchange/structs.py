@@ -1,5 +1,6 @@
 import enum
 
+from typing import List
 from dataclasses import dataclass
 
 
@@ -143,3 +144,26 @@ class Trade:
     quantity: float
     side: OrderSide
     pair: Pair
+
+
+@dataclass
+class OrderInBook:
+    price: float
+    quantity: float
+    count: int
+    side: OrderSide
+
+    @property
+    def volume(self) -> float:
+        return self.price * self.quantity
+
+
+@dataclass
+class OrderBook:
+    buys: List[OrderInBook]
+    sells: List[OrderInBook]
+    pair: Pair
+
+    @property
+    def spread(self) -> float:
+        return (self.sells[0].price / self.buys[0].price - 1) * 100

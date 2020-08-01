@@ -4,7 +4,8 @@ from typing import List
 
 from .api import ApiProvider, ApiError
 from .structs import (
-    Pair, OrderSide, OrderStatus, OrderType, Period, Candle, Trade
+    Pair, OrderSide, OrderStatus, OrderType, Period, Candle, Trade,
+    OrderInBook, OrderBook
 )
 
 
@@ -86,8 +87,19 @@ class Exchange:
                     Pair(data['instrument_name'])
                 )
 
-    async def listen_orderbook(self, *pairs: List[Pair]):
-        raise NotImplementedError('Will be implemented soon')
+    async def listen_orderbook(self, *pairs: List[Pair]) -> OrderBook:
+        channels = [f'book.{pair}.10' for pair in pairs]
+        async for data in self.api.listen('market', *channels):
+            pair = Pair(data['instrument_name'])
+            buys = [
+                OrderInBook(*order, OrderSide.BUY)
+                for order in data['data'][0]['bids']
+            ]
+            sells = [
+                OrderInBook(*order, OrderSide.SELL)
+                for order in reversed(data['data'][0]['asks'])
+            ]
+            yield OrderBook(buys, sells, pair)
 
 
 class Account:
