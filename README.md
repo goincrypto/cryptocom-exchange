@@ -26,6 +26,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.3.3** - fixed orderbook depth
 - **0.3.2** - added orderbook websocket method
 - **0.3.1** - fixed missing DAI pair
 - **0.3** - added websocket support for public endpoints and supports `sign=True` for private endpoints
