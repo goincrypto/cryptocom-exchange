@@ -87,8 +87,9 @@ class Exchange:
                     Pair(data['instrument_name'])
                 )
 
-    async def listen_orderbook(self, *pairs: List[Pair]) -> OrderBook:
-        channels = [f'book.{pair}.10' for pair in pairs]
+    async def listen_orderbook(
+            self, *pairs: List[Pair], depth: int = 150) -> OrderBook:
+        channels = [f'book.{pair}.{depth}' for pair in pairs]
         async for data in self.api.listen('market', *channels):
             pair = Pair(data['instrument_name'])
             buys = [

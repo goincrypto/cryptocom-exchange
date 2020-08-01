@@ -92,8 +92,9 @@ async def test_listen_trades(exchange: cro.Exchange):
 async def test_listen_orderbook(exchange: cro.Exchange):
     pairs = [cro.Pair.CRO_USDT, cro.Pair.BTC_USDT]
     orderbooks = []
+    depth = 50
 
-    async for orderbook in exchange.listen_orderbook(*pairs):
+    async for orderbook in exchange.listen_orderbook(*pairs, depth=depth):
         orderbooks.append(orderbook)
         if set(pairs) == set(o.pair for o in orderbooks):
             break
@@ -102,3 +103,4 @@ async def test_listen_orderbook(exchange: cro.Exchange):
         assert book.buys and book.sells
         assert book.sells[0].price > book.buys[0].price
         assert book.spread > 0
+        assert len(book.sells) == len(book.buys) == depth
