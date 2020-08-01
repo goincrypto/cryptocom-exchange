@@ -10,22 +10,28 @@
 [![PyPI license](https://img.shields.io/pypi/l/cryptocom-exchange.svg)](https://pypi.python.org/pypi/cryptocom-exchange/)
 [![PyPI version fury.io](https://badge.fury.io/py/cryptocom-exchange.svg)](https://pypi.python.org/pypi/cryptocom-exchange/)
 [![PyPI download month](https://img.shields.io/pypi/dm/cryptocom-exchange.svg)](https://pypi.python.org/pypi/cryptocom-exchange/)
+[![Gitter](https://badges.gitter.im/goincrypto/cryptocom-exchange.svg)](https://gitter.im/goincrypto/cryptocom-exchange?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.rtfd.io)
+
+Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-docs.crypto.com)
+
+### Description
 
 - provides all methods to access crypto.com/exchange API (except for websockets temporary)
 - full test coverage on real exchange with real money
 - simple async methods with custom retries and timeouts
 
-**Changelog**
+### Changelog
 
+- **0.3.1** - fixed missing DAI pair
 - **0.3** - added websocket support for public endpoints and supports `sign=True` for private endpoints
 - **0.2.1** - fixed order_id in `get_order` func, still preparing for stable release
 - **0.2** - moved to new API v2, except for websockets
 
-Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.rtfd.io)
-Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-docs.crypto.com)
+### Donation
 
-**Donation**
-If this lib helped you achieve profits will be glad to receive some donation to continue support
+If this lib helped you achieve profits will be glad to receive some donation to continue support 💪
 
 ERC20(CRO,MCO,USDT,ETH etc.): **0x348c268A563b0C809e4E21F4371E8cdFbD1f51bf**
 

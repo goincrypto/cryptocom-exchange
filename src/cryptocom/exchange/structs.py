@@ -59,6 +59,7 @@ class Coin(str, enum.Enum):
 
     USDT = 'USDT'
     USDC = 'USDC'
+    DAI = 'DAI'
 
 
 class Pair(str, enum.Enum):
@@ -99,6 +100,7 @@ class Pair(str, enum.Enum):
     ALGO_USDT = 'ALGO_USDT'
     KNC_USDT = 'KNC_USDT'
     NEO_USDT = 'NEO_USDT'
+    DAI_USDT = 'DAI_USDT'
 
     MCO_CRO = 'MCO_CRO'
     ETH_CRO = 'ETH_CRO'
@@ -117,6 +119,7 @@ class Pair(str, enum.Enum):
     ALGO_CRO = 'ALGO_CRO'
     KNC_CRO = 'KNC_CRO'
     NEO_CRO = 'NEO_CRO'
+    DAI_CRO = 'DAI_CRO'
 
     CRO_USDC = 'CRO_USDC'
 

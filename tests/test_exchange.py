@@ -13,8 +13,8 @@ async def test_get_pairs(exchange: cro.Exchange):
     for pair_keys in pairs.values():
         assert sorted(keys) == sorted(pair_keys)
 
-    for pair in cro.Pair:
-        assert pair in pairs
+    for pair in pairs:
+        assert pair in cro.Pair
 
 
 @pytest.mark.asyncio

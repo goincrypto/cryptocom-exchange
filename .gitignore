@@ -11,3 +11,4 @@ cov.xml
 .pytest_cache
 .vagrant
 local.sh
+coverage.xml
