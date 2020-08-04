@@ -281,7 +281,8 @@ class Account:
     async def listen_balance(self):
         async for data in self.api.listen(
                 'user', 'user.balance', sign=True):
-            yield data
+            for balance in data.get('data', []):
+                yield balance
 
     async def listen_orders(self, pair: Pair):
         async for data in self.api.listen(
