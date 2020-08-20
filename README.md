@@ -26,6 +26,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.3.4** - fixed balances listener, fixed pairs
 - **0.3.3** - fixed orderbook depth
 - **0.3.2** - added orderbook websocket method
 - **0.3.1** - fixed missing DAI pair
@@ -37,7 +38,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 If this lib helped you achieve profits will be glad to receive some donation to continue support 💪
 
-ERC20(CRO,MCO,USDT,ETH etc.): **0x348c268A563b0C809e4E21F4371E8cdFbD1f51bf**
+ERC20(CRO,USDT,ETH etc.): **0x348c268A563b0C809e4E21F4371E8cdFbD1f51bf**
 
 BTC: **3NxnzUbTDFrwCEChS4PMqXbxvESxkfU2UP**
 

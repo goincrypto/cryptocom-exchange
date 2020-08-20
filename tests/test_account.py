@@ -10,6 +10,8 @@ async def test_account_get_balance(account: cro.Account):
     data = await account.get_balance()
     assert data['CRO']['available'] > 2
     assert data['USDT']['available'] > 2
+    for coin in cro.Coin:
+        assert coin.value in data
 
 
 @pytest.mark.asyncio

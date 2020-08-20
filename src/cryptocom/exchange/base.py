@@ -290,8 +290,3 @@ class Account:
             for order in data.get('data', []):
                 order['id'] = int(order.pop('order_id'))
                 yield order
-
-    # async def listen_trades(self, pair: Pair):
-    #     async for data in self.api.listen(
-    #             'user', f'user.order.{pair.value}', sign=True):
-    #         yield data
