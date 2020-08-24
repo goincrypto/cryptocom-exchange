@@ -1,40 +1,9 @@
 import enum
+import time
 
-from typing import List
+from typing import List, Dict
+from functools import cached_property
 from dataclasses import dataclass
-
-
-class Period(str, enum.Enum):
-    MINS = '1m'
-    MINS_5 = '5m'
-    MINS_15 = '15m'
-    MINS_30 = '30m'
-    HOURS = '1h'
-    HOURS_4 = '4h'
-    HOURS_6 = '6h'
-    HOURS_12 = '12h'
-    DAY = '1D'
-    WEEK = '7D'
-    WEEK_2 = '14D'
-    MONTH_1 = '1M'
-
-
-class OrderSide(str, enum.Enum):
-    BUY = 'BUY'
-    SELL = 'SELL'
-
-
-class OrderType(str, enum.Enum):
-    LIMIT = 'LIMIT'
-    MARKET = 'MARKET'
-
-
-class OrderStatus(str, enum.Enum):
-    ACTIVE = 'ACTIVE'
-    FILLED = 'FILLED'
-    CANCELED = 'CANCELED'
-    REJECTED = 'REJECTED'
-    EXPIRED = 'EXPIRED'
 
 
 class Coin(str, enum.Enum):
@@ -59,6 +28,11 @@ class Coin(str, enum.Enum):
     NEO = 'NEO'
     PAXG = 'PAXG'
     BAT = 'BAT'
+    COMP = 'COMP'
+    MANA = 'MANA'
+    OMG = 'OMG'
+
+    ETC = 'ETC'
 
     USDT = 'USDT'
     USDC = 'USDC'
@@ -82,6 +56,7 @@ class Pair(str, enum.Enum):
     ADA_BTC = 'ADA_BTC'
     ALGO_BTC = 'ALGO_BTC'
     NEO_BTC = 'NEO_BTC'
+    COMP_BTC = 'COMP_BTC'
 
     USDC_USDT = 'USDC_USDT'
     BTC_USDT = 'BTC_USDT'
@@ -106,6 +81,7 @@ class Pair(str, enum.Enum):
     DAI_USDT = 'DAI_USDT'
     PAXG_USDT = 'PAXG_USDT'
     BAT_USDT = 'BAT_USDT'
+    COMP_USDT = 'COMP_USDT'
 
     MCO_CRO = 'MCO_CRO'
     ETH_CRO = 'ETH_CRO'
@@ -127,8 +103,24 @@ class Pair(str, enum.Enum):
     DAI_CRO = 'DAI_CRO'
     PAXG_CRO = 'PAXG_CRO'
     BAT_CRO = 'BAT_CRO'
+    COMP_CRO = 'COMP_CRO'
 
     CRO_USDC = 'CRO_USDC'
+
+
+class Period(str, enum.Enum):
+    MINS = '1m'
+    MINS_5 = '5m'
+    MINS_15 = '15m'
+    MINS_30 = '30m'
+    HOURS = '1h'
+    HOURS_4 = '4h'
+    HOURS_6 = '6h'
+    HOURS_12 = '12h'
+    DAY = '1D'
+    WEEK = '7D'
+    WEEK_2 = '14D'
+    MONTH_1 = '1M'
 
 
 @dataclass
@@ -142,8 +134,14 @@ class Candle:
     pair: Pair
 
 
+class OrderSide(str, enum.Enum):
+    BUY = 'BUY'
+    SELL = 'SELL'
+
+
+
 @dataclass
-class Trade:
+class MarketTrade:
     id: int
     time: int
     price: float
@@ -173,3 +171,151 @@ class OrderBook:
     @property
     def spread(self) -> float:
         return (self.sells[0].price / self.buys[0].price - 1) * 100
+
+
+@dataclass
+class Balance:
+    total: float
+    available: float
+    in_orders: float
+    in_stake: float
+    coin: Coin
+
+
+class OrderType(str, enum.Enum):
+    LIMIT = 'LIMIT'
+    MARKET = 'MARKET'
+
+
+class OrderStatus(str, enum.Enum):
+    ACTIVE = 'ACTIVE'
+    FILLED = 'FILLED'
+    CANCELED = 'CANCELED'
+    REJECTED = 'REJECTED'
+    EXPIRED = 'EXPIRED'
+
+
+class OrderExecType(str, enum.Enum):
+    POST_ONLY = 'POST_ONLY'
+
+
+class OrderForceType(str, enum.Enum):
+    GOOD_TILL_CANCEL = 'GOOD_TILL_CANCEL'
+    FILL_OR_KILL = 'FILL_OR_KILL'
+    IMMEDIATE_OR_CANCEL = 'IMMEDIATE_OR_CANCEL'
+
+
+@dataclass
+class Order:
+    id: int
+    status: OrderStatus
+    side: OrderSide
+    price: float
+    quantity: float
+    client_id: str
+    created_at: int
+    updated_at: int
+    type: OrderType
+    pair: Pair
+    filled_quantity: float
+    filled_price: float
+    fees_coin: Coin
+    force_type: OrderForceType
+
+    @cached_property
+    def is_buy(self):
+        return self.side == OrderSide.BUY
+
+    @cached_property
+    def is_sell(self):
+        return self.side == OrderSide.SELL
+
+    @cached_property
+    def is_active(self):
+        return self.side == OrderStatus.ACTIVE
+
+    @cached_property
+    def is_canceled(self):
+        return self.status == OrderStatus.CANCELED
+
+    @cached_property
+    def is_rejected(self):
+        return self.status == OrderStatus.REJECTED
+
+    @cached_property
+    def is_expired(self):
+        return self.status == OrderStatus.EXPIRED
+
+    @cached_property
+    def is_filled(self):
+        return self.status == OrderStatus.FILLED
+
+    @cached_property
+    def volume(self):
+        return self.price * self.quantity
+
+    @cached_property
+    def filled_volume(self):
+        return self.filled_price * self.filled_quantity
+
+    @cached_property
+    def remain_volume(self):
+        return self.filled_volume - self.volume
+
+    @cached_property
+    def remain_quantity(self):
+        return self.quantity - self.filled_quantity
+
+    @classmethod
+    def create_from_api(cls, data: dict) -> 'Order':
+        return cls(
+            id=int(data['order_id']),
+            status=OrderStatus(data['status']),
+            side=OrderSide(data['side']),
+            price=data['price'],
+            quantity=data['quantity'],
+            client_id=data['client_oid'],
+            created_at=int(data['create_time'] / 1000),
+            updated_at=int(data['update_time'] / 1000),
+            type=OrderType(data['type']),
+            pair=Pair(data['instrument_name']),
+            filled_quantity=data['cumulative_quantity'],
+            filled_price=data['avg_price'],
+            fees_coin=Coin(data['fee_currency']),
+            force_type=OrderForceType(data['time_in_force'])
+        )
+
+
+@dataclass
+class PrivateTrade:
+    id: int
+    side: OrderSide
+    pair: Pair
+    fees: float
+    fees_coin: Coin
+    created_at: int
+    filled_price: float
+    filled_quantity: float
+    order_id: int
+
+    @cached_property
+    def is_buy(self):
+        return self.side == OrderSide.BUY
+
+    @cached_property
+    def is_sell(self):
+        return self.side == OrderSide.SELL
+
+    @classmethod
+    def create_from_api(cls, data: dict) -> 'PrivateTrade':
+        return cls(
+            id=int(data['trade_id']),
+            side=OrderSide(data['side']),
+            pair=Pair(data['instrument_name']),
+            fees=data['fee'],
+            fees_coin=Coin(data['fee_currency']),
+            created_at=int(data['create_time'] / 1000),
+            filled_price=data['traded_price'],
+            filled_quantity=data['traded_quantity'],
+            order_id=int(data['order_id'])
+        )

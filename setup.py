@@ -7,7 +7,7 @@ def get_version():
         Path(__file__).parent, 'src',
         *find_packages('src')[-1].split('.'), '__init__.py'
     )
-    return module_file.read_text().split("VERSION = '")[1].split("'")[0]
+    return module_file.read_text().split("__version__ = '")[1].split("'")[0]
 
 
 setup(

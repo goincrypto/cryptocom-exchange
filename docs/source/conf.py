@@ -13,7 +13,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
-from cryptocom.exchange import VERSION
+from cryptocom.exchange import __version__
 
 # -- Project information -----------------------------------------------------
 
@@ -22,9 +22,9 @@ copyright = '2020, goincrypto.com'
 author = 'Yaroslav Rudenok [MortySpace]'
 
 # The short X.Y version
-version = VERSION
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = VERSION
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
