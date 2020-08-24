@@ -41,7 +41,7 @@ setup(
         'dev': [
             'pylint',
             'pycodestyle',
-            'pytest<6',
+            'pytest',
             'pytest-asyncio',
             'pytest-cov',
             'pytest-env',
