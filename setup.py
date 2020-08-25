@@ -35,7 +35,8 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     install_requires=[
-        'aiohttp'
+        'aiohttp',
+        'cached-property'
     ],
     extras_require={
         'dev': [

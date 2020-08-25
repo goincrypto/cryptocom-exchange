@@ -2,8 +2,9 @@ import enum
 import time
 
 from typing import List, Dict
-from functools import cached_property
 from dataclasses import dataclass
+
+from cached_property import cached_property
 
 
 class Coin(str, enum.Enum):
