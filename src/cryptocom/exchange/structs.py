@@ -58,6 +58,8 @@ class Pair(str, enum.Enum):
     ALGO_BTC = 'ALGO_BTC'
     NEO_BTC = 'NEO_BTC'
     COMP_BTC = 'COMP_BTC'
+    OMG_BTC = 'OMG_BTC'
+    MANA_BTC = 'MANA_BTC'
 
     USDC_USDT = 'USDC_USDT'
     BTC_USDT = 'BTC_USDT'
@@ -83,6 +85,8 @@ class Pair(str, enum.Enum):
     PAXG_USDT = 'PAXG_USDT'
     BAT_USDT = 'BAT_USDT'
     COMP_USDT = 'COMP_USDT'
+    OMG_USDT = 'OMG_USDT'
+    MANA_USDT = 'MANA_USDT'
 
     MCO_CRO = 'MCO_CRO'
     ETH_CRO = 'ETH_CRO'
@@ -105,6 +109,8 @@ class Pair(str, enum.Enum):
     PAXG_CRO = 'PAXG_CRO'
     BAT_CRO = 'BAT_CRO'
     COMP_CRO = 'COMP_CRO'
+    OMG_CRO = 'OMG_CRO'
+    MANA_CRO = 'MANA_CRO'
 
     CRO_USDC = 'CRO_USDC'
 
