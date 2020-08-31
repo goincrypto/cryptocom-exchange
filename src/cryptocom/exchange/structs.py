@@ -146,7 +146,6 @@ class OrderSide(str, enum.Enum):
     SELL = 'SELL'
 
 
-
 @dataclass
 class MarketTrade:
     id: int
@@ -275,6 +274,10 @@ class Order:
 
     @classmethod
     def create_from_api(cls, data: dict) -> 'Order':
+        fees_coin = None
+        if data['fee_currency']:
+            fees_coin = Coin(data['fee_currency'])
+
         return cls(
             id=int(data['order_id']),
             status=OrderStatus(data['status']),
@@ -288,7 +291,7 @@ class Order:
             pair=Pair(data['instrument_name']),
             filled_quantity=data['cumulative_quantity'],
             filled_price=data['avg_price'],
-            fees_coin=Coin(data['fee_currency']),
+            fees_coin=fees_coin,
             force_type=OrderForceType(data['time_in_force'])
         )
 
