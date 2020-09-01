@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.4.4** - fixed missing QTUM, CELR coins
 - **0.4.3** - fixed missing `fees_coin` Coin enum
 - **0.4.2** - fixed supported pairs OMG and MANA
 - **0.4.1** - fixed `cached_property` for python 3.7
