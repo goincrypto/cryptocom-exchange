@@ -33,6 +33,7 @@ class Coin(str, enum.Enum):
     MANA = 'MANA'
     OMG = 'OMG'
     QTUM = 'QTUM'
+    CELR = 'CELR'
 
     ETC = 'ETC'
 
