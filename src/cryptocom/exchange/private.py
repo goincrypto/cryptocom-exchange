@@ -68,7 +68,7 @@ class Account:
 
     async def get_trades(
             self, pair: Pair, page: int = 0,
-            page_size: int = 200)  -> List[PrivateTrade]:
+            page_size: int = 200) -> List[PrivateTrade]:
         """Return trades."""
         data = await self.api.post('private/get-trades', {
             'params': {

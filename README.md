@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.5** - missing symbols MKR, UNI, possible refactoring for simple objects
 - **0.4.5** - fixed missing CELR balances
 - **0.4.4** - fixed missing QTUM, CELR coins
 - **0.4.3** - fixed missing `fees_coin` Coin enum

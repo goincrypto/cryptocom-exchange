@@ -34,6 +34,8 @@ class Coin(str, enum.Enum):
     OMG = 'OMG'
     QTUM = 'QTUM'
     CELR = 'CELR'
+    MKR = 'MKR'
+    UNI = 'UNI'
 
     ETC = 'ETC'
 
@@ -91,6 +93,8 @@ class Pair(str, enum.Enum):
     MANA_USDT = 'MANA_USDT'
     QTUM_USDT = 'QTUM_USDT'
     CELR_USDT = 'CELR_USDT'
+    MKR_USDT = 'MKR_USDT'
+    UNI_USDT = 'UNI_USDT'
 
     MCO_CRO = 'MCO_CRO'
     ETH_CRO = 'ETH_CRO'
@@ -117,6 +121,8 @@ class Pair(str, enum.Enum):
     MANA_CRO = 'MANA_CRO'
     QTUM_CRO = 'QTUM_CRO'
     CELR_CRO = 'CELR_CRO'
+    MKR_CRO = 'MKR_CRO'
+    UNI_CRO = 'UNI_CRO'
 
     CRO_USDC = 'CRO_USDC'
 
