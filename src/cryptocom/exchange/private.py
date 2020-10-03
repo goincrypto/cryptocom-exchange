@@ -34,49 +34,61 @@ class Account:
             ) for bal in data['accounts']
         }
 
-    async def get_orders_history(
-            self, pair: Pair, page: int = 0,
-            page_size: int = 200) -> List[Order]:
+    async def get_orders_history(self, pair: Pair=None, page: int=0,
+            page_size: int=200) -> List[Order]:
         """Return all history orders."""
-        data = await self.api.post('private/get-order-history', {
-            'params': {
+        if pair:
+            params = {
                 'instrument_name': pair.value,
                 'page_size': page_size,
                 'page': page
-            }
-        })
+                }  
+        else:
+            params = {        
+                'page_size': page_size,
+                'page': page
+                }
+        data = await self.api.post('private/get-order-history', {'params':params})        
         return [
             Order.create_from_api(order)
             for order in data.get('order_list') or []
         ]
 
-    async def get_open_orders(
-            self, pair: Pair, page: int = 0,
-            page_size: int = 200) -> List[Order]:
+    async def get_open_orders(self, pair: Pair=None, page: int=0,
+            page_size: int=200) -> List[Order]:
         """Return open orders."""
-        data = await self.api.post('private/get-open-orders', {
-            'params': {
+        if pair:
+            params = {
                 'instrument_name': pair.value,
                 'page_size': page_size,
                 'page': page
-            }
-        })
+                }  
+        else:
+            params = {        
+                'page_size': page_size,
+                'page': page
+                }
+        data = await self.api.post('private/get-open-orders', {'params':params})        
         return [
             Order.create_from_api(order)
             for order in data.get('order_list') or []
         ]
 
-    async def get_trades(
-            self, pair: Pair, page: int = 0,
-            page_size: int = 200) -> List[PrivateTrade]:
+    async def get_trades(self, pair: Pair=None, page: int=0,
+            page_size: int=200) -> List[PrivateTrade]:
         """Return trades."""
-        data = await self.api.post('private/get-trades', {
-            'params': {
+        if pair:
+            params = {
                 'instrument_name': pair.value,
                 'page_size': page_size,
                 'page': page
-            }
-        })
+                }  
+        else:
+            params = {        
+                'page_size': page_size,
+                'page': page
+                }
+        data = await self.api.post('private/get-trades', {'params':params})
         return [
             PrivateTrade.create_from_api(trade)
             for trade in data.get('trade_list') or []
