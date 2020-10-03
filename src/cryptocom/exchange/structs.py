@@ -248,6 +248,8 @@ class Order:
     filled_price: float
     fees_coin: Coin
     force_type: OrderForceType
+    filled_value: float
+    trigger_price: float
 
     @cached_property
     def is_buy(self):
@@ -317,7 +319,9 @@ class Order:
             filled_quantity=data['cumulative_quantity'],
             filled_price=data['avg_price'],
             fees_coin=fees_coin,
-            force_type=OrderForceType(data['time_in_force'])
+            force_type=OrderForceType(data['time_in_force']),
+            filled_value=data['cumulative_value'],
+            trigger_price=data['trigger_price']
         )
 
 
