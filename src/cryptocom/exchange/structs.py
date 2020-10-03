@@ -302,9 +302,12 @@ class Order:
     @classmethod
     def create_from_api(cls, data: dict) -> 'Order':
         fees_coin = None
+        trigger_price = None
         if data['fee_currency']:
             fees_coin = Coin(data['fee_currency'])
-
+        if 'trigger_price' in data.keys():
+            trigger_price = data['trigger_price']
+            
         return cls(
             id=int(data['order_id']),
             status=OrderStatus(data['status']),
@@ -321,7 +324,7 @@ class Order:
             fees_coin=fees_coin,
             force_type=OrderForceType(data['time_in_force']),
             filled_value=data['cumulative_value'],
-            trigger_price=data['trigger_price']
+            trigger_price=trigger_price
         )
 
 
