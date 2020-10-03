@@ -37,7 +37,9 @@ class Coin(str, enum.Enum):
     MKR = 'MKR'
     UNI = 'UNI'
 
+    YFI = 'YFI'
     ETC = 'ETC'
+    BAND = 'BAND'
 
     USDT = 'USDT'
     USDC = 'USDC'
@@ -95,6 +97,7 @@ class Pair(str, enum.Enum):
     CELR_USDT = 'CELR_USDT'
     MKR_USDT = 'MKR_USDT'
     UNI_USDT = 'UNI_USDT'
+    YFI_USDT = 'YFI_USDT'
 
     MCO_CRO = 'MCO_CRO'
     ETH_CRO = 'ETH_CRO'
@@ -123,6 +126,7 @@ class Pair(str, enum.Enum):
     CELR_CRO = 'CELR_CRO'
     MKR_CRO = 'MKR_CRO'
     UNI_CRO = 'UNI_CRO'
+    YFI_CRO = 'YFI_CRO'
 
     CRO_USDC = 'CRO_USDC'
 
@@ -203,6 +207,10 @@ class Balance:
 class OrderType(str, enum.Enum):
     LIMIT = 'LIMIT'
     MARKET = 'MARKET'
+    STOP_LOSS = 'STOP_LOSS'
+    STOP_LIMIT = 'STOP_LIMIT'
+    TAKE_PROFIT = 'TAKE_PROFIT'
+    TAKE_PROFIT_LIMIT = 'TAKE_PROFIT_LIMIT'
 
 
 class OrderStatus(str, enum.Enum):
@@ -211,6 +219,7 @@ class OrderStatus(str, enum.Enum):
     CANCELED = 'CANCELED'
     REJECTED = 'REJECTED'
     EXPIRED = 'EXPIRED'
+    PENDING = 'PENDING'
 
 
 class OrderExecType(str, enum.Enum):
@@ -267,6 +276,10 @@ class Order:
     @cached_property
     def is_filled(self):
         return self.status == OrderStatus.FILLED
+    
+    @cached_property
+    def is_pending(self):
+        return self.status == OrderStatus.PENDING
 
     @cached_property
     def volume(self):
