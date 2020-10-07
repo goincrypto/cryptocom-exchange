@@ -8,8 +8,8 @@ import cryptocom.exchange as cro
 @pytest.mark.asyncio
 async def test_account_get_balance(account: cro.Account):
     balances = await account.get_balance()
-    assert balances[cro.Coin.CRO].available > 0.5
-    assert balances[cro.Coin.USDT].available > 0.5
+    assert balances[cro.Coin.CRO].available > 0.2
+    assert balances[cro.Coin.USDT].available > 0.2
     for coin in cro.Coin:
         assert coin.value in balances
 
@@ -18,12 +18,13 @@ async def test_account_get_balance(account: cro.Account):
 async def test_no_dublicated_mass_limit_orders(
         exchange: cro.Exchange, account: cro.Account):
     buy_price = round(await exchange.get_price(cro.Pair.CRO_USDT) / 2, 4)
+    orders_count = 185
     order_ids = await asyncio.gather(*[
         account.buy_limit(
             cro.Pair.CRO_USDT, 0.001,
             round(buy_price / 1000 + i / 10000.0, 4)
         )
-        for i in range(100)
+        for i in range(orders_count)
     ])
 
     real_orders = await asyncio.gather(*[
@@ -31,13 +32,12 @@ async def test_no_dublicated_mass_limit_orders(
         for id_ in order_ids
     ])
     for order in real_orders:
-        assert order.status == cro.OrderStatus.ACTIVE, order
+        assert order.is_active, order
 
-    # wait till open orders will be updated
-    await asyncio.sleep(1)
     open_orders = await account.get_open_orders(cro.Pair.CRO_USDT)
-    assert len(real_orders) == len(open_orders) == 100
-    assert sorted(o.id for o in open_orders) == sorted(order_ids)
+    open_order_ids = sorted(o.id for o in open_orders if o.is_active)
+    assert len(real_orders) == len(open_order_ids) == orders_count
+    assert open_order_ids == sorted(order_ids)
 
 
 @pytest.mark.asyncio
@@ -65,7 +65,7 @@ async def test_account_limit_orders(
 
     open_orders = [
         order
-        for order in await account.get_open_orders(cro.Pair.CRO_USDT)
+        for order in await account.get_open_orders()
         if order.id in order_ids
     ]
     assert not open_orders

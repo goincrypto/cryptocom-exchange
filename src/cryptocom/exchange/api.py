@@ -22,7 +22,7 @@ class ApiProvider:
     """Provides HTTP-api requests and websocket requests."""
     def __init__(
             self, *, api_key='', api_secret='', from_env=False,
-            auth_required=True, timeout=3, retries=20,
+            auth_required=True, timeout=120, retries=3,
             root_url='https://api.crypto.com/v2/',
             ws_root_url='wss://stream.crypto.com/v2/'):
         self.api_key = api_key
@@ -103,11 +103,11 @@ class ApiProvider:
                         f"Code: {resp.status}. Data: {data}"
                     )
 
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.5)
                 continue
             except ContentTypeError:
                 if resp.status == 429:
-                    await asyncio.sleep(0.1)
+                    await asyncio.sleep(0.5)
                     continue
                 text = await resp.text()
                 raise ApiError(
@@ -125,7 +125,7 @@ class ApiProvider:
                     f"Data: {data}"
                 )
 
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.5)
             continue
 
     async def get(self, path, params=None, sign=False):

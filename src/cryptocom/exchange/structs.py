@@ -209,6 +209,10 @@ class Balance:
 class OrderType(str, enum.Enum):
     LIMIT = 'LIMIT'
     MARKET = 'MARKET'
+    STOP_LOSS = 'STOP_LOSS'
+    STOP_LIMIT = 'STOP_LIMIT'
+    TAKE_PROFIT = 'TAKE_PROFIT'
+    TAKE_PROFIT_LIMIT = 'TAKE_PROFIT_LIMIT'
 
 
 class OrderStatus(str, enum.Enum):
@@ -217,6 +221,7 @@ class OrderStatus(str, enum.Enum):
     CANCELED = 'CANCELED'
     REJECTED = 'REJECTED'
     EXPIRED = 'EXPIRED'
+    PENDING = 'PENDING'
 
 
 class OrderExecType(str, enum.Enum):
@@ -245,6 +250,8 @@ class Order:
     filled_price: float
     fees_coin: Coin
     force_type: OrderForceType
+    filled_value: float
+    trigger_price: float
 
     @cached_property
     def is_buy(self):
@@ -256,7 +263,7 @@ class Order:
 
     @cached_property
     def is_active(self):
-        return self.side == OrderStatus.ACTIVE
+        return self.status == OrderStatus.ACTIVE
 
     @cached_property
     def is_canceled(self):
@@ -273,6 +280,10 @@ class Order:
     @cached_property
     def is_filled(self):
         return self.status == OrderStatus.FILLED
+
+    @cached_property
+    def is_pending(self):
+        return self.status == OrderStatus.PENDING
 
     @cached_property
     def volume(self):
@@ -310,7 +321,9 @@ class Order:
             filled_quantity=data['cumulative_quantity'],
             filled_price=data['avg_price'],
             fees_coin=fees_coin,
-            force_type=OrderForceType(data['time_in_force'])
+            force_type=OrderForceType(data['time_in_force']),
+            filled_value=data['cumulative_value'],
+            trigger_price=data.get('trigger_price')
         )
 
 
