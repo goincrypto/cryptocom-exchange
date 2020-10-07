@@ -33,10 +33,11 @@ async def test_no_dublicated_mass_limit_orders(
     for order in real_orders:
         assert order.status == cro.OrderStatus.ACTIVE, order
 
-    assert len(real_orders) == 100
-
-    orders = await account.get_open_orders(cro.Pair.CRO_USDT)
-    assert sorted(o.id for o in orders) == sorted(order_ids)
+    # wait till open orders will be updated
+    await asyncio.sleep(1)
+    open_orders = await account.get_open_orders(cro.Pair.CRO_USDT)
+    assert len(real_orders) == len(open_orders) == 100
+    assert sorted(o.id for o in open_orders) == sorted(order_ids)
 
 
 @pytest.mark.asyncio
