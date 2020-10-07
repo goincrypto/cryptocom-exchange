@@ -13,6 +13,8 @@ script:
 
 env:
   global:
+    - CRYPTOCOM_API_KEY=BNJaaRNj6i3PWxWgTi9hLK
+    - CRYPTOCOM_API_SECRET=uwVCubn3KfF6ergZQ9XE6T
     - CC_TEST_REPORTER_ID=16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
 
 before_script:
