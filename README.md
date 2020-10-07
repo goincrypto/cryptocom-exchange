@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.6** - included changes from PR kudos to https://github.com/samueltayishere, fixed limit orders, fixed timeouts, fixed is_active order status
 - **0.5.1** - added symbols YFI, BAND, fixed test with limit orders
 - **0.5** - missing symbols MKR, UNI, possible refactoring for simple objects
 - **0.4.5** - fixed missing CELR balances
