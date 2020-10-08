@@ -8,8 +8,8 @@ import cryptocom.exchange as cro
 @pytest.mark.asyncio
 async def test_account_get_balance(account: cro.Account):
     balances = await account.get_balance()
-    assert balances[cro.Coin.CRO].available > 0.2
-    assert balances[cro.Coin.USDT].available > 0.2
+    assert balances[cro.Coin.CRO].available > 1
+    assert balances[cro.Coin.USDT].available > 1
     for coin in cro.Coin:
         assert coin.value in balances
 
