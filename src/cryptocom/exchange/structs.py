@@ -38,6 +38,8 @@ class Coin(str, enum.Enum):
     UNI = 'UNI'
     YFI = 'YFI'
     BAND = 'BAND'
+    WBTC = 'WBTC'
+    EGLD = 'EGLD'
 
     ETC = 'ETC'
 
@@ -66,6 +68,8 @@ class Pair(str, enum.Enum):
     COMP_BTC = 'COMP_BTC'
     OMG_BTC = 'OMG_BTC'
     MANA_BTC = 'MANA_BTC'
+    WBTC_BTC = 'WBTC_BTC'
+    EGDL_BTC = 'EGDL_BTC'
 
     USDC_USDT = 'USDC_USDT'
     BTC_USDT = 'BTC_USDT'
@@ -99,6 +103,8 @@ class Pair(str, enum.Enum):
     UNI_USDT = 'UNI_USDT'
     YFI_USDT = 'YFI_USDT'
     BAND_USDT = 'BAND_USDT'
+    WBTC_USDT = 'WBTC_USDT'
+    EGDL_USDT = 'EGDL_USDT'
 
     MCO_CRO = 'MCO_CRO'
     ETH_CRO = 'ETH_CRO'
@@ -129,6 +135,7 @@ class Pair(str, enum.Enum):
     UNI_CRO = 'UNI_CRO'
     YFI_CRO = 'YFI_CRO'
     BAND_CRO = 'BAND_CRO'
+    EGDL_CRO = 'EGDL_CRO'
 
     CRO_USDC = 'CRO_USDC'
 
