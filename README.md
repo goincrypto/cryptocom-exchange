@@ -1,7 +1,7 @@
 # Python 3.7+ library for crypto.com/exchange API using asyncio and aiohttp 
 
 [![Docs Build Status](https://readthedocs.org/projects/cryptocom-exchange/badge/?version=latest&style=flat)](https://readthedocs.org/projects/cryptocom-exchange)
-[![Build Status](https://travis-ci.org/goincrypto/cryptocom-exchange.svg?branch=master)](https://travis-ci.org/goincrypto/cryptocom-exchange)
+[![Build Status](https://dev.azure.com/mortyspace/goincrypto/_apis/build/status/goincrypto.cryptocom-exchange?branchName=master)](https://dev.azure.com/mortyspace/goincrypto/_build/latest?definitionId=1&branchName=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8d7ffdae54f3c6e86b5a/maintainability)](https://codeclimate.com/github/goincrypto/cryptocom-exchange/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8d7ffdae54f3c6e86b5a/test_coverage)](https://codeclimate.com/github/goincrypto/cryptocom-exchange/test_coverage)
 [![Requirements Status](https://requires.io/github/goincrypto/cryptocom-exchange/requirements.svg?branch=master)](https://requires.io/github/goincrypto/cryptocom-exchange/requirements/?branch=master)
