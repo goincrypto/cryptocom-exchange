@@ -8,14 +8,16 @@ import cryptocom.exchange as cro
 @pytest.mark.asyncio
 async def test_account_get_balance(account: cro.Account):
     balances = await account.get_balance()
-    if balances[cro.coins.CRO].available < 1:
+    while balances[cro.coins.CRO].available < 5:
         await account.buy_market(cro.pairs.CRO_USDT, 1)
-    if balances[cro.coins.USDT].available < 1:
-        await account.sell_market(cro.pairs.CRO_USDT, 2)
+        balances = await account.get_balance()
+    while balances[cro.coins.USDT].available < 1:
+        await account.sell_market(cro.pairs.CRO_USDT, 1)
+        balances = await account.get_balance()
 
     balances = await account.get_balance()
     local_coins = cro.coins.all()
-    assert balances[cro.coins.CRO].available > 2
+    assert balances[cro.coins.CRO].available > 5
     assert balances[cro.coins.USDT].available > 1
     for coin in balances:
         assert coin in local_coins
@@ -56,7 +58,7 @@ async def test_account_limit_orders(
         for i in range(25)
     ])
     order_ids += await asyncio.gather(*[
-        account.sell_limit(cro.pairs.CRO_USDT, 0.01, round(buy_price * 2, 4))
+        account.sell_limit(cro.pairs.CRO_USDT, 0.001, round(buy_price * 2, 4))
         for i in range(25)
     ])
     all_orders = await account.get_orders_history(

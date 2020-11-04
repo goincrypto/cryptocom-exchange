@@ -1,5 +1,6 @@
 __pycache__/
 docs/build/
+docs/source/_build/
 build/
 dist/
 venv/
