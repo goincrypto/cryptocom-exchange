@@ -1,13 +1,17 @@
-# Python package
-# Create and test a Python package on multiple Python versions.
-# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/python
-
 trigger:
 - master
 
+variables:
+- name: CRYPTOCOM_API_KEY
+  value: BNJaaRNj6i3PWxWgTi9hLK
+- name: CRYPTOCOM_API_SECRET
+  value: uwVCubn3KfF6ergZQ9XE6T
+- name: CC_TEST_REPORTER_ID
+  value: 16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
+
 pool:
   vmImage: 'ubuntu-latest'
+
 strategy:
   matrix:
     Python37:
@@ -25,10 +29,14 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install -r requirements.txt
+    pip install -U -I -e ".[dev]"
+    curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    chmod +x ./cc-test-reporter
+    ./cc-test-reporter before-build
   displayName: 'Install dependencies'
 
 - script: |
-    pip install pytest pytest-azurepipelines
-    pytest
-  displayName: 'pytest'
+    cd docs && make doctest && cd ..
+    pytest -v --cov . --cov-report xml:coverage.xml
+    ./cc-test-reporter after-build --exit-code $?
+  displayName: 'Run tests'
