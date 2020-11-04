@@ -1,139 +1,100 @@
-import enum
 import time
 
+from enum import Enum
 from typing import List, Dict
 from dataclasses import dataclass
 
 from cached_property import cached_property
 
-
-class Coin(str, enum.Enum):
-    BTC = 'BTC'
-    CRO = 'CRO'
-    MCO = 'MCO'
-    ETH = 'ETH'
-    XRP = 'XRP'
-    LTC = 'LTC'
-    EOS = 'EOS'
-    XLM = 'XLM'
-    ATOM = 'ATOM'
-    LINK = 'LINK'
-    XTZ = 'XTZ'
-    BCH = 'BCH'
-    VET = 'VET'
-    ICX = 'ICX'
-    ADA = 'ADA'
-    ENJ = 'ENJ'
-    ALGO = 'ALGO'
-    KNC = 'KNC'
-    NEO = 'NEO'
-    PAXG = 'PAXG'
-    BAT = 'BAT'
-    COMP = 'COMP'
-    MANA = 'MANA'
-    OMG = 'OMG'
-    QTUM = 'QTUM'
-    CELR = 'CELR'
-    MKR = 'MKR'
-    UNI = 'UNI'
-    YFI = 'YFI'
-    BAND = 'BAND'
-
-    ETC = 'ETC'
-
-    USDT = 'USDT'
-    USDC = 'USDC'
-    DAI = 'DAI'
+from .helpers import round_down, round_up
 
 
-class Pair(str, enum.Enum):
-    CRO_BTC = 'CRO_BTC'
-    MCO_BTC = 'MCO_BTC'
-    ETH_BTC = 'ETH_BTC'
-    XRP_BTC = 'XRP_BTC'
-    LTC_BTC = 'LTC_BTC'
-    EOS_BTC = 'EOS_BTC'
-    XLM_BTC = 'XLM_BTC'
-    ATOM_BTC = 'ATOM_BTC'
-    LINK_BTC = 'LINK_BTC'
-    XTZ_BTC = 'XTZ_BTC'
-    BCH_BTC = 'BCH_BTC'
-    VET_BTC = 'VET_BTC'
-    ICX_BTC = 'ICX_BTC'
-    ADA_BTC = 'ADA_BTC'
-    ALGO_BTC = 'ALGO_BTC'
-    NEO_BTC = 'NEO_BTC'
-    COMP_BTC = 'COMP_BTC'
-    OMG_BTC = 'OMG_BTC'
-    MANA_BTC = 'MANA_BTC'
+@dataclass
+class Coin:
+    name: str
 
-    USDC_USDT = 'USDC_USDT'
-    BTC_USDT = 'BTC_USDT'
-    CRO_USDT = 'CRO_USDT'
-    MCO_USDT = 'MCO_USDT'
-    ETH_USDT = 'ETH_USDT'
-    XRP_USDT = 'XRP_USDT'
-    LTC_USDT = 'LTC_USDT'
-    EOS_USDT = 'EOS_USDT'
-    XLM_USDT = 'XLM_USDT'
-    ATOM_USDT = 'ATOM_USDT'
-    LINK_USDT = 'LINK_USDT'
-    XTZ_USDT = 'XTZ_USDT'
-    BCH_USDT = 'BCH_USDT'
-    VET_USDT = 'VET_USDT'
-    ICX_USDT = 'ICX_USDT'
-    ADA_USDT = 'ADA_USDT'
-    ENJ_USDT = 'ENJ_USDT'
-    ALGO_USDT = 'ALGO_USDT'
-    KNC_USDT = 'KNC_USDT'
-    NEO_USDT = 'NEO_USDT'
-    DAI_USDT = 'DAI_USDT'
-    PAXG_USDT = 'PAXG_USDT'
-    BAT_USDT = 'BAT_USDT'
-    COMP_USDT = 'COMP_USDT'
-    OMG_USDT = 'OMG_USDT'
-    MANA_USDT = 'MANA_USDT'
-    QTUM_USDT = 'QTUM_USDT'
-    CELR_USDT = 'CELR_USDT'
-    MKR_USDT = 'MKR_USDT'
-    UNI_USDT = 'UNI_USDT'
-    YFI_USDT = 'YFI_USDT'
-    BAND_USDT = 'BAND_USDT'
-
-    MCO_CRO = 'MCO_CRO'
-    ETH_CRO = 'ETH_CRO'
-    XRP_CRO = 'XRP_CRO'
-    LTC_CRO = 'LTC_CRO'
-    EOS_CRO = 'EOS_CRO'
-    XLM_CRO = 'XLM_CRO'
-    ATOM_CRO = 'ATOM_CRO'
-    LINK_CRO = 'LINK_CRO'
-    XTZ_CRO = 'XTZ_CRO'
-    BCH_CRO = 'BCH_CRO'
-    VET_CRO = 'VET_CRO'
-    ICX_CRO = 'ICX_CRO'
-    ADA_CRO = 'ADA_CRO'
-    ENJ_CRO = 'ENJ_CRO'
-    ALGO_CRO = 'ALGO_CRO'
-    KNC_CRO = 'KNC_CRO'
-    NEO_CRO = 'NEO_CRO'
-    DAI_CRO = 'DAI_CRO'
-    PAXG_CRO = 'PAXG_CRO'
-    BAT_CRO = 'BAT_CRO'
-    COMP_CRO = 'COMP_CRO'
-    OMG_CRO = 'OMG_CRO'
-    MANA_CRO = 'MANA_CRO'
-    QTUM_CRO = 'QTUM_CRO'
-    CELR_CRO = 'CELR_CRO'
-    MKR_CRO = 'MKR_CRO'
-    UNI_CRO = 'UNI_CRO'
-    YFI_CRO = 'YFI_CRO'
-    BAND_CRO = 'BAND_CRO'
-
-    CRO_USDC = 'CRO_USDC'
+    def __hash__(self):
+        return self.name.__hash__()
 
 
-class Period(str, enum.Enum):
+@dataclass
+class Pair:
+    name: str
+    price_precision: int
+    quantity_precision: int
+
+    @cached_property
+    def base_coin(self) -> Coin:
+        return Coin(self.name.split('_')[0])
+
+    @cached_property
+    def quote_coin(self) -> Coin:
+        return Coin(self.name.split('_')[1])
+
+    def round_price(self, price):
+        return round_down(price, self.price_precision)
+
+    def round_quantity(self, quantity):
+        return round_down(quantity, self.quantity_precision)
+
+    def __hash__(self):
+        return self.name.__hash__()
+
+
+@dataclass
+class MarketTicker:
+    pair: Pair
+    buy_price: float
+    sell_price: float
+    trade_price: float
+    time: int
+    volume: float
+    high: float
+    low: float
+    change: float
+
+    @classmethod
+    def from_api(cls, pair, data):
+        return cls(
+            pair=pair,
+            buy_price=round_down(data['b'], pair.price_precision),
+            sell_price=round_down(data['k'], pair.price_precision),
+            trade_price=round_down(data['a'], pair.price_precision),
+            time=int(data['t'] / 1000),
+            volume=round_down(data['v'], pair.quantity_precision),
+            high=round_down(data['h'], pair.price_precision),
+            low=round_down(data['l'], pair.price_precision),
+            change=round_down(data['c'], 2)
+        )
+
+
+class OrderSide(str, Enum):
+    BUY = 'BUY'
+    SELL = 'SELL'
+
+
+@dataclass
+class MarketTrade:
+    id: int
+    time: int
+    price: float
+    quantity: float
+    side: OrderSide
+    pair: Pair
+
+    @classmethod
+    def from_api(cls, pair: Pair, data: Dict):
+        return cls(
+            id=data['d'],
+            time=int(data['t'] / 1000),
+            price=round_down(data['p'], pair.price_precision),
+            quantity=round_down(data['q'], pair.quantity_precision),
+            side=OrderSide(data['s'].upper()),
+            pair=pair
+        )
+
+
+class Period(str, Enum):
     MINS = '1m'
     MINS_5 = '5m'
     MINS_15 = '15m'
@@ -158,20 +119,17 @@ class Candle:
     volume: float
     pair: Pair
 
-
-class OrderSide(str, enum.Enum):
-    BUY = 'BUY'
-    SELL = 'SELL'
-
-
-@dataclass
-class MarketTrade:
-    id: int
-    time: int
-    price: float
-    quantity: float
-    side: OrderSide
-    pair: Pair
+    @classmethod
+    def from_api(cls, pair: Pair, data: Dict):
+        return cls(
+            time=int(data['t'] / 1000),
+            open=round_down(data['o'], pair.price_precision),
+            high=round_down(data['h'], pair.price_precision),
+            low=round_down(data['l'], pair.price_precision),
+            close=round_down(data['c'], pair.price_precision),
+            volume=round_down(data['v'], pair.quantity_precision),
+            pair=pair
+        )
 
 
 @dataclass
@@ -205,8 +163,18 @@ class Balance:
     in_stake: float
     coin: Coin
 
+    @classmethod
+    def from_api(cls, data):
+        return cls(
+            total=data['balance'],
+            available=data['available'],
+            in_orders=data['order'],
+            in_stake=data['stake'],
+            coin=Coin(data['currency'])
+        )
 
-class OrderType(str, enum.Enum):
+
+class OrderType(str, Enum):
     LIMIT = 'LIMIT'
     MARKET = 'MARKET'
     STOP_LOSS = 'STOP_LOSS'
@@ -215,7 +183,7 @@ class OrderType(str, enum.Enum):
     TAKE_PROFIT_LIMIT = 'TAKE_PROFIT_LIMIT'
 
 
-class OrderStatus(str, enum.Enum):
+class OrderStatus(str, Enum):
     ACTIVE = 'ACTIVE'
     FILLED = 'FILLED'
     CANCELED = 'CANCELED'
@@ -224,11 +192,12 @@ class OrderStatus(str, enum.Enum):
     PENDING = 'PENDING'
 
 
-class OrderExecType(str, enum.Enum):
+class OrderExecType(str, Enum):
+    MARKET = ''
     POST_ONLY = 'POST_ONLY'
 
 
-class OrderForceType(str, enum.Enum):
+class OrderForceType(str, Enum):
     GOOD_TILL_CANCEL = 'GOOD_TILL_CANCEL'
     FILL_OR_KILL = 'FILL_OR_KILL'
     IMMEDIATE_OR_CANCEL = 'IMMEDIATE_OR_CANCEL'
@@ -250,7 +219,6 @@ class Order:
     filled_price: float
     fees_coin: Coin
     force_type: OrderForceType
-    filled_value: float
     trigger_price: float
 
     @cached_property
@@ -302,28 +270,29 @@ class Order:
         return self.quantity - self.filled_quantity
 
     @classmethod
-    def create_from_api(cls, data: dict) -> 'Order':
-        fees_coin = None
+    def create_from_api(cls, pair: Pair, data: dict) -> 'Order':
+        fees_coin, trigger_price = None, None
         if data['fee_currency']:
             fees_coin = Coin(data['fee_currency'])
+        if data.get('trigger_price') is not None:
+            trigger_price = pair.round_price(data['trigger_price'])
 
         return cls(
             id=int(data['order_id']),
             status=OrderStatus(data['status']),
             side=OrderSide(data['side']),
-            price=data['price'],
-            quantity=data['quantity'],
+            price=pair.round_price(data['price']),
+            quantity=pair.round_quantity(data['quantity']),
             client_id=data['client_oid'],
             created_at=int(data['create_time'] / 1000),
             updated_at=int(data['update_time'] / 1000),
             type=OrderType(data['type']),
-            pair=Pair(data['instrument_name']),
-            filled_quantity=data['cumulative_quantity'],
-            filled_price=data['avg_price'],
+            pair=pair,
+            filled_price=pair.round_price(data['avg_price']),
+            filled_quantity=pair.round_quantity(data['cumulative_quantity']),
             fees_coin=fees_coin,
             force_type=OrderForceType(data['time_in_force']),
-            filled_value=data['cumulative_value'],
-            trigger_price=data.get('trigger_price')
+            trigger_price=trigger_price
         )
 
 
@@ -348,15 +317,15 @@ class PrivateTrade:
         return self.side == OrderSide.SELL
 
     @classmethod
-    def create_from_api(cls, data: dict) -> 'PrivateTrade':
+    def create_from_api(cls, pair: Pair, data: Dict) -> 'PrivateTrade':
         return cls(
             id=int(data['trade_id']),
             side=OrderSide(data['side']),
-            pair=Pair(data['instrument_name']),
-            fees=data['fee'],
+            pair=pair,
+            fees=round_up(data['fee'], 4),
             fees_coin=Coin(data['fee_currency']),
             created_at=int(data['create_time'] / 1000),
-            filled_price=data['traded_price'],
-            filled_quantity=data['traded_quantity'],
+            filled_price=pair.round_price(data['traded_price']),
+            filled_quantity=pair.round_quantity(data['traded_quantity']),
             order_id=int(data['order_id'])
         )

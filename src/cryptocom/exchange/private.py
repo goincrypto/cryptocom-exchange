@@ -3,6 +3,7 @@ import asyncio
 from typing import List, Dict
 
 from .api import ApiProvider, ApiError
+from .market import Exchange
 from .structs import (
     Pair, OrderSide, OrderStatus, OrderType, Order, Coin, Balance,
     OrderExecType, OrderForceType, PrivateTrade
@@ -13,25 +14,25 @@ class Account:
     """Provides access to account actions and data. Balance, trades, orders."""
     def __init__(
             self, *, api_key: str = '', api_secret: str = '',
-            from_env: bool = False, api: ApiProvider = None):
+            from_env: bool = False, exchange: Exchange = None,
+            api: ApiProvider = None):
         if not api and not (api_key and api_secret) and not from_env:
             raise ValueError(
                 'Pass ApiProvider or api_key with api_secret or from_env')
         self.api = api or ApiProvider(
             api_key=api_key, api_secret=api_secret, from_env=from_env)
+        self.exchange = exchange or Exchange(api)
+        self.pairs = self.exchange.pairs
+
+    async def sync_pairs(self):
+        await self.exchange.sync_pairs()
 
     async def get_balance(self) -> Dict[Coin, Balance]:
         """Return balance."""
-        data = await self.api.post(
-            'private/get-account-summary', {'params': {}})
+        data = await self.api.post('private/get-account-summary')
         return {
-            Coin(bal['currency']): Balance(
-                total=bal['balance'],
-                available=bal['available'],
-                in_orders=bal['order'],
-                in_stake=bal['stake'],
-                coin=Coin(bal['currency'])
-            ) for bal in data['accounts']
+            Coin(bal['currency']): Balance.from_api(bal)
+            for bal in data['accounts']
         }
 
     async def get_orders_history(
@@ -40,11 +41,11 @@ class Account:
         """Return all history orders."""
         params = {'page_size': page_size, 'page': page}
         if pair:
-            params['instrument_name'] = pair.value
+            params['instrument_name'] = pair.name
         data = await self.api.post(
             'private/get-order-history', {'params': params})
         return [
-            Order.create_from_api(order)
+            Order.create_from_api(self.pairs[order['instrument_name']], order)
             for order in data.get('order_list') or []
         ]
 
@@ -54,11 +55,11 @@ class Account:
         """Return open orders."""
         params = {'page_size': page_size, 'page': page}
         if pair:
-            params['instrument_name'] = pair.value
+            params['instrument_name'] = pair.name
         data = await self.api.post(
             'private/get-open-orders', {'params': params})
         return [
-            Order.create_from_api(order)
+            Order.create_from_api(self.pairs[order['instrument_name']], order)
             for order in data.get('order_list') or []
         ]
 
@@ -68,24 +69,28 @@ class Account:
         """Return trades."""
         params = {'page_size': page_size, 'page': page}
         if pair:
-            params['instrument_name'] = pair.value
+            params['instrument_name'] = pair.name
         data = await self.api.post('private/get-trades', {'params': params})
         return [
-            PrivateTrade.create_from_api(trade)
+            PrivateTrade.create_from_api(
+                self.pairs[trade['instrument_name']], trade
+            )
             for trade in data.get('trade_list') or []
         ]
 
     async def create_order(
             self, pair: Pair, side: OrderSide, type_: OrderType,
             quantity: float, price: float = 0,
-            force_type: OrderForceType = None,
-            exec_type: OrderExecType = None,
+            force_type: OrderForceType = OrderForceType.GOOD_TILL_CANCEL,
+            exec_type: OrderExecType = OrderExecType.MARKET,
             client_id: int = None) -> int:
         """Create raw order with buy or sell side."""
         data = {
-            'instrument_name': pair.value, 'side': side.value,
+            'instrument_name': pair.name, 'side': side.value,
             'type': type_.value
         }
+        data['time_in_force'] = force_type.value
+        data['exec_inst'] = exec_type.value
 
         if type_ == OrderType.MARKET and side == OrderSide.BUY:
             data['notional'] = quantity
@@ -106,22 +111,24 @@ class Account:
 
     async def buy_limit(
             self, pair: Pair, quantity: float, price: float,
-            force_type: OrderForceType = None,
-            exec_type: OrderExecType = None,
+            force_type: OrderForceType = OrderForceType.GOOD_TILL_CANCEL,
+            exec_type: OrderExecType = OrderExecType.MARKET,
             client_id: int = None) -> int:
         """Buy limit order."""
         return await self.create_order(
-            pair, OrderSide.BUY, OrderType.LIMIT, quantity, price
+            pair, OrderSide.BUY, OrderType.LIMIT, quantity, price,
+            force_type, exec_type
         )
 
     async def sell_limit(
             self, pair: Pair, quantity: float, price: float,
-            force_type: OrderForceType = None,
-            exec_type: OrderExecType = None,
+            force_type: OrderForceType = OrderForceType.GOOD_TILL_CANCEL,
+            exec_type: OrderExecType = OrderExecType.MARKET,
             client_id: int = None) -> int:
         """Sell limit order."""
         return await self.create_order(
-            pair, OrderSide.SELL, OrderType.LIMIT, quantity, price
+            pair, OrderSide.SELL, OrderType.LIMIT, quantity, price,
+            force_type, exec_type
         )
 
     async def wait_for_status(
@@ -174,13 +181,15 @@ class Account:
         data = await self.api.post('private/get-order-detail', {
             'params': {'order_id': str(order_id)}
         })
-        return Order.create_from_api(data['order_info'])
+        order_info = data['order_info']
+        return Order.create_from_api(
+            self.pairs[order_info['instrument_name']], order_info)
 
     async def cancel_order(
             self, order_id: int, pair: Pair, check_status=False) -> None:
         """Cancel order."""
         await self.api.post('private/cancel-order', {
-            'params': {'order_id': order_id, 'instrument_name': pair.value}
+            'params': {'order_id': order_id, 'instrument_name': pair.name}
         })
 
         if not check_status:
@@ -193,7 +202,7 @@ class Account:
     async def cancel_open_orders(self, pair: Pair) -> None:
         """Cancel all open orders."""
         await self.api.post('private/cancel-all-orders', {
-            'params': {'instrument_name': pair.value}
+            'params': {'instrument_name': pair.name}
         })
 
     async def listen_balance(self) -> Balance:
@@ -210,6 +219,6 @@ class Account:
 
     async def listen_orders(self, pair: Pair) -> Order:
         async for data in self.api.listen(
-                'user', f'user.order.{pair.value}', sign=True):
+                'user', f'user.order.{pair.name}', sign=True):
             for order in data.get('data', []):
                 yield Order.create_from_api(order)

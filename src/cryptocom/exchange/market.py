@@ -1,55 +1,81 @@
 import asyncio
 
-from typing import List
+from typing import List, Dict
 
 from .api import ApiProvider
 from .structs import (
-    Pair, Period, Candle, MarketTrade, OrderInBook, OrderBook, OrderSide
+    Pair, MarketTicker, MarketTrade, Period, Candle,
+    OrderInBook, OrderBook, OrderSide
 )
+from . import pairs
 
 
 class Exchange:
     """Interface to base exchange methods."""
     def __init__(self, api: ApiProvider = None):
         self.api = api or ApiProvider(auth_required=False)
+        self.pairs = {pair.name: pair for pair in pairs.all()}
 
-    async def get_pairs(self):
-        """List all available market pairs."""
+    async def sync_pairs(self):
+        """Use this method to sync pairs if you have issues with missing
+        pairs in library side."""
+        self.pairs = {pair.name: pair for pair in (await self.get_pairs())}
+
+    async def get_pairs(self) -> List[Pair]:
+        """List all available market pairs and store to provide pairs info."""
         data = await self.api.get('public/get-instruments')
-        return {Pair(i.pop('instrument_name')): i for i in data['instruments']}
+        return [
+            Pair(
+                i['instrument_name'],
+                price_precision=i['price_decimals'],
+                quantity_precision=i['quantity_decimals']
+            ) for i in data['instruments']
+        ]
 
-    async def get_tickers(self, pair: Pair = None):
+    async def get_ticker(self, pair: Pair) -> MarketTicker:
+        """Get ticker in for provided pair."""
+        data = await self.api.get(
+            'public/get-ticker', {'instrument_name': pair.name})
+        return MarketTicker.from_api(pair, data)
+
+    async def get_tickers(self) -> Dict[Pair, MarketTicker]:
         """Get tickers in all available markets."""
-        params = {'instrument_name': pair.value} if pair else None
-        data = await self.api.get('public/get-ticker', params)
-        if pair:
-            data.pop('i')
-            return data
-        return {Pair(ticker.pop('i')): ticker for ticker in data}
+        data = await self.api.get('public/get-ticker')
+        return {
+            self.pairs[ticker['i']]: MarketTicker.from_api(
+                self.pairs[ticker['i']], ticker
+            ) for ticker in data
+        }
+
+    async def get_price(self, pair: Pair) -> float:
+        """Get latest price of pair."""
+        return (await self.get_ticker(pair)).trade_price
 
     async def get_trades(self, pair: Pair) -> List[MarketTrade]:
         """Get last 200 trades in a specified market."""
         data = await self.api.get(
-            'public/get-trades', {'instrument_name': pair.value})
-        for trade in data:
-            trade.pop('i')
-            trade.pop('dataTime')
-        return data
-
-    async def get_price(self, pair: Pair) -> float:
-        """Get latest price of pair."""
-        data = await self.api.get('public/get-ticker', {
-            'instrument_name': pair.value
-        })
-        return float(data['a'])
+            'public/get-trades', {'instrument_name': pair.name})
+        return [MarketTrade.from_api(pair, trade) for trade in reversed(data)]
 
     async def get_orderbook(self, pair: Pair, depth: int = 150) -> OrderBook:
         """Get the order book for a particular market."""
         data = await self.api.get('public/get-book', {
-            'instrument_name': pair.value,
-            'depth': depth
-        })
-        return data[0]
+            'instrument_name': pair.name, 'depth': depth})
+        buys = [
+            OrderInBook(*order, OrderSide.BUY)
+            for order in data[0]['bids']
+        ]
+        sells = [
+            OrderInBook(*order, OrderSide.SELL)
+            for order in reversed(data[0]['asks'])
+        ]
+        return OrderBook(buys, sells, pair)
+
+    async def get_candles(self, pair: Pair, period: Period) -> List[Candle]:
+        data = await self.api.get('public/get-candlestick', {
+            'instrument_name': pair.name, 'timeframe': period.value})
+
+        return [Candle.from_api(pair, candle) for candle in data]
 
     async def listen_candles(
             self, period: Period, *pairs: List[Pair]) -> Candle:
@@ -57,41 +83,31 @@ class Exchange:
             raise ValueError(f'Provide Period enum not {period}')
 
         channels = [
-            f'candlestick.{period.value}.{pair.value}'
+            f'candlestick.{period}.{pair.name}'
             for pair in pairs
         ]
         prev_time = {}
 
         async for data in self.api.listen('market', *channels):
-            pair = Pair(data['instrument_name'])
+            pair = self.pairs[data['instrument_name']]
             for candle in data['data']:
                 current_time = int(candle['t'] / 1000)
                 if pair not in prev_time or current_time > prev_time[pair]:
-                    yield Candle(
-                        current_time,
-                        candle['o'], candle['h'], candle['l'],
-                        candle['c'], candle['v'],
-                        Pair(data['instrument_name'])
-                    )
+                    yield Candle.from_api(pair, candle)
                     prev_time[pair] = current_time
 
     async def listen_trades(self, *pairs: List[Pair]) -> MarketTrade:
-        channels = [f'trade.{pair}' for pair in pairs]
+        channels = [f'trade.{pair.name}' for pair in pairs]
         async for data in self.api.listen('market', *channels):
             for trade in data['data']:
-                trade.pop('dataTime')
-                yield MarketTrade(
-                    trade['d'], int(trade['t'] / 100),
-                    trade['p'], trade['q'],
-                    OrderSide(trade['s'].upper()),
-                    Pair(data['instrument_name'])
-                )
+                pair = self.pairs[data['instrument_name']]
+                yield MarketTrade.from_api(pair, trade)
 
     async def listen_orderbook(
             self, *pairs: List[Pair], depth: int = 150) -> OrderBook:
-        channels = [f'book.{pair}.{depth}' for pair in pairs]
+        channels = [f'book.{pair.name}.{depth}' for pair in pairs]
         async for data in self.api.listen('market', *channels):
-            pair = Pair(data['instrument_name'])
+            pair = self.pairs[data['instrument_name']]
             buys = [
                 OrderInBook(*order, OrderSide.BUY)
                 for order in data['data'][0]['bids']

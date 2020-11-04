@@ -32,6 +32,24 @@ Create virtual environment, activate, install
 Userful examples
 ================
 
+- To use pairs from server and have fresh data instead of constants from `pairs` use `sync_pairs`
+
+.. testcode::
+
+    import asyncio
+    import cryptocom.exchange as cro
+
+    async def main():
+        exchange = cro.Exchange()
+        # ensure pairs fresh from exchange
+        await exchange.sync_pairs()
+
+        account = cro.Account(api_key='test', api_secret='test')
+        await account.sync_pairs()
+
+    asyncio.run(main())
+
+
 - Get current price data for pair
 
 .. testcode::
@@ -41,7 +59,7 @@ Userful examples
 
     async def main():
         exchange = cro.Exchange()
-        price = await exchange.get_price(cro.Pair.CRO_USDT)
+        price = await exchange.get_price(cro.pairs.CRO_USDT)
         print(f'CRO price {price}')
 
     asyncio.run(main())

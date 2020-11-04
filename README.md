@@ -28,6 +28,9 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.7** - major changes, `Pair` -> `cro.pairs.CRO_USDT` moved to more complex structure so we can use round and server information about pairs.
+    - If you have errors, just use `await account.sync_pairs()` or `await exchange.sync_pairs()
+    - Added rounding per pair, all floats will be with right precisions
 - **0.6** - included changes from PR kudos to https://github.com/samueltayishere, fixed limit orders, fixed timeouts, fixed is_active order status
 - **0.5.1** - added symbols YFI, BAND, fixed test with limit orders
 - **0.5** - missing symbols MKR, UNI, possible refactoring for simple objects
