@@ -4,8 +4,10 @@ import cryptocom.exchange as cro
 
 
 @pytest.fixture
-def exchange() -> cro.Exchange:
-    return cro.Exchange()
+async def exchange() -> cro.Exchange:
+    ex = cro.Exchange()
+    await ex.sync_pairs()
+    return ex
 
 
 @pytest.fixture
