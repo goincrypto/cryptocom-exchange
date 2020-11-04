@@ -93,7 +93,8 @@ class ApiProvider:
                         resp_json = await resp.json()
                         if resp.status != 200:
                             raise ApiError(
-                                f"Error: {resp_json}. Status: {resp.status}")
+                                f"Error: {resp_json}. "
+                                f"Status: {resp.status}. Json params: {data}")
             except aiohttp.ClientConnectorError:
                 raise ApiError(f"Cannot connect to host {self.root_url}")
             except asyncio.TimeoutError:

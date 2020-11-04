@@ -91,6 +91,10 @@ class Account:
         }
         data['time_in_force'] = force_type.value
         data['exec_inst'] = exec_type.value
+        
+        quantity = str(quantity)
+        if '.' not in quantity:
+            quantity = f'{quantity}.0'
 
         if type_ == OrderType.MARKET and side == OrderSide.BUY:
             data['notional'] = quantity
@@ -104,6 +108,9 @@ class Account:
             if type_ == OrderType.MARKET:
                 raise ValueError(
                     "Error, MARKET execution do not support price value")
+            price = str(price)
+            if '.' not in price:
+                price = f'{price}.0'
             data['price'] = price
 
         resp = await self.api.post('private/create-order', {'params': data})
