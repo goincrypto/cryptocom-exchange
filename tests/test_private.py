@@ -52,7 +52,7 @@ async def test_no_dublicated_mass_limit_orders(
 @pytest.mark.asyncio
 async def test_account_limit_orders(
         account: cro.Account, exchange: cro.Exchange):
-    buy_price = round(await exchange.get_price(cro.pairs.CRO_USDT) / 10, 4)
+    buy_price = round(await exchange.get_price(cro.pairs.CRO_USDT) / 2, 4)
     order_ids = await asyncio.gather(*[
         account.buy_limit(cro.pairs.CRO_USDT, 0.001, buy_price)
         for i in range(25)
