@@ -228,4 +228,6 @@ class Account:
         async for data in self.api.listen(
                 'user', f'user.order.{pair.name}', sign=True):
             for order in data.get('data', []):
-                yield Order.create_from_api(order)
+                yield Order.create_from_api(
+                    self.pairs[data['instrument_name']], order
+                )
