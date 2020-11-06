@@ -132,7 +132,7 @@ async def test_account_market_orders(
 
     await asyncio.sleep(10)
 
-    assert len(orders) == len(order_ids['buy']) + len(order_ids['sell'])
+    assert len(orders) >= len(order_ids['buy']) + len(order_ids['sell'])
 
     if not task.cancelled():
         task.cancel()
