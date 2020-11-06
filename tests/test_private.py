@@ -27,11 +27,11 @@ async def test_account_get_balance(account: cro.Account):
 async def test_no_dublicated_mass_limit_orders(
         exchange: cro.Exchange, account: cro.Account):
     buy_price = round(await exchange.get_price(cro.pairs.CRO_USDT) / 2, 4)
-    orders_count = 185
+    orders_count = 100
     order_ids = await asyncio.gather(*[
         account.buy_limit(
             cro.pairs.CRO_USDT, 0.001,
-            round(buy_price / 500 + i / 5000.0, 4)
+            round(buy_price + i * 0.0001, 4)
         )
         for i in range(orders_count)
     ])
@@ -43,8 +43,11 @@ async def test_no_dublicated_mass_limit_orders(
     for order in real_orders:
         assert order.is_active, order
 
+    await asyncio.sleep(2)
+
     open_orders = await account.get_open_orders(cro.pairs.CRO_USDT)
     open_order_ids = sorted(o.id for o in open_orders if o.is_active)
+
     assert len(real_orders) == len(open_order_ids) == orders_count
     assert open_order_ids == sorted(order_ids)
 
@@ -58,7 +61,7 @@ async def test_account_limit_orders(
         for i in range(25)
     ])
     order_ids += await asyncio.gather(*[
-        account.sell_limit(cro.pairs.CRO_USDT, 0.001, round(buy_price * 2, 4))
+        account.sell_limit(cro.pairs.CRO_USDT, 0.001, round(buy_price * 4, 4))
         for i in range(25)
     ])
     all_orders = await account.get_orders_history(
