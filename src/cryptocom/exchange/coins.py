@@ -37,6 +37,8 @@ EGLD = Coin("EGLD")
 USDC = Coin("USDC")
 ADA = Coin("ADA")
 ICX = Coin("ICX")
+DOT = Coin("DOT")
+REN = Coin("REN")
 
 
 def all():

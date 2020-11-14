@@ -121,6 +121,13 @@ async def test_account_market_orders(
     ])
     await asyncio.sleep(1)
 
+    orders = await asyncio.gather(*[
+        account.get_order(order_id)
+        for order_id in order_ids['buy'] + order_ids['sell']
+    ])
+    for order in orders:
+        assert order.trades, order
+
     trades = await account.get_trades(cro.pairs.CRO_USDT, page_size=20)
     for trade in trades:
         if trade.is_buy:

@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.7.3** - fixed price of order if not filled, updated coins, added missing trades to `Order`
 - **0.7.2** - fixed `listen_orders` private account method, added test
 - **0.7.1** - fixed missing '.0' in order price and quantity (different in py3.7, py3.9)
 - **0.7** - major changes, `Pair` -> `cro.pairs.CRO_USDT` moved to more complex structure so we can use round and server information about pairs.

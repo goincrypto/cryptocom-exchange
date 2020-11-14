@@ -204,6 +204,41 @@ class OrderForceType(str, Enum):
 
 
 @dataclass
+class PrivateTrade:
+    id: int
+    side: OrderSide
+    pair: Pair
+    fees: float
+    fees_coin: Coin
+    created_at: int
+    filled_price: float
+    filled_quantity: float
+    order_id: int
+
+    @cached_property
+    def is_buy(self):
+        return self.side == OrderSide.BUY
+
+    @cached_property
+    def is_sell(self):
+        return self.side == OrderSide.SELL
+
+    @classmethod
+    def create_from_api(cls, pair: Pair, data: Dict) -> 'PrivateTrade':
+        return cls(
+            id=int(data['trade_id']),
+            side=OrderSide(data['side']),
+            pair=pair,
+            fees=round_up(data['fee'], 4),
+            fees_coin=Coin(data['fee_currency']),
+            created_at=int(data['create_time'] / 1000),
+            filled_price=pair.round_price(data['traded_price']),
+            filled_quantity=pair.round_quantity(data['traded_quantity']),
+            order_id=int(data['order_id'])
+        )
+
+
+@dataclass
 class Order:
     id: int
     status: OrderStatus
@@ -220,6 +255,7 @@ class Order:
     fees_coin: Coin
     force_type: OrderForceType
     trigger_price: float
+    trades: List[PrivateTrade]
 
     @cached_property
     def is_buy(self):
@@ -270,18 +306,24 @@ class Order:
         return self.quantity - self.filled_quantity
 
     @classmethod
-    def create_from_api(cls, pair: Pair, data: dict) -> 'Order':
+    def create_from_api(
+            cls, pair: Pair, data: Dict, trades: List[Dict] = None) -> 'Order':
         fees_coin, trigger_price = None, None
         if data['fee_currency']:
             fees_coin = Coin(data['fee_currency'])
         if data.get('trigger_price') is not None:
             trigger_price = pair.round_price(data['trigger_price'])
 
+        trades = [
+            PrivateTrade.create_from_api(pair, trade)
+            for trade in trades or []
+        ]
+
         return cls(
             id=int(data['order_id']),
             status=OrderStatus(data['status']),
             side=OrderSide(data['side']),
-            price=pair.round_price(data['price']),
+            price=pair.round_price(data['avg_price'] or data['price']),
             quantity=pair.round_quantity(data['quantity']),
             client_id=data['client_oid'],
             created_at=int(data['create_time'] / 1000),
@@ -292,40 +334,6 @@ class Order:
             filled_quantity=pair.round_quantity(data['cumulative_quantity']),
             fees_coin=fees_coin,
             force_type=OrderForceType(data['time_in_force']),
-            trigger_price=trigger_price
-        )
-
-
-@dataclass
-class PrivateTrade:
-    id: int
-    side: OrderSide
-    pair: Pair
-    fees: float
-    fees_coin: Coin
-    created_at: int
-    filled_price: float
-    filled_quantity: float
-    order_id: int
-
-    @cached_property
-    def is_buy(self):
-        return self.side == OrderSide.BUY
-
-    @cached_property
-    def is_sell(self):
-        return self.side == OrderSide.SELL
-
-    @classmethod
-    def create_from_api(cls, pair: Pair, data: Dict) -> 'PrivateTrade':
-        return cls(
-            id=int(data['trade_id']),
-            side=OrderSide(data['side']),
-            pair=pair,
-            fees=round_up(data['fee'], 4),
-            fees_coin=Coin(data['fee_currency']),
-            created_at=int(data['create_time'] / 1000),
-            filled_price=pair.round_price(data['traded_price']),
-            filled_quantity=pair.round_quantity(data['traded_quantity']),
-            order_id=int(data['order_id'])
+            trigger_price=trigger_price,
+            trades=trades
         )

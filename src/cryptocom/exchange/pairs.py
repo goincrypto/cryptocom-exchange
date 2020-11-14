@@ -83,6 +83,10 @@ EGLD_USDT = Pair("EGLD_USDT", 4, 3)
 WBTC_USDT = Pair("WBTC_USDT", 2, 6)
 QTUM_USDT = Pair("QTUM_USDT", 4, 4)
 BAND_USDT = Pair("BAND_USDT", 4, 2)
+REN_CRO = Pair("REN_CRO", 4, 2)
+DOT_USDT = Pair("DOT_USDT", 4, 3)
+REN_USDT = Pair("REN_USDT", 5, 2)
+DOT_CRO = Pair("DOT_CRO", 3, 3)
 
 
 def all():

@@ -6,6 +6,7 @@ import cryptocom.exchange as cro
 @pytest.mark.asyncio
 async def test_get_pairs(exchange: cro.Exchange):
     pairs = await exchange.get_pairs()
+    assert sorted(exchange.pairs.keys()) == sorted(p.name for p in pairs)
     local_pairs = sorted(cro.pairs.all(), key=lambda p: p.name)
     server_pairs = sorted(pairs, key=lambda p: p.name)
     assert len(local_pairs) == len(server_pairs)

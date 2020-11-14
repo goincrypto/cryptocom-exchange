@@ -185,12 +185,24 @@ class Account:
 
     async def get_order(self, order_id: int) -> Order:
         """Get order info."""
-        data = await self.api.post('private/get-order-detail', {
-            'params': {'order_id': str(order_id)}
-        })
-        order_info = data['order_info']
+        order_info = {}
+        retries = 0
+
+        while True:
+            data = await self.api.post('private/get-order-detail', {
+                'params': {'order_id': str(order_id)}
+            })
+            order_info = data.get('order_info', {})
+            if not order_info and retries < 10:
+                await asyncio.sleep(0.5)
+                retries += 1
+            else:
+                break
+
         return Order.create_from_api(
-            self.pairs[order_info['instrument_name']], order_info)
+            self.pairs[order_info['instrument_name']],
+            order_info, data['trade_list']
+        )
 
     async def cancel_order(
             self, order_id: int, pair: Pair, check_status=False) -> None:

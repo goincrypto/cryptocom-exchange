@@ -140,7 +140,7 @@ class ApiProvider:
             try:
                 async for data in self.listen_once(url, *channels, sign=sign):
                     yield data
-            except:
+            except Exception:
                 await asyncio.sleep(1)
 
     async def listen_once(self, url, *channels, sign=False):
