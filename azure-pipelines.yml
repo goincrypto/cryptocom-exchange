@@ -1,6 +1,14 @@
 trigger:
 - master
 
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily test run
+  branches:
+    include:
+    - master
+  always: true
+
 variables:
 - name: CRYPTOCOM_API_KEY
   value: BNJaaRNj6i3PWxWgTi9hLK
