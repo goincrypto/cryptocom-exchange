@@ -26,6 +26,7 @@ class Account:
 
     async def sync_pairs(self):
         await self.exchange.sync_pairs()
+        self.pairs = self.exchange.pairs
 
     async def get_balance(self) -> Dict[Coin, Balance]:
         """Return balance."""
