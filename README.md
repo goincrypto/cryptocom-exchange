@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.7.4** - fixed sync pairs for account
 - **0.7.3** - fixed price of order if not filled, updated coins, added missing trades to `Order`
 - **0.7.2** - fixed `listen_orders` private account method, added test
 - **0.7.1** - fixed missing '.0' in order price and quantity (different in py3.7, py3.9)
@@ -51,6 +52,11 @@ keys for tests passing
 - **0.3** - added websocket support for public endpoints and supports `sign=True` for private endpoints
 - **0.2.1** - fixed order_id in `get_order` func, still preparing for stable release
 - **0.2** - moved to new API v2, except for websockets
+
+### TODO
+- Sync pairs automatically
+- Move project to poetry
+- Add CD to PYPI for auto releases
 
 ### Donation
 
