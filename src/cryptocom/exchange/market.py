@@ -62,11 +62,11 @@ class Exchange:
         data = await self.api.get('public/get-book', {
             'instrument_name': pair.name, 'depth': depth})
         buys = [
-            OrderInBook(*order, OrderSide.BUY)
+            OrderInBook(*order, pair, OrderSide.BUY)
             for order in data[0]['bids']
         ]
         sells = [
-            OrderInBook(*order, OrderSide.SELL)
+            OrderInBook(*order, pair, OrderSide.SELL)
             for order in reversed(data[0]['asks'])
         ]
         return OrderBook(buys, sells, pair)
@@ -109,11 +109,11 @@ class Exchange:
         async for data in self.api.listen('market', *channels):
             pair = self.pairs[data['instrument_name']]
             buys = [
-                OrderInBook(*order, OrderSide.BUY)
+                OrderInBook(*order, pair, OrderSide.BUY)
                 for order in data['data'][0]['bids']
             ]
             sells = [
-                OrderInBook(*order, OrderSide.SELL)
+                OrderInBook(*order, pair, OrderSide.SELL)
                 for order in reversed(data['data'][0]['asks'])
             ]
             yield OrderBook(buys, sells, pair)

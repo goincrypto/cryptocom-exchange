@@ -1,5 +1,5 @@
 from .structs import (
-    OrderSide, OrderStatus, OrderType, Pair, Period, Candle,
+    Order, OrderSide, OrderStatus, OrderType, Pair, Period, Candle,
     MarketTrade, Coin, PrivateTrade
 )
 from .market import Exchange
@@ -8,10 +8,11 @@ from .api import ApiError, ApiProvider
 from . import pairs, coins
 
 __all__ = [
-    'OrderSide', 'OrderStatus', 'OrderType', 'pairs', 'Pair', 'coins', 'Coin',
+    'Order', 'OrderSide', 'OrderStatus', 'OrderType',
+    'pairs', 'Pair', 'coins', 'Coin',
     'Period', 'Candle', 'MarketTrade', 'PrivateTrade',
     'Exchange', 'Account',
     'ApiError', 'ApiProvider'
 ]
 
-__version__ = '0.7.4'
+__version__ = '0.7.5'

@@ -57,14 +57,14 @@ class MarketTicker:
     def from_api(cls, pair, data):
         return cls(
             pair=pair,
-            buy_price=round_down(data['b'], pair.price_precision),
-            sell_price=round_down(data['k'], pair.price_precision),
-            trade_price=round_down(data['a'], pair.price_precision),
+            buy_price=pair.round_price(data['b']),
+            sell_price=pair.round_price(data['k']),
+            trade_price=pair.round_price(data['a']),
             time=int(data['t'] / 1000),
-            volume=round_down(data['v'], pair.quantity_precision),
-            high=round_down(data['h'], pair.price_precision),
-            low=round_down(data['l'], pair.price_precision),
-            change=round_down(data['c'], 2)
+            volume=pair.round_quantity(data['v']),
+            high=pair.round_price(data['h']),
+            low=pair.round_price(data['l']),
+            change=round_down(data['c'], 3)
         )
 
 
@@ -87,8 +87,8 @@ class MarketTrade:
         return cls(
             id=data['d'],
             time=int(data['t'] / 1000),
-            price=round_down(data['p'], pair.price_precision),
-            quantity=round_down(data['q'], pair.quantity_precision),
+            price=pair.round_price(data['p']),
+            quantity=pair.round_quantity(data['q']),
             side=OrderSide(data['s'].upper()),
             pair=pair
         )
@@ -123,11 +123,11 @@ class Candle:
     def from_api(cls, pair: Pair, data: Dict):
         return cls(
             time=int(data['t'] / 1000),
-            open=round_down(data['o'], pair.price_precision),
-            high=round_down(data['h'], pair.price_precision),
-            low=round_down(data['l'], pair.price_precision),
-            close=round_down(data['c'], pair.price_precision),
-            volume=round_down(data['v'], pair.quantity_precision),
+            open=pair.round_price(data['o']),
+            high=pair.round_price(data['h']),
+            low=pair.round_price(data['l']),
+            close=pair.round_price(data['c']),
+            volume=pair.round_quantity(data['v']),
             pair=pair
         )
 
@@ -137,11 +137,12 @@ class OrderInBook:
     price: float
     quantity: float
     count: int
+    pair: Pair
     side: OrderSide
 
     @property
     def volume(self) -> float:
-        return self.price * self.quantity
+        return self.pair.round_quantity(self.price * self.quantity)
 
 
 @dataclass
@@ -152,7 +153,7 @@ class OrderBook:
 
     @property
     def spread(self) -> float:
-        return (self.sells[0].price / self.buys[0].price - 1) * 100
+        return round_down(self.sells[0].price / self.buys[0].price - 1, 6)
 
 
 @dataclass
@@ -229,7 +230,7 @@ class PrivateTrade:
             id=int(data['trade_id']),
             side=OrderSide(data['side']),
             pair=pair,
-            fees=round_up(data['fee'], 4),
+            fees=round_up(data['fee'], 8),
             fees_coin=Coin(data['fee_currency']),
             created_at=int(data['create_time'] / 1000),
             filled_price=pair.round_price(data['traded_price']),
@@ -291,19 +292,20 @@ class Order:
 
     @cached_property
     def volume(self):
-        return self.price * self.quantity
+        return self.pair.round_quantity(self.price * self.quantity)
 
     @cached_property
     def filled_volume(self):
-        return self.filled_price * self.filled_quantity
+        return self.pair.round_quantity(
+            self.filled_price * self.filled_quantity)
 
     @cached_property
     def remain_volume(self):
-        return self.filled_volume - self.volume
+        return self.pair.round_quantity(self.filled_volume - self.volume)
 
     @cached_property
     def remain_quantity(self):
-        return self.quantity - self.filled_quantity
+        return self.pair.round_quantity(self.quantity - self.filled_quantity)
 
     @classmethod
     def create_from_api(
