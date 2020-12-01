@@ -39,6 +39,9 @@ ADA = Coin("ADA")
 ICX = Coin("ICX")
 DOT = Coin("DOT")
 REN = Coin("REN")
+ONT = Coin("ONT")
+CRV = Coin("CRV")
+LRC = Coin("LRC")
 
 
 def all():

@@ -9,20 +9,18 @@ async def test_get_pairs(exchange: cro.Exchange):
     assert sorted(exchange.pairs.keys()) == sorted(p.name for p in pairs)
     local_pairs = sorted(cro.pairs.all(), key=lambda p: p.name)
     server_pairs = sorted(pairs, key=lambda p: p.name)
+    for local_pair, server_pair in zip(local_pairs, server_pairs):
+        assert server_pair == local_pair, server_pair
     assert len(local_pairs) == len(server_pairs)
-    for local_pair, server_pairs in zip(local_pairs, server_pairs):
-        assert local_pair == server_pairs
 
 
 @pytest.mark.asyncio
 async def test_get_tickers(exchange: cro.Exchange):
     tickers = await exchange.get_tickers()
-    pairs = cro.pairs.all()
     for pair, ticker in tickers.items():
         assert ticker.high > ticker.low
         assert ticker.pair == pair
         assert ticker.volume > 0
-        assert pair in pairs
 
 
 @pytest.mark.asyncio

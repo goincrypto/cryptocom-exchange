@@ -87,6 +87,10 @@ REN_CRO = Pair("REN_CRO", 4, 2)
 DOT_USDT = Pair("DOT_USDT", 4, 3)
 REN_USDT = Pair("REN_USDT", 5, 2)
 DOT_CRO = Pair("DOT_CRO", 3, 3)
+BTC_USDC = Pair("BTC_USDC", 2, 6)
+ONT_BTC = Pair("ONT_BTC", 8, 2)
+ONT_CRO = Pair("ONT_CRO", 3, 2)
+ONT_USDT = Pair("ONT_USDT", 4, 2)
 
 
 def all():

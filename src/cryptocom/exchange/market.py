@@ -45,6 +45,7 @@ class Exchange:
             self.pairs[ticker['i']]: MarketTicker.from_api(
                 self.pairs[ticker['i']], ticker
             ) for ticker in data
+            if ticker['i'] in self.pairs
         }
 
     async def get_price(self, pair: Pair) -> float:

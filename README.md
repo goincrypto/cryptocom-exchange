@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.7.6** - updated pairs
 - **0.7.5** - fixed `order.remaining_quantity` rounding
 - **0.7.4** - fixed sync pairs for account
 - **0.7.3** - fixed price of order if not filled, updated coins, added missing trades to `Order`
