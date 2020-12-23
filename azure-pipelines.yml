@@ -32,6 +32,8 @@ strategy:
 
 steps:
   - checkout: self
+    persistCredentials: true
+    clean: true
 
   - task: UsePythonVersion@0
     inputs:
