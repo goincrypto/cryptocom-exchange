@@ -32,6 +32,8 @@ strategy:
 
 steps:
 - checkout: self
+  persistCredentials: true
+
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '$(python.version)'
