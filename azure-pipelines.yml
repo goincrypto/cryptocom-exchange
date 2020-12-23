@@ -30,32 +30,35 @@ strategy:
     Python39:
       python.version: '3.9'
 
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '$(python.version)'
-  displayName: 'Use Python $(python.version)'
+steps:
+  - checkout: self
 
-- script: |
-    python -m pip install --upgrade pip
-    pip install wheel
-    pip install -U -I -e ".[dev]"
-    curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-    chmod +x ./cc-test-reporter
-    ./cc-test-reporter before-build
-  displayName: 'Install dependencies'
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
 
-- script: |
-    python generatestructs.py
-    git fetch
-    git config --global user.email "morty.space@gmail.com"
-    git config --global user.name "Morty Space"
-    git add -A .
-    git commit -m "[JOB] Updated API pairs and coins"
-    git push origin -u master
-  displayName: 'Update API structs'
+  - script: |
+      python -m pip install --upgrade pip
+      pip install wheel
+      pip install -U -I -e ".[dev]"
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      chmod +x ./cc-test-reporter
+      ./cc-test-reporter before-build
+    displayName: 'Install dependencies'
 
-- script: |
-    cd docs && make doctest && cd ..
-    pytest -v --cov . --cov-report xml:coverage.xml
-    ./cc-test-reporter after-build --exit-code $?
-  displayName: 'Run tests'
+  - script: |
+      python generatestructs.py
+      git fetch
+      git config --global user.email "morty.space@gmail.com"
+      git config --global user.name "Morty Space"
+      git add -A .
+      git commit -m "[JOB] Updated API pairs and coins"
+      git push origin -u master
+    displayName: 'Update API structs'
+
+  - script: |
+      cd docs && make doctest && cd ..
+      pytest -v --cov . --cov-report xml:coverage.xml
+      ./cc-test-reporter after-build --exit-code $?
+    displayName: 'Run tests'
