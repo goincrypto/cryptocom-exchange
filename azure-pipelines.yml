@@ -54,7 +54,7 @@ steps:
     git config --global user.name "Morty Space"
     git add -A .
     git commit -m "Updated API pairs and coins"
-    git push
+    git push origin master
   displayName: 'Update API structs'
 
 - script: |
