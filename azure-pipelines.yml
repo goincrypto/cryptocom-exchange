@@ -31,6 +31,7 @@ strategy:
       python.version: '3.9'
 
 steps:
+- checkout: self
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '$(python.version)'
@@ -44,6 +45,13 @@ steps:
     chmod +x ./cc-test-reporter
     ./cc-test-reporter before-build
   displayName: 'Install dependencies'
+
+- script: |
+    python generatestructs.py
+    git add -A .
+    git commit -m "Updated API pairs and coins"
+    git push
+  displayName: 'Update API structs'
 
 - script: |
     cd docs && make doctest && cd ..
