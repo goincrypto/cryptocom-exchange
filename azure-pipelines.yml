@@ -30,10 +30,6 @@ strategy:
     Python39:
       python.version: '3.9'
 
-steps:
-- checkout: self
-  persistCredentials: true
-
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '$(python.version)'
@@ -50,11 +46,12 @@ steps:
 
 - script: |
     python generatestructs.py
+    git fetch
     git config --global user.email "morty.space@gmail.com"
     git config --global user.name "Morty Space"
     git add -A .
-    git commit -m "Updated API pairs and coins"
-    git push origin master
+    git commit -m "[JOB] Updated API pairs and coins"
+    git push origin -u master
   displayName: 'Update API structs'
 
 - script: |
