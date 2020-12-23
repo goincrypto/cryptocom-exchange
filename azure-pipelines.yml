@@ -49,12 +49,11 @@ steps:
 
   - script: |
       python generatestructs.py
-      git fetch
       git config --global user.email "morty.space@gmail.com"
       git config --global user.name "Morty Space"
       git add -A .
       git commit -m "[JOB] Updated API pairs and coins"
-      git push origin -u master
+      git push origin HEAD:master
     displayName: 'Update API structs'
 
   - script: |
