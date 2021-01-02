@@ -22,7 +22,7 @@ class ApiProvider:
     """Provides HTTP-api requests and websocket requests."""
     def __init__(
             self, *, api_key='', api_secret='', from_env=False,
-            auth_required=True, timeout=120, retries=6,
+            auth_required=True, timeout=25, retries=6,
             root_url='https://api.crypto.com/v2/',
             ws_root_url='wss://stream.crypto.com/v2/', logger=None):
         self.api_key = api_key
