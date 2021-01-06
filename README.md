@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.7.8** - changed keys, removed depth from orderbook (not working, always 150), updated pairs
 - **0.7.7** - updated pairs by JOB, fixed timeout
 - **0.7.6** - updated pairs
 - **0.7.5** - fixed `order.remaining_quantity` rounding

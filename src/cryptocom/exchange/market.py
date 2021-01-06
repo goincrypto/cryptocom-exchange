@@ -104,9 +104,8 @@ class Exchange:
                 pair = self.pairs[data['instrument_name']]
                 yield MarketTrade.from_api(pair, trade)
 
-    async def listen_orderbook(
-            self, *pairs: List[Pair], depth: int = 150) -> OrderBook:
-        channels = [f'book.{pair.name}.{depth}' for pair in pairs]
+    async def listen_orderbook(self, *pairs: List[Pair]) -> OrderBook:
+        channels = [f'book.{pair.name}.150' for pair in pairs]
         async for data in self.api.listen('market', *channels):
             pair = self.pairs[data['instrument_name']]
             buys = [
