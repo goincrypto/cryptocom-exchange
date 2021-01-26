@@ -44,7 +44,7 @@ class Account:
         if pair:
             params['instrument_name'] = pair.name
         data = await self.api.post(
-            'private/get-order-history', {'params': params})
+            'private/get-order-history', {'params': params}) or {}
         return [
             Order.create_from_api(self.pairs[order['instrument_name']], order)
             for order in data.get('order_list') or []

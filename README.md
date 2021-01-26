@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.7.11** - fixed orders history if empty
 - **0.7.10** - updated pairs precision
 - **0.7.9** - fixed price and quantity rounding, updated pairs and coins
 - **0.7.8** - changed keys, removed depth from orderbook (not working, always 150), updated pairs
