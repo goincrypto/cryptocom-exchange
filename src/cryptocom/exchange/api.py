@@ -144,7 +144,7 @@ class ApiProvider:
                 await asyncio.sleep(1)
 
     async def listen_once(self, url, *channels, sign=False):
-        timeout = aiohttp.ClientTimeout(10)
+        timeout = aiohttp.ClientTimeout(self.timeout)
         url = urljoin(self.ws_root_url, url)
         sub_data = {
             'id': random.randint(1000, 10000),
@@ -160,7 +160,9 @@ class ApiProvider:
         auth_sent = False
 
         async with aiohttp.ClientSession(timeout=timeout) as session:
-            async with session.ws_connect(url) as ws:
+            async with session.ws_connect(
+                    url, heartbeat=self.timeout,
+                    receive_timeout=self.timeout) as ws:
                 # sleep because too many requests from docs
                 await asyncio.sleep(1)
 

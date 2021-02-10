@@ -188,9 +188,12 @@ class Account:
                 'params': {'order_id': str(order_id)}
             })
             order_info = data.get('order_info', {})
-            if not order_info and retries < 10:
-                await asyncio.sleep(0.5)
-                retries += 1
+            if not order_info:
+                if retries < 10:
+                    await asyncio.sleep(0.5)
+                    retries += 1
+                else:
+                    raise ApiError(f'No order info found for id: {order_id}')
             else:
                 break
 

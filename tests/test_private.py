@@ -24,7 +24,7 @@ async def test_account_get_balance(account: cro.Account):
 
 
 @pytest.mark.asyncio
-async def test_no_dublicated_mass_limit_orders(
+async def test_no_duplicate_mass_limit_orders(
         exchange: cro.Exchange, account: cro.Account):
     buy_price = round(await exchange.get_price(cro.pairs.CRO_USDT) / 2, 4)
     orders_count = 100
