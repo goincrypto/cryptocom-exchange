@@ -3,6 +3,7 @@ from .structs import Coin
 AAVE = Coin("AAVE")
 ADA = Coin("ADA")
 ALGO = Coin("ALGO")
+ANKR = Coin("ANKR")
 ATOM = Coin("ATOM")
 BAL = Coin("BAL")
 BAND = Coin("BAND")
@@ -45,6 +46,7 @@ SAND = Coin("SAND")
 SKL = Coin("SKL")
 SNX = Coin("SNX")
 STX = Coin("STX")
+THETA = Coin("THETA")
 UMA = Coin("UMA")
 UNI = Coin("UNI")
 USDC = Coin("USDC")
@@ -57,6 +59,7 @@ XRP = Coin("XRP")
 XTZ = Coin("XTZ")
 YFI = Coin("YFI")
 ZIL = Coin("ZIL")
+ZRX = Coin("ZRX")
 
 
 def all():
