@@ -90,13 +90,13 @@ async def test_account_limit_orders(
 
 async def make_trades(account, exchange, order_ids):
     price = await exchange.get_price(cro.pairs.CRO_USDT)
-    order_id = await account.buy_market(cro.pairs.CRO_USDT, round(price, 4))
+    order_id = await account.buy_market(cro.pairs.CRO_USDT, price / 10)
     order = await account.get_order(order_id)
     assert order.is_filled
     assert order_id == order.id
     order_ids['buy'].append(order.id)
 
-    order_id = await account.sell_market(cro.pairs.CRO_USDT, 1)
+    order_id = await account.sell_market(cro.pairs.CRO_USDT, 0.1)
     order = await account.get_order(order_id)
     assert order.is_filled
     assert order_id == order.id
