@@ -66,9 +66,10 @@ class Account:
 
     async def get_trades(
             self, pair: Pair = None, page: int = 0,
-            page_size: int = 200) -> List[PrivateTrade]:
+            page_size: int = 200, end_ts: int= int(round(time.time() * 1000)),
+            start_ts: int = int(round(time.time() * 1000))-int(86400*1000)) -> List[PrivateTrade]:
         """Return trades."""
-        params = {'page_size': page_size, 'page': page}
+        params = {'page_size': page_size, 'page': page, 'start_ts': start_ts, 'end_ts': end_ts}
         if pair:
             params['instrument_name'] = pair.name
         data = await self.api.post('private/get-trades', {'params': params})
