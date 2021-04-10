@@ -1,5 +1,6 @@
 from .structs import Coin
 
+1INCH = Coin("1INCH")
 AAVE = Coin("AAVE")
 ADA = Coin("ADA")
 ALGO = Coin("ALGO")
@@ -41,6 +42,7 @@ MKR = Coin("MKR")
 NEAR = Coin("NEAR")
 NEO = Coin("NEO")
 OCEAN = Coin("OCEAN")
+OGN = Coin("OGN")
 OMG = Coin("OMG")
 ONT = Coin("ONT")
 PAXG = Coin("PAXG")
