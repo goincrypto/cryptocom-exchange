@@ -339,3 +339,22 @@ class Order:
             trigger_price=trigger_price,
             trades=trades
         )
+
+
+@dataclass
+class Interest:
+    loan_id: int
+    currency: str
+    interest: float
+    stake_amount: float
+    interest_rate: float
+
+    @staticmethod
+    def create_from_api(cls, data: Dict) -> 'Interest':
+        return cls(
+            loan_id=int(data['loan_id']),
+            currency=data['currency'],
+            interest=float(data['interest']),
+            stake_amount=float(data['stake_amount']),
+            interest_rate=float(data['interest_rate'])
+        )

@@ -6,7 +6,7 @@ from .api import ApiProvider, ApiError
 from .market import Exchange
 from .structs import (
     Pair, OrderSide, OrderStatus, OrderType, Order, Coin, Balance,
-    OrderExecType, OrderForceType, PrivateTrade
+    OrderExecType, OrderForceType, PrivateTrade, Interest
 )
 
 
@@ -35,6 +35,24 @@ class Account:
             Coin(bal['currency']): Balance.from_api(bal)
             for bal in data['accounts']
         }
+
+    async def get_interest_history(
+            self, currency: str, start_ts: int, end_ts: int, page: int = 0, page_size: int = 20) -> List[Interest]:
+        """Return all history interest."""
+        params = {'page_size': page_size, 'page': page}
+        if currency:
+            params['currency'] = currency
+        if start_ts:
+            params['start_ts'] = start_ts
+        if end_ts:
+            params['end_ts'] = end_ts
+
+        data = await self.api.post(
+            'private/margin/get-order-history', {'params': params}) or {}
+        return [
+            Interest.create_from_api(interest)
+            for interest in data.get('list') or []
+        ]
 
     async def get_orders_history(
             self, pair: Pair = None, page: int = 0,
