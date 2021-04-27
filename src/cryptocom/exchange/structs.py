@@ -349,7 +349,7 @@ class Interest:
     stake_amount: float
     interest_rate: float
 
-    @staticmethod
+    @classmethod
     def create_from_api(cls, data: Dict) -> 'Interest':
         return cls(
             loan_id=int(data['loan_id']),
@@ -357,4 +357,56 @@ class Interest:
             interest=float(data['interest']),
             stake_amount=float(data['stake_amount']),
             interest_rate=float(data['interest_rate'])
+        )
+
+
+@dataclass
+class Withdrawal:
+    currency: str
+    client_wid: str
+    fee: float
+    create_time: int
+    id: str
+    update_time: int
+    amount: float
+    address: str
+    status: str
+
+    @classmethod
+    def create_from_api(cls, data: Dict) -> 'Withdrawal':
+        return cls(
+            currency=data['currency'],
+            client_wid=data['client_wid'],
+            fee=float(data['fee']),
+            create_time=data['create_time'],
+            id=data['id'],
+            update_time=data['update_time'],
+            amount=float(data['amount']),
+            address=data['address'],
+            status=data['status']
+        )
+
+
+@dataclass
+class Deposit:
+    currency: str
+    fee: float
+    create_time: int
+    id: str
+    update_time: int
+    amount: float
+    address: str
+    status: str
+
+    @classmethod
+    def create_from_api(cls, data: Dict) -> 'Deposit':
+        return cls(
+            currency=data['currency'],
+            fee=float(data['fee']),
+            create_time=data['create_time'],
+            id=data['id'],
+            update_time=data['update_time'],
+            amount=float(data['amount']),
+            address=data['address'],
+            status=data['status']
         )

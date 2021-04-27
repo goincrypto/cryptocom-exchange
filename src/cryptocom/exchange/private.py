@@ -6,7 +6,8 @@ from .api import ApiProvider, ApiError
 from .market import Exchange
 from .structs import (
     Pair, OrderSide, OrderStatus, OrderType, Order, Coin, Balance,
-    OrderExecType, OrderForceType, PrivateTrade, Interest
+    OrderExecType, OrderForceType, PrivateTrade, Interest, Withdrawal,
+    Deposit
 )
 
 
@@ -35,6 +36,48 @@ class Account:
             Coin(bal['currency']): Balance.from_api(bal)
             for bal in data['accounts']
         }
+
+    async def get_deposit_history(
+            self, currency: str, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
+            -> List[Deposit]:
+        """Return all history withdrawals."""
+        params = {'page_size': page_size, 'page': page}
+        if currency:
+            params['currency'] = currency
+        if start_ts:
+            params['start_ts'] = start_ts
+        if end_ts:
+            params['end_ts'] = end_ts
+        if status:
+            params['status'] = str(status)
+
+        data = await self.api.post(
+            'private/get-deposit-history', {'params': params}) or {}
+        return [
+            Deposit.create_from_api(deposit)
+            for deposit in data.get('deposit_list') or []
+        ]
+
+    async def get_withdrawal_history(
+            self, currency: str, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
+            -> List[Withdrawal]:
+        """Return all history withdrawals."""
+        params = {'page_size': page_size, 'page': page}
+        if currency:
+            params['currency'] = currency
+        if start_ts:
+            params['start_ts'] = start_ts
+        if end_ts:
+            params['end_ts'] = end_ts
+        if status:
+            params['status'] = str(status)
+
+        data = await self.api.post(
+            'private/get-withdrawal-history', {'params': params}) or {}
+        return [
+            Withdrawal.create_from_api(withdrawal)
+            for withdrawal in data.get('withdrawal_list') or []
+        ]
 
     async def get_interest_history(
             self, currency: str, start_ts: int, end_ts: int, page: int = 0, page_size: int = 20) -> List[Interest]:
