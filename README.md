@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.8.1** - fixed coin name generation
 - **0.8** - fixed tests with updated coins
 - **0.7.12** - updated coins, added websocket timeouts
 - **0.7.11** - fixed orders history if empty

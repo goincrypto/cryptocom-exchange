@@ -11,7 +11,11 @@ from .helpers import round_down, round_up
 
 @dataclass
 class Coin:
-    name: str
+    exchange_name: str
+
+    @property
+    def name(self):
+        return self.exchange_name.replace('1', 'ONE')
 
     def __hash__(self):
         return self.name.__hash__()
@@ -19,9 +23,13 @@ class Coin:
 
 @dataclass
 class Pair:
-    name: str
+    exchange_name: str
     price_precision: int
     quantity_precision: int
+
+    @property
+    def name(self):
+        return self.exchange_name.replace('1', 'ONE')
 
     @cached_property
     def base_coin(self) -> Coin:
