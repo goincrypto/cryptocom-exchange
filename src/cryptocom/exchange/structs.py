@@ -344,7 +344,7 @@ class Order:
 @dataclass
 class Interest:
     loan_id: int
-    currency: str
+    coin: Coin
     interest: float
     stake_amount: float
     interest_rate: float
@@ -353,7 +353,7 @@ class Interest:
     def create_from_api(cls, data: Dict) -> 'Interest':
         return cls(
             loan_id=int(data['loan_id']),
-            currency=data['currency'],
+            coin=Coin(data['currency']),
             interest=float(data['interest']),
             stake_amount=float(data['stake_amount']),
             interest_rate=float(data['interest_rate'])
@@ -362,7 +362,7 @@ class Interest:
 
 @dataclass
 class Withdrawal:
-    currency: str
+    coin: Coin
     client_wid: str
     fee: float
     create_time: int
@@ -375,7 +375,7 @@ class Withdrawal:
     @classmethod
     def create_from_api(cls, data: Dict) -> 'Withdrawal':
         return cls(
-            currency=data['currency'],
+            coin=Coin(data['currency']),
             client_wid=data['client_wid'],
             fee=float(data['fee']),
             create_time=data['create_time'],
@@ -389,7 +389,7 @@ class Withdrawal:
 
 @dataclass
 class Deposit:
-    currency: str
+    coin: Coin
     fee: float
     create_time: int
     id: str
@@ -401,7 +401,7 @@ class Deposit:
     @classmethod
     def create_from_api(cls, data: Dict) -> 'Deposit':
         return cls(
-            currency=data['currency'],
+            coin=Coin(data['currency']),
             fee=float(data['fee']),
             create_time=data['create_time'],
             id=data['id'],
