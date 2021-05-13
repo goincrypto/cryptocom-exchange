@@ -65,19 +65,20 @@ class Account:
         ]
 
     async def get_trades(
-            self, pair: Pair = None, page: int = 0,
-            page_size: int = 200) -> List[PrivateTrade]:
-        """Return trades."""
-        params = {'page_size': page_size, 'page': page}
-        if pair:
-            params['instrument_name'] = pair.name
-        data = await self.api.post('private/get-trades', {'params': params})
-        return [
-            PrivateTrade.create_from_api(
-                self.pairs[trade['instrument_name']], trade
-            )
-            for trade in data.get('trade_list') or []
-        ]
+        self, pair: Pair = None, page: int = 0,
+        page_size: int = 200, end_ts: int= int(time.time() * 1000),
+        start_ts: int = int(time.time() * 1000)-int(86400*1000)) -> List[PrivateTrade]:
+    """Return trades."""
+    params = {'page_size': page_size, 'page': page, 'start_ts': start_ts, 'end_ts': end_ts}
+    if pair:
+        params['instrument_name'] = pair.name
+    data = await self.api.post('private/get-trades', {'params': params})
+    return [
+        PrivateTrade.create_from_api(
+            self.pairs[trade['instrument_name']], trade
+        )
+        for trade in data.get('trade_list') or []
+    ]
 
     async def create_order(
             self, pair: Pair, side: OrderSide, type_: OrderType,
