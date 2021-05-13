@@ -38,12 +38,12 @@ class Account:
         }
 
     async def get_deposit_history(
-            self, currency: str, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
+            self, coin: Coin, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
             -> List[Deposit]:
         """Return all history withdrawals."""
         params = {'page_size': page_size, 'page': page}
-        if currency:
-            params['currency'] = currency
+        if coin:
+            params['currency'] = coin.name
         if start_ts:
             params['start_ts'] = start_ts
         if end_ts:
@@ -59,12 +59,12 @@ class Account:
         ]
 
     async def get_withdrawal_history(
-            self, currency: str, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
+            self, coin: Coin, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
             -> List[Withdrawal]:
         """Return all history withdrawals."""
         params = {'page_size': page_size, 'page': page}
-        if currency:
-            params['currency'] = currency
+        if coin:
+            params['currency'] = coin.name
         if start_ts:
             params['start_ts'] = start_ts
         if end_ts:
@@ -80,11 +80,11 @@ class Account:
         ]
 
     async def get_interest_history(
-            self, currency: str, start_ts: int, end_ts: int, page: int = 0, page_size: int = 20) -> List[Interest]:
+            self, coin: Coin, start_ts: int, end_ts: int, page: int = 0, page_size: int = 20) -> List[Interest]:
         """Return all history interest."""
         params = {'page_size': page_size, 'page': page}
-        if currency:
-            params['currency'] = currency
+        if coin:
+            params['currency'] = coin.name
         if start_ts:
             params['start_ts'] = start_ts
         if end_ts:
