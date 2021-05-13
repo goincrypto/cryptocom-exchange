@@ -98,12 +98,16 @@ class Account:
         ]
 
     async def get_orders_history(
-            self, pair: Pair = None, page: int = 0,
-            page_size: int = 200) -> List[Order]:
+            self, pair: Pair = None, start_ts: int = None, end_ts: int = None,
+            page: int = 0, page_size: int = 200) -> List[Order]:
         """Return all history orders."""
         params = {'page_size': page_size, 'page': page}
         if pair:
             params['instrument_name'] = pair.name
+        if start_ts:
+            params['start_ts'] = start_ts
+        if end_ts:
+            params['end_ts'] = end_ts
         data = await self.api.post(
             'private/get-order-history', {'params': params}) or {}
         return [
