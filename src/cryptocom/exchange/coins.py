@@ -3,6 +3,7 @@ from .structs import Coin
 AAVE = Coin("AAVE")
 ADA = Coin("ADA")
 ALGO = Coin("ALGO")
+AMP = Coin("AMP")
 ANKR = Coin("ANKR")
 ATOM = Coin("ATOM")
 AUDIO = Coin("AUDIO")
