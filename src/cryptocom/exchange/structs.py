@@ -347,3 +347,74 @@ class Order:
             trigger_price=trigger_price,
             trades=trades
         )
+
+
+@dataclass
+class Interest:
+    loan_id: int
+    coin: Coin
+    interest: float
+    stake_amount: float
+    interest_rate: float
+
+    @classmethod
+    def create_from_api(cls, data: Dict) -> 'Interest':
+        return cls(
+            loan_id=int(data['loan_id']),
+            coin=Coin(data['currency']),
+            interest=float(data['interest']),
+            stake_amount=float(data['stake_amount']),
+            interest_rate=float(data['interest_rate'])
+        )
+
+
+@dataclass
+class Withdrawal:
+    coin: Coin
+    client_wid: str
+    fee: float
+    create_time: int
+    id: str
+    update_time: int
+    amount: float
+    address: str
+    status: str
+
+    @classmethod
+    def create_from_api(cls, data: Dict) -> 'Withdrawal':
+        return cls(
+            coin=Coin(data['currency']),
+            client_wid=data['client_wid'],
+            fee=float(data['fee']),
+            create_time=data['create_time'],
+            id=data['id'],
+            update_time=data['update_time'],
+            amount=float(data['amount']),
+            address=data['address'],
+            status=data['status']
+        )
+
+
+@dataclass
+class Deposit:
+    coin: Coin
+    fee: float
+    create_time: int
+    id: str
+    update_time: int
+    amount: float
+    address: str
+    status: str
+
+    @classmethod
+    def create_from_api(cls, data: Dict) -> 'Deposit':
+        return cls(
+            coin=Coin(data['currency']),
+            fee=float(data['fee']),
+            create_time=data['create_time'],
+            id=data['id'],
+            update_time=data['update_time'],
+            amount=float(data['amount']),
+            address=data['address'],
+            status=data['status']
+        )
