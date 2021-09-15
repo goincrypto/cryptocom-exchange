@@ -2,6 +2,7 @@ from .structs import Coin
 
 AAVE = Coin("AAVE")
 ADA = Coin("ADA")
+AGLD = Coin("AGLD")
 ALGO = Coin("ALGO")
 ALICE = Coin("ALICE")
 AMP = Coin("AMP")
