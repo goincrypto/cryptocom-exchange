@@ -57,7 +57,7 @@ async def test_deposit_withdrawal_history(
 async def test_no_duplicate_mass_limit_orders(
         exchange: cro.Exchange, account: cro.Account):
     buy_price = round(await exchange.get_price(cro.pairs.CRO_USDT) / 2, 4)
-    orders_count = 100
+    orders_count = 50
     order_ids = await asyncio.gather(*[
         account.buy_limit(
             cro.pairs.CRO_USDT, 0.001,
