@@ -58,10 +58,10 @@ class Exchange:
             'public/get-trades', {'instrument_name': pair.name})
         return [MarketTrade.from_api(pair, trade) for trade in reversed(data)]
 
-    async def get_orderbook(self, pair: Pair, depth: int = 150) -> OrderBook:
-        """Get the order book for a particular market."""
+    async def get_orderbook(self, pair: Pair) -> OrderBook:
+        """Get the order book for a particular market, depth always 150."""
         data = await self.api.get('public/get-book', {
-            'instrument_name': pair.name, 'depth': depth})
+            'instrument_name': pair.name})
         buys = [
             OrderInBook(*order, pair, OrderSide.BUY)
             for order in data[0]['bids']
@@ -75,7 +75,6 @@ class Exchange:
     async def get_candles(self, pair: Pair, period: Period) -> List[Candle]:
         data = await self.api.get('public/get-candlestick', {
             'instrument_name': pair.name, 'timeframe': period.value})
-
         return [Candle.from_api(pair, candle) for candle in data]
 
     async def listen_candles(

@@ -18,7 +18,7 @@ variables:
   value: 16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'debian-latest'
 
 strategy:
  maxParallel: 1

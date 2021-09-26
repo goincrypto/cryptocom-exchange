@@ -5,9 +5,9 @@ from typing import List, Dict
 from .api import ApiProvider, ApiError
 from .market import Exchange
 from .structs import (
-    Pair, OrderSide, OrderStatus, OrderType, Order, Coin, Balance,
-    OrderExecType, OrderForceType, PrivateTrade, Interest, Withdrawal,
-    Deposit
+    Deposit, DepositStatus, Pair, OrderSide, OrderStatus, OrderType, Order,
+    Coin, Balance, OrderExecType, OrderForceType, PrivateTrade, Interest,
+    Withdrawal, WithdrawalStatus
 )
 
 
@@ -38,57 +38,60 @@ class Account:
         }
 
     async def get_deposit_history(
-            self, coin: Coin, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
-            -> List[Deposit]:
+        self, coin: Coin, start_ts: int = None, end_ts: int = None,
+        status: DepositStatus = None, page: int = 0, page_size: int = 20
+    ) -> List[Deposit]:
         """Return all history withdrawals."""
         params = {'page_size': page_size, 'page': page}
         if coin:
             params['currency'] = coin.name
         if start_ts:
-            params['start_ts'] = start_ts
+            params['start_ts'] = int(start_ts) * 1000
         if end_ts:
-            params['end_ts'] = end_ts
+            params['end_ts'] = int(end_ts) * 1000
         if status:
-            params['status'] = str(status)
+            params['status'] = status
 
         data = await self.api.post(
             'private/get-deposit-history', {'params': params}) or {}
         return [
-            Deposit.create_from_api(deposit)
-            for deposit in data.get('deposit_list') or []
+            Deposit.create_from_api(trx)
+            for trx in data.get('deposit_list') or []
         ]
 
     async def get_withdrawal_history(
-            self, coin: Coin, start_ts: int, end_ts: int, status: int, page: int = 0, page_size: int = 20)\
-            -> List[Withdrawal]:
-        """Return all history withdrawals."""
+        self, coin: Coin, start_ts: int = None, end_ts: int = None,
+        status: WithdrawalStatus = None, page: int = 0, page_size: int = 20
+    ) -> List[Withdrawal]:
+        """Return all history for withdrawal transactions."""
         params = {'page_size': page_size, 'page': page}
         if coin:
             params['currency'] = coin.name
         if start_ts:
-            params['start_ts'] = start_ts
+            params['start_ts'] = int(start_ts) * 1000
         if end_ts:
-            params['end_ts'] = end_ts
+            params['end_ts'] = int(end_ts) * 1000
         if status:
-            params['status'] = str(status)
+            params['status'] = status
 
         data = await self.api.post(
             'private/get-withdrawal-history', {'params': params}) or {}
         return [
-            Withdrawal.create_from_api(withdrawal)
-            for withdrawal in data.get('withdrawal_list') or []
+            Withdrawal.create_from_api(trx)
+            for trx in data.get('withdrawal_list') or []
         ]
 
     async def get_interest_history(
-            self, coin: Coin, start_ts: int, end_ts: int, page: int = 0, page_size: int = 20) -> List[Interest]:
+            self, coin: Coin, start_ts: int = None, end_ts: int = None,
+            page: int = 0, page_size: int = 20) -> List[Interest]:
         """Return all history interest."""
         params = {'page_size': page_size, 'page': page}
         if coin:
             params['currency'] = coin.name
         if start_ts:
-            params['start_ts'] = start_ts
+            params['start_ts'] = int(start_ts) * 1000
         if end_ts:
-            params['end_ts'] = end_ts
+            params['end_ts'] = int(end_ts) * 1000
 
         data = await self.api.post(
             'private/margin/get-order-history', {'params': params}) or {}
@@ -105,9 +108,10 @@ class Account:
         if pair:
             params['instrument_name'] = pair.name
         if start_ts:
-            params['start_ts'] = start_ts
+            params['start_ts'] = int(start_ts) * 1000
         if end_ts:
-            params['end_ts'] = end_ts
+            params['end_ts'] = int(end_ts) * 1000
+
         data = await self.api.post(
             'private/get-order-history', {'params': params}) or {}
         return [

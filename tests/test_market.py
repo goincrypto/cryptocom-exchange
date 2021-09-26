@@ -41,8 +41,8 @@ async def test_get_price(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_get_orderbook(exchange: cro.Exchange):
-    depth = 50
-    book = await exchange.get_orderbook(cro.pairs.CRO_USDT, depth=depth)
+    depth = 150
+    book = await exchange.get_orderbook(cro.pairs.CRO_USDT)
     assert book.buys and book.sells
     assert book.sells[0].price > book.buys[0].price
     assert book.spread > 0
@@ -62,7 +62,7 @@ async def test_listen_candles(exchange: cro.Exchange):
     candles = []
     pairs = (cro.pairs.CRO_USDC, cro.pairs.USDC_USDT, cro.pairs.BTC_USDT)
     count = 0
-    default_count = 600
+    default_count = 2
 
     async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
         candles.append(candle)

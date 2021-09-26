@@ -33,7 +33,7 @@ class ApiProvider:
         self.retries = retries
 
         # NOTE: do not change this, due to crypto.com rate-limits
-        self.semaphore = asyncio.Semaphore(40)
+        self.semaphore = asyncio.Semaphore(20)
 
         if not auth_required:
             return

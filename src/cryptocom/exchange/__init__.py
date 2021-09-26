@@ -1,6 +1,7 @@
 from .structs import (
     Order, OrderSide, OrderStatus, OrderType, Pair, Period, Candle,
-    MarketTrade, Coin, PrivateTrade
+    MarketTrade, Coin, PrivateTrade, Timeframe, DepositStatus, Deposit,
+    WithdrawalStatus, Withdrawal
 )
 from .market import Exchange
 from .private import Account
@@ -11,8 +12,9 @@ __all__ = [
     'Order', 'OrderSide', 'OrderStatus', 'OrderType',
     'pairs', 'Pair', 'coins', 'Coin',
     'Period', 'Candle', 'MarketTrade', 'PrivateTrade',
+    'Timeframe', 'Deposit', 'Withdrawal', 'DepositStatus', 'WithdrawalStatus',
     'Exchange', 'Account',
     'ApiError', 'ApiProvider'
 ]
 
-__version__ = '0.8.1'
+__version__ = '0.9'

@@ -1,7 +1,15 @@
 import os
+import time
 import pytest
 
 import cryptocom.exchange as cro
+
+
+def test_timeframe():
+    days_5 = cro.Timeframe.DAYS * 5
+    result = cro.Timeframe.resolve(days_5)
+    assert result - int(time.time()) == days_5
+    assert cro.Timeframe.resolve(cro.Timeframe.NOW) == int(time.time())
 
 
 def test_api_args(monkeypatch):

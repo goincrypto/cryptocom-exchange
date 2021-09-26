@@ -1,8 +1,12 @@
+import time
 import asyncio
 
 import pytest
 
 import cryptocom.exchange as cro
+from cryptocom.exchange.structs import (
+    DepositStatus, Timeframe, WithdrawalStatus
+)
 
 
 @pytest.mark.asyncio
@@ -21,6 +25,32 @@ async def test_account_get_balance(account: cro.Account):
     assert balances[cro.coins.USDT].available > 1
     for coin in balances:
         assert coin in local_coins
+
+
+@pytest.mark.asyncio
+async def test_deposit_withdrawal_history(
+        exchange: cro.Exchange, account: cro.Account):
+    transactions = await account.get_withdrawal_history(cro.coins.CRO)
+    assert transactions
+    assert transactions[0].status == cro.WithdrawalStatus.COMPLETED
+
+    transactions = await account.get_deposit_history(cro.coins.CRO)
+    assert transactions
+    assert transactions[0].status == cro.DepositStatus.ARRIVED
+
+    transactions = await account.get_deposit_history(
+        cro.coins.CRO, status=DepositStatus.NOT_ARRIVED)
+    assert not transactions
+
+    transactions = await account.get_withdrawal_history(
+        cro.coins.CRO, status=WithdrawalStatus.CANCELLED)
+    assert not transactions
+
+    transactions = await account.get_deposit_history(
+        cro.coins.CRO, start_ts=time.time() - Timeframe.DAYS * 5,
+        end_ts=Timeframe.resolve(Timeframe.NOW)
+    )
+    assert not transactions
 
 
 @pytest.mark.asyncio

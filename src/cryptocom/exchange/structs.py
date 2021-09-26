@@ -1,8 +1,9 @@
 import time
 
-from enum import Enum
+from enum import Enum, IntEnum
 from typing import List, Dict
 from dataclasses import dataclass
+from datetime import datetime
 
 from cached_property import cached_property
 
@@ -368,53 +369,87 @@ class Interest:
         )
 
 
+class WithdrawalStatus(str, Enum):
+    PENDING = '0'
+    PROCESSING = '1'
+    REJECTED = '2'
+    PAYMENT_IN_PROGRESS = '3'
+    PAYMENT_FAILED = '4'
+    COMPLETED = '5'
+    CANCELLED = '6'
+
+
+class DepositStatus(str, Enum):
+    NOT_ARRIVED = '0'
+    ARRIVED = '1'
+    FAILED = '2'
+    PENDING = '3'
+
+
+class TransactionType(IntEnum):
+    WITHDRAWAL = 0
+    DEPOSIT = 1
+
+
 @dataclass
-class Withdrawal:
+class Transaction:
     coin: Coin
-    client_wid: str
     fee: float
     create_time: int
     id: str
     update_time: int
     amount: float
     address: str
-    status: str
 
-    @classmethod
-    def create_from_api(cls, data: Dict) -> 'Withdrawal':
-        return cls(
-            coin=Coin(data['currency']),
-            client_wid=data['client_wid'],
-            fee=float(data['fee']),
-            create_time=data['create_time'],
+    @staticmethod
+    def _prepare(data):
+        return dict(
             id=data['id'],
-            update_time=data['update_time'],
+            coin=Coin(data['currency']),
+            fee=float(data['fee']),
+            create_time=datetime.fromtimestamp(
+                int(data['create_time']) / 1000),
+            update_time=datetime.fromtimestamp(
+                int(data['update_time']) / 1000),
             amount=float(data['amount']),
             address=data['address'],
-            status=data['status']
         )
 
 
 @dataclass
-class Deposit:
-    coin: Coin
-    fee: float
-    create_time: int
-    id: str
-    update_time: int
-    amount: float
-    address: str
-    status: str
+class Deposit(Transaction):
+    status: DepositStatus
 
     @classmethod
     def create_from_api(cls, data: Dict) -> 'Deposit':
-        return cls(
-            coin=Coin(data['currency']),
-            fee=float(data['fee']),
-            create_time=data['create_time'],
-            id=data['id'],
-            update_time=data['update_time'],
-            amount=float(data['amount']),
-            address=data['address'],
-            status=data['status']
-        )
+        params = cls._prepare(data)
+        params['status'] = DepositStatus(data['status'])
+        return cls(**params)
+
+
+@dataclass
+class Withdrawal(Transaction):
+    client_wid: str
+    status: WithdrawalStatus
+    txid: str
+
+    @classmethod
+    def create_from_api(cls, data: Dict) -> 'Withdrawal':
+        params = cls._prepare(data)
+        params['client_wid'] = data.get('client_wid', '')
+        params['status'] = WithdrawalStatus(data['status'])
+        params['txid'] = data['txid']
+        return cls(**params)
+
+
+class Timeframe(IntEnum):
+    NOW = 0
+    MINUTES = 60
+    HOURS = 60 * MINUTES
+    DAYS = 24 * HOURS
+    WEEKS = 7 * DAYS
+    MONTHS = 30 * DAYS
+
+    @classmethod
+    def resolve(cls, seconds: int) -> int:
+        return seconds + int(time.time())
