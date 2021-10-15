@@ -46,6 +46,6 @@ async def main():
             ALL_TEMPLATE.format(class_name='Coin')
         ])
 
-    
+
 if __name__ == '__main__':
     asyncio.run(main())
