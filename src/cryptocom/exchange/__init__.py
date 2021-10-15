@@ -1,3 +1,6 @@
+import asyncio
+import platform
+
 from .structs import (
     Order, OrderSide, OrderStatus, OrderType, Pair, Period, Candle,
     MarketTrade, Coin, PrivateTrade, Timeframe, DepositStatus, Deposit,
@@ -8,6 +11,9 @@ from .private import Account
 from .api import ApiError, ApiProvider
 from . import pairs, coins
 
+if platform.system() == 'Windows':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 __all__ = [
     'Order', 'OrderSide', 'OrderStatus', 'OrderType',
     'pairs', 'Pair', 'coins', 'Coin',
@@ -17,4 +23,4 @@ __all__ = [
     'ApiError', 'ApiProvider'
 ]
 
-__version__ = '0.9.1'
+__version__ = '0.9.2'

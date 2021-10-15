@@ -5,7 +5,6 @@ import hmac
 import random
 import asyncio
 import hashlib
-import platform
 
 from urllib.parse import urljoin
 
@@ -44,10 +43,6 @@ class ApiProvider:
 
         if not self.api_key or not self.api_secret:
             raise ValueError('Provide api_key and api_secret')
-
-        if platform.system() == 'Windows':
-            asyncio.set_event_loop_policy(
-                asyncio.WindowsSelectorEventLoopPolicy())
 
     def read_keys_from_env(self):
         self.api_key = os.environ.get('CRYPTOCOM_API_KEY', '')
