@@ -28,6 +28,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.9.1** - fixed Windows bug with asyncio event loop
 - **0.9.0** - updated coins, refactored wallet transactions
 - **0.8.1** - fixed coin name generation
 - **0.8** - fixed tests with updated coins

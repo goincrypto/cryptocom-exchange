@@ -1,11 +1,11 @@
 import os
 import json
-import gzip
 import time
 import hmac
 import random
 import asyncio
 import hashlib
+import platform
 
 from urllib.parse import urljoin
 
@@ -33,6 +33,7 @@ class ApiProvider:
         self.retries = retries
 
         # NOTE: do not change this, due to crypto.com rate-limits
+        # TODO: add more strict settings, req/per second or milliseconds
         self.semaphore = asyncio.Semaphore(20)
 
         if not auth_required:
@@ -43,6 +44,10 @@ class ApiProvider:
 
         if not self.api_key or not self.api_secret:
             raise ValueError('Provide api_key and api_secret')
+
+        if platform.system() == 'Windows':
+            asyncio.set_event_loop_policy(
+                asyncio.WindowsSelectorEventLoopPolicy())
 
     def read_keys_from_env(self):
         self.api_key = os.environ.get('CRYPTOCOM_API_KEY', '')
