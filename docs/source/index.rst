@@ -97,6 +97,26 @@ or by providing attributes to :code:`Account(api_key='***', api_secret='***')`
 
     ...
 
+- Get orderbook via websocket
+
+.. testcode::
+
+    import asyncio
+    import cryptocom.exchange as cro
+
+    async def main():
+        exchange = cro.Exchange()
+        cro_usdt = cro.Pair(exchange_name="CRO_USDT", price_precision=4, quantity_precision=6)
+        async for orderbook in exchange.listen_orderbook(cro_usdt):
+            print(f"First buy in orderbook: {orderbook.buys[0]}")
+
+
+    asyncio.run(main())
+
+.. testoutput::
+    :hide:
+
+    ...
 Indices and tables
 ==================
 
