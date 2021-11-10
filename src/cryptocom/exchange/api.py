@@ -7,6 +7,7 @@ import asyncio
 import hashlib
 
 from urllib.parse import urljoin
+from .rate_limiter import RateLimiter
 
 import aiohttp
 
@@ -24,16 +25,33 @@ class ApiProvider:
             auth_required=True, timeout=25, retries=6,
             root_url='https://api.crypto.com/v2/',
             ws_root_url='wss://stream.crypto.com/v2/', logger=None):
+
         self.api_key = api_key
         self.api_secret = api_secret
         self.root_url = root_url
         self.ws_root_url = ws_root_url
         self.timeout = timeout
         self.retries = retries
+        self.limits = {
+            # method: (req_limit, period)
+            'private/create-order': (15, 0.1),
+            'private/cancel-order': (15, 0.1),
+            'private/cancel-all-orders': (15, 0.1),
+            'private/margin/create-order': (15, 0.1),
+            'private/margin/cancel-order': (15, 0.1),
+            'private/margin/cancel-all-orders': (15, 0.1),
+
+            'private/get-order-detail': (30, 0.1),
+            'private/margin/get-order-detail': (30, 0.1),
+
+            'private/get-trades': (1, 1),
+            'private/margin/get-trades': (1, 1),
+            'private/get-order-history': (1, 1),
+            'private/margin/get-order-history': (1, 1)
+        }
 
         # NOTE: do not change this, due to crypto.com rate-limits
         # TODO: add more strict settings, req/per second or milliseconds
-        self.semaphore = asyncio.Semaphore(20)
 
         if not auth_required:
             return
@@ -79,22 +97,37 @@ class ApiProvider:
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
         timeout = aiohttp.ClientTimeout(total=self.timeout)
+        request_type = path.split('/')[0]
+
+        if not (path in self.limits.keys()) and request_type == 'public':
+            rate_limit, period = 100, 1
+        elif not (path in self.limits.keys()) and request_type == 'private':
+            rate_limit, period = 3, 0.1
+        elif not (path in self.limits.keys()):
+            raise ApiError(f'Wrong path: {path}')
+        else:
+            rate_limit, period = self.limits[path]
+
+        rate_limiter = RateLimiter(rate_limit=rate_limit, period=period, 
+                                   concurrency_limit=1)
+
         for count in range(self.retries + 1):
             if sign:
                 data = self._sign(path, original_data)
             try:
-                async with aiohttp.ClientSession(timeout=timeout) as session:
-                    async with self.semaphore:
-                        resp = await session.request(
-                            method, urljoin(self.root_url, path),
-                            params=params, json=data,
-                            headers={'content-type': 'application/json'}
-                        )
-                        resp_json = await resp.json()
-                        if resp.status != 200:
-                            raise ApiError(
-                                f"Error: {resp_json}. "
-                                f"Status: {resp.status}. Json params: {data}")
+                async with rate_limiter:
+                    async with aiohttp.ClientSession(timeout=timeout) as session:
+                        async with rate_limiter.throttle():
+                            resp = await session.request(
+                                method, urljoin(self.root_url, path),
+                                params=params, json=data,
+                                headers={'content-type': 'application/json'}
+                            )
+                            resp_json = await resp.json()
+                            if resp.status != 200:
+                                raise ApiError(
+                                    f"Error: {resp_json}. "
+                                    f"Status: {resp.status}. Json params: {data}")
             except aiohttp.ClientConnectorError:
                 raise ApiError(f"Cannot connect to host {self.root_url}")
             except asyncio.TimeoutError:

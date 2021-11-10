@@ -55,3 +55,18 @@ async def test_wrong_api_response():
     api = cro.ApiProvider(auth_required=False)
     with pytest.raises(cro.ApiError):
         await api.post('account')
+
+
+# @pytest.mark.asyncio
+# async def test_api_rate_limits():
+#     api = cro.ApiProvider(from_env=True)
+#     account = cro.Account(from_env=True)
+
+#     for _ in range(0, 100):
+#         await account.get_balance()
+
+#     for _ in range(0, 100):
+#         await account.get_orders_history(cro.pairs.CRO_USDT, page_size=50)
+    
+#     for _ in range(0, 100):
+#         await api.get('public/get-ticker')
