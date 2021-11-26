@@ -29,7 +29,8 @@ strategy:
       python.version: '3.8'
     Python39:
       python.version: '3.9'
-
+    Python310:
+      python.version: '3.10'
 steps:
   - checkout: self
     persistCredentials: true
@@ -58,6 +59,7 @@ steps:
       git commit -m "[JOB] Updated API pairs and coins"
       git push origin HEAD:master
     displayName: 'Update API structs'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   - script: |
       cd docs && make doctest && cd ..
