@@ -9,6 +9,7 @@ from .structs import (
 from .market import Exchange
 from .private import Account
 from .api import ApiError, ApiProvider
+from .rate_limiter import RateLimiterError, RateLimiter
 from . import pairs, coins
 
 if platform.system() == 'Windows':

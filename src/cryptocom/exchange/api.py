@@ -50,6 +50,8 @@ class ApiProvider:
             'private/margin/get-order-history': (1, 1)
         }
 
+        self.rate_limiter = RateLimiter(self.limits, 1)
+
         # NOTE: do not change this, due to crypto.com rate-limits
         # TODO: add more strict settings, req/per second or milliseconds
 
@@ -97,27 +99,16 @@ class ApiProvider:
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
         timeout = aiohttp.ClientTimeout(total=self.timeout)
-        request_type = path.split('/')[0]
 
-        if not (path in self.limits.keys()) and request_type == 'public':
-            rate_limit, period = 100, 1
-        elif not (path in self.limits.keys()) and request_type == 'private':
-            rate_limit, period = 3, 0.1
-        elif not (path in self.limits.keys()):
-            raise ApiError(f'Wrong path: {path}')
-        else:
-            rate_limit, period = self.limits[path]
-
-        rate_limiter = RateLimiter(rate_limit=rate_limit, period=period, 
-                                   concurrency_limit=1)
+        self.rate_limiter.set_config(path)
 
         for count in range(self.retries + 1):
             if sign:
                 data = self._sign(path, original_data)
             try:
-                async with rate_limiter:
+                async with self.rate_limiter:
                     async with aiohttp.ClientSession(timeout=timeout) as session:
-                        async with rate_limiter.throttle():
+                        async with self.rate_limiter.throttle():
                             resp = await session.request(
                                 method, urljoin(self.root_url, path),
                                 params=params, json=data,

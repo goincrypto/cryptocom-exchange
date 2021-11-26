@@ -1,26 +1,64 @@
 import asyncio
 import math
 import time
-import traceback
 
 from contextlib import asynccontextmanager
 
 
+class RateLimiterError(Exception):
+    pass
+
+
 class RateLimiter:
     def __init__(self,
-                 rate_limit: int,
-                 period: float or int,  # takes seconds
-                 concurrency_limit: int) -> None:
-        if not rate_limit or rate_limit < 1:
-            raise ValueError('rate limit must be non zero positive number')
+                 limits,
+                 concurrency_limit) -> None:
+
         if not concurrency_limit or concurrency_limit < 1:
             raise ValueError('concurrent limit must be non zero positive number')
+        
+        self.rate_limit = int
+        self.period = float or int  # takes seconds
+        self.tokens_queue = object  # asyncio.Queue expecting
+        self.tokens_consumer_task = object  # asyncio.create_task expecting
+        self.semaphore = object  # asyncio.Semaphore expecting
+
+        self.config_setted = False
+        self.concurrency_limit = concurrency_limit
+        self.limits = limits
+
+    def get_url_config_data(self, url):
+        request_type = url.split('/')[0]
+
+        if not(url in self.limits.keys()):
+
+            if request_type == 'public':
+                rate_limit, period = 100, 1
+
+            elif request_type == 'private':
+                rate_limit, period = 3, 0.1
+
+            elif not (url in self.limits.keys()):
+                raise RateLimiterError(f'Wrong path: {url}')
+
+        else:
+            rate_limit, period = self.limits[url]
+        
+        return rate_limit, period
+
+    def set_config(self, url):
+        rate_limit, period = self.get_url_config_data(url)
+
+        if not rate_limit or rate_limit < 1:
+            raise ValueError('rate limit must be non zero positive number')
 
         self.rate_limit = rate_limit
         self.period = period
         self.tokens_queue = asyncio.Queue(rate_limit)
         self.tokens_consumer_task = asyncio.create_task(self.consume_tokens())
-        self.semaphore = asyncio.Semaphore(concurrency_limit)
+        self.semaphore = asyncio.Semaphore(self.concurrency_limit)
+
+        self.config_setted = True
 
     async def add_token(self) -> None:
         await self.tokens_queue.put(1)
@@ -67,6 +105,9 @@ class RateLimiter:
 
     @asynccontextmanager
     async def throttle(self):
+        if not self.config_setted:
+            raise RateLimiterError('Config is not setted. You need to set it via set_config() before throttling')
+
         await self.semaphore.acquire()
         await self.add_token()
         try:
@@ -80,7 +121,6 @@ class RateLimiter:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         if exc_type:
             pass
-            # print(traceback.format_exc())
 
         await self.close()
 
@@ -90,9 +130,7 @@ class RateLimiter:
                 self.tokens_consumer_task.cancel()
                 await self.tokens_consumer_task
             except asyncio.CancelledError:
-                # print(traceback.format_exc())
                 pass
 
-            except Exception as e:
-                # print(traceback.format_exc())
+            except Exception:
                 raise
