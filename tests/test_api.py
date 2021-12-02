@@ -1,5 +1,4 @@
 import asyncio
-from asyncio.events import get_running_loop
 import os
 import time
 import pytest

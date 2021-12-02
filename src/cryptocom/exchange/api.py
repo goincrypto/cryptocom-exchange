@@ -1,6 +1,5 @@
 import os
 import json
-import re
 import time
 import hmac
 import random
@@ -14,6 +13,33 @@ from aiolimiter import AsyncLimiter
 import aiohttp
 
 from aiohttp.client_exceptions import ContentTypeError
+
+
+RATE_LIMITS = {
+    # order methods
+    (
+        'private/create-order',
+        'private/cancel-order',
+        'private/cancel-all-orders',
+        'private/margin/create-order',
+        'private/margin/cancel-order',
+        'private/margin/cancel-all-orders',
+    ): (14, 0.1),
+
+    # order detail methods
+    (
+        'private/get-order-detail',
+        'private/margin/get-order-detail',
+    ): (29, 0.1),
+
+    # general trade methods
+    (
+        'private/get-trades',
+        'private/margin/get-trades',
+        'private/get-order-history',
+        'private/margin/get-order-history'
+    ): (1, 1)
+}
 
 
 class ApiError(Exception):
@@ -35,51 +61,12 @@ class ApiProvider:
         self.timeout = timeout
         self.retries = retries
         self.last_request_path = ''
-        self.limits = {
-            # method: (req_limit, period)
-            'private/create-order': (14, 0.1),
-            'private/cancel-order': (14, 0.1),
-            'private/cancel-all-orders': (14, 0.1),
-            'private/margin/create-order': (14, 0.1),
-            'private/margin/cancel-order': (14, 0.1),
-            'private/margin/cancel-all-orders': (14, 0.1),
 
-            'private/get-order-detail': (29, 0.1),
-            'private/margin/get-order-detail': (29, 0.1),
+        self.rate_limiters = {}
 
-            'private/get-trades': (1, 1),
-            'private/margin/get-trades': (1, 1),
-            'private/get-order-history': (1, 1),
-            'private/margin/get-order-history': (1, 1)
-        }
-
-        # lists for methods - aiolimiter metching
-        self.order_methods = [
-            'private/create-order',
-            'private/cancel-order',
-            'private/cancel-all-orders',
-            'private/margin/create-order',
-            'private/margin/cancel-order',
-            'private/margin/cancel-all-orders',
-        ]
-
-        self.order_methods_limit = AsyncLimiter(14, 0.1)
-
-        self.detail_methods = [
-            'private/get-order-detail',
-            'private/margin/get-order-detail',
-        ]
-
-        self.detail_methods_limit = AsyncLimiter(29, 0.1)
-
-        self.general_trade_methods = [
-            'private/get-trades',
-            'private/margin/get-trades',
-            'private/get-order-history',
-            'private/margin/get-order-history'
-        ]
-
-        self.general_trade_methods_limit = AsyncLimiter(1, 1)
+        for urls in RATE_LIMITS:
+            for url in urls:
+                self.rate_limiters[url] = AsyncLimiter(*RATE_LIMITS[urls])
 
         # limits for not matched methods
         self.general_private_limit = AsyncLimiter(3, 0.1)
@@ -127,13 +114,9 @@ class ApiProvider:
         return data
 
     def set_limit(self, path):
-        if path in self.order_methods:
-            return self.order_methods_limit
-        elif path in self.detail_methods:
-            return self.detail_methods_limit
-        elif path in self.general_trade_methods:
-            return self.general_trade_methods_limit
-        
+        if path in self.rate_limiters.keys():
+            return self.rate_limiters[path]
+
         else:
             if path.startswith('private'):
                 return self.general_private_limit
