@@ -38,7 +38,8 @@ setup(
     packages=find_packages('src'),
     install_requires=[
         'aiohttp',
-        'cached-property'
+        'cached-property',
+        'aiolimiter'
     ],
     extras_require={
         'dev': [
