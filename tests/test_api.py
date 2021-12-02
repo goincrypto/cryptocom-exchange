@@ -1,11 +1,8 @@
 import os
 import time
 import pytest
-import aiohttp
-import asyncio
 
 import cryptocom.exchange as cro
-from cryptocom.exchange import rate_limiter
 
 
 def test_timeframe():
@@ -52,28 +49,56 @@ def test_api_args(monkeypatch):
 async def test_wrong_api_response():
     api = cro.ApiProvider(from_env=True)
 
-    with pytest.raises(cro.RateLimiterError):
+    with pytest.raises(cro.ApiError):
         await api.get('somepath')
 
     api = cro.ApiProvider(auth_required=False)
-    with pytest.raises(cro.RateLimiterError):
+    with pytest.raises(cro.ApiError):
         await api.post('account')
 
 
-# @pytest.mark.asyncio
-# async def test_api_rate_limits():
-#     api = cro.ApiProvider(from_env=True)
-#     account = cro.Account(from_env=True)
+@pytest.mark.asyncio
+async def test_api_rate_limits():
+    api = cro.ApiProvider(from_env=True)
+    pair = cro.pairs.CRO_USDT
 
-#     rate_limiter = cro.RateLimiter(cro.api.limits)
+    page = 0
+    page_size = 50
 
-#     for _ in range(0, 100):
-#         print(await account.get_balance())
+    params = {'page_size': page_size, 'page': page}
 
-#     for _ in range(0, 100):
-#         await account.get_orders_history(cro.pairs.CRO_USDT, page_size=50)
-    
-#     for _ in range(0, 100):
-#         await api.get('public/get-ticker')
-    
-#     async with
+    if pair:
+        params['instrument_name'] = pair.name
+
+    start_time = time.time()
+    await api.post('private/get-order-history', {'params': params})
+    await api.post('private/get-order-history', {'params': params})
+    finish_time = (time.time() - start_time)
+
+    assert finish_time > 1
+
+    start_time = time.time()
+    await api.post('private/get-order-history', {'params': params})
+    await api.post('private/get-order-history', {'params': params})
+    await api.post('private/get-order-history', {'params': params})
+    await api.post('private/get-order-history', {'params': params})
+
+    finish_time = time.time() - start_time
+    assert finish_time > 4
+
+    start_time = time.time()
+    await api.get('public/get-instruments')
+    await api.get('public/get-instruments')
+    await api.get('public/get-instruments')
+    await api.get('public/get-instruments')
+
+    finish_time = time.time() - start_time
+    assert finish_time < 4
+
+    start_time = time.time()
+    await api.post('private/get-order-history', {'params': params})
+    await api.post('private/get-order-history', {'params': params})
+    await api.post('private/get-order-history', {'params': params})
+
+    finish_time = time.time() - start_time
+    assert finish_time > 3

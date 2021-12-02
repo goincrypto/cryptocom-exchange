@@ -1,5 +1,6 @@
 import os
 import json
+from re import S
 import time
 import hmac
 import random
@@ -7,7 +8,8 @@ import asyncio
 import hashlib
 
 from urllib.parse import urljoin
-from .rate_limiter import RateLimiter
+from aiolimiter import AsyncLimiter
+
 
 import aiohttp
 
@@ -32,6 +34,8 @@ class ApiProvider:
         self.ws_root_url = ws_root_url
         self.timeout = timeout
         self.retries = retries
+        self.limiter = AsyncLimiter(1, 1)
+        self.last_request = ''
         self.limits = {
             # method: (req_limit, period)
             'private/create-order': (15, 0.1),
@@ -49,11 +53,6 @@ class ApiProvider:
             'private/get-order-history': (1, 1),
             'private/margin/get-order-history': (1, 1)
         }
-
-        self.rate_limiter = RateLimiter(self.limits, 1)
-
-        # NOTE: do not change this, due to crypto.com rate-limits
-        # TODO: add more strict settings, req/per second or milliseconds
 
         if not auth_required:
             return
@@ -96,29 +95,48 @@ class ApiProvider:
         ).hexdigest()
         return data
 
+    def set_limit(self, url):
+
+        if not(url in self.limits.keys()):
+            if url.startswith('private'):
+                rate_limit, period = 3, 0.1
+            
+            elif url.startswith('public'):
+                rate_limit, period = 100, 1
+
+            else:
+                raise ApiError(f'Wrong path: {url}')
+
+        else:
+            rate_limit, period = self.limits[url]
+        
+        self.limiter.max_rate = rate_limit
+        self.limiter.time_period = period
+
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
         timeout = aiohttp.ClientTimeout(total=self.timeout)
 
-        self.rate_limiter.set_config(path)
+        if not (path == self.last_request):
+            self.set_limit(path)
+            self.last_request = path
 
         for count in range(self.retries + 1):
             if sign:
                 data = self._sign(path, original_data)
             try:
-                async with self.rate_limiter:
-                    async with aiohttp.ClientSession(timeout=timeout) as session:
-                        async with self.rate_limiter.throttle():
-                            resp = await session.request(
-                                method, urljoin(self.root_url, path),
-                                params=params, json=data,
-                                headers={'content-type': 'application/json'}
-                            )
-                            resp_json = await resp.json()
-                            if resp.status != 200:
-                                raise ApiError(
-                                    f"Error: {resp_json}. "
-                                    f"Status: {resp.status}. Json params: {data}")
+                async with aiohttp.ClientSession(timeout=timeout) as session:
+                    async with self.limiter:
+                        resp = await session.request(
+                            method, urljoin(self.root_url, path),
+                            params=params, json=data,
+                            headers={'content-type': 'application/json'}
+                        )
+                        resp_json = await resp.json()
+                        if resp.status != 200:
+                            raise ApiError(
+                                f"Error: {resp_json}. "
+                                f"Status: {resp.status}. Json params: {data}")
             except aiohttp.ClientConnectorError:
                 raise ApiError(f"Cannot connect to host {self.root_url}")
             except asyncio.TimeoutError:
