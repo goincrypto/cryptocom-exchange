@@ -113,10 +113,9 @@ class ApiProvider:
         ).hexdigest()
         return data
 
-    def set_limit(self, path):
+    def get_limit(self, path):
         if path in self.rate_limiters.keys():
             return self.rate_limiters[path]
-
         else:
             if path.startswith('private'):
                 return self.general_private_limit
@@ -129,7 +128,7 @@ class ApiProvider:
         original_data = data
         timeout = aiohttp.ClientTimeout(total=self.timeout)
 
-        limiter = self.set_limit(path)
+        limiter = self.get_limit(path)
 
         for count in range(self.retries + 1):
             if sign:
