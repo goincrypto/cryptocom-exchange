@@ -1,3 +1,5 @@
+import asyncio
+from asyncio.events import get_running_loop
 import os
 import time
 import pytest
@@ -71,34 +73,29 @@ async def test_api_rate_limits():
         params['instrument_name'] = pair.name
 
     start_time = time.time()
-    await api.post('private/get-order-history', {'params': params})
-    await api.post('private/get-order-history', {'params': params})
-    finish_time = (time.time() - start_time)
+    tasks = [api.post('private/get-order-history', {'params': params}) for i in range(2)]
+    await asyncio.gather(*tasks)
 
+    finish_time = (time.time() - start_time)
     assert finish_time > 1
 
     start_time = time.time()
-    await api.post('private/get-order-history', {'params': params})
-    await api.post('private/get-order-history', {'params': params})
-    await api.post('private/get-order-history', {'params': params})
-    await api.post('private/get-order-history', {'params': params})
+    tasks = [api.post('private/get-order-history', {'params': params}) for _ in range(5)]
+    await asyncio.gather(*tasks)
 
     finish_time = time.time() - start_time
     assert finish_time > 4
 
     start_time = time.time()
-    await api.get('public/get-instruments')
-    await api.get('public/get-instruments')
-    await api.get('public/get-instruments')
-    await api.get('public/get-instruments')
+    tasks = [api.get('public/get-instruments') for _ in range(200)]
+    await asyncio.gather(*tasks)
 
     finish_time = time.time() - start_time
-    assert finish_time < 4
+    assert finish_time > 1
 
     start_time = time.time()
-    await api.post('private/get-order-history', {'params': params})
-    await api.post('private/get-order-history', {'params': params})
-    await api.post('private/get-order-history', {'params': params})
+    tasks = [api.post('private/get-order-history', {'params': params}) for _ in range(4)]
+    await asyncio.gather(*tasks)
 
     finish_time = time.time() - start_time
     assert finish_time > 3

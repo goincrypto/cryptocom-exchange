@@ -1,6 +1,6 @@
 import os
 import json
-from re import S
+import re
 import time
 import hmac
 import random
@@ -34,25 +34,56 @@ class ApiProvider:
         self.ws_root_url = ws_root_url
         self.timeout = timeout
         self.retries = retries
-        self.limiter = AsyncLimiter(1, 1)
-        self.last_request = ''
+        self.last_request_path = ''
         self.limits = {
             # method: (req_limit, period)
-            'private/create-order': (15, 0.1),
-            'private/cancel-order': (15, 0.1),
-            'private/cancel-all-orders': (15, 0.1),
-            'private/margin/create-order': (15, 0.1),
-            'private/margin/cancel-order': (15, 0.1),
-            'private/margin/cancel-all-orders': (15, 0.1),
+            'private/create-order': (14, 0.1),
+            'private/cancel-order': (14, 0.1),
+            'private/cancel-all-orders': (14, 0.1),
+            'private/margin/create-order': (14, 0.1),
+            'private/margin/cancel-order': (14, 0.1),
+            'private/margin/cancel-all-orders': (14, 0.1),
 
-            'private/get-order-detail': (30, 0.1),
-            'private/margin/get-order-detail': (30, 0.1),
+            'private/get-order-detail': (29, 0.1),
+            'private/margin/get-order-detail': (29, 0.1),
 
             'private/get-trades': (1, 1),
             'private/margin/get-trades': (1, 1),
             'private/get-order-history': (1, 1),
             'private/margin/get-order-history': (1, 1)
         }
+
+        # lists for methods - aiolimiter metching
+        self.order_methods = [
+            'private/create-order',
+            'private/cancel-order',
+            'private/cancel-all-orders',
+            'private/margin/create-order',
+            'private/margin/cancel-order',
+            'private/margin/cancel-all-orders',
+        ]
+
+        self.order_methods_limit = AsyncLimiter(14, 0.1)
+
+        self.detail_methods = [
+            'private/get-order-detail',
+            'private/margin/get-order-detail',
+        ]
+
+        self.detail_methods_limit = AsyncLimiter(29, 0.1)
+
+        self.general_trade_methods = [
+            'private/get-trades',
+            'private/margin/get-trades',
+            'private/get-order-history',
+            'private/margin/get-order-history'
+        ]
+
+        self.general_trade_methods_limit = AsyncLimiter(1, 1)
+
+        # limits for not matched methods
+        self.general_private_limit = AsyncLimiter(3, 0.1)
+        self.general_public_limit = AsyncLimiter(100, 1)
 
         if not auth_required:
             return
@@ -95,38 +126,34 @@ class ApiProvider:
         ).hexdigest()
         return data
 
-    def set_limit(self, url):
-
-        if not(url in self.limits.keys()):
-            if url.startswith('private'):
-                rate_limit, period = 3, 0.1
-            
-            elif url.startswith('public'):
-                rate_limit, period = 100, 1
-
-            else:
-                raise ApiError(f'Wrong path: {url}')
-
-        else:
-            rate_limit, period = self.limits[url]
+    def set_limit(self, path):
+        if path in self.order_methods:
+            return self.order_methods_limit
+        elif path in self.detail_methods:
+            return self.detail_methods_limit
+        elif path in self.general_trade_methods:
+            return self.general_trade_methods_limit
         
-        self.limiter.max_rate = rate_limit
-        self.limiter.time_period = period
+        else:
+            if path.startswith('private'):
+                return self.general_private_limit
+            elif path.startswith('public'):
+                return self.general_public_limit
+            else:
+                raise ApiError(f'Wrong path: {path}')
 
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
         timeout = aiohttp.ClientTimeout(total=self.timeout)
 
-        if not (path == self.last_request):
-            self.set_limit(path)
-            self.last_request = path
+        limiter = self.set_limit(path)
 
         for count in range(self.retries + 1):
             if sign:
                 data = self._sign(path, original_data)
             try:
                 async with aiohttp.ClientSession(timeout=timeout) as session:
-                    async with self.limiter:
+                    async with limiter:
                         resp = await session.request(
                             method, urljoin(self.root_url, path),
                             params=params, json=data,
