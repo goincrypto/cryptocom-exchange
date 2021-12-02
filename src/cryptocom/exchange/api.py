@@ -7,10 +7,39 @@ import asyncio
 import hashlib
 
 from urllib.parse import urljoin
+from aiolimiter import AsyncLimiter
+
 
 import aiohttp
 
 from aiohttp.client_exceptions import ContentTypeError
+
+
+RATE_LIMITS = {
+    # order methods
+    (
+        'private/create-order',
+        'private/cancel-order',
+        'private/cancel-all-orders',
+        'private/margin/create-order',
+        'private/margin/cancel-order',
+        'private/margin/cancel-all-orders',
+    ): (14, 0.1),
+
+    # order detail methods
+    (
+        'private/get-order-detail',
+        'private/margin/get-order-detail',
+    ): (29, 0.1),
+
+    # general trade methods
+    (
+        'private/get-trades',
+        'private/margin/get-trades',
+        'private/get-order-history',
+        'private/margin/get-order-history'
+    ): (1, 1)
+}
 
 
 class ApiError(Exception):
@@ -24,16 +53,24 @@ class ApiProvider:
             auth_required=True, timeout=25, retries=6,
             root_url='https://api.crypto.com/v2/',
             ws_root_url='wss://stream.crypto.com/v2/', logger=None):
+
         self.api_key = api_key
         self.api_secret = api_secret
         self.root_url = root_url
         self.ws_root_url = ws_root_url
         self.timeout = timeout
         self.retries = retries
+        self.last_request_path = ''
 
-        # NOTE: do not change this, due to crypto.com rate-limits
-        # TODO: add more strict settings, req/per second or milliseconds
-        self.semaphore = asyncio.Semaphore(20)
+        self.rate_limiters = {}
+
+        for urls in RATE_LIMITS:
+            for url in urls:
+                self.rate_limiters[url] = AsyncLimiter(*RATE_LIMITS[urls])
+
+        # limits for not matched methods
+        self.general_private_limit = AsyncLimiter(3, 0.1)
+        self.general_public_limit = AsyncLimiter(100, 1)
 
         if not auth_required:
             return
@@ -76,15 +113,29 @@ class ApiProvider:
         ).hexdigest()
         return data
 
+    def get_limit(self, path):
+        if path in self.rate_limiters.keys():
+            return self.rate_limiters[path]
+        else:
+            if path.startswith('private'):
+                return self.general_private_limit
+            elif path.startswith('public'):
+                return self.general_public_limit
+            else:
+                raise ApiError(f'Wrong path: {path}')
+
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
         timeout = aiohttp.ClientTimeout(total=self.timeout)
+
+        limiter = self.get_limit(path)
+
         for count in range(self.retries + 1):
             if sign:
                 data = self._sign(path, original_data)
             try:
                 async with aiohttp.ClientSession(timeout=timeout) as session:
-                    async with self.semaphore:
+                    async with limiter:
                         resp = await session.request(
                             method, urljoin(self.root_url, path),
                             params=params, json=data,
