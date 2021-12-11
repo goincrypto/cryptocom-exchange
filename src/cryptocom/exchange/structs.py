@@ -162,10 +162,7 @@ class OrderBook:
 
     @property
     def spread(self) -> float:
-        return round_down(
-            self.sells[-1].price / self.buys[0].price - 1,
-            self.pair.price_precision
-        )
+        return round_down(self.sells[-1].price / self.buys[0].price - 1, 6)
 
 
 @dataclass
