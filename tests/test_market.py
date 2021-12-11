@@ -59,21 +59,19 @@ async def test_get_candles(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_listen_candles(exchange: cro.Exchange):
-    candles = []
+    candles = {}
     pairs = (cro.pairs.CRO_USDC, cro.pairs.USDC_USDT, cro.pairs.BTC_USDT)
-    count = 0
     default_count = 2
 
     async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
-        candles.append(candle)
-        count += 1
-        if count == len(pairs) * default_count:
+        candles.setdefault(candle.pair, 0)
+        candles[candle.pair] += 1
+        if all(v == default_count for v in candles.values()) and \
+                len(candles) == len(pairs):
             break
 
     for pair in pairs:
-        assert len([
-            c for c in candles if c.pair == pair
-        ]) == default_count
+        assert candles[pair] == default_count
 
 
 @pytest.mark.asyncio
@@ -94,7 +92,7 @@ async def test_listen_trades(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_listen_orderbook(exchange: cro.Exchange):
-    pairs = [cro.pairs.CRO_USDT, cro.pairs.BTC_USDT]
+    pairs = [cro.pairs.CRO_USDT, cro.pairs.CRO_USDC]
     orderbooks = []
     depth = 150
 
@@ -106,5 +104,5 @@ async def test_listen_orderbook(exchange: cro.Exchange):
     for book in orderbooks:
         assert book.buys and book.sells
         assert book.sells[0].price > book.buys[0].price
-        assert book.spread > 0
+        assert book.spread >= 0
         assert len(book.sells) == len(book.buys) == depth
