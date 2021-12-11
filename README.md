@@ -27,6 +27,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.9.4** - fixed spread func, fixed missing params
 - **0.9.3** - added RPS limiter by @Irishery
 - **0.9.2** - fixed event loop import level
 - **0.9.1** - fixed Windows bug with asyncio event loop
