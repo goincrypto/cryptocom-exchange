@@ -11,6 +11,7 @@ from aiolimiter import AsyncLimiter
 
 
 import aiohttp
+import async_timeout
 
 from aiohttp.client_exceptions import ContentTypeError
 
@@ -189,10 +190,13 @@ class ApiProvider:
     async def listen(self, url, *channels, sign=False):
         while True:
             try:
-                async for data in self.listen_once(url, *channels, sign=sign):
-                    yield data
-            except Exception:
-                await asyncio.sleep(1)
+                async with async_timeout.timeout(3 * 60) as timeout:
+                    async for data in self.listen_once(
+                            url, *channels, sign=sign):
+                        timeout.shift(3 * 60)
+                        yield data
+            except TimeoutError:
+                await asyncio.sleep(5)
 
     async def listen_once(self, url, *channels, sign=False):
         timeout = aiohttp.ClientTimeout(self.timeout)

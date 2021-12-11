@@ -27,6 +27,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.9.5** - added timeout for websocket if no data received in 3 mins we trying to reconnect
 - **0.9.4** - fixed spread func, fixed missing params
 - **0.9.3** - added RPS limiter by @Irishery
 - **0.9.2** - fixed event loop import level
