@@ -46,7 +46,7 @@ class ApiError(Exception):
 
 
 class ApiListenAsyncIterable:
-    def __init__(self, api, ws, channels: list[str], sign: bool):
+    def __init__(self, api, ws, channels, sign):
         self.api = api
         self.ws = ws
         self.channels = channels
