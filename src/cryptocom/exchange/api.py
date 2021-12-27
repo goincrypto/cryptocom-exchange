@@ -10,10 +10,8 @@ from urllib.parse import urljoin
 from aiolimiter import AsyncLimiter
 
 
-import aiohttp
-import async_timeout
-
-from aiohttp.client_exceptions import ContentTypeError
+import httpx
+import websockets
 
 
 RATE_LIMITS = {
@@ -45,6 +43,79 @@ RATE_LIMITS = {
 
 class ApiError(Exception):
     pass
+
+
+class ApiListenAsyncIterable:
+    def __init__(self, api, ws, channels: list[str], sign: bool):
+        self.api = api
+        self.ws = ws
+        self.channels = channels
+
+        self.sign = sign
+        self.sub_data_sent = False
+        self.auth_sent = False
+        self.connected = False
+        self.auth_data = None
+
+    async def connect(self):
+        self.auth_data = {}
+        if self.sign:
+            self.auth_data = self.api.sign('public/auth', self.auth_data)
+
+        # sleep because too many requests from docs
+        await asyncio.sleep(1)
+
+        self.connected = True
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        if not self.connected:
+            await asyncio.sleep(1)
+
+        if not self.sub_data_sent:
+            sub_data = {
+                'id': random.randint(1000, 10000),
+                "method": "subscribe",
+                'params': {"channels": self.channels},
+                "nonce": int(time.time())
+            }
+
+        # [0] if not sign start connection with subscription
+        if not self.sub_data_sent and not self.sign:
+            await self.ws.send(json.dumps(sub_data))
+            self.sub_data_sent = True
+
+        data = await self.ws.recv()
+
+        if data:
+            data = json.loads(data)
+            result = data.get('result')
+
+            # [1] send heartbeat to keep connection alive
+            if data['method'] == 'public/heartbeat':
+                await self.ws.send(json.dumps({
+                    'id': data['id'],
+                    'method': 'public/respond-heartbeat'
+                }))
+            elif self.sub_data_sent and result:
+                # [4] consume data
+                return result
+
+            # [2] sign auth request to listen private methods
+            if self.sign and not self.auth_sent:
+                await self.ws.send(json.dumps(self.auth_data))
+                self.auth_sent = True
+
+            # [3] subscribe to channels
+            if (
+                    data['method'] == 'public/auth' and
+                    data['code'] == 0 and not self.sub_data_sent
+            ):
+                await self.ws.send(json.dumps(sub_data))
+                self.sub_data_sent = True
+
 
 
 class ApiProvider:
@@ -90,7 +161,7 @@ class ApiProvider:
         if not self.api_secret:
             raise ValueError('Provide CRYPTOCOM_API_SECRET env value')
 
-    def _sign(self, path, data):
+    def sign(self, path, data):
         data = data or {}
         data['method'] = path
 
@@ -114,7 +185,7 @@ class ApiProvider:
         ).hexdigest()
         return data
 
-    def get_limit(self, path):
+    def get_limiter(self, path):
         if path in self.rate_limiters.keys():
             return self.rate_limiters[path]
         else:
@@ -127,45 +198,43 @@ class ApiProvider:
 
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
-        timeout = aiohttp.ClientTimeout(total=self.timeout)
-
-        limiter = self.get_limit(path)
+        limiter = self.get_limiter(path)
 
         for count in range(self.retries + 1):
+            client = httpx.AsyncClient(
+                timeout=httpx.Timeout(timeout=self.timeout))
             if sign:
-                data = self._sign(path, original_data)
+                data = self.sign(path, original_data)
             try:
-                async with aiohttp.ClientSession(timeout=timeout) as session:
-                    async with limiter:
-                        resp = await session.request(
-                            method, urljoin(self.root_url, path),
-                            params=params, json=data,
-                            headers={'content-type': 'application/json'}
-                        )
-                        resp_json = await resp.json()
-                        if resp.status != 200:
-                            raise ApiError(
-                                f"Error: {resp_json}. "
-                                f"Status: {resp.status}. Json params: {data}")
-            except aiohttp.ClientConnectorError:
+                async with limiter:
+                    resp = await client.request(
+                        method, urljoin(self.root_url, path),
+                        params=params, json=data,
+                        headers={'content-type': 'application/json'}
+                    )
+                    resp_json = resp.json()
+                    if resp.status_code != 200:
+                        raise ApiError(
+                            f"Error: {resp_json}. "
+                            f"Status: {resp.status_code}. Json params: {data}")
+            except httpx.ConnectError:
                 raise ApiError(f"Cannot connect to host {self.root_url}")
-            except asyncio.TimeoutError:
+            except asyncio.TimeoutError as exc:
                 if count == self.retries:
                     raise ApiError(
                         f"Timeout error, retries: {self.retries}. "
-                        f"Code: {resp.status}. Data: {data}"
-                    )
-
-                await asyncio.sleep(0.5)
+                        f"Code: {resp.status_code}. Data: {data}"
+                    ) from exc
                 continue
-            except ContentTypeError:
-                if resp.status == 429:
-                    await asyncio.sleep(0.5)
+            except json.JSONDecodeError:
+                if resp.status_code == 429:
                     continue
-                text = await resp.text()
+                text = await resp.text
                 raise ApiError(
                     f"Can't decode json, content: {text}. "
-                    f"Code: {resp.status}")
+                    f"Code: {resp.status_code}")
+            finally:
+                await client.aclose()
 
             if resp_json['code'] == 0:
                 result = resp_json.get('result', {})
@@ -174,12 +243,9 @@ class ApiProvider:
             if count == self.retries:
                 raise ApiError(
                     f"System error, retries: {self.retries}. "
-                    f"Code: {resp.status}. Json: {resp_json}. "
+                    f"Code: {resp.status_code}. Json: {resp_json}. "
                     f"Data: {data}"
                 )
-
-            await asyncio.sleep(0.5)
-            continue
 
     async def get(self, path, params=None, sign=False):
         return await self.request('get', path, params=params, sign=sign)
@@ -188,69 +254,12 @@ class ApiProvider:
         return await self.request('post', path, data=data, sign=sign)
 
     async def listen(self, url, *channels, sign=False):
-        while True:
-            try:
-                async with async_timeout.timeout(3 * 60) as timeout:
-                    async for data in self.listen_once(
-                            url, *channels, sign=sign):
-                        timeout.shift(3 * 60)
-                        yield data
-            except TimeoutError:
-                await asyncio.sleep(5)
-
-    async def listen_once(self, url, *channels, sign=False):
-        timeout = aiohttp.ClientTimeout(self.timeout)
         url = urljoin(self.ws_root_url, url)
-        sub_data = {
-            'id': random.randint(1000, 10000),
-            "method": "subscribe",
-            'params': {"channels": list(channels)},
-            "nonce": int(time.time())
-        }
-        auth_data = {}
-        if sign:
-            auth_data = self._sign('public/auth', auth_data)
-
-        sub_data_sent = False
-        auth_sent = False
-
-        async with aiohttp.ClientSession(timeout=timeout) as session:
-            async with session.ws_connect(
-                    url, heartbeat=self.timeout,
-                    receive_timeout=self.timeout) as ws:
-                # sleep because too many requests from docs
-                await asyncio.sleep(1)
-
-                # [0] if not sign start connection with subscription
-                if not sign:
-                    await ws.send_str(json.dumps(sub_data))
-                    sub_data_sent = True
-
-                async for msg in ws:
-                    data = json.loads(msg.data)
-                    result = data.get('result')
-
-                    # [1] send heartbeat to keep connection alive
-                    if data['method'] == 'public/heartbeat':
-                        await ws.send_str(json.dumps({
-                            'id': data['id'],
-                            'method': 'public/respond-heartbeat'
-                        }))
-                    elif sub_data_sent:
-                        # [4] consume data
-                        if result:
-                            yield result
-                        continue
-
-                    # [2] sign auth request to listen private methods
-                    if sign and not auth_sent:
-                        await ws.send_str(json.dumps(auth_data))
-                        auth_sent = True
-
-                    # [3] subscribe to channels
-                    if (
-                            data['method'] == 'public/auth' and
-                            data['code'] == 0 and not sub_data_sent
-                    ):
-                        await ws.send_str(json.dumps(sub_data))
-                        sub_data_sent = True
+        async for ws in websockets.connect(url, open_timeout=self.timeout):
+            try:
+                dataiterator = ApiListenAsyncIterable(self, ws, channels, sign)
+                async for data in dataiterator:
+                    if data:
+                        yield data
+            except websockets.ConnectionClosed:
+                continue
