@@ -31,7 +31,8 @@ def event_loop(request):
         try:
             _cancel_all_tasks(loop)
             loop.run_until_complete(loop.shutdown_asyncgens())
-            loop.run_until_complete(loop.shutdown_default_executor())
+            if hasattr(loop, 'shutdown_default_executor'):
+                loop.run_until_complete(loop.shutdown_default_executor())
         finally:
             asyncio.events.set_event_loop(None)
             loop.close()
