@@ -166,10 +166,12 @@ class Account:
         data['time_in_force'] = force_type.value
         data['exec_inst'] = exec_type.value
 
-        quantity = "{:.{}f}".format(quantity, pair.quantity_precision)
+        # here is the change i propose
         if type_ == OrderType.MARKET and side == OrderSide.BUY:
+            quantity = "{:.{}f}".format(quantity, pair.price_precision)
             data['notional'] = quantity
         else:
+            quantity = "{:.{}f}".format(quantity, pair.quantity_precision)
             data['quantity'] = quantity
 
         if client_id:
