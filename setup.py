@@ -40,7 +40,8 @@ setup(
         'httpx',
         'websockets',
         'cached-property',
-        'aiolimiter'
+        'aiolimiter',
+        'async-timeout'
     ],
     extras_require={
         'dev': [

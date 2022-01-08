@@ -18,7 +18,7 @@ async def test_get_pairs(exchange: cro.Exchange):
 async def test_get_tickers(exchange: cro.Exchange):
     tickers = await exchange.get_tickers()
     for pair, ticker in tickers.items():
-        assert ticker.high > ticker.low
+        assert ticker.high >= ticker.low
         assert ticker.pair == pair
         assert ticker.volume > 0
 

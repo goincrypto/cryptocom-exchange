@@ -7,11 +7,11 @@ import asyncio
 import hashlib
 
 from urllib.parse import urljoin
-from aiolimiter import AsyncLimiter
-
 
 import httpx
 import websockets
+import async_timeout
+import aiolimiter
 
 
 RATE_LIMITS = {
@@ -138,11 +138,12 @@ class ApiProvider:
 
         for urls in RATE_LIMITS:
             for url in urls:
-                self.rate_limiters[url] = AsyncLimiter(*RATE_LIMITS[urls])
+                self.rate_limiters[url] =\
+                    aiolimiter.AsyncLimiter(*RATE_LIMITS[urls])
 
         # limits for not matched methods
-        self.general_private_limit = AsyncLimiter(3, 0.1)
-        self.general_public_limit = AsyncLimiter(100, 1)
+        self.general_private_limit = aiolimiter.AsyncLimiter(3, 0.1)
+        self.general_public_limit = aiolimiter.AsyncLimiter(100, 1)
 
         if not auth_required:
             return
@@ -223,15 +224,14 @@ class ApiProvider:
                 if count == self.retries:
                     raise ApiError(
                         f"Timeout error, retries: {self.retries}. "
-                        f"Code: {resp.status_code}. Data: {data}"
+                        f"Path: {path}. Data: {data}"
                     ) from exc
                 continue
             except json.JSONDecodeError:
                 if resp.status_code == 429:
                     continue
-                text = await resp.text
                 raise ApiError(
-                    f"Can't decode json, content: {text}. "
+                    f"Can't decode json, content: {resp.text()}. "
                     f"Code: {resp.status_code}")
             finally:
                 await client.aclose()
@@ -258,8 +258,10 @@ class ApiProvider:
         async for ws in websockets.connect(url, open_timeout=self.timeout):
             try:
                 dataiterator = ApiListenAsyncIterable(self, ws, channels, sign)
-                async for data in dataiterator:
-                    if data:
-                        yield data
-            except websockets.ConnectionClosed:
+                async with async_timeout.timeout(60) as tm:
+                    async for data in dataiterator:
+                        if data:
+                            tm.shift(60)
+                            yield data
+            except (websockets.ConnectionClosed, asyncio.TimeoutError):
                 continue

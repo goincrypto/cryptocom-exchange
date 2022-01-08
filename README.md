@@ -27,6 +27,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.10.1** - added read timeouts for websockets, fixed test with tickers
 - **0.10.0** - moved into httpx + websockets, added autoreconnect, simplified code, improved stability
 - **0.9.5** - added timeout for websocket if no data received in 3 mins we trying to reconnect
 - **0.9.4** - fixed spread func, fixed missing params
