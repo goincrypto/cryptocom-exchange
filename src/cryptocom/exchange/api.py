@@ -117,7 +117,6 @@ class ApiListenAsyncIterable:
                 self.sub_data_sent = True
 
 
-
 class ApiProvider:
     """Provides HTTP-api requests and websocket requests."""
     def __init__(
@@ -125,7 +124,7 @@ class ApiProvider:
             auth_required=True, timeout=25, retries=6,
             root_url='https://api.crypto.com/v2/',
             ws_root_url='wss://stream.crypto.com/v2/', logger=None):
-
+        self.ssl_context = httpx.create_ssl_context()
         self.api_key = api_key
         self.api_secret = api_secret
         self.root_url = root_url
@@ -203,7 +202,9 @@ class ApiProvider:
 
         for count in range(self.retries + 1):
             client = httpx.AsyncClient(
-                timeout=httpx.Timeout(timeout=self.timeout))
+                timeout=httpx.Timeout(timeout=self.timeout),
+                verify=self.ssl_context
+            )
             if sign:
                 data = self.sign(path, original_data)
             try:
@@ -231,7 +232,7 @@ class ApiProvider:
                 if resp.status_code == 429:
                     continue
                 raise ApiError(
-                    f"Can't decode json, content: {resp.text()}. "
+                    f"Can't decode json, content: {resp.text}. "
                     f"Code: {resp.status_code}")
             finally:
                 await client.aclose()

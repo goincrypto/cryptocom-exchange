@@ -15,6 +15,8 @@ Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.r
 
 Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-docs.crypto.com)
 
+### **WARNING: PLEASE use 0.10.2+ or up to 0.9.5 version because of httpx memory leak** [0.10, 0.10.1] -> are broken
+
 ### Description
 
 `pip install cryptocom-exchange`
@@ -27,6 +29,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.10.2** - fixed huge memory leak by `httpx`
 - **0.10.1** - added read timeouts for websockets, fixed test with tickers
 - **0.10.0** - moved into httpx + websockets, added autoreconnect, simplified code, improved stability
 - **0.9.5** - added timeout for websocket if no data received in 3 mins we trying to reconnect
