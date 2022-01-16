@@ -1,5 +1,5 @@
-import pytest
 import asyncio
+import pytest
 
 import cryptocom.exchange as cro
 
@@ -12,7 +12,6 @@ async def exchange() -> cro.Exchange:
 
 
 @pytest.fixture
-@pytest.mark.asyncio
 async def account() -> cro.Account:
     acc = cro.Account(from_env=True)
     await acc.sync_pairs()
@@ -20,7 +19,7 @@ async def account() -> cro.Account:
     await acc.cancel_open_orders(cro.pairs.CRO_USDT)
 
 
-@pytest.fixture 
+@pytest.fixture
 def event_loop(request): 
     """Create an instance of the default event loop for each test case.""" 
     loop = asyncio.events.new_event_loop()

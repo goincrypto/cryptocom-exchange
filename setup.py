@@ -48,7 +48,7 @@ setup(
             'pylint',
             'pycodestyle',
             'pytest',
-            'pytest-asyncio',
+            'pytest-asyncio==0.16.0',
             'pytest-cov',
             'pytest-env',
             'pytest-doctestplus',
