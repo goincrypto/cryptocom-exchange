@@ -420,3 +420,22 @@ class Account:
                 yield Order.create_from_api(
                     self.pairs[data["instrument_name"]], order
                 )
+
+    async def create_withdrawal(
+            self, coin: Coin, quantity: str, address: str, client_wid: str = None, address_tag: str = None,
+            network_id: str = None) -> int:
+        """Create withdrawal request."""
+        data = {
+            'currency': coin.name,
+            'amount': quantity,
+            'address': address
+        }
+        if client_wid:
+            data['client_wid'] = str(client_wid)
+        if address_tag:
+            data['address_tag'] = str(address_tag)
+        if network_id:
+            data['network_id'] = str(network_id)
+
+        resp = await self.api.post('private/create-withdrawal', {'params': data})
+        return int(resp['id'])
