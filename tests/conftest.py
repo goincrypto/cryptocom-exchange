@@ -21,7 +21,7 @@ async def account() -> cro.Account:
 
 @pytest.fixture
 def event_loop(request): 
-    """Create an instance of the default event loop for each test case.""" 
+    """Create an instance of the default event loop for each test case."""
     loop = asyncio.events.new_event_loop()
     try:
         asyncio.events.set_event_loop(loop)

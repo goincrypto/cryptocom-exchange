@@ -55,15 +55,10 @@ class ApiListenAsyncIterable:
         self.sub_data_sent = False
         self.auth_sent = False
         self.connected = False
-        self.auth_data = None
 
     async def connect(self):
-        self.auth_data = {}
-        if self.sign:
-            self.auth_data = self.api.sign('public/auth', self.auth_data)
-
         # sleep because too many requests from docs
-        await asyncio.sleep(1)
+        await asyncio.sleep(2)
 
         self.connected = True
 
@@ -72,7 +67,7 @@ class ApiListenAsyncIterable:
 
     async def __anext__(self):
         if not self.connected:
-            await asyncio.sleep(1)
+            await self.connect()
 
         if not self.sub_data_sent:
             sub_data = {
@@ -105,7 +100,9 @@ class ApiListenAsyncIterable:
 
             # [2] sign auth request to listen private methods
             if self.sign and not self.auth_sent:
-                await self.ws.send(json.dumps(self.auth_data))
+                await self.ws.send(
+                    json.dumps(self.api.sign('public/auth', {}))
+                )
                 self.auth_sent = True
 
             # [3] subscribe to channels
@@ -259,10 +256,10 @@ class ApiProvider:
         async for ws in websockets.connect(url, open_timeout=self.timeout):
             try:
                 dataiterator = ApiListenAsyncIterable(self, ws, channels, sign)
-                async with async_timeout.timeout(60) as tm:
+                async with async_timeout.timeout(120) as tm:
                     async for data in dataiterator:
                         if data:
-                            tm.shift(60)
+                            tm.shift(120)
                             yield data
             except (websockets.ConnectionClosed, asyncio.TimeoutError):
                 continue

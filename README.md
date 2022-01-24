@@ -15,7 +15,7 @@ Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.r
 
 Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-docs.crypto.com)
 
-### **WARNING: PLEASE use 0.10.2+ or up to 0.9.5 version because of httpx memory leak** [0.10, 0.10.1] -> are broken
+### **WARNING: PLEASE use 0.10.3+ [prev versions have private websocket broken and memory leaks]
 
 ### Description
 
@@ -29,6 +29,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.10.3** - fixed websocket private endpoints not returning data
 - **0.10.2** - fixed huge memory leak by `httpx`
 - [leaks memory] **0.10.1** - added read timeouts for websockets, fixed test with tickers
 - [leaks memory] **0.10.0** - moved into httpx + websockets, added autoreconnect, simplified code, improved stability
