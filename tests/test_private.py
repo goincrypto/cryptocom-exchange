@@ -158,7 +158,7 @@ async def test_account_market_orders(
         account.get_order(order_id)
         for order_id in order_ids['buy'] + order_ids['sell']
     ])
-    await asyncio.sleep(2)
+    await asyncio.sleep(5)
 
     for order in orders:
         assert order.trades, order
