@@ -10,10 +10,6 @@ schedules:
   always: true
 
 variables:
-- name: CRYPTOCOM_API_KEY
-  value: BNJaaRNj6i3PWxWgTi9hLK
-- name: CRYPTOCOM_API_SECRET
-  value: uwVCubn3KfF6ergZQ9XE6T
 - name: CC_TEST_REPORTER_ID
   value: 16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
 
@@ -21,16 +17,27 @@ pool:
   vmImage: 'ubuntu-20.04'
 
 strategy:
- maxParallel: 1
  matrix:
     Python37:
       python.version: '3.7'
+      env:
+        CRYPTOCOM_API_KEY: cUUmJiS8NQsuYFUF1vZCnF
+        CRYPTOCOM_API_SECRET: WDmJT8PDczwAMLqd14KaXE
     Python38:
       python.version: '3.8'
+      env:
+        CRYPTOCOM_API_KEY: M36gizdCPiPtpPxZksA3bW
+        CRYPTOCOM_API_SECRET: zdJVLqb753sGXnD1BcAsfL
     Python39:
       python.version: '3.9'
+      env:
+        CRYPTOCOM_API_KEY: pwBURH8tjgynDnvGHFbJAd
+        CRYPTOCOM_API_SECRET: njwzbwZdFbE2DF8NxQnBdJ
     Python310:
       python.version: '3.10'
+      env:
+        CRYPTOCOM_API_KEY: U8C56GiAXt2T9h8XtsxoVV
+        CRYPTOCOM_API_SECRET: WVBx5oqUoj5Qr28KHQ7Td9
 steps:
   - checkout: self
     persistCredentials: true

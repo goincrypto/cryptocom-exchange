@@ -148,7 +148,7 @@ async def test_account_market_orders(
     orders = []
     l_orders = []
     task = asyncio.create_task(listen_orders(account, l_orders))
-    await asyncio.sleep(5)
+    await asyncio.sleep(10)
 
     await asyncio.gather(*[
         make_trades(account, exchange, order_ids) for _ in range(10)
@@ -158,7 +158,7 @@ async def test_account_market_orders(
         account.get_order(order_id)
         for order_id in order_ids['buy'] + order_ids['sell']
     ])
-    await asyncio.sleep(15)
+    await asyncio.sleep(25)
 
     for order in orders:
         assert order.trades, order
