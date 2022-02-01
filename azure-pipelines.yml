@@ -10,6 +10,22 @@ schedules:
   always: true
 
 variables:
+- name: CRYPTOCOM_API_KEY_37
+  value: cUUmJiS8NQsuYFUF1vZCnF
+- name: CRYPTOCOM_API_SECRET_37
+  value: WDmJT8PDczwAMLqd14KaXE
+- name: CRYPTOCOM_API_KEY_38
+  value: M36gizdCPiPtpPxZksA3bW
+- name: CRYPTOCOM_API_SECRET_38
+  value: zdJVLqb753sGXnD1BcAsfL
+- name: CRYPTOCOM_API_KEY_39
+  value: pwBURH8tjgynDnvGHFbJAd
+- name: CRYPTOCOM_API_SECRET_39
+  value: njwzbwZdFbE2DF8NxQnBdJ
+- name: CRYPTOCOM_API_KEY_310
+  value: U8C56GiAXt2T9h8XtsxoVV
+- name: CRYPTOCOM_API_SECRET_310
+  value: WVBx5oqUoj5Qr28KHQ7Td9
 - name: CC_TEST_REPORTER_ID
   value: 16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
 
@@ -21,23 +37,23 @@ strategy:
     Python37:
       python.version: '3.7'
       env:
-        CRYPTOCOM_API_KEY: cUUmJiS8NQsuYFUF1vZCnF
-        CRYPTOCOM_API_SECRET: WDmJT8PDczwAMLqd14KaXE
+        CRYPTOCOM_API_KEY: $(CRYPTOCOM_API_KEY_37)
+        CRYPTOCOM_API_SECRET: $(CRYPTOCOM_API_SECRET_37)
     Python38:
       python.version: '3.8'
       env:
-        CRYPTOCOM_API_KEY: M36gizdCPiPtpPxZksA3bW
-        CRYPTOCOM_API_SECRET: zdJVLqb753sGXnD1BcAsfL
+        CRYPTOCOM_API_KEY: $(CRYPTOCOM_API_KEY_38)
+        CRYPTOCOM_API_SECRET: $(CRYPTOCOM_API_SECRET_38)
     Python39:
       python.version: '3.9'
       env:
-        CRYPTOCOM_API_KEY: pwBURH8tjgynDnvGHFbJAd
-        CRYPTOCOM_API_SECRET: njwzbwZdFbE2DF8NxQnBdJ
+        CRYPTOCOM_API_KEY: $(CRYPTOCOM_API_KEY_39)
+        CRYPTOCOM_API_SECRET: $(CRYPTOCOM_API_SECRET_39)
     Python310:
       python.version: '3.10'
       env:
-        CRYPTOCOM_API_KEY: U8C56GiAXt2T9h8XtsxoVV
-        CRYPTOCOM_API_SECRET: WVBx5oqUoj5Qr28KHQ7Td9
+        CRYPTOCOM_API_KEY: $(CRYPTOCOM_API_KEY_310)
+        CRYPTOCOM_API_SECRET: $(CRYPTOCOM_API_SECRET_310)
 steps:
   - checkout: self
     persistCredentials: true
