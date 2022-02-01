@@ -3,5 +3,5 @@ find . -type d -name '__pycache__' -delete
 
 source ./venv/bin/activate
 
-export CRYPTOCOM_API_KEY=U8C56GiAXt2T9h8XtsxoVV
-export CRYPTOCOM_API_SECRET=WVBx5oqUoj5Qr28KHQ7Td9
+export CRYPTOCOM_API_KEY=PCuweiWhHJC339hHdMdcVC
+export CRYPTOCOM_API_SECRET=mXYtwLajZdFGU56mDo8eqL
