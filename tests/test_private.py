@@ -1,5 +1,6 @@
 import time
 import asyncio
+import async_timeout
 
 import pytest
 
@@ -12,17 +13,19 @@ from cryptocom.exchange.structs import (
 @pytest.mark.asyncio
 async def test_account_get_balance(account: cro.Account):
     balances = await account.get_balance()
-    while balances[cro.coins.CRO].available < 5:
-        await account.buy_market(cro.pairs.CRO_USDT, 1)
-        balances = await account.get_balance()
-    while balances[cro.coins.USDT].available < 1:
-        await account.sell_market(cro.pairs.CRO_USDT, 1)
-        balances = await account.get_balance()
+
+    async with async_timeout.timeout(120):
+        while balances[cro.coins.CRO].available < 1:
+            await account.buy_market(cro.pairs.CRO_USDT, 0.1)
+            balances = await account.get_balance()
+        while balances[cro.coins.USDT].available < 0.5:
+            await account.sell_market(cro.pairs.CRO_USDT, 0.1)
+            balances = await account.get_balance()
 
     balances = await account.get_balance()
     local_coins = cro.coins.all()
-    assert balances[cro.coins.CRO].available > 5
-    assert balances[cro.coins.USDT].available > 1
+    assert balances[cro.coins.CRO].available > 1
+    assert balances[cro.coins.USDT].available > 0.5
     for coin in balances:
         assert coin in local_coins
 
@@ -143,20 +146,25 @@ async def test_account_market_orders(
         account: cro.Account, exchange: cro.Exchange):
     order_ids = {'buy': [], 'sell': []}
     orders = []
-    task = asyncio.create_task(listen_orders(account, orders))
-    await asyncio.sleep(5)
+    l_orders = []
+    task = asyncio.create_task(listen_orders(account, l_orders))
+    await asyncio.sleep(10)
 
     await asyncio.gather(*[
         make_trades(account, exchange, order_ids) for _ in range(10)
     ])
-    await asyncio.sleep(1)
 
     orders = await asyncio.gather(*[
         account.get_order(order_id)
         for order_id in order_ids['buy'] + order_ids['sell']
     ])
+    await asyncio.sleep(25)
+
     for order in orders:
         assert order.trades, order
+
+    assert l_orders
+    assert set(o.id for o in l_orders) == set(o.id for o in orders)
 
     trades = await account.get_trades(cro.pairs.CRO_USDT, page_size=20)
     for trade in trades:

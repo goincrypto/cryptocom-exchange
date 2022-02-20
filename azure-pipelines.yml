@@ -11,9 +11,9 @@ schedules:
 
 variables:
 - name: CRYPTOCOM_API_KEY
-  value: BNJaaRNj6i3PWxWgTi9hLK
+  value: PCuweiWhHJC339hHdMdcVC
 - name: CRYPTOCOM_API_SECRET
-  value: uwVCubn3KfF6ergZQ9XE6T
+  value: mXYtwLajZdFGU56mDo8eqL
 - name: CC_TEST_REPORTER_ID
   value: 16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
 
@@ -21,8 +21,8 @@ pool:
   vmImage: 'ubuntu-20.04'
 
 strategy:
- maxParallel: 1
- matrix:
+  maxParallel: 1
+  matrix:
     Python37:
       python.version: '3.7'
     Python38:
