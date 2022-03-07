@@ -7,7 +7,7 @@ from .market import Exchange
 from .structs import (
     Deposit, DepositStatus, Pair, OrderSide, OrderStatus, OrderType, Order,
     Coin, Balance, OrderExecType, OrderForceType, PrivateTrade, Interest,
-    Withdrawal, WithdrawalStatus
+    Withdrawal, WithdrawalStatus, Network
 )
 
 
@@ -315,9 +315,29 @@ class Account:
                     self.pairs[data['instrument_name']], order
                 )
 
+
+    async def get_currency_networks(self) -> List[Network]:
+        """Get the symbol network mapping."""
+        data = await self.api.post('private/get-currency-networks', {
+            'params': {}
+        })
+        all_networks = []
+        currency_map = data['currency_map']
+        for _, networks in currency_map.items():
+            for network in networks['network_list']:
+                if network['network_id'] not in all_networks:
+                    all_networks.append(network['network_id'])
+        return [
+            Network(
+                i
+            ) for i in all_networks
+        ]
+
+
+
     async def create_withdrawal(
             self, coin: Coin, quantity: str, address: str, client_wid: str = None, address_tag: str = None,
-            network_id: str = None) -> int:
+            network_id: Network = None) -> int:
         """Create withdrawal request."""
         data = {
             'currency': coin.name,
@@ -328,8 +348,6 @@ class Account:
             data['client_wid'] = str(client_wid)
         if address_tag:
             data['address_tag'] = str(address_tag)
-        if network_id:
-            data['network_id'] = str(network_id)
 
         resp = await self.api.post('private/create-withdrawal', {'params': data})
         return int(resp['id'])
