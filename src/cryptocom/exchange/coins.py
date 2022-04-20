@@ -1,6 +1,7 @@
 from .structs import Coin
 
 AAVE = Coin("AAVE")
+ACA = Coin("ACA")
 ADA = Coin("ADA")
 AERGO = Coin("AERGO")
 AGLD = Coin("AGLD")
@@ -117,6 +118,7 @@ MANA = Coin("MANA")
 MASK = Coin("MASK")
 MATIC = Coin("MATIC")
 MBL = Coin("MBL")
+MC = Coin("MC")
 MCO = Coin("MCO")
 MDT = Coin("MDT")
 MIR = Coin("MIR")
