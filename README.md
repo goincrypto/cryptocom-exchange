@@ -29,6 +29,7 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 ### Changelog
 
+- **0.10.4** - Updated pairs
 - **0.10.3** - fixed websocket private endpoints not returning data
 - **0.10.2** - fixed huge memory leak by `httpx`
 - [leaks memory] **0.10.1** - added read timeouts for websockets, fixed test with tickers
