@@ -1,4 +1,4 @@
-# Python 3.7+ library for crypto.com/exchange API using asyncio and aiohttp 
+# Python 3.7+ async library for crypto.com/exchange API using httpx and websockets
 
 [![Docs Build Status](https://readthedocs.org/projects/cryptocom-exchange/badge/?version=latest&style=flat)](https://readthedocs.org/projects/cryptocom-exchange)
 [![Build Status](https://dev.azure.com/mortyspace/goincrypto/_apis/build/status/goincrypto.cryptocom-exchange?branchName=master)](https://dev.azure.com/mortyspace/goincrypto/_build/latest?definitionId=1&branchName=master)
@@ -76,19 +76,4 @@ keys for tests passing
 - **0.2** - moved to new API v2, except for websockets
 
 ### TODO
-- Sync pairs automatically
-- Move project to poetry
 - Add CD to PYPI for auto releases
-
-### Donation
-
-If this lib helped you achieve profits will be glad to receive some donation to continue support 💪
-
-ERC20(CRO,USDT,ETH etc.): **0x348c268A563b0C809e4E21F4371E8cdFbD1f51bf**
-
-BTC: **3NxnzUbTDFrwCEChS4PMqXbxvESxkfU2UP**
-
-LTC: **MK3DtnQaMs2eSDdTygF618xdQd7Q9y7Nr2**
-
-NEO: **AdTApXpKjVh2YJUKuEHuWvoSdaSAzLakFF**
-

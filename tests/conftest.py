@@ -1,4 +1,5 @@
 import asyncio
+
 import pytest
 
 import cryptocom.exchange as cro
@@ -20,7 +21,7 @@ async def account() -> cro.Account:
 
 
 @pytest.fixture
-def event_loop(request): 
+def event_loop(request):
     """Create an instance of the default event loop for each test case."""
     loop = asyncio.events.new_event_loop()
     try:
@@ -30,7 +31,7 @@ def event_loop(request):
         try:
             _cancel_all_tasks(loop)
             loop.run_until_complete(loop.shutdown_asyncgens())
-            if hasattr(loop, 'shutdown_default_executor'):
+            if hasattr(loop, "shutdown_default_executor"):
                 loop.run_until_complete(loop.shutdown_default_executor())
         finally:
             asyncio.events.set_event_loop(None)
@@ -46,14 +47,17 @@ def _cancel_all_tasks(loop):
         task.cancel()
 
     loop.run_until_complete(
-        asyncio.tasks.gather(*to_cancel, return_exceptions=True))
+        asyncio.tasks.gather(*to_cancel, return_exceptions=True)
+    )
 
     for task in to_cancel:
         if task.cancelled():
             continue
         if task.exception() is not None:
-            loop.call_exception_handler({
-                'message': 'unhandled exception during asyncio.run() shutdown',
-                'exception': task.exception(),
-                'task': task,
-            })
+            loop.call_exception_handler(
+                {
+                    "message": "unhandled exception during asyncio.run()",
+                    "exception": task.exception(),
+                    "task": task,
+                }
+            )

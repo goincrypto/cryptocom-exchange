@@ -1,13 +1,10 @@
 {
-    "python.pythonPath": "venv/bin/python",
+    "python.defaultInterpreterPath": ".venv/bin/python",
     "python.testing.pytestEnabled": true,
     "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.pycodestyleEnabled": true,
-    "python.linting.pycodestylePath": "pycodestyle",
-    "python.formatting.provider": "autopep8",
+    "python.linting.flake8Enabled": true,
     "editor.renderWhitespace": "all",
-    "editor.rulers": [80],
+    "editor.rulers": [79],
     "files.exclude":{
         "**/.git": true,
         "**/.DS_Store": true,
@@ -18,12 +15,14 @@
         "cov.xml": true,
         "build": true,
         "dist": true,
-        "venv": true
+        "venv": true,
+        ".venv": true
     },
     "files.watcherExclude": {
         "**/.git/**": true,
         "**/node_modules/*/**": true,
-        "**/venv/**": true
+        "**/venv/**": true,
+        "**/.venv/**": true
     },
     "files.insertFinalNewline": true,
     "git.ignoreLimitWarning": true,

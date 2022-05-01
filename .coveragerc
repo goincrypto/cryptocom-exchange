@@ -2,5 +2,6 @@
 omit =
     setup.py
     venv/*
+    .venv/*
     tests/*
     docs/*

@@ -1,9 +1,8 @@
 import time
-
-from enum import Enum, IntEnum
-from typing import List, Dict
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum, IntEnum
+from typing import Dict, List
 
 from cached_property import cached_property
 
@@ -16,7 +15,7 @@ class Coin:
 
     @property
     def name(self):
-        return self.exchange_name.replace('1', 'ONE')
+        return self.exchange_name.replace("1", "ONE")
 
     def __hash__(self):
         return self.name.__hash__()
@@ -30,15 +29,15 @@ class Pair:
 
     @property
     def name(self):
-        return self.exchange_name.replace('1', 'ONE')
+        return self.exchange_name.replace("1", "ONE")
 
     @cached_property
     def base_coin(self) -> Coin:
-        return Coin(self.name.split('_')[0])
+        return Coin(self.name.split("_")[0])
 
     @cached_property
     def quote_coin(self) -> Coin:
-        return Coin(self.name.split('_')[1])
+        return Coin(self.name.split("_")[1])
 
     def round_price(self, price):
         return round_down(price, self.price_precision)
@@ -66,20 +65,20 @@ class MarketTicker:
     def from_api(cls, pair, data):
         return cls(
             pair=pair,
-            buy_price=pair.round_price(data['b']),
-            sell_price=pair.round_price(data['k']),
-            trade_price=pair.round_price(data['a']),
-            time=int(data['t'] / 1000),
-            volume=pair.round_quantity(data['v']),
-            high=pair.round_price(data['h']),
-            low=pair.round_price(data['l']),
-            change=round_down(data['c'], 3)
+            buy_price=pair.round_price(data["b"]),
+            sell_price=pair.round_price(data["k"]),
+            trade_price=pair.round_price(data["a"]),
+            time=int(data["t"] / 1000),
+            volume=pair.round_quantity(data["v"]),
+            high=pair.round_price(data["h"]),
+            low=pair.round_price(data["l"]),
+            change=round_down(data["c"], 3),
         )
 
 
 class OrderSide(str, Enum):
-    BUY = 'BUY'
-    SELL = 'SELL'
+    BUY = "BUY"
+    SELL = "SELL"
 
 
 @dataclass
@@ -94,28 +93,28 @@ class MarketTrade:
     @classmethod
     def from_api(cls, pair: Pair, data: Dict):
         return cls(
-            id=data['d'],
-            time=int(data['t'] / 1000),
-            price=pair.round_price(data['p']),
-            quantity=pair.round_quantity(data['q']),
-            side=OrderSide(data['s'].upper()),
-            pair=pair
+            id=data["d"],
+            time=int(data["t"] / 1000),
+            price=pair.round_price(data["p"]),
+            quantity=pair.round_quantity(data["q"]),
+            side=OrderSide(data["s"].upper()),
+            pair=pair,
         )
 
 
 class Period(str, Enum):
-    MINS = '1m'
-    MINS_5 = '5m'
-    MINS_15 = '15m'
-    MINS_30 = '30m'
-    HOURS = '1h'
-    HOURS_4 = '4h'
-    HOURS_6 = '6h'
-    HOURS_12 = '12h'
-    DAY = '1D'
-    WEEK = '7D'
-    WEEK_2 = '14D'
-    MONTH_1 = '1M'
+    MINS = "1m"
+    MINS_5 = "5m"
+    MINS_15 = "15m"
+    MINS_30 = "30m"
+    HOURS = "1h"
+    HOURS_4 = "4h"
+    HOURS_6 = "6h"
+    HOURS_12 = "12h"
+    DAY = "1D"
+    WEEK = "7D"
+    WEEK_2 = "14D"
+    MONTH_1 = "1M"
 
 
 @dataclass
@@ -131,13 +130,13 @@ class Candle:
     @classmethod
     def from_api(cls, pair: Pair, data: Dict):
         return cls(
-            time=int(data['t'] / 1000),
-            open=pair.round_price(data['o']),
-            high=pair.round_price(data['h']),
-            low=pair.round_price(data['l']),
-            close=pair.round_price(data['c']),
-            volume=pair.round_quantity(data['v']),
-            pair=pair
+            time=int(data["t"] / 1000),
+            open=pair.round_price(data["o"]),
+            high=pair.round_price(data["h"]),
+            low=pair.round_price(data["l"]),
+            close=pair.round_price(data["c"]),
+            volume=pair.round_quantity(data["v"]),
+            pair=pair,
         )
 
 
@@ -176,41 +175,41 @@ class Balance:
     @classmethod
     def from_api(cls, data):
         return cls(
-            total=data['balance'],
-            available=data['available'],
-            in_orders=data['order'],
-            in_stake=data['stake'],
-            coin=Coin(data['currency'])
+            total=data["balance"],
+            available=data["available"],
+            in_orders=data["order"],
+            in_stake=data["stake"],
+            coin=Coin(data["currency"]),
         )
 
 
 class OrderType(str, Enum):
-    LIMIT = 'LIMIT'
-    MARKET = 'MARKET'
-    STOP_LOSS = 'STOP_LOSS'
-    STOP_LIMIT = 'STOP_LIMIT'
-    TAKE_PROFIT = 'TAKE_PROFIT'
-    TAKE_PROFIT_LIMIT = 'TAKE_PROFIT_LIMIT'
+    LIMIT = "LIMIT"
+    MARKET = "MARKET"
+    STOP_LOSS = "STOP_LOSS"
+    STOP_LIMIT = "STOP_LIMIT"
+    TAKE_PROFIT = "TAKE_PROFIT"
+    TAKE_PROFIT_LIMIT = "TAKE_PROFIT_LIMIT"
 
 
 class OrderStatus(str, Enum):
-    ACTIVE = 'ACTIVE'
-    FILLED = 'FILLED'
-    CANCELED = 'CANCELED'
-    REJECTED = 'REJECTED'
-    EXPIRED = 'EXPIRED'
-    PENDING = 'PENDING'
+    ACTIVE = "ACTIVE"
+    FILLED = "FILLED"
+    CANCELED = "CANCELED"
+    REJECTED = "REJECTED"
+    EXPIRED = "EXPIRED"
+    PENDING = "PENDING"
 
 
 class OrderExecType(str, Enum):
-    MARKET = ''
-    POST_ONLY = 'POST_ONLY'
+    MARKET = ""
+    POST_ONLY = "POST_ONLY"
 
 
 class OrderForceType(str, Enum):
-    GOOD_TILL_CANCEL = 'GOOD_TILL_CANCEL'
-    FILL_OR_KILL = 'FILL_OR_KILL'
-    IMMEDIATE_OR_CANCEL = 'IMMEDIATE_OR_CANCEL'
+    GOOD_TILL_CANCEL = "GOOD_TILL_CANCEL"
+    FILL_OR_KILL = "FILL_OR_KILL"
+    IMMEDIATE_OR_CANCEL = "IMMEDIATE_OR_CANCEL"
 
 
 @dataclass
@@ -234,17 +233,17 @@ class PrivateTrade:
         return self.side == OrderSide.SELL
 
     @classmethod
-    def create_from_api(cls, pair: Pair, data: Dict) -> 'PrivateTrade':
+    def create_from_api(cls, pair: Pair, data: Dict) -> "PrivateTrade":
         return cls(
-            id=int(data['trade_id']),
-            side=OrderSide(data['side']),
+            id=int(data["trade_id"]),
+            side=OrderSide(data["side"]),
             pair=pair,
-            fees=round_up(data['fee'], 8),
-            fees_coin=Coin(data['fee_currency']),
-            created_at=int(data['create_time'] / 1000),
-            filled_price=pair.round_price(data['traded_price']),
-            filled_quantity=pair.round_quantity(data['traded_quantity']),
-            order_id=int(data['order_id'])
+            fees=round_up(data["fee"], 8),
+            fees_coin=Coin(data["fee_currency"]),
+            created_at=int(data["create_time"] / 1000),
+            filled_price=pair.round_price(data["traded_price"]),
+            filled_quantity=pair.round_quantity(data["traded_quantity"]),
+            order_id=int(data["order_id"]),
         )
 
 
@@ -306,7 +305,8 @@ class Order:
     @cached_property
     def filled_volume(self):
         return self.pair.round_quantity(
-            self.filled_price * self.filled_quantity)
+            self.filled_price * self.filled_quantity
+        )
 
     @cached_property
     def remain_volume(self):
@@ -318,35 +318,35 @@ class Order:
 
     @classmethod
     def create_from_api(
-            cls, pair: Pair, data: Dict, trades: List[Dict] = None) -> 'Order':
+        cls, pair: Pair, data: Dict, trades: List[Dict] = None
+    ) -> "Order":
         fees_coin, trigger_price = None, None
-        if data['fee_currency']:
-            fees_coin = Coin(data['fee_currency'])
-        if data.get('trigger_price') is not None:
-            trigger_price = pair.round_price(data['trigger_price'])
+        if data["fee_currency"]:
+            fees_coin = Coin(data["fee_currency"])
+        if data.get("trigger_price") is not None:
+            trigger_price = pair.round_price(data["trigger_price"])
 
         trades = [
-            PrivateTrade.create_from_api(pair, trade)
-            for trade in trades or []
+            PrivateTrade.create_from_api(pair, trade) for trade in trades or []
         ]
 
         return cls(
-            id=int(data['order_id']),
-            status=OrderStatus(data['status']),
-            side=OrderSide(data['side']),
-            price=pair.round_price(data['avg_price'] or data['price']),
-            quantity=pair.round_quantity(data['quantity']),
-            client_id=data['client_oid'],
-            created_at=int(data['create_time'] / 1000),
-            updated_at=int(data['update_time'] / 1000),
-            type=OrderType(data['type']),
+            id=int(data["order_id"]),
+            status=OrderStatus(data["status"]),
+            side=OrderSide(data["side"]),
+            price=pair.round_price(data["avg_price"] or data["price"]),
+            quantity=pair.round_quantity(data["quantity"]),
+            client_id=data["client_oid"],
+            created_at=int(data["create_time"] / 1000),
+            updated_at=int(data["update_time"] / 1000),
+            type=OrderType(data["type"]),
             pair=pair,
-            filled_price=pair.round_price(data['avg_price']),
-            filled_quantity=pair.round_quantity(data['cumulative_quantity']),
+            filled_price=pair.round_price(data["avg_price"]),
+            filled_quantity=pair.round_quantity(data["cumulative_quantity"]),
             fees_coin=fees_coin,
-            force_type=OrderForceType(data['time_in_force']),
+            force_type=OrderForceType(data["time_in_force"]),
             trigger_price=trigger_price,
-            trades=trades
+            trades=trades,
         )
 
 
@@ -359,31 +359,31 @@ class Interest:
     interest_rate: float
 
     @classmethod
-    def create_from_api(cls, data: Dict) -> 'Interest':
+    def create_from_api(cls, data: Dict) -> "Interest":
         return cls(
-            loan_id=int(data['loan_id']),
-            coin=Coin(data['currency']),
-            interest=float(data['interest']),
-            stake_amount=float(data['stake_amount']),
-            interest_rate=float(data['interest_rate'])
+            loan_id=int(data["loan_id"]),
+            coin=Coin(data["currency"]),
+            interest=float(data["interest"]),
+            stake_amount=float(data["stake_amount"]),
+            interest_rate=float(data["interest_rate"]),
         )
 
 
 class WithdrawalStatus(str, Enum):
-    PENDING = '0'
-    PROCESSING = '1'
-    REJECTED = '2'
-    PAYMENT_IN_PROGRESS = '3'
-    PAYMENT_FAILED = '4'
-    COMPLETED = '5'
-    CANCELLED = '6'
+    PENDING = "0"
+    PROCESSING = "1"
+    REJECTED = "2"
+    PAYMENT_IN_PROGRESS = "3"
+    PAYMENT_FAILED = "4"
+    COMPLETED = "5"
+    CANCELLED = "6"
 
 
 class DepositStatus(str, Enum):
-    NOT_ARRIVED = '0'
-    ARRIVED = '1'
-    FAILED = '2'
-    PENDING = '3'
+    NOT_ARRIVED = "0"
+    ARRIVED = "1"
+    FAILED = "2"
+    PENDING = "3"
 
 
 class TransactionType(IntEnum):
@@ -404,15 +404,17 @@ class Transaction:
     @staticmethod
     def _prepare(data):
         return dict(
-            id=data['id'],
-            coin=Coin(data['currency']),
-            fee=float(data['fee']),
+            id=data["id"],
+            coin=Coin(data["currency"]),
+            fee=float(data["fee"]),
             create_time=datetime.fromtimestamp(
-                int(data['create_time']) / 1000),
+                int(data["create_time"]) / 1000
+            ),
             update_time=datetime.fromtimestamp(
-                int(data['update_time']) / 1000),
-            amount=float(data['amount']),
-            address=data['address'],
+                int(data["update_time"]) / 1000
+            ),
+            amount=float(data["amount"]),
+            address=data["address"],
         )
 
 
@@ -421,9 +423,9 @@ class Deposit(Transaction):
     status: DepositStatus
 
     @classmethod
-    def create_from_api(cls, data: Dict) -> 'Deposit':
+    def create_from_api(cls, data: Dict) -> "Deposit":
         params = cls._prepare(data)
-        params['status'] = DepositStatus(data['status'])
+        params["status"] = DepositStatus(data["status"])
         return cls(**params)
 
 
@@ -434,11 +436,11 @@ class Withdrawal(Transaction):
     txid: str
 
     @classmethod
-    def create_from_api(cls, data: Dict) -> 'Withdrawal':
+    def create_from_api(cls, data: Dict) -> "Withdrawal":
         params = cls._prepare(data)
-        params['client_wid'] = data.get('client_wid', '')
-        params['status'] = WithdrawalStatus(data['status'])
-        params['txid'] = data['txid']
+        params["client_wid"] = data.get("client_wid", "")
+        params["status"] = WithdrawalStatus(data["status"])
+        params["txid"] = data["txid"]
         return cls(**params)
 
 

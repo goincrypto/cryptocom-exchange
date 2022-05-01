@@ -1,0 +1,52 @@
+[tool.poetry]
+authors = ["Morty Space <morty.space@gmail.com>"]
+description = "Python 3.7+ async library for crypto.com/exchange API using httpx and websockets"
+license = "MIT"
+name = "cryptocom-exchange"
+packages = [
+  {include = "cryptocom", from = "src"},
+]
+version = "0.11b0"
+readme = "README.md"
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.poetry.dependencies]
+aiolimiter = "^1.0.0"
+async-timeout = "^4.0.2"
+cached-property = "^1.5.2"
+httpx = "^0.22.0"
+python = "^3.7"
+websockets = "^10.3"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+pytest = "^7.1.2"
+pytest-asyncio = "^0.18.3"
+pytest-cov = "^3.0.0"
+pytest-doctestplus = "^0.12.0"
+pre-commit = "^2.18.1"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[tool.black]
+line-length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.venv
+  | \build
+  | \dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 79

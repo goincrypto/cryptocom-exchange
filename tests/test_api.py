@@ -1,6 +1,7 @@
 import asyncio
 import os
 import time
+
 import pytest
 
 import cryptocom.exchange as cro
@@ -18,18 +19,18 @@ def test_api_args(monkeypatch):
         cro.Account()
 
     with pytest.raises(ValueError):
-        cro.Account(api_key='123')
+        cro.Account(api_key="123")
 
     with pytest.raises(ValueError):
-        cro.Account(api_secret='3333')
+        cro.Account(api_secret="3333")
 
     with pytest.raises(ValueError):
-        cro.ApiProvider(api_key='123')
+        cro.ApiProvider(api_key="123")
 
     with pytest.raises(ValueError):
-        cro.ApiProvider(api_secret='123')
+        cro.ApiProvider(api_secret="123")
 
-    monkeypatch.setattr(os, 'environ', {})
+    monkeypatch.setattr(os, "environ", {})
 
     with pytest.raises(ValueError):
         cro.Account(from_env=True)
@@ -37,7 +38,7 @@ def test_api_args(monkeypatch):
     with pytest.raises(ValueError):
         cro.ApiProvider(from_env=True)
 
-    monkeypatch.setattr(os, 'environ', {'CRYPTOCOM_API_KEY': '123'})
+    monkeypatch.setattr(os, "environ", {"CRYPTOCOM_API_KEY": "123"})
 
     with pytest.raises(ValueError):
         cro.Account(from_env=True)
@@ -51,11 +52,11 @@ async def test_wrong_api_response():
     api = cro.ApiProvider(from_env=True)
 
     with pytest.raises(cro.ApiError):
-        await api.get('somepath')
+        await api.get("somepath")
 
     api = cro.ApiProvider(auth_required=False)
     with pytest.raises(cro.ApiError):
-        await api.post('account')
+        await api.post("account")
 
 
 @pytest.mark.asyncio
@@ -66,34 +67,43 @@ async def test_api_rate_limits():
     page = 0
     page_size = 50
 
-    params = {'page_size': page_size, 'page': page}
+    params = {"page_size": page_size, "page": page}
 
     if pair:
-        params['instrument_name'] = pair.name
+        params["instrument_name"] = pair.name
 
     start_time = time.time()
-    tasks = [api.post('private/get-order-history', {'params': params}) for i in range(2)]
+    tasks = [
+        api.post("private/get-order-history", {"params": params})
+        for _ in range(2)
+    ]
     await asyncio.gather(*tasks)
 
-    finish_time = (time.time() - start_time)
+    finish_time = time.time() - start_time
     assert finish_time > 1
 
     start_time = time.time()
-    tasks = [api.post('private/get-order-history', {'params': params}) for _ in range(5)]
+    tasks = [
+        api.post("private/get-order-history", {"params": params})
+        for _ in range(5)
+    ]
     await asyncio.gather(*tasks)
 
     finish_time = time.time() - start_time
     assert finish_time > 4
 
     start_time = time.time()
-    tasks = [api.get('public/get-instruments') for _ in range(200)]
+    tasks = [api.get("public/get-instruments") for _ in range(200)]
     await asyncio.gather(*tasks)
 
     finish_time = time.time() - start_time
     assert finish_time > 1
 
     start_time = time.time()
-    tasks = [api.post('private/get-order-history', {'params': params}) for _ in range(4)]
+    tasks = [
+        api.post("private/get-order-history", {"params": params})
+        for _ in range(4)
+    ]
     await asyncio.gather(*tasks)
 
     finish_time = time.time() - start_time
