@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
+SPHINXBUILD   = poetry run sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
 

@@ -64,6 +64,6 @@ steps:
 
   - script: |
       cd docs && make doctest && cd ..
-      pytest -v --cov . --cov-report xml:coverage.xml
+      poetry run pytest -v --cov . --cov-report xml:coverage.xml
       ./cc-test-reporter after-build --exit-code $?
     displayName: 'Run tests'
