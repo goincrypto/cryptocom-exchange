@@ -13,3 +13,4 @@ cov.xml
 .vagrant
 local.sh
 coverage.xml
+/cc-test-reporter
