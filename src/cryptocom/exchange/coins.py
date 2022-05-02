@@ -227,5 +227,6 @@ ZRX = Coin("ZRX")
 
 def all():
     return [
-        value for name, value in globals().items() if isinstance(value, Coin)
+        value for name, value in globals().items()
+        if isinstance(value, Coin)
     ]
