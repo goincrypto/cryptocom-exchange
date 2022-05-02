@@ -55,7 +55,6 @@ steps:
       python generatestructs.py
       git config --global user.email "morty.space@gmail.com"
       git config --global user.name "Morty Space"
-      rm ./cc-test-reporter
       git add -A .
       git commit -m "[JOB] Updated API pairs and coins"
       git push origin HEAD:master
