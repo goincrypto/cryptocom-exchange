@@ -31,6 +31,7 @@ pytest-doctestplus = "^0.12.0"
 pre-commit = "^2.18.1"
 Sphinx = "^4.5.0"
 sphinx-rtd-theme = "^1.0.0"
+mypy = "^0.950"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

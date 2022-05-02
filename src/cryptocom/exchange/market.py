@@ -91,7 +91,7 @@ class Exchange:
 
     async def listen_candles(
         self, period: Period, *pairs: List[Pair]
-    ) -> AsyncGenerator[Candle]:
+    ) -> AsyncGenerator[Candle, None]:
         if not isinstance(period, Period):
             raise ValueError(f"Provide Period enum not {period}")
 
