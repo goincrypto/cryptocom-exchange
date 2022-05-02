@@ -18,7 +18,7 @@ from cryptocom.exchange import __version__
 # -- Project information -----------------------------------------------------
 
 project = "cryptocom-exchange"
-copyright = "2020-2021"
+copyright = "2020-2022"
 author = "Yaroslav Rudenok [MortySpace]"
 
 # The short X.Y version
