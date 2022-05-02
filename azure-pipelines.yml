@@ -52,7 +52,7 @@ steps:
 
   - script: |
       git pull
-      python generatestructs.py
+      poetry run python generatestructs.py
       git config --global user.email "morty.space@gmail.com"
       git config --global user.name "Morty Space"
       git add -A .
