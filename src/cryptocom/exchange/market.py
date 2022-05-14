@@ -1,4 +1,4 @@
-from typing import Dict, List, AsyncGenerator
+from typing import AsyncGenerator, Dict, List
 
 from . import pairs
 from .api import ApiProvider

@@ -1,0 +1,58 @@
+---
+name: Tests
+'on':
+  push:
+    branches:
+      - main
+      - production
+      - feature/*
+      - fix/*
+  pull_request:
+    branches:
+      - main
+      - production
+jobs:
+  test:
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Get Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Download cache for pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: py-${{ matrix.python-version }}-poetry-pip-1.1.13
+          restore-keys: poetry-pip
+      - name: Install poetry
+        run: pip install poetry==1.1.13
+      - name: Download cache for poetry
+        id: poetry-install
+        uses: actions/cache@v2
+        with:
+          path: ./.venv/
+          key: py-${{ matrix.python-version }}-poetry-install-${{ hashFiles('poetry.lock') }}
+          restore-keys: poetry-install
+      - name: Install dependencies
+        if: steps.poetry-install.outputs.cache-hit != 'true'
+        run: rm -rf ./.venv/ && poetry install
+      - name: Download cache pre-commit
+        id: pre-commit-install
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pre-commit
+          key: py-${{ matrix.python-version }}-pre-commit-install-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: pre-commit-install
+      - name: Verify pre-commit
+        run: poetry run pre-commit run -a
+      - name: Run test docs
+        run: . activate.sh && cd docs && make doctest && cd ..
+      - name: Run tests
+        run: . activate.sh && poetry run pytest -v --cov . --cov-report xml:coverage.xml

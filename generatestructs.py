@@ -6,8 +6,7 @@ from cryptocom import exchange as cro
 ALL_TEMPLATE = """
 def all():
     return [
-        value for name, value in globals().items()
-        if isinstance(value, {class_name})
+        value for name, value in globals().items() if isinstance(value, {})
     ]
 """
 
@@ -31,7 +30,7 @@ async def main():
                 f"quantity_precision={pair.quantity_precision})\n"
                 for pair in sorted(pairs, key=lambda p: p.name)
             ]
-            + ["\n", ALL_TEMPLATE.format(class_name="Pair")]
+            + ["\n", ALL_TEMPLATE.format("Pair")]
         )
 
     with (SRC_PATH / "coins.py").open("w") as f:
@@ -43,7 +42,7 @@ async def main():
                 f'{coin.name} = Coin("{coin.exchange_name}")\n'
                 for coin in sorted(coins, key=lambda c: c.name)
             ]
-            + ["\n", ALL_TEMPLATE.format(class_name="Coin")]
+            + ["\n", ALL_TEMPLATE.format("Coin")]
         )
 
 

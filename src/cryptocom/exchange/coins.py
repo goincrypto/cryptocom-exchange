@@ -112,6 +112,7 @@ KNC = Coin("KNC")
 KP3R = Coin("KP3R")
 KRL = Coin("KRL")
 KSM = Coin("KSM")
+LDO = Coin("LDO")
 LINK = Coin("LINK")
 LPT = Coin("LPT")
 LRC = Coin("LRC")
@@ -214,6 +215,7 @@ WAVES = Coin("WAVES")
 WAXP = Coin("WAXP")
 WBTC = Coin("WBTC")
 WEMIX = Coin("WEMIX")
+WOO = Coin("WOO")
 XLM = Coin("XLM")
 XRP = Coin("XRP")
 XTZ = Coin("XTZ")
@@ -227,6 +229,5 @@ ZRX = Coin("ZRX")
 
 def all():
     return [
-        value for name, value in globals().items()
-        if isinstance(value, Coin)
+        value for name, value in globals().items() if isinstance(value, Coin)
     ]

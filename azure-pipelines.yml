@@ -1,25 +1,22 @@
+---
 trigger:
-- master
-
+  - master
 schedules:
-- cron: "0 0 * * *"
-  displayName: Daily test run
-  branches:
-    include:
-    - master
-  always: true
-
+  - cron: 0 0 * * *
+    displayName: Daily test run
+    branches:
+      include:
+        - master
+    always: true
 variables:
-- name: CRYPTOCOM_API_KEY
-  value: PCuweiWhHJC339hHdMdcVC
-- name: CRYPTOCOM_API_SECRET
-  value: mXYtwLajZdFGU56mDo8eqL
-- name: CC_TEST_REPORTER_ID
-  value: 16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
-
+  - name: CRYPTOCOM_API_KEY
+    value: PCuweiWhHJC339hHdMdcVC
+  - name: CRYPTOCOM_API_SECRET
+    value: mXYtwLajZdFGU56mDo8eqL
+  - name: CC_TEST_REPORTER_ID
+    value: 16bcfb0958d99f11456f8d80aeb5800d567724471e151fe6e74a4b329b45dcb6
 pool:
-  vmImage: 'ubuntu-20.04'
-
+  vmImage: ubuntu-20.04
 strategy:
   maxParallel: 1
   matrix:
@@ -35,12 +32,10 @@ steps:
   - checkout: self
     persistCredentials: true
     clean: true
-
   - task: UsePythonVersion@0
     inputs:
-      versionSpec: '$(python.version)'
-    displayName: 'Use Python $(python.version)'
-
+      versionSpec: $(python.version)
+    displayName: Use Python $(python.version)
   - script: |
       python -m pip install --upgrade pip
       pip install poetry
@@ -48,8 +43,7 @@ steps:
       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
       chmod +x ./cc-test-reporter
       ./cc-test-reporter before-build
-    displayName: 'Install dependencies'
-
+    displayName: Install dependencies
   - script: |
       git pull origin master
       poetry run python generatestructs.py
@@ -58,11 +52,10 @@ steps:
       git add -A .
       git commit -m "[JOB] Updated API pairs and coins"
       git push origin HEAD:master
-    displayName: 'Update API structs'
+    displayName: Update API structs
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-
-  - script: |
-      cd docs && make doctest && cd ..
-      poetry run pytest -v --cov . --cov-report xml:coverage.xml
-      ./cc-test-reporter after-build --exit-code $?
-    displayName: 'Run tests'
+  # - script: |
+  #     cd docs && make doctest && cd ..
+  #     poetry run pytest -v --cov . --cov-report xml:coverage.xml
+  #     ./cc-test-reporter after-build --exit-code $?
+  #   displayName: Run tests
