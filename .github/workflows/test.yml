@@ -19,9 +19,12 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10']
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Download code
         uses: actions/checkout@v2
-      - name: Get Python ${{ matrix.python-version }}
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
@@ -40,19 +43,38 @@ jobs:
           path: ./.venv/
           key: py-${{ matrix.python-version }}-poetry-install-${{ hashFiles('poetry.lock') }}
           restore-keys: poetry-install
-      - name: Install dependencies
+      - name: Install packages
         if: steps.poetry-install.outputs.cache-hit != 'true'
         run: rm -rf ./.venv/ && poetry install
-      - name: Download cache pre-commit
+      - name: Download cache for pre-commit
         id: pre-commit-install
         uses: actions/cache@v2
         with:
           path: ~/.cache/pre-commit
           key: py-${{ matrix.python-version }}-pre-commit-install-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: pre-commit-install
-      - name: Verify pre-commit
+      - name: Verify commit
         run: poetry run pre-commit run -a
-      - name: Run test docs
+      - name: Auto-generate missing pairs
+        run: |
+          . activate.sh && poetry run python generatestructs.py
+          poetry run python generatestructs.py
+      - name: Commit & Push changes
+        uses: actions-js/push@v1.3
+        with:
+          author_email: "morty.space@gmail.com"
+          author_name: "Morty Space"
+          directory: './src'
+          message: "[JOB] Updated API pairs and coins"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare codeclimate
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+      - name: Test docs
         run: . activate.sh && cd docs && make doctest && cd ..
-      - name: Run tests
+      - name: Test code
         run: . activate.sh && poetry run pytest -v --cov . --cov-report xml:coverage.xml
+      - name: Send codeclimate analytics
+        run: ./cc-test-reporter after-build --exit-code $?
