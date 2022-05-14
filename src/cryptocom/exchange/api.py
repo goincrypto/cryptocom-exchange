@@ -126,7 +126,7 @@ class ApiProvider:
         from_env=False,
         auth_required=True,
         timeout=5,
-        retries=3,
+        retries=6,
         root_url="https://api.crypto.com/v2/",
         ws_root_url="wss://stream.crypto.com/v2/",
         logger=None,
