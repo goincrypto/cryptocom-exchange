@@ -125,8 +125,8 @@ class ApiProvider:
         api_secret="",
         from_env=False,
         auth_required=True,
-        timeout=25,
-        retries=6,
+        timeout=5,
+        retries=3,
         root_url="https://api.crypto.com/v2/",
         ws_root_url="wss://stream.crypto.com/v2/",
         logger=None,
@@ -206,7 +206,7 @@ class ApiProvider:
         original_data = data
         limiter = self.get_limiter(path)
 
-        for count in range(self.retries + 1):
+        for count in range(self.retries):
             client = httpx.AsyncClient(
                 timeout=httpx.Timeout(timeout=self.timeout),
                 verify=self.ssl_context,
