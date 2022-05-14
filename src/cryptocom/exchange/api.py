@@ -269,10 +269,10 @@ class ApiProvider:
         async for ws in websockets.connect(url, open_timeout=self.timeout):
             try:
                 dataiterator = ApiListenAsyncIterable(self, ws, channels, sign)
-                async with async_timeout.timeout(120) as tm:
+                async with async_timeout.timeout(70) as tm:
                     async for data in dataiterator:
                         if data:
-                            tm.shift(120)
+                            tm.shift(70)
                             yield data
             except (websockets.ConnectionClosed, asyncio.TimeoutError):
                 continue

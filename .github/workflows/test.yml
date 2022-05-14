@@ -75,6 +75,7 @@ jobs:
       - name: Test docs
         run: . activate.sh && cd docs && make doctest && cd ..
       - name: Test code
+        timeout-minutes: 5
         run: . activate.sh && poetry run pytest -v --cov . --cov-report xml:coverage.xml
       - name: Send codeclimate analytics
         run: ./cc-test-reporter after-build -r ${{ secrets.CC_TEST_REPORTER_ID }} --exit-code $?

@@ -78,17 +78,13 @@ async def test_listen_candles(exchange: cro.Exchange):
 @pytest.mark.asyncio
 async def test_listen_trades(exchange: cro.Exchange):
     trades = []
-    count = 0
-    pairs = [cro.pairs.CRO_USDT, cro.pairs.BTC_USDT]
+    pairs = [cro.pairs.BTC_USDC, cro.pairs.BTC_USDT]
     pairs_seen = set()
     async for trade in exchange.listen_trades(*pairs):
         trades.append(trade)
         pairs_seen.add(trade.pair)
-        if count > 100:
+        if len(pairs_seen) == len(pairs) and len(trades) > 30:
             break
-        count += 1
-
-    assert len(pairs_seen) == len(pairs)
 
 
 @pytest.mark.asyncio
