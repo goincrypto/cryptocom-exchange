@@ -61,7 +61,7 @@ async def test_get_candles(exchange: cro.Exchange):
 async def test_listen_candles(exchange: cro.Exchange):
     candles = {}
     pairs = (cro.pairs.CRO_USDC, cro.pairs.USDC_USDT, cro.pairs.BTC_USDT)
-    default_count = 2
+    default_count = 1
 
     async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
         candles.setdefault(candle.pair, 0)
