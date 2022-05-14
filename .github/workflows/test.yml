@@ -65,7 +65,7 @@ jobs:
           author_email: "morty.space@gmail.com"
           author_name: "Morty Space"
           directory: './src'
-          message: "[JOB] Updated API pairs and coins"
+          message: "[BOT] Updated API pairs and coins"
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare codeclimate
         run: |
@@ -77,4 +77,4 @@ jobs:
       - name: Test code
         run: . activate.sh && poetry run pytest -v --cov . --cov-report xml:coverage.xml
       - name: Send codeclimate analytics
-        run: ./cc-test-reporter after-build --exit-code $?
+        run: ./cc-test-reporter after-build -r ${{ secrets.CC_TEST_REPORTER_ID }} --exit-code $?
