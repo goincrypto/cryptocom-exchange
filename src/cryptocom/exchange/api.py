@@ -50,21 +50,11 @@ class ApiListenAsyncIterable:
         self.sign = sign
         self.sub_data_sent = False
         self.auth_sent = False
-        self.connected = False
-
-    async def connect(self):
-        # sleep because too many requests from docs
-        await asyncio.sleep(2)
-
-        self.connected = True
 
     def __aiter__(self):
         return self
 
     async def __anext__(self):
-        if not self.connected:
-            await self.connect()
-
         if not self.sub_data_sent:
             sub_data = {
                 "id": random.randint(1000, 10000),
@@ -269,10 +259,10 @@ class ApiProvider:
         async for ws in websockets.connect(url, open_timeout=self.timeout):
             try:
                 dataiterator = ApiListenAsyncIterable(self, ws, channels, sign)
-                async with async_timeout.timeout(70) as tm:
+                async with async_timeout.timeout(90) as tm:
                     async for data in dataiterator:
                         if data:
-                            tm.shift(70)
+                            tm.shift(90)
                             yield data
             except (websockets.ConnectionClosed, asyncio.TimeoutError):
                 continue
