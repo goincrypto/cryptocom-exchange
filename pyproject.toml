@@ -6,7 +6,7 @@ name = "cryptocom-exchange"
 packages = [
   {include = "cryptocom", from = "src"},
 ]
-version = "0.10.7"
+version = "0.10.4"
 readme = "README.md"
 classifiers = [
   "Operating System :: OS Independent",
@@ -58,7 +58,6 @@ line_length = 79
 [tool.semantic_release]
 version_toml = "pyproject.toml:tool.poetry.version"
 branch = "main"
-upload_to_pypi = false
+upload_to_pypi = true
 upload_to_release = true
 build_command = "pip install poetry && poetry build"
-commit_message = "release: {version}"

@@ -16,7 +16,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        python-version: ['3.10']
+        python-version: ['3.7', '3.8', '3.9', '3.10']
     runs-on: ubuntu-latest
     steps:
       - name: Download code
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     # https://github.community/t/how-do-i-specify-job-dependency-running-in-another-workflow/16482
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'chore(release):')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -94,6 +94,8 @@ jobs:
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY_USERNAME: __token__
+          REPOSITORY_PASSWORD: ${{ secrets.REPOSITORY_PASSWORD }}
         run: |
           pip install python-semantic-release
           git config user.name github-actions
