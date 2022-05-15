@@ -1,4 +1,3 @@
-import async_timeout
 import pytest
 
 import cryptocom.exchange as cro
@@ -62,16 +61,15 @@ async def test_get_candles(exchange: cro.Exchange):
 async def test_listen_candles(exchange: cro.Exchange):
     candles = {}
     pairs = (cro.pairs.CRO_USDC, cro.pairs.USDC_USDT, cro.pairs.BTC_USDT)
-    default_count = 1
+    default_count = 2
 
-    async with async_timeout.timeout(130):
-        async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
-            candles.setdefault(candle.pair, 0)
-            candles[candle.pair] += 1
-            if all(v == default_count for v in candles.values()) and len(
-                candles
-            ) == len(pairs):
-                break
+    async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
+        candles.setdefault(candle.pair, 0)
+        candles[candle.pair] += 1
+        if all(v == default_count for v in candles.values()) and len(
+            candles
+        ) == len(pairs):
+            break
 
     for pair in pairs:
         assert candles[pair] == default_count

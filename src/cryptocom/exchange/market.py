@@ -96,15 +96,11 @@ class Exchange:
             raise ValueError(f"Provide Period enum not {period}")
 
         channels = [f"candlestick.{period}.{pair.name}" for pair in pairs]
-        prev_time = {}
 
         async for data in self.api.listen("market", *channels):
             pair = self.pairs[data["instrument_name"]]
             for candle in data["data"]:
-                current_time = int(candle["t"] / 1000)
-                if pair not in prev_time or current_time > prev_time[pair]:
-                    yield Candle.from_api(pair, candle)
-                    prev_time[pair] = current_time
+                yield Candle.from_api(pair, candle)
 
     async def listen_trades(self, *pairs: List[Pair]) -> MarketTrade:
         channels = [f"trade.{pair.name}" for pair in pairs]
