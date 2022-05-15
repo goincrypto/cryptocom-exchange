@@ -50,4 +50,4 @@ __all__ = [
     "ApiProvider",
 ]
 
-__version__ = "0.10.4"
+__version__ = "0.11b0"
