@@ -13,7 +13,9 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
-from cryptocom.exchange import __version__
+from importlib_metadata import version as get_version
+
+__version__ = get_version("cryptocom.exchange")
 
 # -- Project information -----------------------------------------------------
 
