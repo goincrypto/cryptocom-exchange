@@ -6,7 +6,7 @@ name = "cryptocom-exchange"
 packages = [
   {include = "cryptocom", from = "src"},
 ]
-version = "0.10.6"
+version = "0.10.7"
 readme = "README.md"
 classifiers = [
   "Operating System :: OS Independent",
@@ -61,3 +61,4 @@ branch = "main"
 upload_to_pypi = false
 upload_to_release = true
 build_command = "pip install poetry && poetry build"
+commit_message = "release: {version}"

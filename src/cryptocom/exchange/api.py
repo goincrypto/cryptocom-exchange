@@ -68,7 +68,9 @@ class ApiListenAsyncIterable:
             await self.ws.send(json.dumps(sub_data))
             self.sub_data_sent = True
 
-        data = await self.ws.recv()
+        async with async_timeout.timeout(60) as tm:
+            data = await self.ws.recv()
+            tm.shift(60)
 
         if data:
             data = json.loads(data)
@@ -259,10 +261,8 @@ class ApiProvider:
         async for ws in websockets.connect(url, open_timeout=self.timeout):
             try:
                 dataiterator = ApiListenAsyncIterable(self, ws, channels, sign)
-                async with async_timeout.timeout(90) as tm:
-                    async for data in dataiterator:
-                        if data:
-                            tm.shift(90)
-                            yield data
+                async for data in dataiterator:
+                    if data:
+                        yield data
             except (websockets.ConnectionClosed, asyncio.TimeoutError):
                 continue
