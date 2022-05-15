@@ -220,11 +220,11 @@ class ApiProvider:
                         )
             except httpx.ConnectError:
                 raise ApiError(f"Cannot connect to host {self.root_url}")
-            except asyncio.TimeoutError as exc:
+            except (asyncio.TimeoutError, httpx.ReadError) as exc:
                 if count == self.retries:
                     raise ApiError(
-                        f"Timeout error, retries: {self.retries}. "
-                        f"Path: {path}. Data: {data}"
+                        f"Timeout or read error, retries: {self.retries}. "
+                        f"Path: {path}. Data: {data}. Exc: {exc}"
                     ) from exc
                 continue
             except json.JSONDecodeError:
