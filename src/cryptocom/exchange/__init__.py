@@ -49,5 +49,3 @@ __all__ = [
     "ApiError",
     "ApiProvider",
 ]
-
-__version__ = "0.11b0"

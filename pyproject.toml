@@ -56,7 +56,6 @@ line_length = 79
 
 [tool.semantic_release]
 version_variable = [
-    "cryptocom/exchange/__init__.py:__version__",
     "pyproject.toml:version"
 ]
 branch = "main"
