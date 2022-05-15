@@ -6,7 +6,7 @@ name = "cryptocom-exchange"
 packages = [
   {include = "cryptocom", from = "src"},
 ]
-version = "0.11b0"
+version = "0.10.4"
 readme = "README.md"
 classifiers = [
   "Operating System :: OS Independent",
@@ -56,9 +56,7 @@ profile = "black"
 line_length = 79
 
 [tool.semantic_release]
-version_variable = [
-    "pyproject.toml:version"
-]
+version_toml = "pyproject.toml:tool.poetry.version"
 branch = "main"
 upload_to_pypi = false
 upload_to_release = true
