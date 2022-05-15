@@ -92,6 +92,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pip install python-semantic-release
           git config user.name github-actions
