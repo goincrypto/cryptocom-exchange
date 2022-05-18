@@ -26,5 +26,5 @@
     },
     "files.insertFinalNewline": true,
     "git.ignoreLimitWarning": true,
-    "restructuredtext.confPath": "${workspaceFolder}/docs/source",
+    "esbonio.sphinx.confDir": "${workspaceFolder}/docs/source",
 }

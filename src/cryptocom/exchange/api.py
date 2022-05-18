@@ -220,22 +220,18 @@ class ApiProvider:
                             f"Error: {resp_json}. "
                             f"Status: {resp.status_code}. Json params: {data}"
                         )
-            except httpx.ConnectError:
-                raise ApiError(f"Cannot connect to host {self.root_url}")
-            except (asyncio.TimeoutError, httpx.ReadError) as exc:
+            except (
+                asyncio.TimeoutError,
+                httpx.ReadError,
+                httpx.ConnectError,
+                json.JSONDecodeError,
+            ) as exc:
                 if count == self.retries:
                     raise ApiError(
                         f"Timeout or read error, retries: {self.retries}. "
                         f"Path: {path}. Data: {data}. Exc: {exc}"
                     ) from exc
                 continue
-            except json.JSONDecodeError:
-                if resp.status_code == 429:
-                    continue
-                raise ApiError(
-                    f"Can't decode json, content: {resp.text}. "
-                    f"Code: {resp.status_code}"
-                )
             finally:
                 await client.aclose()
 
