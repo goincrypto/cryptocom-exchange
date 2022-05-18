@@ -1,4 +1,5 @@
 import asyncio
+import functools
 import time
 
 import async_timeout
@@ -10,6 +11,26 @@ from cryptocom.exchange.structs import (
     Timeframe,
     WithdrawalStatus,
 )
+
+
+def retry(times: int):
+    """Retry function for unstable tests."""
+
+    def decorator(f):
+        @functools.wraps(f)
+        async def wrapper(*args, **kwargs):
+            nonlocal times
+            while True:
+                try:
+                    return await f(*args, **kwargs)
+                except Exception as exc:
+                    times -= 1
+                    if not times:
+                        raise exc
+
+        return wrapper
+
+    return decorator
 
 
 @pytest.mark.asyncio
@@ -63,6 +84,7 @@ async def test_deposit_withdrawal_history(
 
 
 @pytest.mark.asyncio
+@retry(5)
 async def test_no_duplicate_mass_limit_orders(
     exchange: cro.Exchange, account: cro.Account
 ):
@@ -93,6 +115,7 @@ async def test_no_duplicate_mass_limit_orders(
 
 
 @pytest.mark.asyncio
+@retry(5)
 async def test_account_limit_orders(
     account: cro.Account, exchange: cro.Exchange
 ):
@@ -156,6 +179,7 @@ async def listen_orders(account: cro.Account, orders):
 
 
 @pytest.mark.asyncio
+@retry(5)
 async def test_account_market_orders(
     account: cro.Account, exchange: cro.Exchange
 ):
