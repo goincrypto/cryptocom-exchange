@@ -38,17 +38,17 @@ async def test_account_get_balance(account: cro.Account):
     balances = await account.get_balance()
 
     async with async_timeout.timeout(120):
-        while balances[cro.coins.CRO].available < 0.3:
+        while balances[cro.coins.CRO].available < 1:
             await account.buy_market(cro.pairs.CRO_USDT, 0.1)
             balances = await account.get_balance()
-        while balances[cro.coins.USDT].available < 0.3:
+        while balances[cro.coins.USDT].available < 1:
             await account.sell_market(cro.pairs.CRO_USDT, 0.1)
             balances = await account.get_balance()
 
     balances = await account.get_balance()
     local_coins = cro.coins.all()
-    assert balances[cro.coins.CRO].available > 0.3
-    assert balances[cro.coins.USDT].available > 0.3
+    assert balances[cro.coins.CRO].available > 1
+    assert balances[cro.coins.USDT].available > 1
     for coin in balances:
         assert coin in local_coins
 
