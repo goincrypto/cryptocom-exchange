@@ -77,7 +77,7 @@ async def test_listen_candles(exchange: cro.Exchange):
             break
 
     for pair in pairs:
-        assert candles[pair] == default_count
+        assert candles[pair] >= default_count
 
 
 @pytest.mark.asyncio
