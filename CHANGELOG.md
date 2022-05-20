@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.4 (2022-05-20)
+### Sync
+* Updated API pairs and coins ([`a42f4e4`](https://github.com/goincrypto/cryptocom-exchange/commit/a42f4e4501da11e8e79f890b0b69966741777a1a))
+
 ## v0.11.3 (2022-05-19)
 
 
