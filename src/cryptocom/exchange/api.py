@@ -222,8 +222,7 @@ class ApiProvider:
                         )
             except (
                 asyncio.TimeoutError,
-                httpx.ReadError,
-                httpx.ConnectError,
+                httpx.HTTPError,
                 json.JSONDecodeError,
             ) as exc:
                 if count == self.retries:
