@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.5 (2022-05-23)
+### Fix
+* Updated exception handling for requests ([`4e52199`](https://github.com/goincrypto/cryptocom-exchange/commit/4e52199a9f471c7880f855a26bf7cf7466be6148))
+
+### Sync
+* Updated API pairs and coins ([`12d0c25`](https://github.com/goincrypto/cryptocom-exchange/commit/12d0c250a0749cad92c58926b1a8ab22067cc506))
+
 ## v0.11.4 (2022-05-20)
 ### Sync
 * Updated API pairs and coins ([`a42f4e4`](https://github.com/goincrypto/cryptocom-exchange/commit/a42f4e4501da11e8e79f890b0b69966741777a1a))
