@@ -103,7 +103,8 @@ jobs:
           REPOSITORY_USERNAME: '__token__'
           REPOSITORY_PASSWORD: ${{ secrets.REPOSITORY_PASSWORD }}
         run: |
-          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          git fetch --all --depth=1 origin +refs/tags/*:refs/tags/*
+          git reset --hard origin/main
           pip install python-semantic-release
           git config user.name github-actions
           git config user.email github-actions@github.com
