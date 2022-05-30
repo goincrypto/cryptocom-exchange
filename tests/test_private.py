@@ -22,7 +22,7 @@ def retry(times: int):
             nonlocal times
             while True:
                 try:
-                    return await f(*args, **kwargs)
+                    return await f(account, *args, **kwargs)
                 except Exception as exc:
                     times -= 1
                     if not times:
