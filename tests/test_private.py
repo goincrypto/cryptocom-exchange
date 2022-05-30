@@ -18,7 +18,7 @@ def retry(times: int):
 
     def decorator(f):
         @functools.wraps(f)
-        async def wrapper(*args, **kwargs):
+        async def wrapper(account: cro.Account, *args, **kwargs):
             nonlocal times
             while True:
                 try:
@@ -27,6 +27,8 @@ def retry(times: int):
                     times -= 1
                     if not times:
                         raise exc
+                    while account.get_open_orders(cro.pairs.CRO_USDT):
+                        await account.cancel_open_orders(cro.pairs.CRO_USDT)
 
         return wrapper
 
@@ -55,7 +57,7 @@ async def test_account_get_balance(account: cro.Account):
 
 @pytest.mark.asyncio
 async def test_deposit_withdrawal_history(
-    exchange: cro.Exchange, account: cro.Account
+    account: cro.Account, exchange: cro.Exchange
 ):
     transactions = await account.get_withdrawal_history(cro.coins.CRO)
     assert transactions
@@ -86,7 +88,8 @@ async def test_deposit_withdrawal_history(
 @pytest.mark.asyncio
 @retry(5)
 async def test_no_duplicate_mass_limit_orders(
-    exchange: cro.Exchange, account: cro.Account
+    account: cro.Account,
+    exchange: cro.Exchange,
 ):
     buy_price = round(await exchange.get_price(cro.pairs.CRO_USDT) / 2, 4)
     orders_count = 50
