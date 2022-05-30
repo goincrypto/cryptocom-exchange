@@ -79,7 +79,7 @@ jobs:
       - name: Test docs
         run: . activate.sh && cd docs && make doctest && cd ..
       - name: Test code
-        timeout-minutes: 5
+        timeout-minutes: 10
         run: . activate.sh && poetry run pytest -v --cov . --cov-report xml:coverage.xml
       - name: Send codeclimate analytics
         if: matrix.python-version == '3.10'
