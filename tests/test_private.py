@@ -27,7 +27,7 @@ def retry(times: int):
                     times -= 1
                     if not times:
                         raise exc
-                    while account.get_open_orders(cro.pairs.CRO_USDT):
+                    while await account.get_open_orders(cro.pairs.CRO_USDT):
                         await account.cancel_open_orders(cro.pairs.CRO_USDT)
 
         return wrapper
