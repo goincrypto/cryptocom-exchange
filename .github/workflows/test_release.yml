@@ -2,7 +2,7 @@
 name: Test & Release
 on:
   schedule:
-    - cron: "* * */5 * *"
+    - cron: "0 0 */5 * *"
   push:
     branches:
       - main
