@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.13 (2022-06-02)
+### Fix
+* Updated httpx to 0.23 ([`ff655bd`](https://github.com/goincrypto/cryptocom-exchange/commit/ff655bd6fc5e9b11f7a05a0c9d3e4beb306d4553))
+
+### Sync
+* Updated API pairs and coins ([`2f2c264`](https://github.com/goincrypto/cryptocom-exchange/commit/2f2c264c79702350493a4447fec9b107e92787b7))
+
 ## v0.11.12 (2022-05-31)
 ### Sync
 * Updated API pairs and coins ([`a94fe89`](https://github.com/goincrypto/cryptocom-exchange/commit/a94fe89aa0cdee349c3dd52f53ca1947ba77e088))
