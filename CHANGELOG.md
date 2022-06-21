@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.16 (2022-06-21)
+### Fix
+* Missing pairs available with default precision ([`7cb325b`](https://github.com/goincrypto/cryptocom-exchange/commit/7cb325b5914ac8b89092f27d8a98eace94809d22))
+
 ## v0.11.15 (2022-06-11)
 ### Sync
 * Updated API pairs and coins ([`d36762e`](https://github.com/goincrypto/cryptocom-exchange/commit/d36762eb79c33972603d332473797ac4cfe815fa))
