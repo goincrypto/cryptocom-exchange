@@ -79,13 +79,13 @@ jobs:
       - name: Test docs
         run: . activate.sh && cd docs && make doctest && cd ..
       - name: Running the Sphinx to gh-pages Action
-        uses: uibcdf/action-sphinx-docs-to-gh-pages@v1.0.0
+        uses: uibcdf/action-sphinx-docs-to-gh-pages@v1.1.0-beta
         with:
           branch: main
           dir_docs: docs
-          sphinxapiopts: '--separate -o . ../'
-          sphinxapiexclude: '../*setup* ../*.ipynb'
-          sphinxopts: ''
+          # sphinxapiopts: '--separate -o . ../'
+          # sphinxapiexclude: '../*setup* ../*.ipynb'
+          # sphinxopts: ''
       # - name: Test code
       #   timeout-minutes: 6
       #   run: . activate.sh && poetry run pytest -v --cov . --cov-report xml:coverage.xml
