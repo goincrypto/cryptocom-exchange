@@ -7,7 +7,7 @@ build:
     python: "3.10"
   commands:
     - curl -sSL https://install.python-poetry.org | python3 -
-    - export PATH="$HOME/.local/bin/:$PATH"
+    - `export PATH="/home/docs/.local/bin:$PATH"`
     - poetry config virtualenvs.create false
     - poetry install
     - cd docs && make html
