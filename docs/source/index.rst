@@ -29,7 +29,7 @@ Create virtual environment, activate, install
     source venv/bin/activate
     pip3 install cryptocom-exchange
 
-Userful examples
+Useful examples
 ================
 
 - To use pairs from server and have fresh data instead of constants from `pairs` use `sync_pairs`

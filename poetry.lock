@@ -559,7 +559,7 @@ idna2008 = ["idna"]
 name = "setuptools"
 version = "65.5.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -788,7 +788,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "663719bfba8e553a89fb452aac5538b88ea6e8f08eb4925371a3db733e133dad"
+content-hash = "57b9c1b4e8e78028ae22eb2eb9d094f44b6edd494ec16e47358f7d06f2cc5b6b"
 
 [metadata.files]
 aiolimiter = [
