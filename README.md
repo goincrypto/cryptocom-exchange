@@ -1,4 +1,4 @@
-# Python 3.7-3.10.5 async library for crypto.com/exchange API using httpx and websockets
+# Python 3.7+ async library for crypto.com/exchange API using httpx and websockets
 
 [![Docs Build Status](https://readthedocs.org/projects/cryptocom-exchange/badge/?version=latest&style=flat)](https://readthedocs.org/projects/cryptocom-exchange)
 ![Test workflow](https://github.com/goincrypto/cryptocom-exchange/actions/workflows/test_release.yml/badge.svg)
@@ -15,12 +15,9 @@ Documentation: [https://cryptocom-exchange.rtfd.io](https://cryptocom-exchange.r
 
 Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-docs.crypto.com)
 
-### **SUPPORT up to 3.10.5 VERSIONS -> poetry pkg_resources issue**
-
 ### Description
 
-`pip install cryptocom-exchange`
-`poetry add cryptocom-exchange`
+`pip install cryptocom-exchange` or `poetry add cryptocom-exchange`
 
 - provides all methods to access crypto.com/exchange API (except for websockets temporary)
 - full test coverage on real exchange with real money
