@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.18 (2022-10-17)
+### Fix
+* Updated to use python 3.10.7 ([`b639d4d`](https://github.com/goincrypto/cryptocom-exchange/commit/b639d4d8a0b6ac5dab52015e3a97315dd88a9d50))
+
 ## v0.11.17 (2022-10-17)
 ### Fix
 * [ci] update actions python version ([`a7db870`](https://github.com/goincrypto/cryptocom-exchange/commit/a7db870c80791e9e08fe72f3df8ccf9253629bfa))
