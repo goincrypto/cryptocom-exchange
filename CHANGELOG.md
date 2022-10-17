@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.0 (2022-10-17)
+### Feature
+* Improved ssl error handling or empty data ([`da62f47`](https://github.com/goincrypto/cryptocom-exchange/commit/da62f47cb53d14b52176e5207519b6a1c1e1a8fc))
+
 ## v0.11.18 (2022-10-17)
 ### Fix
 * Updated to use python 3.10.7 ([`b639d4d`](https://github.com/goincrypto/cryptocom-exchange/commit/b639d4d8a0b6ac5dab52015e3a97315dd88a9d50))
