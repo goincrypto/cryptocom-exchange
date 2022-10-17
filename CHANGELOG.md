@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.17 (2022-10-17)
+### Fix
+* [ci] update actions python version ([`a7db870`](https://github.com/goincrypto/cryptocom-exchange/commit/a7db870c80791e9e08fe72f3df8ccf9253629bfa))
+* [ci] updated matrix config ([`59900b6`](https://github.com/goincrypto/cryptocom-exchange/commit/59900b6502896a0dc5f985f45ca962f422acba8f))
+
+### Sync
+* Updated API pairs and coins ([`41ca92a`](https://github.com/goincrypto/cryptocom-exchange/commit/41ca92ad8ae16925ef87b0a0717aa0e0c255dcd0))
+
 ## v0.11.16 (2022-06-21)
 ### Fix
 * Missing pairs available with default precision ([`7cb325b`](https://github.com/goincrypto/cryptocom-exchange/commit/7cb325b5914ac8b89092f27d8a98eace94809d22))
