@@ -2,14 +2,14 @@ version: 2
 
 # Set the version of Python and other tools you might need
 build:
-  os: ubuntu-20.04
+  os: "ubuntu-22.04"
   tools:
     python: "3.10"
-
-python:
-  install:
-    - method: pip
-      path: .
+  jobs:
+    post_create_environment:
+      - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+      - $HOME/.poetry/bin/poetry config virtualenvs.create false
+      - $HOME/.poetry/bin/poetry install
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
