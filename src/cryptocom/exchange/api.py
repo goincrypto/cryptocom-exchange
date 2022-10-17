@@ -4,6 +4,7 @@ import hmac
 import json
 import os
 import random
+import ssl
 import time
 from urllib.parse import urljoin
 
@@ -223,6 +224,7 @@ class ApiProvider:
             except (
                 asyncio.TimeoutError,
                 httpx.HTTPError,
+                ssl.SSLError,
                 json.JSONDecodeError,
             ) as exc:
                 if count == self.retries:
@@ -236,7 +238,10 @@ class ApiProvider:
 
             if resp_json["code"] == 0:
                 result = resp_json.get("result", {})
-                return result.get("data", {}) or result
+                result = result.get("data", {}) or result
+                if result is None:
+                    continue
+                return result
 
             if count == self.retries:
                 raise ApiError(
