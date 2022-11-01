@@ -1,4 +1,7 @@
-def round_up(value: str, precision: int) -> float:
+import typing as TP
+
+
+def round_up(value: TP.Union[float, str], precision: int) -> float:
     """Rounds number to upper precision 0.13 -> 0.2"""
     pwr = 10**precision
     value = float(value)
@@ -8,7 +11,7 @@ def round_up(value: str, precision: int) -> float:
     return rounded
 
 
-def round_down(value: str, precision: int) -> float:
+def round_down(value: TP.Union[float, str], precision: int) -> float:
     """Rounds number to lower precision 0.13 -> 0.1"""
     value = float(value)
     pwr = 10**precision

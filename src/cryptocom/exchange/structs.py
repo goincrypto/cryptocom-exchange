@@ -1,4 +1,5 @@
 import time
+import typing as TP
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum, IntEnum
@@ -62,8 +63,8 @@ class DefaultPairDict(dict):
 @dataclass
 class MarketTicker:
     pair: Pair
-    buy_price: float | None
-    sell_price: float | None
+    buy_price: TP.Union[float, None]
+    sell_price: TP.Union[float, None]
     trade_price: float
     time: int
     volume: float
