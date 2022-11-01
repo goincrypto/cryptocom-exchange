@@ -18,6 +18,7 @@ async def main():
     account = cro.Account(from_env=True)
     coins = (await account.get_balance()).keys()
     pairs = await exchange.get_pairs()
+    networks = await account.get_currency_networks()
 
     with (SRC_PATH / "pairs.py").open("w") as f:
         f.writelines(
@@ -45,6 +46,17 @@ async def main():
             + ["\n", ALL_TEMPLATE.format("Coin")]
         )
 
+    with (SRC_PATH / "networks.py").open("w") as f:
+        f.writelines(
+            [
+                "from .structs import Network\n\n",
+            ]
+            + [
+                f'{network.name}_NETWORK = Network("{network.exchange_name}")\n'
+                for network in sorted(networks, key=lambda c: c.name)
+            ]
+            + ["\n", ALL_TEMPLATE.format("Network")]
+        )
 
 if __name__ == "__main__":
     asyncio.run(main())
