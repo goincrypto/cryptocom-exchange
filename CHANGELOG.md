@@ -2,6 +2,20 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.0 (2022-11-01)
+### Feature
+* Updated to lastest 2.1 spot exchange API ([`bd370ec`](https://github.com/goincrypto/cryptocom-exchange/commit/bd370ec8183a1977239504cae356e9b5c025ebfd))
+
+### Fix
+* Updated typing ([`8874285`](https://github.com/goincrypto/cryptocom-exchange/commit/88742854613fb250b7a45c1d4c127672703cd2da))
+* Updated annotation ([`39b98ba`](https://github.com/goincrypto/cryptocom-exchange/commit/39b98ba3c427bf26cec14792aa4d3812e0ad0dcc))
+* Do not use order info after execution ([`f9ccc18`](https://github.com/goincrypto/cryptocom-exchange/commit/f9ccc182ba79001928930b60d4a4e2d7e73484a3))
+* Cache update for github actions ([`2733a0c`](https://github.com/goincrypto/cryptocom-exchange/commit/2733a0c00ecaca07d1db74164eba7606bbce62b4))
+* Not all trades always exists ([`0ad02fb`](https://github.com/goincrypto/cryptocom-exchange/commit/0ad02fb23e73e59d9e45eb22caa48033176dc92a))
+
+### Sync
+* Updated API pairs and coins ([`4e5ebc0`](https://github.com/goincrypto/cryptocom-exchange/commit/4e5ebc04ce049e5a4a8484963ef736467028e8e5))
+
 ## v0.12.0 (2022-10-17)
 ### Feature
 * Improved ssl error handling or empty data ([`da62f47`](https://github.com/goincrypto/cryptocom-exchange/commit/da62f47cb53d14b52176e5207519b6a1c1e1a8fc))
