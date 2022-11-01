@@ -217,6 +217,8 @@ class ApiProvider:
                     )
                     resp_json = resp.json()
                     if resp.status_code != 200:
+                        if count != self.retries:
+                            continue
                         raise ApiError(
                             f"Error: {resp_json}. "
                             f"Status: {resp.status_code}. Json params: {data}"

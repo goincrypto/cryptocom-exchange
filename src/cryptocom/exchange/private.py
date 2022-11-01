@@ -220,8 +220,8 @@ class Account:
         type_: OrderType,
         quantity: float,
         price: float = 0,
-        force_type: OrderForceType = OrderForceType.GOOD_TILL_CANCEL,
-        exec_type: OrderExecType = OrderExecType.MARKET,
+        force_type: OrderForceType = None,
+        exec_type: OrderExecType = None,
         client_id: int = None,
     ) -> int:
         """Create raw order with buy or sell side."""
@@ -230,10 +230,20 @@ class Account:
             "side": side.value,
             "type": type_.value,
         }
-        data["time_in_force"] = force_type.value
-        data["exec_inst"] = exec_type.value
 
+        if force_type:
+            data["time_in_force"] = force_type.value
+
+        if exec_type:
+            data["exec_inst"] = exec_type.value
+
+        old_quantity = quantity
         quantity = "{:.{}f}".format(quantity, pair.quantity_precision)
+        if old_quantity and not float(quantity):
+            raise ValueError(
+                "Your quantity {} is less then accepted precision {}"
+                "for pair: {}".format(old_quantity, quantity, pair)
+            )
         if type_ == OrderType.MARKET and side == OrderSide.BUY:
             data["notional"] = quantity
         else:
@@ -257,8 +267,8 @@ class Account:
         pair: Pair,
         quantity: float,
         price: float,
-        force_type: OrderForceType = OrderForceType.GOOD_TILL_CANCEL,
-        exec_type: OrderExecType = OrderExecType.MARKET,
+        force_type: OrderForceType = None,
+        exec_type: OrderExecType = None,
         client_id: int = None,
     ) -> int:
         """Buy limit order."""
@@ -270,6 +280,7 @@ class Account:
             price,
             force_type,
             exec_type,
+            client_id,
         )
 
     async def sell_limit(
@@ -277,8 +288,8 @@ class Account:
         pair: Pair,
         quantity: float,
         price: float,
-        force_type: OrderForceType = OrderForceType.GOOD_TILL_CANCEL,
-        exec_type: OrderExecType = OrderExecType.MARKET,
+        force_type: OrderForceType = None,
+        exec_type: OrderExecType = None,
         client_id: int = None,
     ) -> int:
         """Sell limit order."""
@@ -290,6 +301,7 @@ class Account:
             price,
             force_type,
             exec_type,
+            client_id,
         )
 
     async def wait_for_status(
@@ -401,7 +413,7 @@ class Account:
             {"params": {"instrument_name": pair.name}},
         )
 
-    async def listen_balance(self) -> Balance:
+    async def listen_balances(self) -> Balance:
         async for data in self.api.listen("user", "user.balance", sign=True):
             for bal in data.get("data", []):
                 yield Balance(

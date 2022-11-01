@@ -41,7 +41,7 @@ async def test_get_price(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_get_orderbook(exchange: cro.Exchange):
-    depth = 150
+    depth = 50
     book = await exchange.get_orderbook(cro.pairs.CRO_USDT)
     assert book.buys and book.sells
     assert book.sells[0].price > book.buys[0].price
@@ -61,10 +61,10 @@ async def test_get_candles(exchange: cro.Exchange):
 async def test_listen_candles(exchange: cro.Exchange):
     candles = {}
     pairs = (
-        cro.pairs.BTC_USDC,
+        cro.pairs.BTC_USD,
         cro.pairs.ETH_USDT,
         cro.pairs.BTC_USDT,
-        cro.pairs.ETH_USDC,
+        cro.pairs.ETH_USD,
     )
     default_count = 1
 
@@ -83,7 +83,7 @@ async def test_listen_candles(exchange: cro.Exchange):
 @pytest.mark.asyncio
 async def test_listen_trades(exchange: cro.Exchange):
     trades = []
-    pairs = [cro.pairs.BTC_USDC, cro.pairs.BTC_USDT]
+    pairs = [cro.pairs.BTC_USD, cro.pairs.BTC_USDT]
     pairs_seen = set()
     async for trade in exchange.listen_trades(*pairs):
         trades.append(trade)
@@ -94,9 +94,9 @@ async def test_listen_trades(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_listen_orderbook(exchange: cro.Exchange):
-    pairs = [cro.pairs.CRO_USDT, cro.pairs.CRO_USDC]
+    pairs = [cro.pairs.CRO_USDT, cro.pairs.CRO_USD]
     orderbooks = []
-    depth = 150
+    depth = 50
 
     async for orderbook in exchange.listen_orderbook(*pairs):
         orderbooks.append(orderbook)

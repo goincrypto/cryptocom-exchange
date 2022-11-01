@@ -48,7 +48,7 @@ class Exchange:
         data = await self.api.get(
             "public/get-ticker", {"instrument_name": pair.name}
         )
-        return MarketTicker.from_api(pair, data)
+        return MarketTicker.from_api(pair, data[0])
 
     async def get_tickers(self) -> Dict[Pair, MarketTicker]:
         """Get tickers in all available markets."""
@@ -78,11 +78,11 @@ class Exchange:
             "public/get-book", {"instrument_name": pair.name}
         )
         buys = [
-            OrderInBook(*order, pair, OrderSide.BUY)
+            OrderInBook.from_api(order, pair, OrderSide.BUY)
             for order in data[0]["bids"]
         ]
         sells = [
-            OrderInBook(*order, pair, OrderSide.SELL)
+            OrderInBook.from_api(order, pair, OrderSide.SELL)
             for order in reversed(data[0]["asks"])
         ]
         return OrderBook(buys, sells, pair)
@@ -115,15 +115,15 @@ class Exchange:
                 yield MarketTrade.from_api(pair, trade)
 
     async def listen_orderbook(self, *pairs: List[Pair]) -> OrderBook:
-        channels = [f"book.{pair.name}.150" for pair in pairs]
+        channels = [f"book.{pair.name}.50" for pair in pairs]
         async for data in self.api.listen("market", *channels):
             pair = self.pairs[data["instrument_name"]]
             buys = [
-                OrderInBook(*order, pair, OrderSide.BUY)
+                OrderInBook.from_api(order, pair, OrderSide.BUY)
                 for order in data["data"][0]["bids"]
             ]
             sells = [
-                OrderInBook(*order, pair, OrderSide.SELL)
+                OrderInBook.from_api(order, pair, OrderSide.SELL)
                 for order in reversed(data["data"][0]["asks"])
             ]
             yield OrderBook(buys, sells, pair)

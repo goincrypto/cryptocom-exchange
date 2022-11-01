@@ -40,10 +40,10 @@ class Pair:
         return Coin(self.name.split("_")[1])
 
     def round_price(self, price):
-        return round_down(price, self.price_precision)
+        return round_down(float(price), self.price_precision)
 
     def round_quantity(self, quantity):
-        return round_down(quantity, self.quantity_precision)
+        return round_down(float(quantity), self.quantity_precision)
 
     def __hash__(self):
         return self.name.__hash__()
@@ -62,8 +62,8 @@ class DefaultPairDict(dict):
 @dataclass
 class MarketTicker:
     pair: Pair
-    buy_price: float
-    sell_price: float
+    buy_price: float | None
+    sell_price: float | None
     trade_price: float
     time: int
     volume: float
@@ -75,9 +75,9 @@ class MarketTicker:
     def from_api(cls, pair, data):
         return cls(
             pair=pair,
-            buy_price=pair.round_price(data["b"]),
-            sell_price=pair.round_price(data["k"]),
-            trade_price=pair.round_price(data["a"]),
+            buy_price=pair.round_price(data["b"]) if data["b"] else None,
+            sell_price=pair.round_price(data["k"]) if data["k"] else None,
+            trade_price=pair.round_price(data["a"]) if data["a"] else None,
             time=int(data["t"] / 1000),
             volume=pair.round_quantity(data["v"]),
             high=pair.round_price(data["h"]),
@@ -161,6 +161,12 @@ class OrderInBook:
     @property
     def volume(self) -> float:
         return self.pair.round_quantity(self.price * self.quantity)
+
+    @classmethod
+    def from_api(cls, order, pair, side):
+        order[0] = pair.round_price(order[0])
+        order[1] = pair.round_quantity(order[1])
+        return cls(*order, pair, side)
 
 
 @dataclass
@@ -302,7 +308,7 @@ class Order:
 
     @cached_property
     def is_filled(self):
-        return self.status == OrderStatus.FILLED
+        return not self.remain_quantity
 
     @cached_property
     def is_pending(self):

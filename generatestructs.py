@@ -15,9 +15,11 @@ SRC_PATH = Path(__file__).parent / "src" / "cryptocom" / "exchange"
 
 async def main():
     exchange = cro.Exchange()
-    account = cro.Account(from_env=True)
-    coins = (await account.get_balance()).keys()
+    coins = set()
     pairs = await exchange.get_pairs()
+    for pair in pairs:
+        coins.add(pair.base_coin)
+        coins.add(pair.quote_coin)
 
     with (SRC_PATH / "pairs.py").open("w") as f:
         f.writelines(
