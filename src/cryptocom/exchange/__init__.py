@@ -21,6 +21,7 @@ from .structs import (
     Timeframe,
     Withdrawal,
     WithdrawalStatus,
+    Network
 )
 
 if platform.system() == "Windows":
@@ -49,3 +50,5 @@ __all__ = [
     "ApiError",
     "ApiProvider",
 ]
+
+__version__ = '0.10.3'

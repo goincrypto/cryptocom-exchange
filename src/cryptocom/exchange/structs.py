@@ -455,3 +455,15 @@ class Timeframe(IntEnum):
     @classmethod
     def resolve(cls, seconds: int) -> int:
         return seconds + int(time.time())
+
+
+@dataclass
+class Network:
+    exchange_name: str
+
+    @property
+    def name(self):
+        return self.exchange_name
+
+    def __hash__(self):
+        return self.name.__hash__()

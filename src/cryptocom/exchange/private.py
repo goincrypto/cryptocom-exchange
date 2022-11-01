@@ -19,6 +19,7 @@ from .structs import (
     PrivateTrade,
     Withdrawal,
     WithdrawalStatus,
+    Network
 )
 
 
@@ -439,3 +440,21 @@ class Account:
 
         resp = await self.api.post('private/create-withdrawal', {'params': data})
         return int(resp['id'])
+
+
+    async def get_currency_networks(self) -> List[Network]:
+        """Get the symbol network mapping."""
+        data = await self.api.post('private/get-currency-networks', {
+            'params': {}
+        })
+        all_networks = []
+        currency_map = data['currency_map']
+        for _, networks in currency_map.items():
+            for network in networks['network_list']:
+                if network['network_id'] not in all_networks:
+                    all_networks.append(network['network_id'])
+        return [
+            Network(
+                i
+            ) for i in all_networks
+        ]
