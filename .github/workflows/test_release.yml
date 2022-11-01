@@ -18,7 +18,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        python-version: ['3.10', '3.9', '3.8', '3.7']
+        python-version: ['3.10.7', '3.9', '3.8', '3.7']
     runs-on: ubuntu-latest
     steps:
       - name: Download code
@@ -34,10 +34,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: py-${{ matrix.python-version }}-poetry-pip-1.1.13
+          key: py-${{ matrix.python-version }}-poetry-pip-1.2.2
           restore-keys: poetry-pip
       - name: Install poetry
-        run: pip install poetry==1.1.13
+        run: pip install poetry==1.2.2
       - name: Download cache for poetry
         id: poetry-install
         uses: actions/cache@v2
@@ -49,7 +49,7 @@ jobs:
         if: steps.poetry-install.outputs.cache-hit != 'true'
         run: rm -rf ./.venv/ && poetry install
       - name: Download cache for pre-commit
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.10.7'
         id: pre-commit-install
         uses: actions/cache@v2
         with:
@@ -57,12 +57,12 @@ jobs:
           key: py-${{ matrix.python-version }}-pre-commit-install-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: pre-commit-install
       - name: Verify commit
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.10.7'
         run: poetry run pre-commit run -a
       - name: Auto-generate missing pairs
         run: . activate.sh && poetry run python generatestructs.py
       - name: Commit & Push changes
-        if: matrix.python-version == '3.10' && github.ref == 'refs/heads/main'
+        if: matrix.python-version == '3.10.7' && github.ref == 'refs/heads/main'
         uses: actions-js/push@v1.3
         with:
           author_email: "morty.space@gmail.com"
@@ -71,7 +71,7 @@ jobs:
           message: "sync: updated API pairs and coins"
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare codeclimate
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.10.7'
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
@@ -82,7 +82,7 @@ jobs:
         timeout-minutes: 6
         run: . activate.sh && poetry run pytest -v --cov . --cov-report xml:coverage.xml
       - name: Send codeclimate analytics
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.10.7'
         run: ./cc-test-reporter after-build -r ${{ secrets.CC_TEST_REPORTER_ID }} --exit-code $?
   release:
     runs-on: ubuntu-latest
@@ -92,7 +92,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.10.7'
       - name: Checkout code
         uses: actions/checkout@v2
         with:

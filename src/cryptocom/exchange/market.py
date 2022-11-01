@@ -4,6 +4,7 @@ from . import pairs
 from .api import ApiProvider
 from .structs import (
     Candle,
+    DefaultPairDict,
     MarketTicker,
     MarketTrade,
     OrderBook,
@@ -19,12 +20,16 @@ class Exchange:
 
     def __init__(self, api: ApiProvider = None):
         self.api = api or ApiProvider(auth_required=False)
-        self.pairs = {pair.name: pair for pair in pairs.all()}
+        self.pairs = DefaultPairDict(
+            **{pair.name: pair for pair in pairs.all()}
+        )
 
     async def sync_pairs(self):
         """Use this method to sync pairs if you have issues with missing
         pairs in library side."""
-        self.pairs = {pair.name: pair for pair in (await self.get_pairs())}
+        self.pairs = DefaultPairDict(
+            **{pair.name: pair for pair in (await self.get_pairs())}
+        )
 
     async def get_pairs(self) -> List[Pair]:
         """List all available market pairs and store to provide pairs info."""

@@ -49,6 +49,16 @@ class Pair:
         return self.name.__hash__()
 
 
+class DefaultPairDict(dict):
+    """Use default precision for old missing pairs."""
+
+    def __getitem__(self, name: str) -> Pair:
+        try:
+            return super().__getitem__(name)
+        except KeyError:
+            return Pair(name, 8, 8)
+
+
 @dataclass
 class MarketTicker:
     pair: Pair

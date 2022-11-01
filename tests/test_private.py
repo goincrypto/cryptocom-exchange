@@ -56,6 +56,13 @@ async def test_account_get_balance(account: cro.Account):
 
 
 @pytest.mark.asyncio
+async def test_missing_old_pairs(account: cro.Account):
+    missing_pair = account.pairs["LINK_CRO"]
+    assert missing_pair.price_precision == 8
+    assert missing_pair.quantity_precision == 8
+
+
+@pytest.mark.asyncio
 async def test_deposit_withdrawal_history(
     account: cro.Account, exchange: cro.Exchange
 ):
