@@ -1,5 +1,3 @@
-# After recent events with FTX, I suspend the current project. Not your keys, not your crypto. I will start work to port this API for DEX on-chain projects.
-
 ## Python 3.7+ async library for crypto.com/exchange API using httpx and websockets
 
 [![Docs Build Status](https://readthedocs.org/projects/cryptocom-exchange/badge/?version=latest&style=flat)](https://readthedocs.org/projects/cryptocom-exchange)
