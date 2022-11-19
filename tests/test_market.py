@@ -20,7 +20,7 @@ async def test_get_tickers(exchange: cro.Exchange):
     for pair, ticker in tickers.items():
         assert ticker.high >= ticker.low
         assert ticker.pair == pair
-        assert ticker.volume > 0
+        assert ticker.volume >= 0
 
 
 @pytest.mark.asyncio
