@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.1 (2022-11-21)
+### Sync
+* Updated API pairs and coins ([`0d70240`](https://github.com/goincrypto/cryptocom-exchange/commit/0d70240ae683a11c1ffdddc752aa71364ce540fd))
+* Updated API pairs and coins ([`4fd9c68`](https://github.com/goincrypto/cryptocom-exchange/commit/4fd9c689e8a58f30b35bd919bcbc6decd14e9c3c))
+* Updated API pairs and coins ([`df72cf3`](https://github.com/goincrypto/cryptocom-exchange/commit/df72cf33e4ca066f4ae1285a8d2aceeebd0eed1a))
+* Updated API pairs and coins ([`dc386f8`](https://github.com/goincrypto/cryptocom-exchange/commit/dc386f8ecace2407cf3dad114855d5d52ce2f9da))
+
 ## v0.13.0 (2022-11-01)
 ### Feature
 * Updated to lastest 2.1 spot exchange API ([`bd370ec`](https://github.com/goincrypto/cryptocom-exchange/commit/bd370ec8183a1977239504cae356e9b5c025ebfd))
