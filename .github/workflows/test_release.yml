@@ -60,7 +60,6 @@ jobs:
         if: matrix.python-version == '3.10.7'
         run: poetry run pre-commit run -a
       - name: Auto-generate missing pairs
-        if: matrix.python-version == '3.10.7'
         run: . activate.sh && poetry run python generatestructs.py
       - name: Commit & Push changes
         if: matrix.python-version == '3.10.7' && github.ref == 'refs/heads/main'
