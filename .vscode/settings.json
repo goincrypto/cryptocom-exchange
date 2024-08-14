@@ -1,8 +1,6 @@
 {
-    "python.defaultInterpreterPath": ".venv/bin/python",
+    "python.defaultInterpreterPath": "./.venv/bin/python",
     "python.testing.pytestEnabled": true,
-    "python.linting.enabled": true,
-    "python.linting.flake8Enabled": true,
     "editor.renderWhitespace": "all",
     "editor.rulers": [79],
     "files.exclude":{

@@ -86,6 +86,7 @@ async def test_listen_trades(exchange: cro.Exchange):
     pairs = [cro.pairs.BTC_USD, cro.pairs.BTC_USDT]
     pairs_seen = set()
     async for trade in exchange.listen_trades(*pairs):
+        print(trade)
         trades.append(trade)
         pairs_seen.add(trade.pair)
         if len(pairs_seen) == len(pairs) and len(trades) > 30:

@@ -1,4 +1,4 @@
-## Python 3.7+ async library for crypto.com/exchange API using httpx and websockets
+## Python 3.9+ async library for crypto.com/exchange API using httpx and websockets
 
 [![Docs Build Status](https://readthedocs.org/projects/cryptocom-exchange/badge/?version=latest&style=flat)](https://readthedocs.org/projects/cryptocom-exchange)
 ![Test workflow](https://github.com/goincrypto/cryptocom-exchange/actions/workflows/test_release.yml/badge.svg)

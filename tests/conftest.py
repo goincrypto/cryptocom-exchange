@@ -1,18 +1,19 @@
 import asyncio
 
 import pytest
+import pytest_asyncio
 
 import cryptocom.exchange as cro
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def exchange() -> cro.Exchange:
     ex = cro.Exchange()
     await ex.sync_pairs()
     return ex
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def account() -> cro.Account:
     acc = cro.Account(from_env=True)
     await acc.sync_pairs()
