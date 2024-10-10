@@ -108,8 +108,7 @@ jobs:
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY_USERNAME: '__token__'
-          REPOSITORY_PASSWORD: ${{ secrets.REPOSITORY_PASSWORD }}
+          POETRY_PYPI_TOKEN_FOO: ${{ secrets.REPOSITORY_PASSWORD }}
         run: |
           git fetch --all
           git reset --hard origin/main
@@ -117,4 +116,5 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           semantic-release version
+          poetry publish
           semantic-release publish
