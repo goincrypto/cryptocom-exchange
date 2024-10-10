@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.14.1 (2024-10-10)
+
+### Chores
+
+* chore: [ci] Move back poetry pre-commit ([`b3c19c4`](https://github.com/goincrypto/cryptocom-exchange/commit/b3c19c41ee6ba9583be6e5c8117e78c6d0ae0e8b))
+
+### Fixes
+
+* fix: [ci] Updated changelog generation ([`530043c`](https://github.com/goincrypto/cryptocom-exchange/commit/530043ca36388aeb0d1e295368c8d6177a3f99b1))
+
+
 ## v0.14.0 (2024-10-10)
 
 ### Chores
