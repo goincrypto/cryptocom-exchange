@@ -591,4 +591,6 @@ ZRX_USDT = Pair("ZRX_USDT", price_precision=5, quantity_precision=0)
 
 
 def all():
-    return [value for name, value in globals().items() if isinstance(value, Pair)]
+    return [
+        value for name, value in globals().items() if isinstance(value, Pair)
+    ]
