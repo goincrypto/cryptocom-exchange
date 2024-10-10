@@ -71,11 +71,9 @@ version_toml = [
   "pyproject.toml:tool.poetry.version",
 ]
 branch = "main"
-# upload_to_pypi = true
-# upload_to_release = true
-# build_command = "pip install poetry && poetry build"
-# parser_angular_allowed_types="build,chore,ci,docs,feat,fix,perf,style,refactor,test,sync"
-# parser_angular_minor_types = "feat"
-# parser_angular_patch_types = "fix,perf,sync"
+build_command = "pip install poetry && poetry build"
+parser_angular_allowed_types="build,chore,ci,docs,feat,fix,perf,style,refactor,test,sync"
+parser_angular_minor_types = "feat"
+parser_angular_patch_types = "fix,perf,sync"
 # commit_message = ""
 # changelog_sections="feature,fix,sync,perf,breaking,documentation,performance,:boom:,:sparkles:,:children_crossing:,:lipstick:,:iphone:,:egg:,:chart_with_upwards_trend:,:ambulance:,:lock:,:bug:,:zap:,:goal_net:,:alien:,:wheelchair:,:speech_balloon:,:mag:,:apple:,:penguin:,:checkered_flag:,:robot:,:green_apple:,Other"
