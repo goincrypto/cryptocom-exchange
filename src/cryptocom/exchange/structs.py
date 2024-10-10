@@ -337,7 +337,7 @@ class Order:
     status: OrderStatus
     side: OrderSide
     exec_type: OrderExecType
-    limit_price: float | None
+    limit_price: TP.Union[float, None]
     value: float
     quantity: float
     maker_fee_rate: float
