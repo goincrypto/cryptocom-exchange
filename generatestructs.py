@@ -15,6 +15,7 @@ SRC_PATH = Path(__file__).parent / "src" / "cryptocom" / "exchange"
 
 async def main():
     exchange = cro.Exchange()
+    await exchange.sync_pairs()
     instruments = set()
     pairs = await exchange.get_pairs()
     for pair in pairs:
