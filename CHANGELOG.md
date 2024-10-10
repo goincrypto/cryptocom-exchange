@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.14.2 (2024-10-10)
+
+### Chores
+
+* chore: [license] Updated dates ([`eec7e78`](https://github.com/goincrypto/cryptocom-exchange/commit/eec7e7898c615f6e75ce42b6756c70af18546c95))
+
+* chore: [ci] Updated poetry env ([`cfea394`](https://github.com/goincrypto/cryptocom-exchange/commit/cfea3940dca752767f0a4d078346302da8b4b238))
+
+* chore: [ci] Updated publish command to pypi ([`3d65338`](https://github.com/goincrypto/cryptocom-exchange/commit/3d65338268dbcb9ab6238191aa4dc7c27be0545a))
+
+### Fixes
+
+* fix: [ci] Moved build command to poetry ([`1e16513`](https://github.com/goincrypto/cryptocom-exchange/commit/1e165135e55c55b193e8d0dc6badfd222a2131ae))
+
+
 ## v0.14.1 (2024-10-10)
 
 ### Chores
