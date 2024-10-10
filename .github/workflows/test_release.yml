@@ -60,8 +60,10 @@ jobs:
         if: matrix.python-version == '3.12'
         run: poetry run pre-commit run -a
       - name: Auto-generate missing pairs
+        if: matrix.python-version == '3.12'
         run: poetry run python generatestructs.py
       - name: Format code before pushing
+        if: matrix.python-version == '3.12'
         run: poetry run pre-commit run -a
         continue-on-error: true
       - name: Commit & Push changes
@@ -88,9 +90,12 @@ jobs:
         if: matrix.python-version == '3.12'
         run: ./cc-test-reporter after-build -r ${{ secrets.CC_TEST_REPORTER_ID }} --exit-code $?
   release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/main'
+    permissions:
+      id-token: write
+      contents: write
     steps:
       - name: Setup | Checkout Repository at workflow sha
         uses: actions/checkout@v4
@@ -104,7 +109,6 @@ jobs:
 
       - name: Action | Semantic Version Release
         id: release
-        # Adjust tag with desired version if applicable.
         uses: python-semantic-release/python-semantic-release@v9.10.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -112,7 +116,7 @@ jobs:
           git_committer_email: "actions@users.noreply.github.com"
 
       - name: Publish | Upload package to PyPI
-        uses: pypa/gh-action-pypi-publish@v1
+        uses: pypa/gh-action-pypi-publish@release/v1
         if: steps.release.outputs.released == 'true'
 
       # - name: Setup Python
