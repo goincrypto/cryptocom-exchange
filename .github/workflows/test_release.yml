@@ -63,7 +63,7 @@ jobs:
         run: poetry run python generatestructs.py
       - name: Format code before pushing
         run: poetry run pre-commit run -a
-        ignore_errors: true
+        continue-on-error: true
       - name: Commit & Push changes
         if: matrix.python-version == '3.12' && github.ref == 'refs/heads/main'
         uses: actions-js/push@v1.3
