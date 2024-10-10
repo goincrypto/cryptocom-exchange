@@ -314,7 +314,11 @@ class RecordApiProvider(ApiProvider):
         else:
             self.records = json.loads(self.cache_file.read_text())
 
-        super().__init__(from_env=True)
+        kwargs = {"from_env": capture}
+        if not self.capture:
+            kwargs["api_key"] = "dummy"
+            kwargs["api_secret"] = "dummy"
+        super().__init__(**kwargs)
 
     async def request(self, method, path, params=None, data=None, sign=False):
         key = f"{method}_{path}"
@@ -335,7 +339,10 @@ class RecordApiProvider(ApiProvider):
                 }
             )
         else:
-            record = self.records[key][args].pop(0)
+            try:
+                record = self.records[key][args].pop(0)
+            except KeyError:
+                raise ApiError("No path found")
             await asyncio.sleep(record["exec_time"] / self.divide_delay)
             response = record["response"]
 

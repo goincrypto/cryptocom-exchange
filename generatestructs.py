@@ -6,7 +6,8 @@ from cryptocom import exchange as cro
 ALL_TEMPLATE = """
 def all():
     return [
-        value for name, value in globals().items() if isinstance(value, {})
+        value for name, value in globals().items()
+        if isinstance(value, {})
     ]
 """
 

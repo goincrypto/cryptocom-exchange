@@ -48,9 +48,7 @@ def test_api_args(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_wrong_api_response():
-    api = cro.ApiProvider(from_env=True)
-
+async def test_wrong_api_response(api):
     with pytest.raises(cro.ApiError):
         await api.get("somepath")
 
