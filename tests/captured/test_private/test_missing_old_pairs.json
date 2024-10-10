@@ -1,0 +1,11 @@
+{
+  "post_private/cancel-all-orders": {
+    "params={'instrument_name': 'CRO_USD'}": [
+      {
+        "response": {},
+        "exec_time": 0.5131168365478516,
+        "timestamp": 1728580587.526208
+      }
+    ]
+  }
+}

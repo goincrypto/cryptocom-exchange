@@ -68,7 +68,7 @@ jobs:
           author_email: "morty.space@gmail.com"
           author_name: "Morty Space"
           directory: './src'
-          message: "sync: updated API pairs and coins"
+          message: "sync: updated API pairs and instruments"
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare codeclimate
         if: matrix.python-version == '3.10.7'

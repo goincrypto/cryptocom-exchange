@@ -42,7 +42,7 @@ async def test_get_price(exchange: cro.Exchange):
 @pytest.mark.asyncio
 async def test_get_orderbook(exchange: cro.Exchange):
     depth = 50
-    book = await exchange.get_orderbook(cro.pairs.CRO_USDT)
+    book = await exchange.get_orderbook(cro.pairs.CRO_USDT, depth=depth)
     assert book.buys and book.sells
     assert book.sells[0].price > book.buys[0].price
     assert book.spread > 0
@@ -51,10 +51,18 @@ async def test_get_orderbook(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 async def test_get_candles(exchange: cro.Exchange):
-    candles = await exchange.get_candles(cro.pairs.CRO_USDT, cro.Period.DAY)
+    candles = await exchange.get_candles(
+        cro.pairs.CRO_USDT,
+        cro.Period.MINS,
+        # TODO: works but should load all data not just last 300
+        # start_ts=Timeframe.resolve(-Timeframe.DAYS * 20),
+        # end_ts=Timeframe.resolve(-Timeframe.DAYS * 15),
+    )
     for candle in candles:
         assert candle.pair == cro.pairs.CRO_USDT
         assert candle.high >= candle.low
+        assert candle.time
+    assert len(candles) == 300
 
 
 @pytest.mark.asyncio
@@ -71,9 +79,9 @@ async def test_listen_candles(exchange: cro.Exchange):
     async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
         candles.setdefault(candle.pair, 0)
         candles[candle.pair] += 1
-        if all(v >= default_count for v in candles.values()) and len(
-            candles
-        ) == len(pairs):
+        if all(v >= default_count for v in candles.values()) and len(candles) == len(
+            pairs
+        ):
             break
 
     for pair in pairs:
@@ -86,7 +94,6 @@ async def test_listen_trades(exchange: cro.Exchange):
     pairs = [cro.pairs.BTC_USD, cro.pairs.BTC_USDT]
     pairs_seen = set()
     async for trade in exchange.listen_trades(*pairs):
-        print(trade)
         trades.append(trade)
         pairs_seen.add(trade.pair)
         if len(pairs_seen) == len(pairs) and len(trades) > 30:

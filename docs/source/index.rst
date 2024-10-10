@@ -44,6 +44,7 @@ Useful examples
         # ensure pairs fresh from exchange
         await exchange.sync_pairs()
 
+        # or if you use account
         account = cro.Account(api_key='test', api_secret='test')
         await account.sync_pairs()
 

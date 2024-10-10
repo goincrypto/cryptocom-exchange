@@ -1,15 +1,15 @@
 import asyncio
 import platform
 
-from . import coins, pairs
-from .api import ApiError, ApiProvider
+from . import instruments, pairs
+from .api import ApiError, ApiProvider, RecordApiProvider
 from .market import Exchange
 from .private import Account
 from .structs import (
     Candle,
-    Coin,
     Deposit,
     DepositStatus,
+    Instrument,
     MarketTrade,
     Order,
     OrderSide,
@@ -33,8 +33,8 @@ __all__ = [
     "OrderType",
     "pairs",
     "Pair",
-    "coins",
-    "Coin",
+    "instruments",
+    "Instrument",
     "Period",
     "Candle",
     "MarketTrade",
@@ -48,4 +48,5 @@ __all__ = [
     "Account",
     "ApiError",
     "ApiProvider",
+    "RecordApiProvider",
 ]

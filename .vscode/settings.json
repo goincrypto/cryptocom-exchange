@@ -2,7 +2,7 @@
     "python.defaultInterpreterPath": "./.venv/bin/python",
     "python.testing.pytestEnabled": true,
     "editor.renderWhitespace": "all",
-    "editor.rulers": [79],
+    "editor.rulers": [80],
     "files.exclude":{
         "**/.git": true,
         "**/.DS_Store": true,

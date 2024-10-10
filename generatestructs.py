@@ -15,11 +15,13 @@ SRC_PATH = Path(__file__).parent / "src" / "cryptocom" / "exchange"
 
 async def main():
     exchange = cro.Exchange()
-    coins = set()
+    instruments = set()
     pairs = await exchange.get_pairs()
     for pair in pairs:
-        coins.add(pair.base_coin)
-        coins.add(pair.quote_coin)
+        instruments.add(pair.base_instrument)
+        instruments.add(pair.quote_instrument)
+
+    instruments = sorted(instruments, key=lambda c: c.exchange_name)
 
     with (SRC_PATH / "pairs.py").open("w") as f:
         f.writelines(
@@ -35,16 +37,16 @@ async def main():
             + ["\n", ALL_TEMPLATE.format("Pair")]
         )
 
-    with (SRC_PATH / "coins.py").open("w") as f:
+    with (SRC_PATH / "instruments.py").open("w") as f:
         f.writelines(
             [
-                "from .structs import Coin\n\n",
+                "from .structs import Instrument\n\n",
             ]
             + [
-                f'{coin.name} = Coin("{coin.exchange_name}")\n'
-                for coin in sorted(coins, key=lambda c: c.name)
+                f'{instrument.name} = Instrument("{instrument.exchange_name}")\n'
+                for instrument in instruments
             ]
-            + ["\n", ALL_TEMPLATE.format("Coin")]
+            + ["\n", ALL_TEMPLATE.format("Instrument")]
         )
 
 

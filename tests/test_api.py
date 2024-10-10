@@ -10,8 +10,8 @@ import cryptocom.exchange as cro
 def test_timeframe():
     days_5 = cro.Timeframe.DAYS * 5
     result = cro.Timeframe.resolve(days_5)
-    assert result - int(time.time()) == days_5
-    assert cro.Timeframe.resolve(cro.Timeframe.NOW) == int(time.time())
+    assert result - int(time.time() * 1000) == days_5 * 1000
+    assert cro.Timeframe.resolve(cro.Timeframe.NOW) == int(time.time() * 1000)
 
 
 def test_api_args(monkeypatch):
@@ -60,8 +60,8 @@ async def test_wrong_api_response():
 
 
 @pytest.mark.asyncio
-async def test_api_rate_limits():
-    api = cro.ApiProvider(from_env=True)
+async def test_api_rate_limits(api):
+    api.divide_delay = 1
     pair = cro.pairs.CRO_USDT
 
     page = 0
@@ -74,8 +74,7 @@ async def test_api_rate_limits():
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params})
-        for _ in range(2)
+        api.post("private/get-order-history", {"params": params}) for _ in range(2)
     ]
     await asyncio.gather(*tasks)
 
@@ -84,8 +83,7 @@ async def test_api_rate_limits():
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params})
-        for _ in range(5)
+        api.post("private/get-order-history", {"params": params}) for _ in range(10)
     ]
     await asyncio.gather(*tasks)
 
@@ -93,7 +91,10 @@ async def test_api_rate_limits():
     assert finish_time > 4
 
     start_time = time.time()
-    tasks = [api.get("public/get-instruments") for _ in range(200)]
+    tasks = [
+        api.get("public/get-tickers", params={"instrument_name": "CRO_USD"})
+        for _ in range(200)
+    ]
     await asyncio.gather(*tasks)
 
     finish_time = time.time() - start_time
@@ -101,8 +102,7 @@ async def test_api_rate_limits():
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params})
-        for _ in range(4)
+        api.post("private/get-order-history", {"params": params}) for _ in range(10)
     ]
     await asyncio.gather(*tasks)
 

@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import json
 import os
+import pathlib
 import random
 import ssl
 import time
@@ -19,27 +20,40 @@ RATE_LIMITS = {
         "private/create-order",
         "private/cancel-order",
         "private/cancel-all-orders",
-        "private/margin/create-order",
-        "private/margin/cancel-order",
-        "private/margin/cancel-all-orders",
     ): (14, 0.1),
     # order detail methods
-    (
-        "private/get-order-detail",
-        "private/margin/get-order-detail",
-    ): (29, 0.1),
+    ("private/get-order-detail",): (29, 0.1),
     # general trade methods
-    (
-        "private/get-trades",
-        "private/margin/get-trades",
-        "private/get-order-history",
-        "private/margin/get-order-history",
-    ): (1, 1),
+    ("private/get-trades", "private/get-order-history"): (1, 1),
 }
 
 
 class ApiError(Exception):
     pass
+
+
+class ApiAuthError(ApiError):
+    pass
+
+
+def params_to_str(obj, level):
+    if isinstance(obj, str):
+        return obj
+
+    if level >= 3:
+        return str(obj)
+
+    return_str = ""
+    for key in sorted(obj):
+        return_str += key
+        if isinstance(obj[key], list):
+            for subObj in obj[key]:
+                return_str += str(subObj)
+        elif obj[key] is None:
+            return_str += "null"
+        else:
+            return_str += str(obj[key])
+    return return_str
 
 
 class ApiListenAsyncIterable:
@@ -58,14 +72,19 @@ class ApiListenAsyncIterable:
     async def __anext__(self):
         if not self.sub_data_sent:
             sub_data = {
-                "id": random.randint(1000, 10000),
+                "id": random.randint(0, 2**63 - 1),
                 "method": "subscribe",
                 "params": {"channels": self.channels},
                 "nonce": int(time.time()),
             }
 
+        # [0] sign auth request to listen private methods
+        if not self.auth_sent and self.sign:
+            await self.ws.send(json.dumps(self.api.sign("public/auth", {})))
+            self.auth_sent = True
+
         # [0] if not sign start connection with subscription
-        if not self.sub_data_sent and not self.sign:
+        if not self.sign and not self.sub_data_sent:
             await self.ws.send(json.dumps(sub_data))
             self.sub_data_sent = True
 
@@ -87,25 +106,21 @@ class ApiListenAsyncIterable:
                         }
                     )
                 )
+            # [3] consume data
             elif self.sub_data_sent and result:
-                # [4] consume data
+                if result["subscription"] not in self.channels:
+                    raise ApiError(
+                        f'Wrong channel data received: {result["subscription"]} '
+                        f'not in {self.channels}'
+                    )
                 return result
 
-            # [2] sign auth request to listen private methods
-            if self.sign and not self.auth_sent:
-                await self.ws.send(
-                    json.dumps(self.api.sign("public/auth", {}))
-                )
-                self.auth_sent = True
-
-            # [3] subscribe to channels
-            if (
-                data["method"] == "public/auth"
-                and data["code"] == 0
-                and not self.sub_data_sent
-            ):
+            # [2] subscribe to channels
+            if data["method"] == "public/auth" and data["code"] == 0:
                 await self.ws.send(json.dumps(sub_data))
                 self.sub_data_sent = True
+            elif "code" not in data or data["code"] != 0:
+                raise ApiAuthError(f"{data}")
 
 
 class ApiProvider:
@@ -119,9 +134,9 @@ class ApiProvider:
         from_env=False,
         auth_required=True,
         timeout=5,
-        retries=6,
-        root_url="https://api.crypto.com/v2/",
-        ws_root_url="wss://stream.crypto.com/v2/",
+        retries=5,
+        root_url="https://api.crypto.com/exchange/v1/",
+        ws_root_url="wss://stream.crypto.com/exchange/v1/",
         logger=None,
     ):
         self.ssl_context = httpx.create_ssl_context()
@@ -137,9 +152,7 @@ class ApiProvider:
 
         for urls in RATE_LIMITS:
             for url in urls:
-                self.rate_limiters[url] = aiolimiter.AsyncLimiter(
-                    *RATE_LIMITS[urls]
-                )
+                self.rate_limiters[url] = aiolimiter.AsyncLimiter(*RATE_LIMITS[urls])
 
         # limits for not matched methods
         self.general_private_limit = aiolimiter.AsyncLimiter(3, 0.1)
@@ -165,27 +178,23 @@ class ApiProvider:
     def sign(self, path, data):
         data = data or {}
         data["method"] = path
-
         sign_time = int(time.time() * 1000)
         data.update({"nonce": sign_time, "api_key": self.api_key})
-
-        data["id"] = random.randint(1000, 10000)
+        data["id"] = random.randint(0, 2**63 - 1)
         data_params = data.get("params", {})
-        params = "".join(
-            f"{key}{data_params[key]}" for key in sorted(data_params)
-        )
-
+        params = ""
+        if data_params:
+            params = params_to_str(data_params, 0)
         payload = f"{path}{data['id']}{self.api_key}{params}{data['nonce']}"
-
         data["sig"] = hmac.new(
-            self.api_secret.encode("utf-8"),
-            payload.encode("utf-8"),
-            hashlib.sha256,
+            bytes(str(self.api_secret), "utf-8"),
+            msg=bytes(payload, "utf-8"),
+            digestmod=hashlib.sha256,
         ).hexdigest()
         return data
 
     def get_limiter(self, path):
-        if path in self.rate_limiters.keys():
+        if path in self.rate_limiters:
             return self.rate_limiters[path]
         else:
             if path.startswith("private"):
@@ -198,8 +207,8 @@ class ApiProvider:
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
         limiter = self.get_limiter(path)
-
-        for count in range(self.retries):
+        count = 0
+        while count <= self.retries:
             client = httpx.AsyncClient(
                 timeout=httpx.Timeout(timeout=self.timeout),
                 verify=self.ssl_context,
@@ -216,7 +225,10 @@ class ApiProvider:
                         headers={"content-type": "application/json"},
                     )
                     resp_json = resp.json()
-                    if resp.status_code != 200:
+                    count += 1
+                    if resp.status_code in [401, 400]:
+                        raise ApiAuthError(resp_json)
+                    elif resp.status_code != 200:
                         if count != self.retries:
                             continue
                         raise ApiError(
@@ -240,9 +252,13 @@ class ApiProvider:
 
             if resp_json["code"] == 0:
                 result = resp_json.get("result", {})
-                result = result.get("data", {}) or result
+                if "data" in result:
+                    result = result["data"]
                 if result is None:
                     continue
+                if data:
+                    if data["id"] != resp_json["id"]:
+                        raise ApiError(f"Not matched req = resp {resp_json}")
                 return result
 
             if count == self.retries:
@@ -268,3 +284,86 @@ class ApiProvider:
                         yield data
             except (websockets.ConnectionClosed, asyncio.TimeoutError):
                 continue
+
+
+class RecordApiProvider(ApiProvider):
+    """Captures API and websocket responses into json files.
+    If capture=False it will read them to reproduce same responses in order."""
+
+    def __init__(
+        self,
+        *,
+        cache_file: pathlib.Path,
+        capture: bool = False,
+        divide_delay: int = 1,
+        fake_account_id: bool = True,
+    ):
+        self.capture = capture
+        self.cache_file = cache_file
+        self.divide_delay = divide_delay
+
+        # TODO: implement auto-replacement
+        self.fake_account_id = fake_account_id
+
+        if self.capture:
+            self.cache_file.parent.mkdir(exist_ok=True, parents=True)
+            if self.cache_file.exists():
+                self.cache_file.unlink()
+                self.cache_file.touch()
+            self.records = {}
+        else:
+            self.records = json.loads(self.cache_file.read_text())
+
+        super().__init__(from_env=True)
+
+    async def request(self, method, path, params=None, data=None, sign=False):
+        key = f"{method}_{path}"
+        args_data = data or params or {}
+        args_data = sorted(args_data.items(), key=lambda v: v[0])
+        args = ",".join(f"{key}={value}" for key, value in args_data)
+
+        if self.capture:
+            timestamp = time.time()
+            response = await super().request(
+                method, path, params=params, data=data, sign=sign
+            )
+            self.records.setdefault(key, {}).setdefault(args, []).append(
+                {
+                    "response": response,
+                    "exec_time": time.time() - timestamp,
+                    "timestamp": timestamp,
+                }
+            )
+        else:
+            record = self.records[key][args].pop(0)
+            await asyncio.sleep(record["exec_time"] / self.divide_delay)
+            response = record["response"]
+
+        return response
+
+    async def listen(self, url, *channels, sign=False):
+        key = "ws"
+        args = ",".join(channels)
+        if self.capture:
+            timestamp = time.time()
+            async for response in super().listen(url, *channels, sign=sign):
+                self.records.setdefault(key, {}).setdefault(args, []).append(
+                    {
+                        "response": response,
+                        "exec_time": time.time() - timestamp,
+                        "timestamp": timestamp,
+                    }
+                )
+                timestamp = time.time()
+                yield response
+        else:
+            for record in self.records[key][args]:
+                await asyncio.sleep(record["exec_time"] / self.divide_delay)
+                yield record["response"]
+
+    def save(self):
+        if self.capture:
+            for key, args in self.records.items():
+                for arg, data in args.items():
+                    args[arg] = sorted(data, key=lambda v: v["timestamp"])
+            self.cache_file.write_text(json.dumps(self.records, indent=2))

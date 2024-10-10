@@ -11,34 +11,36 @@ from .helpers import round_down, round_up
 
 
 @dataclass
-class Coin:
+class Instrument:
     exchange_name: str
 
     @property
     def name(self):
-        return self.exchange_name.replace("1", "ONE")
+        return self.exchange_name.replace("1", "ONE_")
 
     def __hash__(self):
-        return self.name.__hash__()
+        return self.exchange_name.__hash__()
+
+    def __eq__(self, other):
+        return self.exchange_name == other.exchange_name
 
 
 @dataclass
-class Pair:
-    exchange_name: str
+class Pair(Instrument):
     price_precision: int
     quantity_precision: int
 
-    @property
-    def name(self):
-        return self.exchange_name.replace("1", "ONE")
+    @cached_property
+    def _split_instrument(self):
+        return self.exchange_name.split("_")
 
     @cached_property
-    def base_coin(self) -> Coin:
-        return Coin(self.name.split("_")[0])
+    def base_instrument(self) -> Instrument:
+        return Instrument(self._split_instrument[0])
 
     @cached_property
-    def quote_coin(self) -> Coin:
-        return Coin(self.name.split("_")[1])
+    def quote_instrument(self) -> Instrument:
+        return Instrument(self._split_instrument[1])
 
     def round_price(self, price):
         return round_down(float(price), self.price_precision)
@@ -47,7 +49,10 @@ class Pair:
         return round_down(float(quantity), self.quantity_precision)
 
     def __hash__(self):
-        return self.name.__hash__()
+        return self.exchange_name.__hash__()
+
+    def __eq__(self, other):
+        return self.exchange_name == other.exchange_name
 
 
 class DefaultPairDict(dict):
@@ -119,8 +124,8 @@ class Period(str, Enum):
     MINS_15 = "15m"
     MINS_30 = "30m"
     HOURS = "1h"
+    HOURS_2 = "2h"
     HOURS_4 = "4h"
-    HOURS_6 = "6h"
     HOURS_12 = "12h"
     DAY = "1D"
     WEEK = "7D"
@@ -182,21 +187,63 @@ class OrderBook:
 
 
 @dataclass
-class Balance:
+class InstrumentBalance(Instrument):
     total: float
-    available: float
-    in_orders: float
-    in_stake: float
-    coin: Coin
+    reserved: float
+    market_value: float
+    haircut: float
+    collateral_amount: float
+    collateral_eligible: bool
+    max_withdrawal_balance: float
+
+    @property
+    def available(self) -> float:
+        return self.total - self.reserved
 
     @classmethod
     def from_api(cls, data):
         return cls(
-            total=data["balance"],
-            available=data["available"],
-            in_orders=data["order"],
-            in_stake=data["stake"],
-            coin=Coin(data["currency"]),
+            total=float(data["quantity"]),
+            reserved=float(data["reserved_qty"]),
+            market_value=float(data["market_value"]),
+            exchange_name=data["instrument_name"],
+            collateral_eligible="true" == data["collateral_eligible"],
+            collateral_amount=float(data["collateral_amount"]),
+            haircut=float(data["haircut"]),
+            max_withdrawal_balance=float(data["max_withdrawal_balance"]),
+        )
+
+    def __hash__(self):
+        return self.exchange_name.__hash__()
+
+    def __eq__(self, other):
+        return self.exchange_name == other.exchange_name
+
+
+@dataclass
+class Balance:
+    total_available: float
+    total_available_instrument: Instrument
+    instruments: list[InstrumentBalance]
+
+    def __contains__(self, instrument):
+        print("check", instrument)
+        return instrument in [inst for inst in self.instruments]
+
+    def __getitem__(self, instrument):
+        return next(inst for inst in self.instruments if inst == instrument)
+
+    def __iter__(self):
+        return iter(self.instruments)
+
+    @classmethod
+    def from_api(cls, data):
+        return cls(
+            total_available=float(data["total_available_balance"]),
+            total_available_instrument=Instrument(data["instrument_name"]),
+            instruments=[
+                InstrumentBalance.from_api(bal) for bal in data["position_balances"]
+            ],
         )
 
 
@@ -219,8 +266,9 @@ class OrderStatus(str, Enum):
 
 
 class OrderExecType(str, Enum):
-    MARKET = ""
     POST_ONLY = "POST_ONLY"
+    LIQUIDATION = "LIQUIDATION"
+    NOTIONAL_ORDER = "NOTIONAL_ORDER"
 
 
 class OrderForceType(str, Enum):
@@ -229,17 +277,27 @@ class OrderForceType(str, Enum):
     IMMEDIATE_OR_CANCEL = "IMMEDIATE_OR_CANCEL"
 
 
+class TradeType(str, Enum):
+    MAKER = "MAKER"
+    TAKER = "TAKER"
+
+
 @dataclass
 class PrivateTrade:
-    id: int
-    side: OrderSide
-    pair: Pair
+    id: str
+    account_id: str
+    client_oid: str
+    event_date: str
+    quantity: float
+    price: float
     fees: float
-    fees_coin: Coin
+    fees_instrument: Instrument
+    pair: Pair
+    side: OrderSide
+    type: TradeType
     created_at: int
-    filled_price: float
-    filled_quantity: float
-    order_id: int
+    created_at_ns: int
+    order_id: str
 
     @cached_property
     def is_buy(self):
@@ -252,36 +310,49 @@ class PrivateTrade:
     @classmethod
     def create_from_api(cls, pair: Pair, data: Dict) -> "PrivateTrade":
         return cls(
-            id=int(data["trade_id"]),
-            side=OrderSide(data["side"]),
+            id=data["trade_id"],
+            client_oid=data["client_oid"],
+            account_id=data["account_id"],
+            event_date=data["event_date"],
+            quantity=pair.round_quantity(data["traded_quantity"]),
+            price=pair.round_price(data["traded_price"]),
+            fees=round_up(float(data["fees"]), 8),
+            fees_instrument=Instrument(data["fee_instrument_name"]),
             pair=pair,
-            fees=round_up(data["fee"], 8),
-            fees_coin=Coin(data["fee_currency"]),
+            side=OrderSide(data["side"]),
+            type=TradeType(data["taker_side"]),
             created_at=int(data["create_time"] / 1000),
-            filled_price=pair.round_price(data["traded_price"]),
-            filled_quantity=pair.round_quantity(data["traded_quantity"]),
-            order_id=int(data["order_id"]),
+            created_at_ns=int(data["create_time_ns"]),
+            order_id=data["order_id"],
         )
 
 
 @dataclass
 class Order:
-    id: int
+    id: str
+    client_id: str
+    account_id: str
+    type: OrderType
     status: OrderStatus
     side: OrderSide
-    price: float
+    exec_type: OrderExecType
+    limit_price: float | None
+    value: float
     quantity: float
-    client_id: str
+    maker_fee_rate: float
+    taker_fee_rate: float
+    filled_price: float
+    filled_quantity: float
+    filled_value: float
+    filled_fee: float
+    update_user_id: str
+    order_date: str
+    pair: Pair
+    fees_instrument: Instrument
+    force_type: OrderForceType
     created_at: int
     updated_at: int
-    type: OrderType
-    pair: Pair
-    filled_quantity: float
-    filled_price: float
-    fees_coin: Coin
-    force_type: OrderForceType
-    trigger_price: float
-    trades: List[PrivateTrade]
+    create_time_ns: int
 
     @cached_property
     def is_buy(self):
@@ -321,9 +392,7 @@ class Order:
 
     @cached_property
     def filled_volume(self):
-        return self.pair.round_quantity(
-            self.filled_price * self.filled_quantity
-        )
+        return self.pair.round_quantity(self.filled_price * self.filled_quantity)
 
     @cached_property
     def remain_volume(self):
@@ -337,40 +406,42 @@ class Order:
     def create_from_api(
         cls, pair: Pair, data: Dict, trades: List[Dict] = None
     ) -> "Order":
-        fees_coin, trigger_price = None, None
-        if data["fee_currency"]:
-            fees_coin = Coin(data["fee_currency"])
-        if data.get("trigger_price") is not None:
-            trigger_price = pair.round_price(data["trigger_price"])
-
-        trades = [
-            PrivateTrade.create_from_api(pair, trade) for trade in trades or []
-        ]
-
         return cls(
-            id=int(data["order_id"]),
-            status=OrderStatus(data["status"]),
-            side=OrderSide(data["side"]),
-            price=pair.round_price(data["avg_price"] or data["price"]),
-            quantity=pair.round_quantity(data["quantity"]),
+            id=data["order_id"],
+            account_id=data["account_id"],
             client_id=data["client_oid"],
-            created_at=int(data["create_time"] / 1000),
-            updated_at=int(data["update_time"] / 1000),
-            type=OrderType(data["type"]),
-            pair=pair,
+            type=OrderType(data["order_type"]),
+            force_type=OrderForceType(data["time_in_force"]),
+            side=OrderSide(data["side"]),
+            exec_type=OrderExecType(data["exec_inst"][0])
+            if data["exec_inst"]
+            else None,
+            quantity=pair.round_quantity(data["quantity"]),
+            limit_price=pair.round_price(data["limit_price"])
+            if "limit_price" in data
+            else None,
+            value=pair.round_price(data["order_value"]),
+            maker_fee_rate=round(float(data.get("maker_fee_rate", 0)), 6),
+            taker_fee_rate=round(float(data.get("taker_fee_rate", 0)), 6),
             filled_price=pair.round_price(data["avg_price"]),
             filled_quantity=pair.round_quantity(data["cumulative_quantity"]),
-            fees_coin=fees_coin,
-            force_type=OrderForceType(data["time_in_force"]),
-            trigger_price=trigger_price,
-            trades=trades,
+            filled_value=pair.round_price(data["cumulative_value"]),
+            filled_fee=round(float(data["cumulative_fee"]), 6),
+            status=OrderStatus(data["status"]),
+            update_user_id=data["update_user_id"],
+            order_date=data["order_date"],
+            pair=pair,
+            fees_instrument=Instrument(data["fee_instrument_name"]),
+            created_at=int(data["create_time"] / 1000),
+            create_time_ns=int(data["create_time_ns"]),
+            updated_at=int(data["update_time"] / 1000),
         )
 
 
 @dataclass
 class Interest:
     loan_id: int
-    coin: Coin
+    instrument: Instrument
     interest: float
     stake_amount: float
     interest_rate: float
@@ -379,7 +450,7 @@ class Interest:
     def create_from_api(cls, data: Dict) -> "Interest":
         return cls(
             loan_id=int(data["loan_id"]),
-            coin=Coin(data["currency"]),
+            instrument=Instrument(data["currency"]),
             interest=float(data["interest"]),
             stake_amount=float(data["stake_amount"]),
             interest_rate=float(data["interest_rate"]),
@@ -410,7 +481,7 @@ class TransactionType(IntEnum):
 
 @dataclass
 class Transaction:
-    coin: Coin
+    instrument: Instrument
     fee: float
     create_time: int
     id: str
@@ -422,14 +493,10 @@ class Transaction:
     def _prepare(data):
         return dict(
             id=data["id"],
-            coin=Coin(data["currency"]),
+            instrument=Instrument(data["currency"]),
             fee=float(data["fee"]),
-            create_time=datetime.fromtimestamp(
-                int(data["create_time"]) / 1000
-            ),
-            update_time=datetime.fromtimestamp(
-                int(data["update_time"]) / 1000
-            ),
+            create_time=datetime.fromtimestamp(int(data["create_time"]) / 1000),
+            update_time=datetime.fromtimestamp(int(data["update_time"]) / 1000),
             amount=float(data["amount"]),
             address=data["address"],
         )
@@ -471,4 +538,8 @@ class Timeframe(IntEnum):
 
     @classmethod
     def resolve(cls, seconds: int) -> int:
-        return seconds + int(time.time())
+        return int((time.time() + seconds) * 1000)
+
+    # @classmethod
+    # def ago(cls, seconds: int) -> tuple[int, int]:
+    #     return cls.resolve(-seconds)

@@ -20,7 +20,7 @@ __version__ = get_version("cryptocom.exchange")
 # -- Project information -----------------------------------------------------
 
 project = "cryptocom-exchange"
-copyright = "2020-2022"
+copyright = "2020-2024"
 author = "Yaroslav Rudenok [MortySpace]"
 
 # The short X.Y version

@@ -1,4 +1,6 @@
 import asyncio
+import os
+import pathlib
 
 import pytest
 import pytest_asyncio
@@ -6,19 +8,33 @@ import pytest_asyncio
 import cryptocom.exchange as cro
 
 
+@pytest.fixture
+def api(request):
+    current_dir = pathlib.Path(__file__).parent
+    file_path = pathlib.Path(request.node.location[0][:-3][len(current_dir.name) + 1 :])
+    cache_file = pathlib.Path(
+        "tests", "captured", file_path, f"{request.node.originalname}.json"
+    )
+    value = os.environ.get("API_CAPTURE", "false")
+    capture = value.lower() == "true"
+    provider = cro.RecordApiProvider(
+        cache_file=cache_file, capture=capture, divide_delay=10
+    )
+    yield provider
+    provider.save()
+
+
 @pytest_asyncio.fixture
-async def exchange() -> cro.Exchange:
-    ex = cro.Exchange()
-    await ex.sync_pairs()
+async def exchange(api: cro.RecordApiProvider) -> cro.Exchange:
+    ex = cro.Exchange(api=api)
     return ex
 
 
 @pytest_asyncio.fixture
-async def account() -> cro.Account:
-    acc = cro.Account(from_env=True)
-    await acc.sync_pairs()
+async def account(api: cro.RecordApiProvider) -> cro.Account:
+    acc = cro.Account(from_env=True, api=api)
     yield acc
-    await acc.cancel_open_orders(cro.pairs.CRO_USDT)
+    await acc.cancel_open_orders(cro.pairs.CRO_USD)
 
 
 @pytest.fixture
@@ -47,9 +63,7 @@ def _cancel_all_tasks(loop):
     for task in to_cancel:
         task.cancel()
 
-    loop.run_until_complete(
-        asyncio.tasks.gather(*to_cancel, return_exceptions=True)
-    )
+    loop.run_until_complete(asyncio.tasks.gather(*to_cancel, return_exceptions=True))
 
     for task in to_cancel:
         if task.cancelled():
