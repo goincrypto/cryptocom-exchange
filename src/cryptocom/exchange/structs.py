@@ -242,7 +242,8 @@ class Balance:
             total_available=float(data["total_available_balance"]),
             total_available_instrument=Instrument(data["instrument_name"]),
             instruments=[
-                InstrumentBalance.from_api(bal) for bal in data["position_balances"]
+                InstrumentBalance.from_api(bal)
+                for bal in data["position_balances"]
             ],
         )
 
@@ -392,7 +393,9 @@ class Order:
 
     @cached_property
     def filled_volume(self):
-        return self.pair.round_quantity(self.filled_price * self.filled_quantity)
+        return self.pair.round_quantity(
+            self.filled_price * self.filled_quantity
+        )
 
     @cached_property
     def remain_volume(self):

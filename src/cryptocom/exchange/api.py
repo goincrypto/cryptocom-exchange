@@ -152,7 +152,9 @@ class ApiProvider:
 
         for urls in RATE_LIMITS:
             for url in urls:
-                self.rate_limiters[url] = aiolimiter.AsyncLimiter(*RATE_LIMITS[urls])
+                self.rate_limiters[url] = aiolimiter.AsyncLimiter(
+                    *RATE_LIMITS[urls]
+                )
 
         # limits for not matched methods
         self.general_private_limit = aiolimiter.AsyncLimiter(3, 0.1)

@@ -61,6 +61,8 @@ jobs:
         run: poetry run pre-commit run -a
       - name: Auto-generate missing pairs
         run: poetry run python generatestructs.py
+      - name: Format code before pushing
+        run: poetry run pre-commit run -a
       - name: Commit & Push changes
         if: matrix.python-version == '3.12' && github.ref == 'refs/heads/main'
         uses: actions-js/push@v1.3

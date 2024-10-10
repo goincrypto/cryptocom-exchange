@@ -43,7 +43,9 @@ async def test_missing_old_pairs(account: cro.Account):
 
 @pytest.mark.asyncio
 @pytest.mark.skip
-async def test_deposit_withdrawal_history(account: cro.Account, exchange: cro.Exchange):
+async def test_deposit_withdrawal_history(
+    account: cro.Account, exchange: cro.Exchange
+):
     # TODO: fix withdrawal history
     transactions = await account.get_withdrawal_history(cro.instruments.CRO)
     assert transactions
@@ -80,12 +82,16 @@ async def test_no_duplicate_mass_limit_orders(
     orders_count = 20
     order_ids = await asyncio.gather(
         *[
-            account.buy_limit(cro.pairs.CRO_USD, 1, round(buy_price + i * 0.0001, 4))
+            account.buy_limit(
+                cro.pairs.CRO_USD, 1, round(buy_price + i * 0.0001, 4)
+            )
             for i in range(orders_count)
         ]
     )
 
-    real_orders = await asyncio.gather(*[account.get_order(id_) for id_ in order_ids])
+    real_orders = await asyncio.gather(
+        *[account.get_order(id_) for id_ in order_ids]
+    )
     for order in real_orders:
         assert order.is_active, order
 
@@ -97,7 +103,9 @@ async def test_no_duplicate_mass_limit_orders(
 
 
 @pytest.mark.asyncio
-async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange):
+async def test_account_limit_orders(
+    account: cro.Account, exchange: cro.Exchange
+):
     buy_price = round(await exchange.get_price(cro.pairs.CRO_USD) / 2, 4)
     order_ids = await asyncio.gather(
         *[account.buy_limit(cro.pairs.CRO_USD, 1, buy_price) for _ in range(10)]
@@ -109,7 +117,9 @@ async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange
         ]
     )
 
-    await account.cancel_order(order_ids[0], cro.pairs.CRO_USD, check_status=True)
+    await account.cancel_order(
+        order_ids[0], cro.pairs.CRO_USD, check_status=True
+    )
     order = await account.get_order(order_ids[0])
     assert order.is_canceled
 
@@ -117,7 +127,9 @@ async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange
         await account.cancel_order(order_id, cro.pairs.CRO_USD)
 
     open_orders = [
-        order for order in await account.get_open_orders() if order.id in order_ids
+        order
+        for order in await account.get_open_orders()
+        if order.id in order_ids
     ]
     assert not open_orders
 
@@ -157,7 +169,9 @@ async def test_account_listen_balances(account: cro.Account):
 
 
 @pytest.mark.asyncio
-async def test_account_market_orders(account: cro.Account, exchange: cro.Exchange):
+async def test_account_market_orders(
+    account: cro.Account, exchange: cro.Exchange
+):
     order_ids = {"buy": [], "sell": []}
     orders = []
     l_orders = []
@@ -169,7 +183,10 @@ async def test_account_market_orders(account: cro.Account, exchange: cro.Exchang
         await asyncio.sleep(1)
 
     await asyncio.gather(
-        *[make_trades(account, exchange, order_ids) for _ in range(trades_count)]
+        *[
+            make_trades(account, exchange, order_ids)
+            for _ in range(trades_count)
+        ]
     )
 
     orders = await asyncio.gather(

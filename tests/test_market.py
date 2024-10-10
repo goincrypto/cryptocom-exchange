@@ -79,9 +79,9 @@ async def test_listen_candles(exchange: cro.Exchange):
     async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
         candles.setdefault(candle.pair, 0)
         candles[candle.pair] += 1
-        if all(v >= default_count for v in candles.values()) and len(candles) == len(
-            pairs
-        ):
+        if all(v >= default_count for v in candles.values()) and len(
+            candles
+        ) == len(pairs):
             break
 
     for pair in pairs:

@@ -35,7 +35,9 @@ class Account:
         api: ApiProvider = None,
     ):
         if not api and not (api_key and api_secret) and not from_env:
-            raise ValueError("Pass ApiProvider or api_key with api_secret or from_env")
+            raise ValueError(
+                "Pass ApiProvider or api_key with api_secret or from_env"
+            )
         self.api = api or ApiProvider(
             api_key=api_key, api_secret=api_secret, from_env=from_env
         )
@@ -56,10 +58,14 @@ class Account:
         return data
 
     async def get_subaccount_balances(self):
-        return await self.api.post("private/get-subaccount-balances", {"params": {}})
+        return await self.api.post(
+            "private/get-subaccount-balances", {"params": {}}
+        )
 
     async def get_balance_history(self):
-        return await self.api.post("private/user-balance-history", {"params": {}})
+        return await self.api.post(
+            "private/user-balance-history", {"params": {}}
+        )
 
     async def get_deposit_history(
         self,
@@ -82,9 +88,15 @@ class Account:
             params["status"] = status
 
         data = (
-            await self.api.post("private/get-deposit-history", {"params": params}) or {}
+            await self.api.post(
+                "private/get-deposit-history", {"params": params}
+            )
+            or {}
         )
-        return [Deposit.create_from_api(trx) for trx in data.get("deposit_list") or []]
+        return [
+            Deposit.create_from_api(trx)
+            for trx in data.get("deposit_list") or []
+        ]
 
     async def get_withdrawal_history(
         self,
@@ -107,11 +119,14 @@ class Account:
             params["status"] = status
 
         data = (
-            await self.api.post("private/get-withdrawal-history", {"params": params})
+            await self.api.post(
+                "private/get-withdrawal-history", {"params": params}
+            )
             or {}
         )
         return [
-            Withdrawal.create_from_api(trx) for trx in data.get("withdrawal_list") or []
+            Withdrawal.create_from_api(trx)
+            for trx in data.get("withdrawal_list") or []
         ]
 
     async def get_interest_history(
@@ -132,11 +147,14 @@ class Account:
             params["end_ts"] = int(end_ts) * 1000
 
         data = (
-            await self.api.post("private/margin/get-order-history", {"params": params})
+            await self.api.post(
+                "private/margin/get-order-history", {"params": params}
+            )
             or {}
         )
         return [
-            Interest.create_from_api(interest) for interest in data.get("list") or []
+            Interest.create_from_api(interest)
+            for interest in data.get("list") or []
         ]
 
     async def get_orders_history(
@@ -155,7 +173,9 @@ class Account:
         if end_ts:
             params["end_ts"] = int(end_ts) * 1000
 
-        data = await self.api.post("private/get-order-history", {"params": params})
+        data = await self.api.post(
+            "private/get-order-history", {"params": params}
+        )
         return [
             Order.create_from_api(self.pairs[order["instrument_name"]], order)
             for order in data
@@ -168,7 +188,9 @@ class Account:
         params = {}
         if pair:
             params["instrument_name"] = pair.exchange_name
-        data = await self.api.post("private/get-open-orders", {"params": params})
+        data = await self.api.post(
+            "private/get-open-orders", {"params": params}
+        )
         return [
             Order.create_from_api(self.pairs[order["instrument_name"]], order)
             for order in data
@@ -191,7 +213,9 @@ class Account:
             params["end_ts"] = int(end_ts) * 1000
         data = await self.api.post("private/get-trades", {"params": params})
         return [
-            PrivateTrade.create_from_api(self.pairs[trade["instrument_name"]], trade)
+            PrivateTrade.create_from_api(
+                self.pairs[trade["instrument_name"]], trade
+            )
             for trade in data
         ]
 
@@ -240,7 +264,9 @@ class Account:
 
         if price:
             if type_ == OrderType.MARKET:
-                raise ValueError("Error, MARKET execution do not support price value")
+                raise ValueError(
+                    "Error, MARKET execution do not support price value"
+                )
             data["price"] = "{:.{}f}".format(price, pair.price_precision)
 
         resp = await self.api.post("private/create-order", {"params": data})
@@ -288,7 +314,9 @@ class Account:
             client_id,
         )
 
-    async def wait_for_status(self, order_id: int, statuses, delay: int = 0.1) -> None:
+    async def wait_for_status(
+        self, order_id: int, statuses, delay: int = 0.1
+    ) -> None:
         """Wait for order status."""
         order = await self.get_order(order_id)
 
@@ -300,11 +328,17 @@ class Account:
             order = await self.get_order(order_id)
 
         if order.status not in statuses:
-            raise ApiError(f"Status not changed for: {order}, must be in: {statuses}")
+            raise ApiError(
+                f"Status not changed for: {order}, must be in: {statuses}"
+            )
 
-    async def buy_market(self, pair: Pair, spend: float, wait_for_fill=False) -> str:
+    async def buy_market(
+        self, pair: Pair, spend: float, wait_for_fill=False
+    ) -> str:
         """Buy market order."""
-        order_id = await self.create_order(pair, OrderSide.BUY, OrderType.MARKET, spend)
+        order_id = await self.create_order(
+            pair, OrderSide.BUY, OrderType.MARKET, spend
+        )
         if wait_for_fill:
             await self.wait_for_status(
                 order_id,
@@ -353,11 +387,18 @@ class Account:
             [],
         )
 
-    async def cancel_order(self, order_id: int, pair: Pair, check_status=False) -> None:
+    async def cancel_order(
+        self, order_id: int, pair: Pair, check_status=False
+    ) -> None:
         """Cancel order."""
         await self.api.post(
             "private/cancel-order",
-            {"params": {"order_id": order_id, "instrument_name": pair.exchange_name}},
+            {
+                "params": {
+                    "order_id": order_id,
+                    "instrument_name": pair.exchange_name,
+                }
+            },
         )
 
         if not check_status:
@@ -388,4 +429,6 @@ class Account:
             "user", f"user.order.{pair.exchange_name}", sign=True
         ):
             for order in data.get("data", []):
-                yield Order.create_from_api(self.pairs[data["instrument_name"]], order)
+                yield Order.create_from_api(
+                    self.pairs[data["instrument_name"]], order
+                )

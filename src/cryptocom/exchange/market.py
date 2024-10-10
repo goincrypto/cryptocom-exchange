@@ -20,7 +20,9 @@ class Exchange:
 
     def __init__(self, api: ApiProvider = None):
         self.api = api or ApiProvider(auth_required=False)
-        self.pairs = DefaultPairDict(**{pair.name: pair for pair in pairs.all()})
+        self.pairs = DefaultPairDict(
+            **{pair.name: pair for pair in pairs.all()}
+        )
 
     async def sync_pairs(self):
         """Use this method to sync pairs if you have issues with missing
@@ -45,7 +47,8 @@ class Exchange:
     async def get_orderbook(self, pair: Pair, depth: int = 150) -> OrderBook:
         """Get the order book for a particular market."""
         data = await self.api.get(
-            "public/get-book", {"instrument_name": pair.exchange_name, "depth": depth}
+            "public/get-book",
+            {"instrument_name": pair.exchange_name, "depth": depth},
         )
         buys = [
             OrderInBook.from_api(order, pair, OrderSide.BUY)

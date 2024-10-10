@@ -72,7 +72,8 @@ async def test_api_rate_limits(api):
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params}) for _ in range(2)
+        api.post("private/get-order-history", {"params": params})
+        for _ in range(2)
     ]
     await asyncio.gather(*tasks)
 
@@ -81,7 +82,8 @@ async def test_api_rate_limits(api):
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params}) for _ in range(10)
+        api.post("private/get-order-history", {"params": params})
+        for _ in range(10)
     ]
     await asyncio.gather(*tasks)
 
@@ -100,7 +102,8 @@ async def test_api_rate_limits(api):
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params}) for _ in range(10)
+        api.post("private/get-order-history", {"params": params})
+        for _ in range(10)
     ]
     await asyncio.gather(*tasks)
 

@@ -380,5 +380,7 @@ ZRX = Instrument("ZRX")
 
 def all():
     return [
-        value for name, value in globals().items() if isinstance(value, Instrument)
+        value
+        for name, value in globals().items()
+        if isinstance(value, Instrument)
     ]

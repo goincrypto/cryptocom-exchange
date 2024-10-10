@@ -11,7 +11,9 @@ import cryptocom.exchange as cro
 @pytest.fixture
 def api(request):
     current_dir = pathlib.Path(__file__).parent
-    file_path = pathlib.Path(request.node.location[0][:-3][len(current_dir.name) + 1 :])
+    file_path = pathlib.Path(
+        request.node.location[0][:-3][len(current_dir.name) + 1 :]
+    )
     cache_file = pathlib.Path(
         "tests", "captured", file_path, f"{request.node.originalname}.json"
     )
@@ -63,7 +65,9 @@ def _cancel_all_tasks(loop):
     for task in to_cancel:
         task.cancel()
 
-    loop.run_until_complete(asyncio.tasks.gather(*to_cancel, return_exceptions=True))
+    loop.run_until_complete(
+        asyncio.tasks.gather(*to_cancel, return_exceptions=True)
+    )
 
     for task in to_cancel:
         if task.cancelled():
