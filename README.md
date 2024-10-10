@@ -19,8 +19,8 @@ Exchange original API docs: [https://exchange-docs.crypto.com](https://exchange-
 
 `pip install cryptocom-exchange` or `poetry add cryptocom-exchange`
 
-- provides all methods to access crypto.com/exchange API (except for websockets temporary)
+- fully operational v1 exchange API, improved testing with replay mechanics
+- provides all methods to access crypto.com/exchange API including websockets
+- *important*: temporary disabled tests for withdrawals (soon)
 - full test coverage on real exchange with real money
 - simple async methods with custom retries and timeouts
-
-**Please do not use secret keys, they used only for test purposes**
