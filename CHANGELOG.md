@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.14.3 (2024-10-11)
+
+### Fixes
+
+* fix: [round] Major issue with rounding in some cases fixed with math module ([`346f385`](https://github.com/goincrypto/cryptocom-exchange/commit/346f3852c88f9ceb6403dd45c1d1492c42abb234))
+
+
 ## v0.14.2 (2024-10-10)
 
 ### Chores
