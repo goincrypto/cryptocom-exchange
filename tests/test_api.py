@@ -7,11 +7,11 @@ import pytest
 import cryptocom.exchange as cro
 
 
-def test_timeframe():
-    days_5 = cro.Timeframe.DAYS * 5
-    result = cro.Timeframe.resolve(days_5)
+def test_timedelta():
+    days_5 = cro.TimeDelta.DAYS * 5
+    result = cro.TimeDelta.resolve(days_5)
     assert result - int(time.time() * 1000) == days_5 * 1000
-    assert cro.Timeframe.resolve(cro.Timeframe.NOW) == int(time.time() * 1000)
+    assert cro.TimeDelta.resolve(cro.TimeDelta.NOW) == int(time.time() * 1000)
 
 
 def test_api_args(monkeypatch):

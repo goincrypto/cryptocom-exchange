@@ -11,7 +11,7 @@ from .structs import (
     OrderInBook,
     OrderSide,
     Pair,
-    Period,
+    Timeframe,
 )
 
 
@@ -63,31 +63,65 @@ class Exchange:
     async def get_candles(
         self,
         pair: Pair,
-        period: Period,
+        timeframe: Timeframe,
         start_ts: int = None,
         end_ts: int = None,
-        count: int = 300,
+        count: int = 1500,
+        include_all: bool = False,
+        include_last: bool = False,
     ) -> List[Candle]:
         data = []
-        while not data:
-            data = await self.api.get(
-                "public/get-candlestick",
-                {
-                    "instrument_name": pair.exchange_name,
-                    "timeframe": period.value,
-                    "start_ts": start_ts,
-                    "end_ts": end_ts,
-                    "count": count,
-                },
-            )
-            data = [Candle.from_api(pair, candle) for candle in data]
-            # print(datetime.datetime.fromtimestamp(next_data[0].time), datetime.datetime.fromtimestamp(next_data[-1].time))
-            # if not data or data[-1].time != next_data[-1].time:
-            #     data += next_data
-            #     start_ts = next_data[-1].time
-            #     end_ts = next_data[-1].time + (next_data[-1].time - next_data[-2].time) * count
-            #     next_data = []
-        return data
+        chunk_size = 300
+        result = []
+        chunk_start_ts = start_ts
+        chunk_end_ts = end_ts
+        prev_timestamps = set()
+        max_count = count if include_last else count + 1
+
+        while True:
+            params = {
+                "instrument_name": pair.exchange_name,
+                "timeframe": timeframe.value,
+                "count": chunk_size,
+            }
+            if chunk_start_ts and chunk_end_ts:
+                params.update(
+                    {
+                        "start_ts": int(chunk_start_ts * 1000),
+                        "end_ts": int(chunk_end_ts * 1000),
+                    }
+                )
+            data = await self.api.get("public/get-candlestick", params)
+
+            candles = (Candle.from_api(pair, candle) for candle in data)
+            candles = [
+                candle
+                for candle in candles
+                if candle.time not in prev_timestamps
+            ]
+            prev_timestamps = set(candle.time for candle in candles)
+            result = candles + result
+
+            if (
+                not data
+                or len(data) < chunk_size
+                or (len(result) >= max_count and not include_all)
+            ):
+                break
+
+            # NOTE: [start1, end1], [start0, end0]
+            size = candles[1].time - candles[0].time
+            if not end_ts:
+                chunk_end_ts = candles[0].time
+            chunk_start_ts = candles[0].time - size * chunk_size
+
+        if not include_last:
+            del result[-1]
+
+        if not include_all:
+            result = result[:count]
+
+        return result
 
     async def get_trades(self, pair: Pair) -> List[MarketTrade]:
         """Get last 200 trades in a specified market."""
@@ -119,13 +153,14 @@ class Exchange:
         return (await self.get_ticker(pair)).trade_price
 
     async def listen_candles(
-        self, period: Period, *pairs: List[Pair]
+        self, timeframe: Timeframe, *pairs: List[Pair]
     ) -> AsyncGenerator[Candle, None]:
-        if not isinstance(period, Period):
-            raise ValueError(f"Provide Period enum not {period}")
+        if not isinstance(timeframe, Timeframe):
+            raise ValueError(f"Provide Timeframe enum not {timeframe}")
 
         channels = [
-            f"candlestick.{period.value}.{pair.exchange_name}" for pair in pairs
+            f"candlestick.{timeframe.value}.{pair.exchange_name}"
+            for pair in pairs
         ]
 
         async for data in self.api.listen("market", *channels):

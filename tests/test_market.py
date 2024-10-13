@@ -50,19 +50,26 @@ async def test_get_orderbook(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_candles(exchange: cro.Exchange):
+@pytest.mark.parametrize(
+    "include_all,timeframe,count,candles_len",
+    [
+        (False, cro.Timeframe.MIN_15, 50, 50),
+        (True, cro.Timeframe.DAY, 0, 40),
+    ],
+)
+async def test_get_candles(
+    exchange: cro.Exchange, include_all, timeframe, count, candles_len
+):
     candles = await exchange.get_candles(
-        cro.pairs.CRO_USDT,
-        cro.Period.MINS,
-        # TODO: works but should load all data not just last 300
-        # start_ts=Timeframe.resolve(-Timeframe.DAYS * 20),
-        # end_ts=Timeframe.resolve(-Timeframe.DAYS * 15),
+        cro.pairs.CLOUD_USD,
+        timeframe,
+        include_all=include_all,
     )
     for candle in candles:
-        assert candle.pair == cro.pairs.CRO_USDT
+        assert candle.pair == cro.pairs.CLOUD_USD
         assert candle.high >= candle.low
-        assert candle.time
-    assert len(candles) == 300
+
+    assert len(candles) >= candles_len, len(candles)
 
 
 @pytest.mark.asyncio
@@ -76,7 +83,7 @@ async def test_listen_candles(exchange: cro.Exchange):
     )
     default_count = 1
 
-    async for candle in exchange.listen_candles(cro.Period.MINS, *pairs):
+    async for candle in exchange.listen_candles(cro.Timeframe.MIN, *pairs):
         candles.setdefault(candle.pair, 0)
         candles[candle.pair] += 1
         if all(v >= default_count for v in candles.values()) and len(

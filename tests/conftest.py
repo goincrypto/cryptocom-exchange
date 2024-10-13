@@ -20,7 +20,9 @@ def api(request):
     value = os.environ.get("API_CAPTURE", "false")
     capture = value.lower() == "true"
     provider = cro.RecordApiProvider(
-        cache_file=cache_file, capture=capture, divide_delay=10
+        cache_file=cache_file,
+        capture=capture,
+        divide_delay=10,
     )
     yield provider
     provider.save()

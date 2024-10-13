@@ -118,19 +118,19 @@ class MarketTrade:
         )
 
 
-class Period(str, Enum):
-    MINS = "1m"
-    MINS_5 = "5m"
-    MINS_15 = "15m"
-    MINS_30 = "30m"
-    HOURS = "1h"
-    HOURS_2 = "2h"
-    HOURS_4 = "4h"
-    HOURS_12 = "12h"
+class Timeframe(str, Enum):
+    MIN = "1m"
+    MIN_5 = "5m"
+    MIN_15 = "15m"
+    MIN_30 = "30m"
+    HOUR = "1h"
+    HOUR_2 = "2h"
+    HOUR_4 = "4h"
+    HOUR_12 = "12h"
     DAY = "1D"
     WEEK = "7D"
     WEEK_2 = "14D"
-    MONTH_1 = "1M"
+    MONTH = "1M"
 
 
 @dataclass
@@ -531,11 +531,11 @@ class Withdrawal(Transaction):
         return cls(**params)
 
 
-class Timeframe(IntEnum):
+class TimeDelta(IntEnum):
     NOW = 0
     MINUTES = 60
-    HOURS = 60 * MINUTES
-    DAYS = 24 * HOURS
+    HOUR = 60 * MINUTES
+    DAYS = 24 * HOUR
     WEEKS = 7 * DAYS
     MONTHS = 30 * DAYS
 

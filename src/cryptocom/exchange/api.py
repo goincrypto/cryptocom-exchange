@@ -57,6 +57,8 @@ def params_to_str(obj, level):
 
 
 class ApiListenAsyncIterable:
+    """Listen websocket iterator."""
+
     def __init__(self, api, ws, channels, sign):
         self.api = api
         self.ws = ws
@@ -309,12 +311,15 @@ class RecordApiProvider(ApiProvider):
 
         if self.capture:
             self.cache_file.parent.mkdir(exist_ok=True, parents=True)
-            if self.cache_file.exists():
-                self.cache_file.unlink()
-                self.cache_file.touch()
-            self.records = {}
-        else:
+            # TODO: implement correct overwrite
+            # if self.cache_file.exists():
+            #     self.cache_file.unlink()
+            #     self.cache_file.touch()
+
+        if self.cache_file.exists():
             self.records = json.loads(self.cache_file.read_text())
+        else:
+            self.records = {}
 
         kwargs = {"from_env": capture}
         if not self.capture:

@@ -67,8 +67,8 @@ async def test_deposit_withdrawal_history(
 
     transactions = await account.get_deposit_history(
         cro.instruments.USD,
-        start_ts=time.time() - cro.Timeframe.DAYS * 5,
-        end_ts=cro.Timeframe.resolve(cro.Timeframe.NOW),
+        start_ts=time.time() - cro.TimeDelta.DAYS * 5,
+        end_ts=cro.TimeDelta.resolve(cro.TimeDelta.NOW),
     )
     assert not transactions
 
