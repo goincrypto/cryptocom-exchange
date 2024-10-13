@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.15.0 (2024-10-13)
+
+### Features
+
+* feat: [candles] Improved history access, download all data, renamed Period into Timeframe ([`914fcca`](https://github.com/goincrypto/cryptocom-exchange/commit/914fcca17134d5dc0a0e84203ea9142508d66bae))
+
+
 ## v0.14.3 (2024-10-11)
 
 ### Fixes

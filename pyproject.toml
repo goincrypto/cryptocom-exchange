@@ -6,7 +6,7 @@ name = "cryptocom-exchange"
 packages = [
   {include = "cryptocom", from = "src"},
 ]
-version = "0.14.3"
+version = "0.15.0"
 readme = "README.md"
 classifiers = [
   "Operating System :: OS Independent",
