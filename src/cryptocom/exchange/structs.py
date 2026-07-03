@@ -369,11 +369,16 @@ class Balance:
     instruments: list[InstrumentBalance]
 
     def __contains__(self, instrument):
-        print("check", instrument)
         return instrument in [inst for inst in self.instruments]
 
     def __getitem__(self, instrument):
         return next(inst for inst in self.instruments if inst == instrument)
+
+    def get(self, instrument, default=None):
+        try:
+            return next(inst for inst in self.instruments if inst == instrument)
+        except StopIteration:
+            return default
 
     def __iter__(self):
         return iter(self.instruments)
@@ -522,7 +527,7 @@ class Order:
 
     @cached_property
     def is_filled(self):
-        return not self.remain_quantity
+        return self.status == OrderStatus.FILLED and self.remain_quantity <= 0
 
     @cached_property
     def is_pending(self):

@@ -63,39 +63,14 @@ async def account(api: cro.RecordApiProvider) -> cro.Account:
 @pytest.fixture
 def event_loop(request):
     """Create an instance of the default event loop for each test case."""
-    loop = asyncio.events.new_event_loop()
-    try:
-        asyncio.events.set_event_loop(loop)
-        yield loop
-    finally:
-        try:
-            _cancel_all_tasks(loop)
-            loop.run_until_complete(loop.shutdown_asyncgens())
-            if hasattr(loop, "shutdown_default_executor"):
-                loop.run_until_complete(loop.shutdown_default_executor())
-        finally:
-            asyncio.events.set_event_loop(None)
-            loop.close()
-
-
-def _cancel_all_tasks(loop):
-    to_cancel = asyncio.tasks.all_tasks(loop)
-    if not to_cancel:
-        return
-
-    for task in to_cancel:
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    yield loop
+    # Properly cancel and cleanup all pending tasks
+    pending = asyncio.all_tasks(loop)
+    for task in pending:
         task.cancel()
-
-    loop.run_until_complete(asyncio.tasks.gather(*to_cancel, return_exceptions=True))
-
-    for task in to_cancel:
-        if task.cancelled():
-            continue
-        if task.exception() is not None:
-            loop.call_exception_handler(
-                {
-                    "message": "unhandled exception during asyncio.run()",
-                    "exception": task.exception(),
-                    "task": task,
-                }
-            )
+    if pending:
+        loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
+    loop.run_until_complete(loop.shutdown_asyncgens())
+    loop.close()

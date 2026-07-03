@@ -205,6 +205,7 @@ class Account:
         force_type: OrderForceType = None,
         exec_type: OrderExecType = None,
         client_id: int = None,
+        fee_instrument: Instrument = None,
     ) -> str:
         """Create raw order with buy or sell side."""
         data = {
@@ -218,6 +219,13 @@ class Account:
 
         if exec_type:
             data["exec_inst"] = [exec_type.value]
+
+        # Use provided fee_instrument or default to pair's quote currency
+        if fee_instrument:
+            data["fee_instrument_name"] = fee_instrument.exchange_name
+        else:
+            # Default to quote currency (e.g., USD for CRO_USD)
+            data["fee_instrument_name"] = pair.quote_instrument.exchange_name
 
         old_quantity = quantity
         precision = pair.quantity_precision
@@ -269,8 +277,9 @@ class Account:
         force_type: OrderForceType = None,
         exec_type: OrderExecType = None,
         client_id: int = None,
+        fee_instrument: Instrument = None,
     ) -> int:
-        """Buy limit order."""
+        """Buy limit order with optional fee instrument."""
         return await self.create_order(
             pair,
             OrderSide.BUY,
@@ -280,6 +289,7 @@ class Account:
             force_type,
             exec_type,
             client_id,
+            fee_instrument,
         )
 
     async def sell_limit(
@@ -290,8 +300,9 @@ class Account:
         force_type: OrderForceType = None,
         exec_type: OrderExecType = None,
         client_id: int = None,
+        fee_instrument: Instrument = None,
     ) -> int:
-        """Sell limit order."""
+        """Sell limit order with optional fee instrument."""
         return await self.create_order(
             pair,
             OrderSide.SELL,
@@ -301,6 +312,7 @@ class Account:
             force_type,
             exec_type,
             client_id,
+            fee_instrument,
         )
 
     async def wait_for_status(self, order_id: int, statuses, delay: int = 0.1) -> None:
@@ -317,9 +329,17 @@ class Account:
         if order.status not in statuses:
             raise ApiError(f"Status not changed for: {order}, must be in: {statuses}")
 
-    async def buy_market(self, pair: Pair, spend: float, wait_for_fill=False) -> str:
-        """Buy market order."""
-        order_id = await self.create_order(pair, OrderSide.BUY, OrderType.MARKET, spend)
+    async def buy_market(
+        self,
+        pair: Pair,
+        spend: float,
+        wait_for_fill: bool = False,
+        fee_instrument: Instrument = None,
+    ) -> str:
+        """Buy market order with optional fee instrument."""
+        order_id = await self.create_order(
+            pair, OrderSide.BUY, OrderType.MARKET, spend, fee_instrument=fee_instrument
+        )
         if wait_for_fill:
             await self.wait_for_status(
                 order_id,
@@ -334,11 +354,19 @@ class Account:
         return order_id
 
     async def sell_market(
-        self, pair: Pair, quantity: float, wait_for_fill=False
+        self,
+        pair: Pair,
+        quantity: float,
+        wait_for_fill: bool = False,
+        fee_instrument: Instrument = None,
     ) -> str:
-        """Sell market order."""
+        """Sell market order with optional fee instrument."""
         order_id = await self.create_order(
-            pair, OrderSide.SELL, OrderType.MARKET, quantity
+            pair,
+            OrderSide.SELL,
+            OrderType.MARKET,
+            quantity,
+            fee_instrument=fee_instrument,
         )
 
         if wait_for_fill:

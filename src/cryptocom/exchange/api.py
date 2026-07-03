@@ -173,7 +173,6 @@ class ApiProvider:
         self.api_secret = os.environ.get("CRYPTOCOM_API_SECRET", "")
         if not self.api_secret:
             raise ValueError("Provide CRYPTOCOM_API_SECRET env value")
-        print(self.api_key, self.api_secret, "key", "secret")
 
     def sign(self, path, data):
         data = data or {}

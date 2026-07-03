@@ -16,3 +16,4 @@ coverage.xml
 /cc-test-reporter
 activate.sh
 candletest.py
+bot.py
