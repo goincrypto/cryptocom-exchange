@@ -1,6 +1,6 @@
 [tool.poetry]
 authors = ["Morty Space <morty.space@gmail.com>"]
-description = "Python 3.9+ async library for crypto.com/exchange API using httpx and websockets"
+description = "Python 3.11+ async library for crypto.com/exchange API using httpx and websockets"
 license = "MIT"
 name = "cryptocom-exchange"
 packages = [
@@ -15,25 +15,25 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-aiolimiter = "^1.0.0"
-async-timeout = "^4.0.2"
-cached-property = "^1.5.2"
-httpx = "^0.27.0"
-python = "^3.9"
-websockets = "^10.3"
+aiolimiter = "^1.2.1"
+async-timeout = "^5.0.1"
+cached-property = "^2.0.1"
+httpx = "^0.28.1"
+python = "^3.11"
+websockets = "^15.0.1"
 pyyaml = "^6.0.2"
 
 [tool.poetry.dev-dependencies]
-flake8 = "3.9"
-pytest = "^7.1.2"
-pytest-asyncio = "^0.18.3"
-pytest-cov = "^3.0.0"
-pytest-doctestplus = "^0.12.0"
-pre-commit = "^2.18.1"
-Sphinx = "^7.0.0"
-sphinx-rtd-theme = "^1.0.0"
-mypy = "^0.950"
-importlib-metadata = "^4.11.3"
+flake8 = "^7.3.0"
+pytest = "^8.4.1"
+pytest-asyncio = "^1.1.0"
+pytest-cov = "^6.2.1"
+pytest-doctestplus = "^1.4.0"
+pre-commit = "^4.3.0"
+Sphinx = "^8.2.3"
+sphinx-rtd-theme = "^3.0.2"
+mypy = "^1.17.1"
+importlib-metadata = "^8.7.0"
 
 [tool.ruff]
 exclude = [
