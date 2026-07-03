@@ -69,17 +69,17 @@ class ApiListenAsyncIterable:
         return self
 
     async def __anext__(self):
-        if not self.sub_data_sent:
-            sub_data = {
-                "id": random.randint(0, 2**63 - 1),
-                "method": "subscribe",
-                "params": {"channels": self.channels},
-                "nonce": int(time.time()),
-            }
+        sub_data = {
+            "id": random.randint(0, 2**63 - 1),
+            "method": "subscribe",
+            "params": {"channels": self.channels},
+            "nonce": int(time.time() * 1000),
+        }
 
         # [0] sign auth request to listen private methods
         if not self.auth_sent and self.sign:
-            await self.ws.send(json.dumps(self.api.sign("public/auth", {})))
+            auth_data = self.api.sign("public/auth", {})
+            await self.ws.send(json.dumps(auth_data))
             self.auth_sent = True
 
         # [0] if not sign start connection with subscription
