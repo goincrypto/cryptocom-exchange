@@ -1,9 +1,9 @@
 import time
 import typing as TP
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum, IntEnum
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from cached_property import cached_property
 
@@ -79,6 +79,145 @@ class DefaultPairDict(dict):
                 min_order_notional_usd=1.0,
                 max_order_notional_usd=1000000.0,
             )
+
+
+@dataclass
+class BaseCurrencyConfig:
+    """Risk parameters for a specific instrument."""
+
+    instrument_name: str
+    min_order_notional_usd: float
+    max_order_notional_usd: float
+    order_limit: float
+    minimum_haircut: float
+    unit_margin_rate: float
+
+    # Optional fields
+    collateral_cap_notional: Optional[float] = None
+    max_product_leverage_for_spot: Optional[float] = None
+    max_product_leverage_for_perps: Optional[float] = None
+    max_product_leverage_for_futures: Optional[float] = None
+    max_short_sell_limit: Optional[float] = None
+    long_pos_limit_perps: Optional[float] = None
+    short_pos_limit_perps: Optional[float] = None
+    long_pos_limit_futures: Optional[float] = None
+    short_pos_limit_futures: Optional[float] = None
+
+    @classmethod
+    def from_api(cls, data: Dict) -> "BaseCurrencyConfig":
+        return cls(
+            instrument_name=data["instrument_name"],
+            min_order_notional_usd=float(
+                data.get("min_order_notional_usd", 1.0)
+            ),
+            max_order_notional_usd=float(
+                data.get("max_order_notional_usd", 1000000.0)
+            ),
+            order_limit=float(data.get("order_limit", 1000000.0)),
+            minimum_haircut=float(data.get("minimum_haircut", 0)),
+            unit_margin_rate=float(data.get("unit_margin_rate", 0)),
+            collateral_cap_notional=float(data["collateral_cap_notional"])
+            if data.get("collateral_cap_notional")
+            else None,
+            max_product_leverage_for_spot=float(
+                data["max_product_leverage_for_spot"]
+            )
+            if data.get("max_product_leverage_for_spot")
+            else None,
+            max_product_leverage_for_perps=float(
+                data["max_product_leverage_for_perps"]
+            )
+            if data.get("max_product_leverage_for_perps")
+            else None,
+            max_product_leverage_for_futures=float(
+                data["max_product_leverage_for_futures"]
+            )
+            if data.get("max_product_leverage_for_futures")
+            else None,
+            max_short_sell_limit=float(data["max_short_sell_limit"])
+            if data.get("max_short_sell_limit")
+            else None,
+            long_pos_limit_perps=float(data["long_pos_limit_perps"])
+            if data.get("long_pos_limit_perps")
+            else None,
+            short_pos_limit_perps=float(data["short_pos_limit_perps"])
+            if data.get("short_pos_limit_perps")
+            else None,
+            long_pos_limit_futures=float(data["long_pos_limit_futures"])
+            if data.get("long_pos_limit_futures")
+            else None,
+            short_pos_limit_futures=float(data["short_pos_limit_futures"])
+            if data.get("short_pos_limit_futures")
+            else None,
+        )
+
+
+@dataclass
+class RiskParameters:
+    """Complete risk parameters from API."""
+
+    default_max_product_leverage_for_spot: float
+    default_max_product_leverage_for_perps: float
+    default_max_product_leverage_for_futures: float
+    default_umr_multiplier_for_spot: float
+    default_umr_multiplier_for_perps: float
+    default_umr_multiplier_for_futures: float
+    default_long_pos_limit_perps: float
+    default_short_pos_limit_perps: float
+    default_long_pos_limit_futures: float
+    default_short_pos_limit_futures: float
+    default_unit_margin_rate: float
+    default_collateral_cap: float
+    update_timestamp_ms: int
+    base_currency_config: List[BaseCurrencyConfig]
+    perpetual_swap_config: Optional[Dict] = None
+    futures_config: Optional[Dict] = None
+
+    @classmethod
+    def from_api(cls, data: Dict) -> "RiskParameters":
+        return cls(
+            default_max_product_leverage_for_spot=float(
+                data.get("default_max_product_leverage_for_spot", 1.0)
+            ),
+            default_max_product_leverage_for_perps=float(
+                data.get("default_max_product_leverage_for_perps", 50.0)
+            ),
+            default_max_product_leverage_for_futures=float(
+                data.get("default_max_product_leverage_for_futures", 20.0)
+            ),
+            default_umr_multiplier_for_spot=float(
+                data.get("default_umr_multiplier_for_spot", 0)
+            ),
+            default_umr_multiplier_for_perps=float(
+                data.get("default_umr_multiplier_for_perps", 0)
+            ),
+            default_umr_multiplier_for_futures=float(
+                data.get("default_umr_multiplier_for_futures", 0)
+            ),
+            default_long_pos_limit_perps=float(
+                data.get("default_long_pos_limit_perps", -1)
+            ),
+            default_short_pos_limit_perps=float(
+                data.get("default_short_pos_limit_perps", -1)
+            ),
+            default_long_pos_limit_futures=float(
+                data.get("default_long_pos_limit_futures", -1)
+            ),
+            default_short_pos_limit_futures=float(
+                data.get("default_short_pos_limit_futures", -1)
+            ),
+            default_unit_margin_rate=float(
+                data.get("default_unit_margin_rate", 0)
+            ),
+            default_collateral_cap=float(data.get("default_collateral_cap", 0)),
+            update_timestamp_ms=int(data.get("update_timestamp_ms", 0)),
+            base_currency_config=[
+                BaseCurrencyConfig.from_api(config)
+                for config in data.get("base_currency_config", [])
+            ],
+            perpetual_swap_config=data.get("perpetual_swap_config"),
+            futures_config=data.get("futures_config"),
+        )
 
 
 @dataclass

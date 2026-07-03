@@ -4,6 +4,7 @@ from typing import AsyncGenerator, Dict, List, Optional
 from . import pairs
 from .api import ApiProvider
 from .structs import (
+    BaseCurrencyConfig,
     Candle,
     DefaultPairDict,
     MarketTicker,
@@ -12,6 +13,7 @@ from .structs import (
     OrderInBook,
     OrderSide,
     Pair,
+    RiskParameters,
     Timeframe,
 )
 
@@ -313,6 +315,7 @@ class Exchange:
             ]
             yield OrderBook(buys, sells, pair)
 
-    async def get_risk_parameters(self) -> Dict:
-        """Get risk parameters for Smart Cross Margin including min_order_notional_usd."""
-        return await self.api.get("public/get-risk-parameters")
+    async def get_risk_parameters(self) -> RiskParameters:
+        """Get risk parameters for Smart Cross Margin including min/max order notional."""
+        data = await self.api.get("public/get-risk-parameters")
+        return RiskParameters.from_api(data)
