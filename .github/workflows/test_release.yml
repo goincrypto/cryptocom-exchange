@@ -75,18 +75,9 @@ jobs:
           directory: './src'
           message: "sync: updated API pairs and instruments"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare codeclimate
-        if: matrix.python-version == '3.14'
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
       - name: Test code
         timeout-minutes: 6
         run: poetry run pytest -v --cov . --cov-report xml:coverage.xml
-      - name: Send codeclimate analytics
-        if: matrix.python-version == '3.14'
-        run: ./cc-test-reporter after-build -r ${{ secrets.CC_TEST_REPORTER_ID }} --exit-code $?
   release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
