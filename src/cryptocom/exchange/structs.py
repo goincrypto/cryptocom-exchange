@@ -29,6 +29,8 @@ class Instrument:
 class Pair(Instrument):
     price_precision: int
     quantity_precision: int
+    min_order_notional_usd: float = 1.0
+    max_order_notional_usd: float = 1000000.0
 
     @cached_property
     def _split_instrument(self):
@@ -48,6 +50,14 @@ class Pair(Instrument):
     def round_quantity(self, quantity):
         return round_down(float(quantity), self.quantity_precision)
 
+    def validate_order_notional(self, notional: float) -> bool:
+        """Check if order notional value is within allowed limits."""
+        return (
+            self.min_order_notional_usd
+            <= notional
+            <= self.max_order_notional_usd
+        )
+
     def __hash__(self):
         return self.exchange_name.__hash__()
 
@@ -62,7 +72,13 @@ class DefaultPairDict(dict):
         try:
             return super().__getitem__(name)
         except KeyError:
-            return Pair(name, 8, 8)
+            return Pair(
+                name,
+                8,
+                8,
+                min_order_notional_usd=1.0,
+                max_order_notional_usd=1000000.0,
+            )
 
 
 @dataclass
