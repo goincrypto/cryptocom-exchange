@@ -37,7 +37,7 @@ jobs:
           key: py-${{ matrix.python-version }}-poetry-pip-1.2.2
           restore-keys: poetry-pip
       - name: Install poetry
-        run: pip install poetry==1.2.2
+        run: pip install poetry==2.0.1
       - name: Download cache for poetry
         id: poetry-install
         uses: actions/cache@v3
@@ -61,7 +61,7 @@ jobs:
         run: poetry run pre-commit run -a
       - name: Auto-generate missing pairs
         if: matrix.python-version == '3.12'
-        run: poetry run python generatestructs.py
+        run: poetry run python generate.py
       - name: Format code before pushing
         if: matrix.python-version == '3.12'
         run: poetry run pre-commit run -a
