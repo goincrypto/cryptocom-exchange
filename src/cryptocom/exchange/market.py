@@ -312,3 +312,7 @@ class Exchange:
                 for order in reversed(data["data"][0]["asks"])
             ]
             yield OrderBook(buys, sells, pair)
+
+    async def get_risk_parameters(self) -> Dict:
+        """Get risk parameters for Smart Cross Margin including min_order_notional_usd."""
+        return await self.api.get("public/get-risk-parameters")
