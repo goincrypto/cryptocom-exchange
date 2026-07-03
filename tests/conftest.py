@@ -10,10 +10,13 @@ import cryptocom.exchange as cro
 
 @pytest.fixture
 def api(request):
-    current_dir = pathlib.Path(__file__).parent
-    file_path = pathlib.Path(request.node.location[0][:-3][len(current_dir.name) + 1 :])
+    pathlib.Path(__file__).parent
+    # Get the test file path relative to tests directory, remove .py extension
+    test_file = request.node.location[0].split("::")[0]
+    relative_path = pathlib.Path(test_file).with_suffix("").name
+    # Use node.name (includes params) instead of originalname for parametrized tests
     cache_file = pathlib.Path(
-        "tests", "captured", file_path, f"{request.node.originalname}.json"
+        "tests", "captured", relative_path, f"{request.node.name}.json"
     )
     value = os.environ.get("API_CAPTURE", "false")
     capture = value.lower() == "true"

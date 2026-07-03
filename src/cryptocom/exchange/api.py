@@ -307,8 +307,9 @@ class RecordApiProvider(ApiProvider):
 
         if self.capture:
             self.cache_file.parent.mkdir(exist_ok=True, parents=True)
-            # if self.cache_file.exists():
-            #     self.cache_file.unlink()
+            if self.cache_file.exists():
+                self.cache_file.unlink()
+            self.records = {}
 
         if self.cache_file.exists():
             self.records = json.loads(self.cache_file.read_text())
