@@ -256,8 +256,18 @@ class Account:
             )
         if type_ == OrderType.MARKET and side == OrderSide.BUY:
             data["notional"] = quantity
+            notional_value = float(quantity)
         else:
             data["quantity"] = quantity
+            notional_value = float(quantity) * price
+
+        # Validate order notional against pair limits
+        if not pair.validate_order_notional(notional_value):
+            raise ValueError(
+                f"Order notional ${notional_value:.2f} outside limits "
+                f"[${pair.min_order_notional_usd}, ${pair.max_order_notional_usd}] "
+                f"for pair {pair.name}"
+            )
 
         if client_id:
             data["client_oid"] = str(client_id)
