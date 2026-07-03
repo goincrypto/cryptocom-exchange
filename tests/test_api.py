@@ -29,14 +29,14 @@ def doc_params_to_str(obj, level):
         if obj[key] is None:
             return_str += "null"
         elif isinstance(obj[key], list):
-            for subObj in obj[key]:
-                return_str += doc_params_to_str(subObj, level + 1)
+            for sub_obj in obj[key]:
+                return_str += doc_params_to_str(sub_obj, level + 1)
         else:
             return_str += str(obj[key])
     return return_str
 
 
-def doc_sign(req, SECRET_KEY):
+def doc_sign(req, secret_key):
     """Documentation example signature generation."""
     param_str = ""
     if "params" in req:
@@ -47,7 +47,7 @@ def doc_sign(req, SECRET_KEY):
     )
 
     return hmac.new(
-        bytes(str(SECRET_KEY), "utf-8"),
+        bytes(str(secret_key), "utf-8"),
         msg=bytes(payload_str, "utf-8"),
         digestmod=hashlib.sha256,
     ).hexdigest()
@@ -64,7 +64,7 @@ def doc_sign(req, SECRET_KEY):
         (
             "simple_request",
             "API_KEY",
-            "SECRET_KEY",
+            "secret_key",
             {
                 "id": "1",
                 "method": "private/get-open-orders",
@@ -76,7 +76,7 @@ def doc_sign(req, SECRET_KEY):
         (
             "order_list_request",
             "API_KEY",
-            "SECRET_KEY",
+            "secret_key",
             {
                 "id": "14",
                 "method": "private/create-order-list",
@@ -107,7 +107,7 @@ def doc_sign(req, SECRET_KEY):
         (
             "create_order_request",
             "API_KEY",
-            "SECRET_KEY",
+            "secret_key",
             {
                 "id": "42",
                 "method": "private/create-order",
@@ -125,7 +125,7 @@ def doc_sign(req, SECRET_KEY):
         (
             "get_order_history_request",
             "API_KEY",
-            "SECRET_KEY",
+            "secret_key",
             {
                 "id": "100",
                 "method": "private/get-order-history",
@@ -168,15 +168,15 @@ def test_signature_matches_documentation(test_name, api_key, secret_key, req):
         digestmod=hashlib.sha256,
     ).hexdigest()
 
-    assert (
-        doc_param_str == our_param_str
-    ), f"[{test_name}] param_str differs!\nDoc: {doc_param_str}\nOur: {our_param_str}"
-    assert (
-        doc_payload == our_payload
-    ), f"[{test_name}] Payloads differ!\nDoc: {doc_payload}\nOur: {our_payload}"
-    assert (
-        doc_sig == our_sig
-    ), f"[{test_name}] Signatures differ!\nDoc: {doc_sig}\nOur: {our_sig}"
+    assert doc_param_str == our_param_str, (
+        f"[{test_name}] param_str differs!\nDoc: {doc_param_str}\nOur: {our_param_str}"
+    )
+    assert doc_payload == our_payload, (
+        f"[{test_name}] Payloads differ!\nDoc: {doc_payload}\nOur: {our_payload}"
+    )
+    assert doc_sig == our_sig, (
+        f"[{test_name}] Signatures differ!\nDoc: {doc_sig}\nOur: {our_sig}"
+    )
 
 
 @pytest.mark.parametrize(
@@ -223,14 +223,14 @@ def test_params_to_str_matches_documentation(test_name, params, expected_substri
     doc_result = doc_params_to_str(params, 0)
     our_result = our_params_to_str(params, 0)
 
-    assert (
-        doc_result == our_result
-    ), f"[{test_name}] Results differ!\nDoc: {doc_result}\nOur: {our_result}"
+    assert doc_result == our_result, (
+        f"[{test_name}] Results differ!\nDoc: {doc_result}\nOur: {our_result}"
+    )
 
     for substring in expected_substrings:
-        assert (
-            substring in our_result
-        ), f"[{test_name}] Expected '{substring}' not found in result: {our_result}"
+        assert substring in our_result, (
+            f"[{test_name}] Expected '{substring}' not found in result: {our_result}"
+        )
 
 
 def test_actual_api_sign_method():

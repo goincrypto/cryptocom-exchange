@@ -46,8 +46,8 @@ def params_to_str(obj, level):
         if obj[key] is None:
             return_str += "null"
         elif isinstance(obj[key], list):
-            for subObj in obj[key]:
-                return_str += params_to_str(subObj, level + 1)
+            for sub_obj in obj[key]:
+                return_str += params_to_str(sub_obj, level + 1)
         else:
             return_str += str(obj[key])
     return return_str
