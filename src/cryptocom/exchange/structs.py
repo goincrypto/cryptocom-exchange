@@ -86,11 +86,11 @@ class BaseCurrencyConfig:
     """Risk parameters for a specific instrument."""
 
     instrument_name: str
-    min_order_notional_usd: float
-    max_order_notional_usd: float
-    order_limit: float
-    minimum_haircut: float
-    unit_margin_rate: float
+    min_order_notional_usd: float = 1.0
+    max_order_notional_usd: float = 1000000.0
+    order_limit: float = 1000000.0
+    minimum_haircut: float = 0.0
+    unit_margin_rate: float = 0.0
 
     # Optional fields
     collateral_cap_notional: Optional[float] = None

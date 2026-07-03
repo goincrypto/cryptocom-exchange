@@ -26,14 +26,6 @@ async def main():
         for config in risk_params.base_currency_config
     }
 
-    def get_min_notional(instrument_name: str) -> float:
-        config = order_limits.get(instrument_name)
-        return config.min_order_notional_usd if config else 1.0
-
-    def get_max_notional(instrument_name: str) -> float:
-        config = order_limits.get(instrument_name)
-        return config.max_order_notional_usd if config else 1000000.0
-
     instruments = set()
     pairs = await exchange.get_pairs()
     for pair in pairs:
@@ -51,8 +43,8 @@ async def main():
                 f'{pair.name} = Pair("{pair.exchange_name}", '
                 f"price_precision={pair.price_precision}, "
                 f"quantity_precision={pair.quantity_precision}, "
-                f"min_order_notional_usd={get_min_notional(pair.quote_instrument.exchange_name)}, "
-                f"max_order_notional_usd={get_max_notional(pair.quote_instrument.exchange_name)})\n"
+                f"min_order_notional_usd={order_limits.get(pair.quote_instrument.exchange_name, cro.pairs.Pair('', 8, 8).min_order_notional_usd)}, "
+                f"max_order_notional_usd={order_limits.get(pair.quote_instrument.exchange_name, cro.pairs.Pair('', 8, 8).max_order_notional_usd)})\n"
                 for pair in sorted(pairs, key=lambda p: p.name)
             ]
             + ["\n", ALL_TEMPLATE.format("Pair")]
