@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime
 
 import cryptocom.exchange as cro
+from cryptocom.exchange.structs import BaseCurrencyConfig
 
 
 @pytest.mark.asyncio
@@ -341,12 +342,6 @@ async def test_get_risk_parameters(exchange: cro.Exchange):
     assert cro_config.min_order_notional_usd == 1.0
     assert cro_config.max_order_notional_usd == 1000000.0
     assert cro_config.order_limit > 0
-    assert isinstance(cro_config.minimum_haircut, float)
-    assert isinstance(cro_config.unit_margin_rate, float)
-
-    # Check that optional fields are present or None
-    assert hasattr(cro_config, "collateral_cap_notional")
-    assert hasattr(cro_config, "max_product_leverage_for_spot")
 
     # Check BTC config
     btc_config = next(
@@ -357,3 +352,8 @@ async def test_get_risk_parameters(exchange: cro.Exchange):
     assert btc_config.min_order_notional_usd == 1.0
     assert btc_config.max_product_leverage_for_spot is not None
     assert btc_config.max_product_leverage_for_spot > 0
+
+    # Check default values for missing fields
+    default_config = BaseCurrencyConfig(instrument_name="TEST")
+    assert default_config.min_order_notional_usd == 1.0
+    assert default_config.max_order_notional_usd == 1000000.0

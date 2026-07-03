@@ -2,6 +2,7 @@ import asyncio
 from pathlib import Path
 
 from cryptocom import exchange as cro
+from cryptocom.exchange.structs import BaseCurrencyConfig
 
 ALL_TEMPLATE = """
 def all():
@@ -26,6 +27,11 @@ async def main():
         for config in risk_params.base_currency_config
     }
 
+    def get_config(instrument_name: str) -> BaseCurrencyConfig:
+        return order_limits.get(instrument_name) or BaseCurrencyConfig(
+            instrument_name=instrument_name
+        )
+
     instruments = set()
     pairs = await exchange.get_pairs()
     for pair in pairs:
@@ -43,8 +49,8 @@ async def main():
                 f'{pair.name} = Pair("{pair.exchange_name}", '
                 f"price_precision={pair.price_precision}, "
                 f"quantity_precision={pair.quantity_precision}, "
-                f"min_order_notional_usd={order_limits.get(pair.quote_instrument.exchange_name, cro.pairs.Pair('', 8, 8).min_order_notional_usd)}, "
-                f"max_order_notional_usd={order_limits.get(pair.quote_instrument.exchange_name, cro.pairs.Pair('', 8, 8).max_order_notional_usd)})\n"
+                f"min_order_notional_usd={get_config(pair.quote_instrument.exchange_name).min_order_notional_usd}, "
+                f"max_order_notional_usd={get_config(pair.quote_instrument.exchange_name).max_order_notional_usd})\n"
                 for pair in sorted(pairs, key=lambda p: p.name)
             ]
             + ["\n", ALL_TEMPLATE.format("Pair")]
