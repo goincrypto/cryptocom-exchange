@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 
 import cryptocom.exchange as cro
 from cryptocom.exchange.structs import BaseCurrencyConfig
@@ -69,8 +69,8 @@ async def test_get_orderbook(exchange: cro.Exchange):
         # 1D candles: 1 month range (June 1 - July 1, 2026)
         (
             cro.Timeframe.DAY,
-            int(datetime(2026, 6, 1, 0, 0, 0).timestamp()),
-            int(datetime(2026, 7, 1, 0, 0, 0).timestamp()),
+            int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
+            int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
             30,
             30,
         ),
