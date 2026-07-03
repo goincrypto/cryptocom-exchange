@@ -23,9 +23,7 @@ class Exchange:
 
     def __init__(self, api: ApiProvider = None):
         self.api = api or ApiProvider(auth_required=False)
-        self.pairs = DefaultPairDict(
-            **{pair.name: pair for pair in pairs.all()}
-        )
+        self.pairs = DefaultPairDict(**{pair.name: pair for pair in pairs.all()})
 
     async def sync_pairs(self):
         """Use this method to sync pairs if you have issues with missing
@@ -91,9 +89,7 @@ class Exchange:
         """
         # Validation: include_all cannot be used with time boundaries
         if include_all and (start_ts is not None or end_ts is not None):
-            raise ValueError(
-                "include_all cannot be used with start_ts or end_ts"
-            )
+            raise ValueError("include_all cannot be used with start_ts or end_ts")
 
         # Defaults
         end_ts = end_ts or int(time.time())
@@ -122,9 +118,7 @@ class Exchange:
             data = await self.api.get("public/get-candlestick", params)
 
             # Parse and filter out duplicates
-            candles = [
-                Candle.from_api(candle, pair) for candle in reversed(data)
-            ]
+            candles = [Candle.from_api(candle, pair) for candle in reversed(data)]
             candles = [c for c in candles if c.time not in prev_timestamps]
 
             if not candles:
@@ -185,9 +179,7 @@ class Exchange:
         """
         # Validation: include_all cannot be used with time boundaries
         if include_all and (start_ts is not None or end_ts is not None):
-            raise ValueError(
-                "include_all cannot be used with start_ts or end_ts"
-            )
+            raise ValueError("include_all cannot be used with start_ts or end_ts")
 
         # Defaults
         end_ts = end_ts or int(time.time())
@@ -215,9 +207,7 @@ class Exchange:
             data = await self.api.get("public/get-trades", params)
 
             # Parse and filter out duplicates
-            trades = [
-                MarketTrade.from_api(pair, trade) for trade in reversed(data)
-            ]
+            trades = [MarketTrade.from_api(pair, trade) for trade in reversed(data)]
             trades = [t for t in trades if t.id not in prev_trade_ids]
 
             if not trades:
@@ -281,8 +271,7 @@ class Exchange:
             raise ValueError(f"Provide Timeframe enum not {timeframe}")
 
         channels = [
-            f"candlestick.{timeframe.value}.{pair.exchange_name}"
-            for pair in pairs
+            f"candlestick.{timeframe.value}.{pair.exchange_name}" for pair in pairs
         ]
 
         async for data in self.api.listen("market", *channels):

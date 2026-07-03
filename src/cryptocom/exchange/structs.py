@@ -52,11 +52,7 @@ class Pair(Instrument):
 
     def validate_order_notional(self, notional: float) -> bool:
         """Check if order notional value is within allowed limits."""
-        return (
-            self.min_order_notional_usd
-            <= notional
-            <= self.max_order_notional_usd
-        )
+        return self.min_order_notional_usd <= notional <= self.max_order_notional_usd
 
     def __hash__(self):
         return self.exchange_name.__hash__()
@@ -107,26 +103,18 @@ class BaseCurrencyConfig:
     def from_api(cls, data: Dict) -> "BaseCurrencyConfig":
         return cls(
             instrument_name=data["instrument_name"],
-            min_order_notional_usd=float(
-                data.get("min_order_notional_usd", 1.0)
-            ),
-            max_order_notional_usd=float(
-                data.get("max_order_notional_usd", 1000000.0)
-            ),
+            min_order_notional_usd=float(data.get("min_order_notional_usd", 1.0)),
+            max_order_notional_usd=float(data.get("max_order_notional_usd", 1000000.0)),
             order_limit=float(data.get("order_limit", 1000000.0)),
             minimum_haircut=float(data.get("minimum_haircut", 0)),
             unit_margin_rate=float(data.get("unit_margin_rate", 0)),
             collateral_cap_notional=float(data["collateral_cap_notional"])
             if data.get("collateral_cap_notional")
             else None,
-            max_product_leverage_for_spot=float(
-                data["max_product_leverage_for_spot"]
-            )
+            max_product_leverage_for_spot=float(data["max_product_leverage_for_spot"])
             if data.get("max_product_leverage_for_spot")
             else None,
-            max_product_leverage_for_perps=float(
-                data["max_product_leverage_for_perps"]
-            )
+            max_product_leverage_for_perps=float(data["max_product_leverage_for_perps"])
             if data.get("max_product_leverage_for_perps")
             else None,
             max_product_leverage_for_futures=float(
@@ -206,9 +194,7 @@ class RiskParameters:
             default_short_pos_limit_futures=float(
                 data.get("default_short_pos_limit_futures", -1)
             ),
-            default_unit_margin_rate=float(
-                data.get("default_unit_margin_rate", 0)
-            ),
+            default_unit_margin_rate=float(data.get("default_unit_margin_rate", 0)),
             default_collateral_cap=float(data.get("default_collateral_cap", 0)),
             update_timestamp_ms=int(data.get("update_timestamp_ms", 0)),
             base_currency_config=[
@@ -398,8 +384,7 @@ class Balance:
             total_available=float(data["total_available_balance"]),
             total_available_instrument=Instrument(data["instrument_name"]),
             instruments=[
-                InstrumentBalance.from_api(bal)
-                for bal in data["position_balances"]
+                InstrumentBalance.from_api(bal) for bal in data["position_balances"]
             ],
         )
 
@@ -575,9 +560,7 @@ class Order:
             if data["exec_inst"]
             else None,
             quantity=float(data["quantity"]),
-            limit_price=float(data["limit_price"])
-            if "limit_price" in data
-            else None,
+            limit_price=float(data["limit_price"]) if "limit_price" in data else None,
             value=float(data["order_value"]),
             maker_fee_rate=float(data.get("maker_fee_rate", 0)),
             taker_fee_rate=float(data.get("taker_fee_rate", 0)),

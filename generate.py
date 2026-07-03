@@ -23,8 +23,7 @@ async def main():
     # Fetch risk parameters to get min/max order notional per instrument
     risk_params = await exchange.get_risk_parameters()
     order_limits = {
-        config.instrument_name: config
-        for config in risk_params.base_currency_config
+        config.instrument_name: config for config in risk_params.base_currency_config
     }
 
     def get_config(instrument_name: str) -> BaseCurrencyConfig:

@@ -58,7 +58,7 @@ exclude = [
     "node_modules",
     "venv",
 ]
-line-length = 80
+line-length = 88
 target-version = "py311"
 unsafe-fixes = true
 
@@ -75,3 +75,8 @@ parser_angular_allowed_types="build,chore,ci,docs,feat,fix,perf,style,refactor,t
 parser_angular_minor_types = "feat"
 parser_angular_patch_types = "fix,perf,sync"
 changelog_sections="feature,fix,sync,perf,breaking,documentation,performance,:boom:,:sparkles:,:children_crossing:,:lipstick:,:iphone:,:egg:,:chart_with_upwards_trend:,:ambulance:,:lock:,:bug:,:zap:,:goal_net:,:alien:,:wheelchair:,:speech_balloon:,:mag:,:apple:,:penguin:,:checkered_flag:,:robot:,:green_apple:,Other"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.15.20,<0.16.0)"
+]

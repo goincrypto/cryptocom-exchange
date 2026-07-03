@@ -43,11 +43,7 @@ def doc_sign(req, SECRET_KEY):
         param_str = doc_params_to_str(req["params"], 0)
 
     payload_str = (
-        req["method"]
-        + str(req["id"])
-        + req["api_key"]
-        + param_str
-        + str(req["nonce"])
+        req["method"] + str(req["id"]) + req["api_key"] + param_str + str(req["nonce"])
     )
 
     return hmac.new(
@@ -172,15 +168,15 @@ def test_signature_matches_documentation(test_name, api_key, secret_key, req):
         digestmod=hashlib.sha256,
     ).hexdigest()
 
-    assert (
-        doc_param_str == our_param_str
-    ), f"[{test_name}] param_str differs!\nDoc: {doc_param_str}\nOur: {our_param_str}"
-    assert (
-        doc_payload == our_payload
-    ), f"[{test_name}] Payloads differ!\nDoc: {doc_payload}\nOur: {our_payload}"
-    assert (
-        doc_sig == our_sig
-    ), f"[{test_name}] Signatures differ!\nDoc: {doc_sig}\nOur: {our_sig}"
+    assert doc_param_str == our_param_str, (
+        f"[{test_name}] param_str differs!\nDoc: {doc_param_str}\nOur: {our_param_str}"
+    )
+    assert doc_payload == our_payload, (
+        f"[{test_name}] Payloads differ!\nDoc: {doc_payload}\nOur: {our_payload}"
+    )
+    assert doc_sig == our_sig, (
+        f"[{test_name}] Signatures differ!\nDoc: {doc_sig}\nOur: {our_sig}"
+    )
 
 
 @pytest.mark.parametrize(
@@ -222,21 +218,19 @@ def test_signature_matches_documentation(test_name, api_key, secret_key, req):
         ),
     ],
 )
-def test_params_to_str_matches_documentation(
-    test_name, params, expected_substrings
-):
+def test_params_to_str_matches_documentation(test_name, params, expected_substrings):
     """Test that our params_to_str matches Crypto.com documentation."""
     doc_result = doc_params_to_str(params, 0)
     our_result = our_params_to_str(params, 0)
 
-    assert (
-        doc_result == our_result
-    ), f"[{test_name}] Results differ!\nDoc: {doc_result}\nOur: {our_result}"
+    assert doc_result == our_result, (
+        f"[{test_name}] Results differ!\nDoc: {doc_result}\nOur: {our_result}"
+    )
 
     for substring in expected_substrings:
-        assert (
-            substring in our_result
-        ), f"[{test_name}] Expected '{substring}' not found in result: {our_result}"
+        assert substring in our_result, (
+            f"[{test_name}] Expected '{substring}' not found in result: {our_result}"
+        )
 
 
 def test_actual_api_sign_method():
@@ -358,8 +352,7 @@ async def test_api_rate_limits(api):
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params})
-        for _ in range(2)
+        api.post("private/get-order-history", {"params": params}) for _ in range(2)
     ]
     await asyncio.gather(*tasks)
 
@@ -368,8 +361,7 @@ async def test_api_rate_limits(api):
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params})
-        for _ in range(10)
+        api.post("private/get-order-history", {"params": params}) for _ in range(10)
     ]
     await asyncio.gather(*tasks)
 
@@ -388,8 +380,7 @@ async def test_api_rate_limits(api):
 
     start_time = time.time()
     tasks = [
-        api.post("private/get-order-history", {"params": params})
-        for _ in range(10)
+        api.post("private/get-order-history", {"params": params}) for _ in range(10)
     ]
     await asyncio.gather(*tasks)
 
