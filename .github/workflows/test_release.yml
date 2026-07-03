@@ -18,7 +18,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ['3.12', '3.11', '3.10', '3.9']
+        python-version: ['3.12', '3.11']
     runs-on: ubuntu-latest
     steps:
       - name: Download code
