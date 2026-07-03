@@ -37,7 +37,7 @@ jobs:
           key: py-${{ matrix.python-version }}-poetry-pip-1.2.2
           restore-keys: poetry-pip
       - name: Install poetry
-        run: pip install poetry==2.0.1
+        run: pip install poetry==2.4.1
       - name: Download cache for poetry
         id: poetry-install
         uses: actions/cache@v3
