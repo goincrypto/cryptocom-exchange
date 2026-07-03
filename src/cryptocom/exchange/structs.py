@@ -7,7 +7,7 @@ from typing import Dict, List
 
 from cached_property import cached_property
 
-from .helpers import round_down, round_up
+from .helpers import round_down
 
 
 @dataclass
@@ -16,7 +16,7 @@ class Instrument:
 
     @property
     def name(self):
-        return self.exchange_name.replace("1", "ONE_")
+        return self.exchange_name.replace("1", "ONE_").replace("2", "TWO_")
 
     def __hash__(self):
         return self.exchange_name.__hash__()
@@ -81,14 +81,14 @@ class MarketTicker:
     def from_api(cls, pair, data):
         return cls(
             pair=pair,
-            buy_price=pair.round_price(data["b"]) if data["b"] else None,
-            sell_price=pair.round_price(data["k"]) if data["k"] else None,
-            trade_price=pair.round_price(data["a"]) if data["a"] else None,
+            buy_price=float(data["b"]) if data["b"] else None,
+            sell_price=float(data["k"]) if data["k"] else None,
+            trade_price=float(data["a"]) if data["a"] else None,
             time=int(data["t"] / 1000),
-            volume=pair.round_quantity(data["v"]),
-            high=pair.round_price(data["h"]),
-            low=pair.round_price(data["l"]),
-            change=round_down(data["c"], 3),
+            volume=float(data["v"]),
+            high=float(data["h"]),
+            low=float(data["l"]),
+            change=float(data["c"]),
         )
 
 
@@ -99,7 +99,7 @@ class OrderSide(str, Enum):
 
 @dataclass
 class MarketTrade:
-    id: int
+    id: str
     time: int
     price: float
     quantity: float
@@ -108,11 +108,12 @@ class MarketTrade:
 
     @classmethod
     def from_api(cls, pair: Pair, data: Dict):
+        time_ns = data.get("tn") or data.get("t") * 1e6
         return cls(
             id=data["d"],
-            time=int(data["t"] / 1000),
-            price=pair.round_price(data["p"]),
-            quantity=pair.round_quantity(data["q"]),
+            time=time_ns / 1e9,
+            price=float(data["p"]),
+            quantity=float(data["q"]),
             side=OrderSide(data["s"].upper()),
             pair=pair,
         )
@@ -133,25 +134,25 @@ class Timeframe(str, Enum):
     MONTH = "1M"
 
 
-@dataclass
+@dataclass(frozen=True)
 class Candle:
     time: int
     open: float
     high: float
     low: float
     close: float
-    volume: float
-    pair: Pair
+    quantity: float
+    pair: Pair = None
 
     @classmethod
-    def from_api(cls, pair: Pair, data: Dict):
+    def from_api(cls, data: Dict, pair: Pair = None):
         return cls(
             time=int(data["t"] / 1000),
-            open=pair.round_price(data["o"]),
-            high=pair.round_price(data["h"]),
-            low=pair.round_price(data["l"]),
-            close=pair.round_price(data["c"]),
-            volume=pair.round_quantity(data["v"]),
+            open=float(data["o"]),
+            high=float(data["h"]),
+            low=float(data["l"]),
+            close=float(data["c"]),
+            quantity=float(data["v"]),
             pair=pair,
         )
 
@@ -166,12 +167,12 @@ class OrderInBook:
 
     @property
     def volume(self) -> float:
-        return self.pair.round_quantity(self.price * self.quantity)
+        return self.pair.round_price(self.price * self.quantity)
 
     @classmethod
     def from_api(cls, order, pair, side):
-        order[0] = pair.round_price(order[0])
-        order[1] = pair.round_quantity(order[1])
+        order[0] = float(order[0])
+        order[1] = float(order[1])
         return cls(*order, pair, side)
 
 
@@ -315,9 +316,9 @@ class PrivateTrade:
             client_oid=data["client_oid"],
             account_id=data["account_id"],
             event_date=data["event_date"],
-            quantity=pair.round_quantity(data["traded_quantity"]),
-            price=pair.round_price(data["traded_price"]),
-            fees=round_up(float(data["fees"]), 8),
+            quantity=float(data["traded_quantity"]),
+            price=float(data["traded_price"]),
+            fees=float(data["fees"]),
             fees_instrument=Instrument(data["fee_instrument_name"]),
             pair=pair,
             side=OrderSide(data["side"]),
@@ -389,20 +390,19 @@ class Order:
 
     @cached_property
     def volume(self):
-        return self.pair.round_quantity(self.price * self.quantity)
+        return self.pair.round_price(self.price * self.quantity)
 
     @cached_property
     def filled_volume(self):
-        return self.pair.round_quantity(
-            self.filled_price * self.filled_quantity
-        )
+        return self.pair.round_price(self.filled_price * self.filled_quantity)
 
     @cached_property
     def remain_volume(self):
-        return self.pair.round_quantity(self.filled_volume - self.volume)
+        return self.pair.round_price(self.filled_volume - self.volume)
 
     @cached_property
     def remain_quantity(self):
+        # TODO: fix bug with round quantity
         return self.pair.round_quantity(self.quantity - self.filled_quantity)
 
     @classmethod
@@ -419,17 +419,17 @@ class Order:
             exec_type=OrderExecType(data["exec_inst"][0])
             if data["exec_inst"]
             else None,
-            quantity=pair.round_quantity(data["quantity"]),
-            limit_price=pair.round_price(data["limit_price"])
+            quantity=float(data["quantity"]),
+            limit_price=float(data["limit_price"])
             if "limit_price" in data
             else None,
-            value=pair.round_price(data["order_value"]),
-            maker_fee_rate=round(float(data.get("maker_fee_rate", 0)), 6),
-            taker_fee_rate=round(float(data.get("taker_fee_rate", 0)), 6),
-            filled_price=pair.round_price(data["avg_price"]),
-            filled_quantity=pair.round_quantity(data["cumulative_quantity"]),
-            filled_value=pair.round_price(data["cumulative_value"]),
-            filled_fee=round(float(data["cumulative_fee"]), 6),
+            value=float(data["order_value"]),
+            maker_fee_rate=float(data.get("maker_fee_rate", 0)),
+            taker_fee_rate=float(data.get("taker_fee_rate", 0)),
+            filled_price=float(data["avg_price"]),
+            filled_quantity=float(data["cumulative_quantity"]),
+            filled_value=float(data["cumulative_value"]),
+            filled_fee=float(data["cumulative_fee"]),
             status=OrderStatus(data["status"]),
             update_user_id=data["update_user_id"],
             order_date=data["order_date"],
