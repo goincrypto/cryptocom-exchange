@@ -1,0 +1,36 @@
+{
+  "get_public/get-candlestick": {
+    "count=300,end_ts=1782683999000,instrument_name=CLOUD_USD,start_ts=1782680399000,timeframe=1D": [
+      {
+        "response": [
+          {
+            "o": "0.01536",
+            "h": "0.01647",
+            "l": "0.01536",
+            "c": "0.01646",
+            "v": "10254",
+            "t": 1782604800000
+          }
+        ],
+        "exec_time": 0.33921289443969727,
+        "timestamp": 1783106843.329847
+      }
+    ],
+    "count=300,end_ts=1782604800000,instrument_name=CLOUD_USD,start_ts=1782601200000,timeframe=1D": [
+      {
+        "response": [
+          {
+            "o": "0.01637",
+            "h": "0.01675",
+            "l": "0.01637",
+            "c": "0.01675",
+            "v": "43000",
+            "t": 1782518400000
+          }
+        ],
+        "exec_time": 0.3322720527648926,
+        "timestamp": 1783106843.6691053
+      }
+    ]
+  }
+}

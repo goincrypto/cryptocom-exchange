@@ -1,4 +1,5 @@
-from typing import AsyncGenerator, Dict, List
+import time
+from typing import AsyncGenerator, Dict, List, Optional
 
 from . import pairs
 from .api import ApiProvider
@@ -64,71 +65,190 @@ class Exchange:
         self,
         pair: Pair,
         timeframe: Timeframe,
-        start_ts: int = None,
-        end_ts: int = None,
-        count: int = 1500,
+        start_ts: Optional[int] = None,
+        end_ts: Optional[int] = None,
+        count: int = 300,
         include_all: bool = False,
-        include_last: bool = False,
-    ) -> List[Candle]:
-        data = []
-        chunk_size = 300
-        result = []
-        chunk_start_ts = start_ts
-        chunk_end_ts = end_ts
-        prev_timestamps = set()
-        max_count = count if include_last else count + 1
+    ) -> AsyncGenerator[Candle, None]:
+        """
+        Yield candles iteratively with adaptive window sizing.
 
-        while True:
+        Candles are yielded in descending order (newest first), matching the
+        API response order.
+
+        Args:
+            pair: Trading pair
+            timeframe: Candle timeframe
+            start_ts: Start timestamp (unix seconds)
+            end_ts: End timestamp (unix seconds)
+            count: Max candles to yield (default 300)
+            include_all: Yield ALL available data, ignoring count
+
+        Raises:
+            ValueError: If include_all=True with start_ts or end_ts
+        """
+        # Validation: include_all cannot be used with time boundaries
+        if include_all and (start_ts is not None or end_ts is not None):
+            raise ValueError(
+                "include_all cannot be used with start_ts or end_ts"
+            )
+
+        # Defaults
+        end_ts = end_ts or int(time.time())
+        start_ts = start_ts or (end_ts - 30 * 24 * 60 * 60)  # 30 days default
+
+        # Adaptive window sizing - API uses milliseconds
+        current_end = end_ts * 1000
+        target_start = start_ts * 1000
+        window_size_ms = 3600 * 1000  # Start with 1-hour window
+        chunk_size = 300  # API max per request
+
+        prev_timestamps = set()
+        yielded_count = 0
+
+        while current_end > target_start:
+            current_start = max(current_end - window_size_ms, target_start)
+
+            # Fetch candles
             params = {
                 "instrument_name": pair.exchange_name,
                 "timeframe": timeframe.value,
                 "count": chunk_size,
+                "start_ts": int(current_start),
+                "end_ts": int(current_end),
             }
-            if chunk_start_ts and chunk_end_ts:
-                params.update(
-                    {
-                        "start_ts": int(chunk_start_ts * 1000),
-                        "end_ts": int(chunk_end_ts * 1000),
-                    }
-                )
             data = await self.api.get("public/get-candlestick", params)
 
-            candles = (Candle.from_api(pair, candle) for candle in data)
+            # Parse and filter out duplicates
             candles = [
-                candle
-                for candle in candles
-                if candle.time not in prev_timestamps
+                Candle.from_api(candle, pair) for candle in reversed(data)
             ]
-            prev_timestamps = set(candle.time for candle in candles)
-            result = candles + result
+            candles = [c for c in candles if c.time not in prev_timestamps]
 
-            if (
-                not data
-                or len(data) < chunk_size
-                or (len(result) >= max_count and not include_all)
-            ):
-                break
+            if not candles:
+                # No new data, move window back
+                current_end = current_start
+                continue
 
-            # NOTE: [start1, end1], [start0, end0]
-            size = candles[1].time - candles[0].time
-            if not end_ts:
-                chunk_end_ts = candles[0].time
-            chunk_start_ts = candles[0].time - size * chunk_size
+            # Yield candles
+            for candle in candles:
+                # Check time boundaries
+                if start_ts is not None and candle.time < start_ts:
+                    return
+                if end_ts is not None and candle.time > end_ts:
+                    continue
 
-        if not include_last:
-            del result[-1]
+                yield candle
+                yielded_count += 1
+                prev_timestamps.add(candle.time)
 
-        if not include_all:
-            result = result[:count]
+                # Check count limit
+                if not include_all and yielded_count >= count:
+                    return
 
-        return result
+            # Adaptive window sizing
+            if len(candles) == chunk_size:
+                # Got max, reduce window for more granular data
+                window_size_ms = max(window_size_ms // 2, 60 * 1000)
+            else:
+                # Got fewer than max, reset to 1-hour
+                window_size_ms = 3600 * 1000
 
-    async def get_trades(self, pair: Pair) -> List[MarketTrade]:
-        """Get last 200 trades in a specified market."""
-        data = await self.api.get(
-            "public/get-trades", {"instrument_name": pair.exchange_name}
-        )
-        return [MarketTrade.from_api(pair, trade) for trade in reversed(data)]
+            # Move window backward
+            current_end = candles[-1].time * 1000
+
+    async def get_trades(
+        self,
+        pair: Pair,
+        start_ts: Optional[int] = None,
+        end_ts: Optional[int] = None,
+        count: int = 150,
+        include_all: bool = False,
+    ) -> AsyncGenerator[MarketTrade, None]:
+        """
+        Yield trades iteratively with adaptive window sizing.
+
+        Trades are yielded in descending order (newest first), matching the
+        API response order.
+
+        Args:
+            pair: Trading pair
+            start_ts: Start timestamp (unix seconds)
+            end_ts: End timestamp (unix seconds)
+            count: Max trades to yield (default 150)
+            include_all: Yield ALL available data, ignoring count
+
+        Raises:
+            ValueError: If include_all=True with start_ts or end_ts
+        """
+        # Validation: include_all cannot be used with time boundaries
+        if include_all and (start_ts is not None or end_ts is not None):
+            raise ValueError(
+                "include_all cannot be used with start_ts or end_ts"
+            )
+
+        # Defaults
+        end_ts = end_ts or int(time.time())
+        start_ts = start_ts or (end_ts - 60 * 60)  # 1 hour default
+
+        # Adaptive window sizing - API uses nanoseconds
+        current_end = end_ts * 1_000_000_000
+        target_start = start_ts * 1_000_000_000
+        window_size_ns = 3600 * 1_000_000_000  # Start with 1-hour window
+        chunk_count = 150  # API max per request
+
+        prev_trade_ids = set()
+        yielded_count = 0
+
+        while current_end > target_start:
+            current_start = max(current_end - window_size_ns, target_start)
+
+            # Fetch trades
+            params = {
+                "instrument_name": pair.exchange_name,
+                "count": chunk_count,
+                "start_ts": int(current_start),
+                "end_ts": int(current_end),
+            }
+            data = await self.api.get("public/get-trades", params)
+
+            # Parse and filter out duplicates
+            trades = [
+                MarketTrade.from_api(pair, trade) for trade in reversed(data)
+            ]
+            trades = [t for t in trades if t.id not in prev_trade_ids]
+
+            if not trades:
+                # No new data, move window back
+                current_end = current_start
+                continue
+
+            # Yield trades
+            for trade in trades:
+                # Check time boundaries
+                if start_ts is not None and trade.time < start_ts:
+                    return
+                if end_ts is not None and trade.time > end_ts:
+                    continue
+
+                yield trade
+                yielded_count += 1
+                prev_trade_ids.add(trade.id)
+
+                # Check count limit
+                if not include_all and yielded_count >= count:
+                    return
+
+            # Adaptive window sizing
+            if len(trades) == chunk_count:
+                # Got max, reduce window for more granular data
+                window_size_ns = max(window_size_ns // 2, 60 * 1_000_000_000)
+            else:
+                # Got fewer than max, reset to 1-hour
+                window_size_ns = 3600 * 1_000_000_000
+
+            # Move window backward
+            current_end = trades[-1].time * 1_000_000_000
 
     async def get_ticker(self, pair: Pair) -> MarketTicker:
         """Get ticker in for provided pair."""
@@ -166,16 +286,20 @@ class Exchange:
         async for data in self.api.listen("market", *channels):
             pair = self.pairs[data["instrument_name"]]
             for candle in data["data"]:
-                yield Candle.from_api(pair, candle)
+                yield Candle.from_api(candle, pair)
 
-    async def listen_trades(self, *pairs: List[Pair]) -> MarketTrade:
+    async def listen_trades(
+        self, *pairs: List[Pair]
+    ) -> AsyncGenerator[MarketTrade, None]:
         channels = [f"trade.{pair.exchange_name}" for pair in pairs]
         async for data in self.api.listen("market", *channels):
             for trade in data["data"]:
                 pair = self.pairs[data["instrument_name"]]
                 yield MarketTrade.from_api(pair, trade)
 
-    async def listen_orderbook(self, *pairs: List[Pair]) -> OrderBook:
+    async def listen_orderbook(
+        self, *pairs: List[Pair]
+    ) -> AsyncGenerator[OrderBook, None]:
         channels = [f"book.{pair.exchange_name}.50" for pair in pairs]
         async for data in self.api.listen("market", *channels):
             pair = self.pairs[data["instrument_name"]]

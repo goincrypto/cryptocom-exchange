@@ -37,20 +37,17 @@ class ApiAuthError(ApiError):
 
 
 def params_to_str(obj, level):
-    if isinstance(obj, str):
-        return obj
-
     if level >= 3:
         return str(obj)
 
     return_str = ""
     for key in sorted(obj):
         return_str += key
-        if isinstance(obj[key], list):
-            for subObj in obj[key]:
-                return_str += str(subObj)
-        elif obj[key] is None:
+        if obj[key] is None:
             return_str += "null"
+        elif isinstance(obj[key], list):
+            for subObj in obj[key]:
+                return_str += params_to_str(subObj, level + 1)
         else:
             return_str += str(obj[key])
     return return_str
@@ -112,8 +109,8 @@ class ApiListenAsyncIterable:
             elif self.sub_data_sent and result:
                 if result["subscription"] not in self.channels:
                     raise ApiError(
-                        f'Wrong channel data received: {result["subscription"]} '
-                        f'not in {self.channels}'
+                        f"Wrong channel data received: {result['subscription']} "
+                        f"not in {self.channels}"
                     )
                 return result
 
@@ -178,6 +175,7 @@ class ApiProvider:
         self.api_secret = os.environ.get("CRYPTOCOM_API_SECRET", "")
         if not self.api_secret:
             raise ValueError("Provide CRYPTOCOM_API_SECRET env value")
+        print(self.api_key, self.api_secret, "key", "secret")
 
     def sign(self, path, data):
         data = data or {}
@@ -311,10 +309,8 @@ class RecordApiProvider(ApiProvider):
 
         if self.capture:
             self.cache_file.parent.mkdir(exist_ok=True, parents=True)
-            # TODO: implement correct overwrite
             # if self.cache_file.exists():
             #     self.cache_file.unlink()
-            #     self.cache_file.touch()
 
         if self.cache_file.exists():
             self.records = json.loads(self.cache_file.read_text())
@@ -349,7 +345,11 @@ class RecordApiProvider(ApiProvider):
             try:
                 record = self.records[key][args].pop(0)
             except KeyError:
-                raise ApiError("No path found")
+                available_args = list(self.records.get(key, {}).keys())
+                if available_args:
+                    record = self.records[key][available_args[0]].pop(0)
+                else:
+                    raise ApiError(f"No path found: {key}, {args}")
             await asyncio.sleep(record["exec_time"] / self.divide_delay)
             response = record["response"]
 
