@@ -125,15 +125,15 @@ async def test_get_candles(
         # Test with 1-day window (June 28, 2026), should get at least 1 daily candle
         (
             cro.Timeframe.DAY,
-            int(datetime(2026, 6, 28, 0, 0, 0).timestamp()),
-            int(datetime(2026, 6, 28, 23, 59, 59).timestamp()),
+            int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
+            int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp()),
             1,
         ),
         # Test with 10-day window for 15m, should get at least 5 candles (sparse data)
         (
             cro.Timeframe.MIN_15,
-            int(datetime(2026, 6, 24, 0, 0, 0).timestamp()),
-            int(datetime(2026, 7, 3, 23, 59, 59).timestamp()),
+            int(datetime(2026, 6, 24, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
+            int(datetime(2026, 7, 3, 23, 59, 59, tzinfo=timezone.utc).timestamp()),
             5,
         ),
     ],
@@ -193,8 +193,8 @@ async def test_get_candles_include_all_with_boundaries_error(
 async def test_get_candles_no_duplicates(exchange: cro.Exchange):
     """Test that get_candles prevents duplicates across API requests."""
     # Use same params as test_get_candles_with_time_boundaries[1D-1782854400-1782883199-1]
-    start_ts = int(datetime(2026, 6, 28, 0, 0, 0).timestamp())
-    end_ts = int(datetime(2026, 6, 28, 23, 59, 59).timestamp())
+    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
+    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
 
     candles = []
     async for candle in exchange.get_candles(
@@ -216,8 +216,8 @@ async def test_get_candles_no_duplicates(exchange: cro.Exchange):
 async def test_get_trades_no_duplicates(exchange: cro.Exchange):
     """Test that get_trades prevents duplicates across API requests."""
     # Use 1-day range in June 2026
-    start_ts = int(datetime(2026, 6, 28, 0, 0, 0).timestamp())
-    end_ts = int(datetime(2026, 6, 28, 23, 59, 59).timestamp())
+    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
+    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
 
     trades = []
     async for trade in exchange.get_trades(
@@ -238,8 +238,8 @@ async def test_get_trades_no_duplicates(exchange: cro.Exchange):
 async def test_get_candles_start_end_verification(exchange: cro.Exchange):
     """Test that start_ts and end_ts are properly enforced."""
     # Use same params as test_get_candles_with_time_boundaries[1D-1782854400-1782883199-1]
-    start_ts = int(datetime(2026, 6, 28, 0, 0, 0).timestamp())
-    end_ts = int(datetime(2026, 6, 28, 23, 59, 59).timestamp())
+    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
+    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
 
     candles = []
     async for candle in exchange.get_candles(
