@@ -25,7 +25,7 @@ pyyaml = "^6.0.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^7.3.0"
-pytest = "^8.4.1"
+pytest = "^9.0.3"
 pytest-asyncio = "^1.1.0"
 pytest-cov = "^6.2.1"
 pytest-doctestplus = "^1.4.0"
