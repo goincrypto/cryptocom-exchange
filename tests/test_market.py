@@ -39,9 +39,9 @@ async def test_get_trades(exchange: cro.Exchange):
 
     # Verify no duplicate trade IDs
     trade_ids = [t.id for t in trades]
-    assert len(trade_ids) == len(set(trade_ids)), (
-        f"Found {len(trade_ids) - len(set(trade_ids))} duplicate trade IDs"
-    )
+    assert len(trade_ids) == len(
+        set(trade_ids)
+    ), f"Found {len(trade_ids) - len(set(trade_ids))} duplicate trade IDs"
 
 
 @pytest.mark.asyncio
@@ -91,31 +91,31 @@ async def test_get_candles(
         assert candle.pair == cro.pairs.CLOUD_USD
         assert candle.high >= candle.low
 
-    assert len(candles) == candles_len, (
-        f"Expected {candles_len} candles, got {len(candles)}"
-    )
+    assert (
+        len(candles) == candles_len
+    ), f"Expected {candles_len} candles, got {len(candles)}"
 
     # Verify no duplicate timestamps
     timestamps = [c.time for c in candles]
-    assert len(timestamps) == len(set(timestamps)), (
-        f"Found {len(timestamps) - len(set(timestamps))} duplicate timestamps"
-    )
+    assert len(timestamps) == len(
+        set(timestamps)
+    ), f"Found {len(timestamps) - len(set(timestamps))} duplicate timestamps"
 
     # Verify candles are in descending order (API returns newest first)
     for i in range(1, len(candles)):
-        assert candles[i].time < candles[i - 1].time, (
-            f"Candles not in descending order at index {i}"
-        )
+        assert (
+            candles[i].time < candles[i - 1].time
+        ), f"Candles not in descending order at index {i}"
 
     # Verify start/end boundaries
     if start_ts is not None:
-        assert candles[0].time >= start_ts, (
-            f"First candle {candles[0].time} before start_ts {start_ts}"
-        )
+        assert (
+            candles[0].time >= start_ts
+        ), f"First candle {candles[0].time} before start_ts {start_ts}"
     if end_ts is not None:
-        assert candles[-1].time <= end_ts, (
-            f"Last candle {candles[-1].time} after end_ts {end_ts}"
-        )
+        assert (
+            candles[-1].time <= end_ts
+        ), f"Last candle {candles[-1].time} after end_ts {end_ts}"
 
 
 @pytest.mark.asyncio
@@ -154,23 +154,23 @@ async def test_get_candles_with_time_boundaries(
         end_ts=end_ts,
     ):
         candles.append(candle)
-        assert start_ts <= candle.time <= end_ts, (
-            f"Candle time {candle.time} outside boundaries [{start_ts}, {end_ts}]"
-        )
+        assert (
+            start_ts <= candle.time <= end_ts
+        ), f"Candle time {candle.time} outside boundaries [{start_ts}, {end_ts}]"
 
-    assert len(candles) >= expected_min_candles, (
-        f"Expected at least {expected_min_candles} candles, got {len(candles)}"
-    )
+    assert (
+        len(candles) >= expected_min_candles
+    ), f"Expected at least {expected_min_candles} candles, got {len(candles)}"
 
     # Verify first candle >= start_ts
-    assert candles[0].time >= start_ts, (
-        f"First candle {candles[0].time} before start_ts {start_ts}"
-    )
+    assert (
+        candles[0].time >= start_ts
+    ), f"First candle {candles[0].time} before start_ts {start_ts}"
 
     # Verify last candle <= end_ts
-    assert candles[-1].time <= end_ts, (
-        f"Last candle {candles[-1].time} after end_ts {end_ts}"
-    )
+    assert (
+        candles[-1].time <= end_ts
+    ), f"Last candle {candles[-1].time} after end_ts {end_ts}"
 
 
 @pytest.mark.asyncio
@@ -207,9 +207,9 @@ async def test_get_candles_no_duplicates(exchange: cro.Exchange):
 
     # Verify no duplicate timestamps
     timestamps = [c.time for c in candles]
-    assert len(timestamps) == len(set(timestamps)), (
-        f"Found {len(timestamps) - len(set(timestamps))} duplicate timestamps"
-    )
+    assert len(timestamps) == len(
+        set(timestamps)
+    ), f"Found {len(timestamps) - len(set(timestamps))} duplicate timestamps"
 
 
 @pytest.mark.asyncio
@@ -229,9 +229,9 @@ async def test_get_trades_no_duplicates(exchange: cro.Exchange):
 
     # Verify no duplicate trade IDs
     trade_ids = [t.id for t in trades]
-    assert len(trade_ids) == len(set(trade_ids)), (
-        f"Found {len(trade_ids) - len(set(trade_ids))} duplicate trade IDs"
-    )
+    assert len(trade_ids) == len(
+        set(trade_ids)
+    ), f"Found {len(trade_ids) - len(set(trade_ids))} duplicate trade IDs"
 
 
 @pytest.mark.asyncio
@@ -252,20 +252,20 @@ async def test_get_candles_start_end_verification(exchange: cro.Exchange):
 
     if candles:
         # Verify first candle <= end_ts (descending order)
-        assert candles[0].time <= end_ts, (
-            f"First candle {candles[0].time} after end_ts {end_ts}"
-        )
+        assert (
+            candles[0].time <= end_ts
+        ), f"First candle {candles[0].time} after end_ts {end_ts}"
 
         # Verify last candle >= start_ts (descending order)
-        assert candles[-1].time >= start_ts, (
-            f"Last candle {candles[-1].time} before start_ts {start_ts}"
-        )
+        assert (
+            candles[-1].time >= start_ts
+        ), f"Last candle {candles[-1].time} before start_ts {start_ts}"
 
         # Verify all candles within range
         for candle in candles:
-            assert start_ts <= candle.time <= end_ts, (
-                f"Candle {candle.time} outside range [{start_ts}, {end_ts}]"
-            )
+            assert (
+                start_ts <= candle.time <= end_ts
+            ), f"Candle {candle.time} outside range [{start_ts}, {end_ts}]"
 
 
 @pytest.mark.asyncio

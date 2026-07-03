@@ -4,7 +4,6 @@ from typing import AsyncGenerator, Dict, List, Optional
 from . import pairs
 from .api import ApiProvider
 from .structs import (
-    BaseCurrencyConfig,
     Candle,
     DefaultPairDict,
     MarketTicker,

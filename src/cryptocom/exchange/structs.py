@@ -1,6 +1,6 @@
 import time
 import typing as TP
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum, IntEnum
 from typing import Dict, List, Optional
