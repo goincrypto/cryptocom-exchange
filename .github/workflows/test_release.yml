@@ -18,7 +18,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ['3.12', '3.11']
+        python-version: ['3.14', '3.13', '3.12', '3.11']
     runs-on: ubuntu-latest
     steps:
       - name: Download code
@@ -49,7 +49,7 @@ jobs:
         if: steps.poetry-install.outputs.cache-hit != 'true'
         run: rm -rf ./.venv/ && poetry install
       - name: Download cache for pre-commit
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.14'
         id: pre-commit-install
         uses: actions/cache@v3
         with:
@@ -57,17 +57,17 @@ jobs:
           key: py-${{ matrix.python-version }}-pre-commit-install-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: pre-commit-install
       - name: Verify commit
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.14'
         run: poetry run pre-commit run -a
       - name: Auto-generate missing pairs
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.14'
         run: poetry run python generate.py
       - name: Format code before pushing
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.14'
         run: poetry run pre-commit run -a
         continue-on-error: true
       - name: Commit & Push changes
-        if: matrix.python-version == '3.12' && github.ref == 'refs/heads/main'
+        if: matrix.python-version == '3.14' && github.ref == 'refs/heads/main'
         uses: actions-js/push@v1.3
         with:
           author_email: "morty.space@gmail.com"
@@ -76,7 +76,7 @@ jobs:
           message: "sync: updated API pairs and instruments"
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare codeclimate
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.14'
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
@@ -87,7 +87,7 @@ jobs:
         timeout-minutes: 6
         run: poetry run pytest -v --cov . --cov-report xml:coverage.xml
       - name: Send codeclimate analytics
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.14'
         run: ./cc-test-reporter after-build -r ${{ secrets.CC_TEST_REPORTER_ID }} --exit-code $?
   release:
     if: github.ref == 'refs/heads/main'
@@ -100,7 +100,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.14'
       - name: Checkout code
         uses: actions/checkout@v4
         with:
