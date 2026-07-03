@@ -235,7 +235,12 @@ class Account:
             notional_value = float(quantity)
         else:
             data["quantity"] = quantity
-            notional_value = float(quantity) * price
+            if type_ == OrderType.MARKET:
+                # Fetch price for market sell orders (for notional validation only)
+                market_price = await self.exchange.get_price(pair)
+                notional_value = float(quantity) * market_price
+            else:
+                notional_value = float(quantity) * price
 
         # Validate order notional against pair limits
         if not pair.validate_order_notional(notional_value):

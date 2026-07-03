@@ -7,6 +7,11 @@ import pytest
 import cryptocom.exchange as cro
 
 
+def calculate_min_quantity(pair: cro.Pair, price: float) -> int:
+    """Calculate minimum quantity to ensure $1.0+ notional."""
+    return max(1, int(pair.min_order_notional_usd / price) + 1)
+
+
 @pytest.mark.asyncio
 async def test_account_get_balance(account: cro.Account):
     balance = await account.get_balance()
@@ -76,11 +81,13 @@ async def test_no_duplicate_mass_limit_orders(
     account: cro.Account,
     exchange: cro.Exchange,
 ):
-    buy_price = round(await exchange.get_price(cro.pairs.CRO_USD) / 2, 4)
-    orders_count = 20
+    buy_price = round(await exchange.get_price(cro.pairs.CRO_USD), 4)
+    orders_count = 2
+    # Calculate minimum quantity to ensure $1.0+ notional
+    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
     order_ids = await asyncio.gather(
         *[
-            account.buy_limit(cro.pairs.CRO_USD, 1, round(buy_price + i * 0.0001, 4))
+            account.buy_limit(cro.pairs.CRO_USD, qty, round(buy_price - i * 0.0001, 4))
             for i in range(orders_count)
         ]
     )
@@ -98,14 +105,17 @@ async def test_no_duplicate_mass_limit_orders(
 
 @pytest.mark.asyncio
 async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange):
-    buy_price = round(await exchange.get_price(cro.pairs.CRO_USD) / 2, 4)
+    buy_price = round(await exchange.get_price(cro.pairs.CRO_USD), 4)
+    # Calculate minimum quantity to ensure $1.0+ notional
+    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+    # 3 buy orders + 2 sell orders to match balance
     order_ids = await asyncio.gather(
-        *[account.buy_limit(cro.pairs.CRO_USD, 1, buy_price) for _ in range(10)]
+        *[account.buy_limit(cro.pairs.CRO_USD, qty, buy_price) for _ in range(3)]
     )
     order_ids += await asyncio.gather(
         *[
-            account.sell_limit(cro.pairs.CRO_USD, 1, round(buy_price * 4, 4))
-            for _ in range(10)
+            account.sell_limit(cro.pairs.CRO_USD, qty, round(buy_price * 2, 4))
+            for _ in range(2)
         ]
     )
 
@@ -128,10 +138,13 @@ async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange
 
 async def make_trades(account, exchange, order_ids):
     price = await exchange.get_price(cro.pairs.CRO_USD)
-    order_id = await account.buy_market(cro.pairs.CRO_USD, price * 1.1)
+    # Use 20 CRO to ensure above $1.0 minimum notional
+    qty = 20
+
+    order_id = await account.buy_market(cro.pairs.CRO_USD, qty * price)
     order_ids["buy"].append(order_id)
 
-    order_id = await account.sell_market(cro.pairs.CRO_USD, 1)
+    order_id = await account.sell_market(cro.pairs.CRO_USD, qty)
     order_ids["sell"].append(order_id)
 
 
@@ -162,7 +175,7 @@ async def test_account_market_orders(account: cro.Account, exchange: cro.Exchang
     orders = []
     l_orders = []
     l_balances = []
-    trades_count = 10
+    trades_count = 2  # Reduced to match available balance (~$6.62 USD)
     task = asyncio.create_task(listen_orders(account, l_orders))
     task = asyncio.create_task(listen_balances(account, l_balances))
     while not l_balances:

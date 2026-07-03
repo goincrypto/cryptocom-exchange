@@ -40,6 +40,24 @@ async def account(api: cro.RecordApiProvider) -> cro.Account:
     acc = cro.Account(from_env=True, api=api)
     yield acc
     await acc.cancel_open_orders(cro.pairs.CRO_USD)
+    # Restore balance: sell excess CRO to get USD back
+    try:
+        balance = await acc.get_balance()
+        cro_bal = 0
+        usd_bal = 0
+        for instrument in balance:
+            if instrument.exchange_name == "CRO":
+                cro_bal = instrument.available
+            elif instrument.exchange_name == "USD":
+                usd_bal = instrument.available
+
+        # If we have more than 50 CRO and less than $5 USD, sell CRO
+        if cro_bal > 50 and usd_bal < 5:
+            sell_qty = int(cro_bal - 30)  # Keep 30 CRO
+            if sell_qty > 0:
+                await acc.sell_market(cro.pairs.CRO_USD, sell_qty)
+    except Exception:
+        pass  # Ignore cleanup errors
 
 
 @pytest.fixture
