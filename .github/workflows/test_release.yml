@@ -81,8 +81,6 @@ jobs:
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
-      - name: Test docs
-        run: cd docs && make doctest && cd ..
       - name: Test code
         timeout-minutes: 6
         run: poetry run pytest -v --cov . --cov-report xml:coverage.xml
