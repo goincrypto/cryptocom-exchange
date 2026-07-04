@@ -61,7 +61,7 @@ version_toml = [
 branch = "main"
 parser_angular_allowed_types="build,chore,ci,docs,feat,fix,perf,style,refactor,test,sync"
 parser_angular_minor_types = "feat"
-parser_angular_patch_types = "fix,perf,sync"
+parser_angular_patch_types = "fix,perf,sync,test"
 changelog_sections="feature,fix,sync,perf,breaking,documentation,performance,:boom:,:sparkles:,:children_crossing:,:lipstick:,:iphone:,:egg:,:chart_with_upwards_trend:,:ambulance:,:lock:,:bug:,:zap:,:goal_net:,:alien:,:wheelchair:,:speech_balloon:,:mag:,:apple:,:penguin:,:checkered_flag:,:robot:,:green_apple:,Other"
 
 [dependency-groups]
