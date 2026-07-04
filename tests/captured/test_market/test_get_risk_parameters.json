@@ -3239,6 +3239,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "SAMSUNG",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.014",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "2451.0",
+              "short_pos_limit_perps": "2451.0"
+            },
+            {
               "instrument_name": "SAND",
               "collateral_cap_notional": "880000.0",
               "minimum_haircut": "0.33330000000000008",
@@ -3317,6 +3326,15 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "SKHYNIX",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.04",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "315.0",
+              "short_pos_limit_perps": "315.0"
             },
             {
               "instrument_name": "SKL",
@@ -5913,6 +5931,10 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "SAMSUNG",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "SAND",
               "max_order_notional_usd": "500000.0"
             },
@@ -5951,6 +5973,10 @@
             {
               "instrument_name": "SHIB",
               "max_order_notional_usd": "500000.0"
+            },
+            {
+              "instrument_name": "SKHYNIX",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "SKL",
@@ -7995,6 +8021,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "SAMSUNG",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "SAND",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8032,6 +8062,10 @@
             },
             {
               "instrument_name": "SHIB",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "SKHYNIX",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -8524,8 +8558,8 @@
             }
           ]
         },
-        "exec_time": 0.3507206439971924,
-        "timestamp": 1783117296.4365625
+        "exec_time": 0.40531325340270996,
+        "timestamp": 1783175423.8975089
       }
     ]
   }

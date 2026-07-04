@@ -12524,6 +12524,26 @@
             "margin_sell_enabled": false
           },
           {
+            "symbol": "SAMSUNGUSD-PERP",
+            "inst_type": "PERPETUAL_SWAP",
+            "display_name": "SAMSUNGUSD Perpetual",
+            "base_ccy": "SAMSUNG",
+            "quote_ccy": "USD",
+            "quote_decimals": 2,
+            "quantity_decimals": 2,
+            "price_tick_size": "0.01",
+            "qty_tick_size": "0.01",
+            "max_leverage": "50",
+            "tradable": true,
+            "expiry_timestamp_ms": 0,
+            "beta_product": false,
+            "underlying_symbol": "SAMSUNGUSD-INDEX",
+            "contract_size": "1",
+            "product_type": "EQUITY",
+            "margin_buy_enabled": false,
+            "margin_sell_enabled": false
+          },
+          {
             "symbol": "SANDUSD-PERP",
             "inst_type": "PERPETUAL_SWAP",
             "display_name": "SANDUSD Perpetual",
@@ -12855,6 +12875,26 @@
             "product_type": "DIGITAL_CURRENCIES",
             "margin_buy_enabled": true,
             "margin_sell_enabled": true
+          },
+          {
+            "symbol": "SKHYNIXUSD-PERP",
+            "inst_type": "PERPETUAL_SWAP",
+            "display_name": "SKHYNIXUSD Perpetual",
+            "base_ccy": "SKHYNIX",
+            "quote_ccy": "USD",
+            "quote_decimals": 2,
+            "quantity_decimals": 3,
+            "price_tick_size": "0.01",
+            "qty_tick_size": "0.001",
+            "max_leverage": "50",
+            "tradable": true,
+            "expiry_timestamp_ms": 0,
+            "beta_product": false,
+            "underlying_symbol": "SKHYNIXUSD-INDEX",
+            "contract_size": "1",
+            "product_type": "EQUITY",
+            "margin_buy_enabled": false,
+            "margin_sell_enabled": false
           },
           {
             "symbol": "SKLUSD-PERP",
@@ -16721,8 +16761,8 @@
             "margin_sell_enabled": false
           }
         ],
-        "exec_time": 0.4397590160369873,
-        "timestamp": 1783118511.8983128
+        "exec_time": 0.6816895008087158,
+        "timestamp": 1783175368.7339516
       }
     ]
   }

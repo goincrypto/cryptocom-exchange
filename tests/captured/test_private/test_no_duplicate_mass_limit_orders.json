@@ -7,57 +7,57 @@
             "i": "CRO_USD",
             "h": "0.06270",
             "l": "0.05884",
-            "a": "0.06084",
-            "v": "23310225",
-            "vv": "1417753.72",
-            "c": "0.0324",
-            "b": "0.06086",
-            "k": "0.06087",
+            "a": "0.06098",
+            "v": "23285391",
+            "vv": "1416373.69",
+            "c": "0.0327",
+            "b": "0.06097",
+            "k": "0.06098",
             "oi": "0",
-            "t": 1783175034532
+            "t": 1783175427249
           }
         ],
-        "exec_time": 0.30959177017211914,
-        "timestamp": 1783175035.2828276
+        "exec_time": 0.30225348472595215,
+        "timestamp": 1783175427.865976
       }
     ]
   },
   "post_private/create-order": {
-    "params={'instrument_name': 'CRO_USD', 'side': 'BUY', 'type': 'LIMIT', 'fee_instrument_name': 'USD', 'quantity': '20', 'price': '0.05080'}": [
+    "params={'instrument_name': 'CRO_USD', 'side': 'BUY', 'type': 'LIMIT', 'fee_instrument_name': 'USD', 'quantity': '20', 'price': '0.05100'}": [
       {
         "response": {
-          "client_oid": "4460396699658143507",
-          "order_id": "6142909983411878726"
+          "client_oid": "5282925527469790566",
+          "order_id": "6142909983412405394"
         },
-        "exec_time": 0.2867100238800049,
-        "timestamp": 1783175035.5925207
+        "exec_time": 0.314863920211792,
+        "timestamp": 1783175428.168289
       }
     ],
-    "params={'instrument_name': 'CRO_USD', 'side': 'BUY', 'type': 'LIMIT', 'fee_instrument_name': 'USD', 'quantity': '20', 'price': '0.05070'}": [
+    "params={'instrument_name': 'CRO_USD', 'side': 'BUY', 'type': 'LIMIT', 'fee_instrument_name': 'USD', 'quantity': '20', 'price': '0.05090'}": [
       {
         "response": {
-          "client_oid": "8556242534885281576",
-          "order_id": "6142909983411878803"
+          "client_oid": "1826710608349579708",
+          "order_id": "6142909983412405403"
         },
-        "exec_time": 0.3052792549133301,
-        "timestamp": 1783175035.5931425
+        "exec_time": 0.32968735694885254,
+        "timestamp": 1783175428.1687012
       }
     ]
   },
   "post_private/get-order-detail": {
-    "params={'order_id': '6142909983411878726'}": [
+    "params={'order_id': '6142909983412405394'}": [
       {
         "response": {
           "account_id": "0075170f-2c49-4610-ba98-0d75a88c3b5e",
-          "order_id": "6142909983411878726",
-          "client_oid": "4460396699658143507",
+          "order_id": "6142909983412405394",
+          "client_oid": "5282925527469790566",
           "order_type": "LIMIT",
           "time_in_force": "GOOD_TILL_CANCEL",
           "side": "BUY",
           "exec_inst": [],
           "quantity": "20",
-          "limit_price": "0.05080",
-          "order_value": "1.016",
+          "limit_price": "0.05100",
+          "order_value": "1.02",
           "avg_price": "0",
           "ref_price": "0",
           "cumulative_quantity": "0",
@@ -69,27 +69,27 @@
           "instrument_name": "CRO_USD",
           "fee_instrument_name": "USD",
           "reason": 0,
-          "create_time": 1783175035756,
-          "create_time_ns": "1783175035756442860",
-          "update_time": 1783175035756
+          "create_time": 1783175428359,
+          "create_time_ns": "1783175428359412383",
+          "update_time": 1783175428359
         },
-        "exec_time": 0.2963721752166748,
-        "timestamp": 1783175035.898483
+        "exec_time": 0.30106520652770996,
+        "timestamp": 1783175428.4984512
       }
     ],
-    "params={'order_id': '6142909983411878803'}": [
+    "params={'order_id': '6142909983412405403'}": [
       {
         "response": {
           "account_id": "0075170f-2c49-4610-ba98-0d75a88c3b5e",
-          "order_id": "6142909983411878803",
-          "client_oid": "8556242534885281576",
+          "order_id": "6142909983412405403",
+          "client_oid": "1826710608349579708",
           "order_type": "LIMIT",
           "time_in_force": "GOOD_TILL_CANCEL",
           "side": "BUY",
           "exec_inst": [],
           "quantity": "20",
-          "limit_price": "0.05070",
-          "order_value": "1.014",
+          "limit_price": "0.05090",
+          "order_value": "1.018",
           "avg_price": "0",
           "ref_price": "0",
           "cumulative_quantity": "0",
@@ -101,12 +101,12 @@
           "instrument_name": "CRO_USD",
           "fee_instrument_name": "USD",
           "reason": 0,
-          "create_time": 1783175035775,
-          "create_time_ns": "1783175035775610402",
-          "update_time": 1783175035775
+          "create_time": 1783175428371,
+          "create_time_ns": "1783175428371945645",
+          "update_time": 1783175428372
         },
-        "exec_time": 0.2975425720214844,
-        "timestamp": 1783175035.8990674
+        "exec_time": 0.3852357864379883,
+        "timestamp": 1783175428.4990373
       }
     ]
   },
@@ -116,15 +116,15 @@
         "response": [
           {
             "account_id": "0075170f-2c49-4610-ba98-0d75a88c3b5e",
-            "order_id": "6142909983411878726",
-            "client_oid": "4460396699658143507",
+            "order_id": "6142909983412405394",
+            "client_oid": "5282925527469790566",
             "order_type": "LIMIT",
             "time_in_force": "GOOD_TILL_CANCEL",
             "side": "BUY",
             "exec_inst": [],
             "quantity": "20",
-            "limit_price": "0.05080",
-            "order_value": "1.016",
+            "limit_price": "0.05100",
+            "order_value": "1.02",
             "avg_price": "0",
             "ref_price": "0",
             "cumulative_quantity": "0",
@@ -136,21 +136,21 @@
             "instrument_name": "CRO_USD",
             "fee_instrument_name": "USD",
             "reason": 0,
-            "create_time": 1783175035756,
-            "create_time_ns": "1783175035756442860",
-            "update_time": 1783175035756
+            "create_time": 1783175428359,
+            "create_time_ns": "1783175428359412383",
+            "update_time": 1783175428359
           },
           {
             "account_id": "0075170f-2c49-4610-ba98-0d75a88c3b5e",
-            "order_id": "6142909983411878803",
-            "client_oid": "8556242534885281576",
+            "order_id": "6142909983412405403",
+            "client_oid": "1826710608349579708",
             "order_type": "LIMIT",
             "time_in_force": "GOOD_TILL_CANCEL",
             "side": "BUY",
             "exec_inst": [],
             "quantity": "20",
-            "limit_price": "0.05070",
-            "order_value": "1.014",
+            "limit_price": "0.05090",
+            "order_value": "1.018",
             "avg_price": "0",
             "ref_price": "0",
             "cumulative_quantity": "0",
@@ -162,13 +162,13 @@
             "instrument_name": "CRO_USD",
             "fee_instrument_name": "USD",
             "reason": 0,
-            "create_time": 1783175035775,
-            "create_time_ns": "1783175035775610402",
-            "update_time": 1783175035775
+            "create_time": 1783175428371,
+            "create_time_ns": "1783175428371945645",
+            "update_time": 1783175428372
           }
         ],
-        "exec_time": 0.5896334648132324,
-        "timestamp": 1783175036.196666
+        "exec_time": 0.3077847957611084,
+        "timestamp": 1783175428.8843813
       }
     ]
   },
@@ -176,8 +176,8 @@
     "params={'instrument_name': 'CRO_USD'}": [
       {
         "response": {},
-        "exec_time": 0.31531429290771484,
-        "timestamp": 1783175036.7865717
+        "exec_time": 0.29418516159057617,
+        "timestamp": 1783175429.1927803
       }
     ]
   },
@@ -186,28 +186,28 @@
       {
         "response": [
           {
-            "total_risk_exposure": "1.84228617",
-            "total_available_balance": "5.86388655",
-            "total_margin_balance": "6.78502963",
-            "total_initial_margin": "0.92114309",
-            "total_haircut": "0.92114309",
+            "total_risk_exposure": "3.61316706",
+            "total_available_balance": "6.9861719",
+            "total_margin_balance": "8.79275543",
+            "total_initial_margin": "1.80658353",
+            "total_haircut": "1.80658353",
             "total_position_im": "0",
-            "total_maintenance_margin": "0.46057155",
+            "total_maintenance_margin": "0.90329177",
             "total_position_cost": "0",
-            "total_cash_balance": "16.92888279",
-            "total_collateral_value": "5.86388655",
+            "total_cash_balance": "16.90660859",
+            "total_collateral_value": "6.98617189",
             "total_session_unrealized_pnl": "0",
             "instrument_name": "USD",
             "total_session_realized_pnl": "0",
             "position_balances": [
               {
-                "quantity": "30.28083772",
+                "quantity": "59.28083772",
                 "reserved_qty": "0",
-                "collateral_amount": "0.92114308",
+                "collateral_amount": "1.80658352",
                 "haircut": "0.5",
                 "collateral_eligible": true,
-                "market_value": "1.84228616",
-                "max_withdrawal_balance": "30.28083772",
+                "market_value": "3.61316705",
+                "max_withdrawal_balance": "59.28083772",
                 "instrument_name": "CRO",
                 "hourly_interest_rate": "0"
               },
@@ -234,13 +234,13 @@
                 "hourly_interest_rate": "0"
               },
               {
-                "quantity": "6.972743472",
+                "quantity": "5.179588372",
                 "reserved_qty": "0",
-                "collateral_amount": "4.94274347",
+                "collateral_amount": "5.17958837",
                 "haircut": "0",
                 "collateral_eligible": true,
-                "market_value": "4.94274347",
-                "max_withdrawal_balance": "4.94274347",
+                "market_value": "5.17958837",
+                "max_withdrawal_balance": "5.17958837",
                 "instrument_name": "USD",
                 "hourly_interest_rate": "0"
               }
@@ -248,17 +248,17 @@
             "credit_limits": [],
             "total_isolated_cash_balance": "0",
             "isolated_positions": [],
-            "total_effective_leverage": "0.271522",
-            "position_limit": "135.70059277",
-            "used_position_limit": "1.84228617",
+            "total_effective_leverage": "0.410925",
+            "position_limit": "175.85510862",
+            "used_position_limit": "3.61316706",
             "total_borrow": "0",
             "is_liquidating": false,
             "has_risk": false,
-            "terminatable": false
+            "terminatable": true
           }
         ],
-        "exec_time": 0.30293941497802734,
-        "timestamp": 1783175037.1018915
+        "exec_time": 0.33185243606567383,
+        "timestamp": 1783175429.4869823
       }
     ]
   }
