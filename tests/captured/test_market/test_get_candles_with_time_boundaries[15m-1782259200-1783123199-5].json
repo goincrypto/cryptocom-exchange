@@ -44,8 +44,8 @@
             "t": 1783122300000
           }
         ],
-        "exec_time": 0.2857935428619385,
-        "timestamp": 1783175384.6404748
+        "exec_time": 0.3245377540588379,
+        "timestamp": 1783283936.1666086
       }
     ],
     "count=300,end_ts=1783118700000,instrument_name=CLOUD_USD,start_ts=1783115100000,timeframe=15m": [
@@ -84,8 +84,8 @@
             "t": 1783117800000
           }
         ],
-        "exec_time": 0.3151357173919678,
-        "timestamp": 1783175384.926313
+        "exec_time": 0.30621790885925293,
+        "timestamp": 1783283936.4911742
       }
     ],
     "count=300,end_ts=1783115100000,instrument_name=CLOUD_USD,start_ts=1783111500000,timeframe=15m": [
@@ -124,8 +124,8 @@
             "t": 1783114200000
           }
         ],
-        "exec_time": 0.34376096725463867,
-        "timestamp": 1783175385.241503
+        "exec_time": 0.30803632736206055,
+        "timestamp": 1783283936.7974188
       }
     ],
     "count=300,end_ts=1783111500000,instrument_name=CLOUD_USD,start_ts=1783107900000,timeframe=15m": [
@@ -164,8 +164,8 @@
             "t": 1783110600000
           }
         ],
-        "exec_time": 0.31601619720458984,
-        "timestamp": 1783175385.5853183
+        "exec_time": 0.3012397289276123,
+        "timestamp": 1783283937.1055024
       }
     ],
     "count=300,end_ts=1783107900000,instrument_name=CLOUD_USD,start_ts=1783104300000,timeframe=15m": [
@@ -204,8 +204,8 @@
             "t": 1783107000000
           }
         ],
-        "exec_time": 0.3267965316772461,
-        "timestamp": 1783175385.9013822
+        "exec_time": 0.3261723518371582,
+        "timestamp": 1783283937.4067836
       }
     ],
     "count=300,end_ts=1783104300000,instrument_name=CLOUD_USD,start_ts=1783100700000,timeframe=15m": [
@@ -244,8 +244,8 @@
             "t": 1783103400000
           }
         ],
-        "exec_time": 0.2907390594482422,
-        "timestamp": 1783175386.2282317
+        "exec_time": 0.31291675567626953,
+        "timestamp": 1783283937.7329974
       }
     ],
     "count=300,end_ts=1783100700000,instrument_name=CLOUD_USD,start_ts=1783097100000,timeframe=15m": [
@@ -284,8 +284,8 @@
             "t": 1783099800000
           }
         ],
-        "exec_time": 0.29660463333129883,
-        "timestamp": 1783175386.5190125
+        "exec_time": 0.3504917621612549,
+        "timestamp": 1783283938.0459528
       }
     ],
     "count=300,end_ts=1783097100000,instrument_name=CLOUD_USD,start_ts=1783093500000,timeframe=15m": [
@@ -324,8 +324,8 @@
             "t": 1783096200000
           }
         ],
-        "exec_time": 0.2939426898956299,
-        "timestamp": 1783175386.8156695
+        "exec_time": 0.2957785129547119,
+        "timestamp": 1783283938.396487
       }
     ],
     "count=300,end_ts=1783093500000,instrument_name=CLOUD_USD,start_ts=1783089900000,timeframe=15m": [
@@ -364,8 +364,8 @@
             "t": 1783092600000
           }
         ],
-        "exec_time": 0.3278782367706299,
-        "timestamp": 1783175387.1096654
+        "exec_time": 0.3144404888153076,
+        "timestamp": 1783283938.6923091
       }
     ],
     "count=300,end_ts=1783089900000,instrument_name=CLOUD_USD,start_ts=1783086300000,timeframe=15m": [
@@ -404,8 +404,8 @@
             "t": 1783089000000
           }
         ],
-        "exec_time": 0.3028419017791748,
-        "timestamp": 1783175387.4375849
+        "exec_time": 0.3174424171447754,
+        "timestamp": 1783283939.0067928
       }
     ],
     "count=300,end_ts=1783086300000,instrument_name=CLOUD_USD,start_ts=1783082700000,timeframe=15m": [
@@ -444,8 +444,8 @@
             "t": 1783085400000
           }
         ],
-        "exec_time": 0.3276219367980957,
-        "timestamp": 1783175387.7404797
+        "exec_time": 0.31089234352111816,
+        "timestamp": 1783283939.3242867
       }
     ],
     "count=300,end_ts=1783082700000,instrument_name=CLOUD_USD,start_ts=1783079100000,timeframe=15m": [
@@ -484,8 +484,8 @@
             "t": 1783081800000
           }
         ],
-        "exec_time": 0.33280014991760254,
-        "timestamp": 1783175388.0681534
+        "exec_time": 0.33634352684020996,
+        "timestamp": 1783283939.6352215
       }
     ],
     "count=300,end_ts=1783079100000,instrument_name=CLOUD_USD,start_ts=1783075500000,timeframe=15m": [
@@ -524,8 +524,8 @@
             "t": 1783078200000
           }
         ],
-        "exec_time": 0.29123854637145996,
-        "timestamp": 1783175388.4009948
+        "exec_time": 0.3018510341644287,
+        "timestamp": 1783283939.971608
       }
     ],
     "count=300,end_ts=1783075500000,instrument_name=CLOUD_USD,start_ts=1783071900000,timeframe=15m": [
@@ -564,8 +564,8 @@
             "t": 1783074600000
           }
         ],
-        "exec_time": 0.3012516498565674,
-        "timestamp": 1783175388.6922867
+        "exec_time": 0.34782958030700684,
+        "timestamp": 1783283940.2734845
       }
     ],
     "count=300,end_ts=1783071900000,instrument_name=CLOUD_USD,start_ts=1783068300000,timeframe=15m": [
@@ -604,8 +604,8 @@
             "t": 1783071000000
           }
         ],
-        "exec_time": 0.3469369411468506,
-        "timestamp": 1783175388.9935899
+        "exec_time": 0.3164851665496826,
+        "timestamp": 1783283940.6213555
       }
     ],
     "count=300,end_ts=1783068300000,instrument_name=CLOUD_USD,start_ts=1783064700000,timeframe=15m": [
@@ -644,8 +644,8 @@
             "t": 1783067400000
           }
         ],
-        "exec_time": 0.3152658939361572,
-        "timestamp": 1783175389.3405602
+        "exec_time": 0.2865331172943115,
+        "timestamp": 1783283940.9379122
       }
     ],
     "count=300,end_ts=1783064700000,instrument_name=CLOUD_USD,start_ts=1783061100000,timeframe=15m": [
@@ -684,8 +684,8 @@
             "t": 1783063800000
           }
         ],
-        "exec_time": 0.3103640079498291,
-        "timestamp": 1783175389.6558712
+        "exec_time": 0.30075740814208984,
+        "timestamp": 1783283941.224472
       }
     ],
     "count=300,end_ts=1783061100000,instrument_name=CLOUD_USD,start_ts=1783057500000,timeframe=15m": [
@@ -724,8 +724,8 @@
             "t": 1783060200000
           }
         ],
-        "exec_time": 0.295945405960083,
-        "timestamp": 1783175389.9662702
+        "exec_time": 0.29528117179870605,
+        "timestamp": 1783283941.525276
       }
     ],
     "count=300,end_ts=1783057500000,instrument_name=CLOUD_USD,start_ts=1783053900000,timeframe=15m": [
@@ -764,8 +764,8 @@
             "t": 1783056600000
           }
         ],
-        "exec_time": 0.29055190086364746,
-        "timestamp": 1783175390.2622669
+        "exec_time": 0.34883737564086914,
+        "timestamp": 1783283941.820599
       }
     ],
     "count=300,end_ts=1783053900000,instrument_name=CLOUD_USD,start_ts=1783050300000,timeframe=15m": [
@@ -804,8 +804,8 @@
             "t": 1783053000000
           }
         ],
-        "exec_time": 0.2829775810241699,
-        "timestamp": 1783175390.5528593
+        "exec_time": 0.2987856864929199,
+        "timestamp": 1783283942.1694946
       }
     ],
     "count=300,end_ts=1783050300000,instrument_name=CLOUD_USD,start_ts=1783046700000,timeframe=15m": [
@@ -844,8 +844,8 @@
             "t": 1783049400000
           }
         ],
-        "exec_time": 0.298598051071167,
-        "timestamp": 1783175390.8358884
+        "exec_time": 0.3641202449798584,
+        "timestamp": 1783283942.468317
       }
     ],
     "count=300,end_ts=1783046700000,instrument_name=CLOUD_USD,start_ts=1783043100000,timeframe=15m": [
@@ -884,8 +884,8 @@
             "t": 1783045800000
           }
         ],
-        "exec_time": 0.30566930770874023,
-        "timestamp": 1783175391.1345384
+        "exec_time": 0.3253011703491211,
+        "timestamp": 1783283942.832464
       }
     ],
     "count=300,end_ts=1783043100000,instrument_name=CLOUD_USD,start_ts=1783039500000,timeframe=15m": [
@@ -924,8 +924,8 @@
             "t": 1783042200000
           }
         ],
-        "exec_time": 0.3735337257385254,
-        "timestamp": 1783175391.440252
+        "exec_time": 0.4061453342437744,
+        "timestamp": 1783283943.1577907
       }
     ],
     "count=300,end_ts=1783039500000,instrument_name=CLOUD_USD,start_ts=1783035900000,timeframe=15m": [
@@ -964,8 +964,8 @@
             "t": 1783038600000
           }
         ],
-        "exec_time": 0.30628037452697754,
-        "timestamp": 1783175391.8138394
+        "exec_time": 0.3213181495666504,
+        "timestamp": 1783283943.563961
       }
     ],
     "count=300,end_ts=1783035900000,instrument_name=CLOUD_USD,start_ts=1783032300000,timeframe=15m": [
@@ -1004,8 +1004,8 @@
             "t": 1783035000000
           }
         ],
-        "exec_time": 0.32132720947265625,
-        "timestamp": 1783175392.1201706
+        "exec_time": 0.3076915740966797,
+        "timestamp": 1783283943.8853054
       }
     ],
     "count=300,end_ts=1783032300000,instrument_name=CLOUD_USD,start_ts=1783028700000,timeframe=15m": [
@@ -1044,8 +1044,8 @@
             "t": 1783031400000
           }
         ],
-        "exec_time": 0.27881360054016113,
-        "timestamp": 1783175392.441525
+        "exec_time": 0.3156416416168213,
+        "timestamp": 1783283944.1930435
       }
     ],
     "count=300,end_ts=1783028700000,instrument_name=CLOUD_USD,start_ts=1783025100000,timeframe=15m": [
@@ -1084,8 +1084,8 @@
             "t": 1783027800000
           }
         ],
-        "exec_time": 0.2880842685699463,
-        "timestamp": 1783175392.7203898
+        "exec_time": 0.29083847999572754,
+        "timestamp": 1783283944.5087242
       }
     ],
     "count=300,end_ts=1783025100000,instrument_name=CLOUD_USD,start_ts=1783021500000,timeframe=15m": [
@@ -1124,8 +1124,8 @@
             "t": 1783024200000
           }
         ],
-        "exec_time": 0.2905583381652832,
-        "timestamp": 1783175393.0085258
+        "exec_time": 0.3163783550262451,
+        "timestamp": 1783283944.7996056
       }
     ],
     "count=300,end_ts=1783021500000,instrument_name=CLOUD_USD,start_ts=1783017900000,timeframe=15m": [
@@ -1164,8 +1164,8 @@
             "t": 1783020600000
           }
         ],
-        "exec_time": 0.2995321750640869,
-        "timestamp": 1783175393.2991323
+        "exec_time": 0.30660486221313477,
+        "timestamp": 1783283945.116011
       }
     ],
     "count=300,end_ts=1783017900000,instrument_name=CLOUD_USD,start_ts=1783014300000,timeframe=15m": [
@@ -1204,8 +1204,8 @@
             "t": 1783017000000
           }
         ],
-        "exec_time": 0.301497220993042,
-        "timestamp": 1783175393.598707
+        "exec_time": 0.3409605026245117,
+        "timestamp": 1783283945.422653
       }
     ],
     "count=300,end_ts=1783014300000,instrument_name=CLOUD_USD,start_ts=1783010700000,timeframe=15m": [
@@ -1244,8 +1244,8 @@
             "t": 1783013400000
           }
         ],
-        "exec_time": 0.2984802722930908,
-        "timestamp": 1783175393.9002564
+        "exec_time": 0.3257894515991211,
+        "timestamp": 1783283945.7636528
       }
     ],
     "count=300,end_ts=1783010700000,instrument_name=CLOUD_USD,start_ts=1783007100000,timeframe=15m": [
@@ -1284,8 +1284,8 @@
             "t": 1783009800000
           }
         ],
-        "exec_time": 0.2926604747772217,
-        "timestamp": 1783175394.198787
+        "exec_time": 0.3571512699127197,
+        "timestamp": 1783283946.0894768
       }
     ],
     "count=300,end_ts=1783007100000,instrument_name=CLOUD_USD,start_ts=1783003500000,timeframe=15m": [
@@ -1324,8 +1324,8 @@
             "t": 1783006200000
           }
         ],
-        "exec_time": 0.3118414878845215,
-        "timestamp": 1783175394.4914975
+        "exec_time": 0.32231879234313965,
+        "timestamp": 1783283946.4466712
       }
     ],
     "count=300,end_ts=1783003500000,instrument_name=CLOUD_USD,start_ts=1782999900000,timeframe=15m": [
@@ -1364,8 +1364,8 @@
             "t": 1783002600000
           }
         ],
-        "exec_time": 0.29772043228149414,
-        "timestamp": 1783175394.8034139
+        "exec_time": 0.30977654457092285,
+        "timestamp": 1783283946.7690377
       }
     ],
     "count=300,end_ts=1782999900000,instrument_name=CLOUD_USD,start_ts=1782996300000,timeframe=15m": [
@@ -1404,8 +1404,8 @@
             "t": 1782999000000
           }
         ],
-        "exec_time": 0.2854466438293457,
-        "timestamp": 1783175395.1011865
+        "exec_time": 0.31717920303344727,
+        "timestamp": 1783283947.0788627
       }
     ],
     "count=300,end_ts=1782996300000,instrument_name=CLOUD_USD,start_ts=1782992700000,timeframe=15m": [
@@ -1444,8 +1444,8 @@
             "t": 1782995400000
           }
         ],
-        "exec_time": 0.29735755920410156,
-        "timestamp": 1783175395.3866858
+        "exec_time": 0.31000494956970215,
+        "timestamp": 1783283947.396079
       }
     ],
     "count=300,end_ts=1782992700000,instrument_name=CLOUD_USD,start_ts=1782989100000,timeframe=15m": [
@@ -1484,8 +1484,8 @@
             "t": 1782991800000
           }
         ],
-        "exec_time": 0.32495689392089844,
-        "timestamp": 1783175395.684092
+        "exec_time": 0.3143889904022217,
+        "timestamp": 1783283947.7061357
       }
     ],
     "count=300,end_ts=1782989100000,instrument_name=CLOUD_USD,start_ts=1782985500000,timeframe=15m": [
@@ -1524,8 +1524,8 @@
             "t": 1782988200000
           }
         ],
-        "exec_time": 0.31592416763305664,
-        "timestamp": 1783175396.009101
+        "exec_time": 0.2884848117828369,
+        "timestamp": 1783283948.0205705
       }
     ],
     "count=300,end_ts=1782985500000,instrument_name=CLOUD_USD,start_ts=1782981900000,timeframe=15m": [
@@ -1564,8 +1564,8 @@
             "t": 1782984600000
           }
         ],
-        "exec_time": 0.28299832344055176,
-        "timestamp": 1783175396.3250682
+        "exec_time": 0.3040578365325928,
+        "timestamp": 1783283948.3091063
       }
     ],
     "count=300,end_ts=1782981900000,instrument_name=CLOUD_USD,start_ts=1782978300000,timeframe=15m": [
@@ -1604,8 +1604,8 @@
             "t": 1782981000000
           }
         ],
-        "exec_time": 0.2803936004638672,
-        "timestamp": 1783175396.6081061
+        "exec_time": 0.2970564365386963,
+        "timestamp": 1783283948.61321
       }
     ],
     "count=300,end_ts=1782978300000,instrument_name=CLOUD_USD,start_ts=1782974700000,timeframe=15m": [
@@ -1644,8 +1644,8 @@
             "t": 1782977400000
           }
         ],
-        "exec_time": 0.33042025566101074,
-        "timestamp": 1783175396.8885517
+        "exec_time": 0.29215145111083984,
+        "timestamp": 1783283948.9102912
       }
     ],
     "count=300,end_ts=1782974700000,instrument_name=CLOUD_USD,start_ts=1782971100000,timeframe=15m": [
@@ -1684,8 +1684,8 @@
             "t": 1782973800000
           }
         ],
-        "exec_time": 0.3705601692199707,
-        "timestamp": 1783175397.219049
+        "exec_time": 0.30906176567077637,
+        "timestamp": 1783283949.2024808
       }
     ],
     "count=300,end_ts=1782971100000,instrument_name=CLOUD_USD,start_ts=1782967500000,timeframe=15m": [
@@ -1724,8 +1724,8 @@
             "t": 1782970200000
           }
         ],
-        "exec_time": 0.28472161293029785,
-        "timestamp": 1783175397.589654
+        "exec_time": 0.3630669116973877,
+        "timestamp": 1783283949.5115702
       }
     ],
     "count=300,end_ts=1782967500000,instrument_name=CLOUD_USD,start_ts=1782963900000,timeframe=15m": [
@@ -1764,8 +1764,8 @@
             "t": 1782966600000
           }
         ],
-        "exec_time": 0.3035600185394287,
-        "timestamp": 1783175397.8744297
+        "exec_time": 0.2928466796875,
+        "timestamp": 1783283949.874682
       }
     ],
     "count=300,end_ts=1782963900000,instrument_name=CLOUD_USD,start_ts=1782960300000,timeframe=15m": [
@@ -1804,8 +1804,8 @@
             "t": 1782963000000
           }
         ],
-        "exec_time": 0.3014211654663086,
-        "timestamp": 1783175398.178044
+        "exec_time": 0.32347893714904785,
+        "timestamp": 1783283950.1675704
       }
     ],
     "count=300,end_ts=1782960300000,instrument_name=CLOUD_USD,start_ts=1782956700000,timeframe=15m": [
@@ -1844,8 +1844,8 @@
             "t": 1782959400000
           }
         ],
-        "exec_time": 0.2984926700592041,
-        "timestamp": 1783175398.4795065
+        "exec_time": 0.2850472927093506,
+        "timestamp": 1783283950.491075
       }
     ],
     "count=300,end_ts=1782956700000,instrument_name=CLOUD_USD,start_ts=1782953100000,timeframe=15m": [
@@ -1884,8 +1884,8 @@
             "t": 1782955800000
           }
         ],
-        "exec_time": 0.3174927234649658,
-        "timestamp": 1783175398.778042
+        "exec_time": 0.30181407928466797,
+        "timestamp": 1783283950.7761762
       }
     ],
     "count=300,end_ts=1782953100000,instrument_name=CLOUD_USD,start_ts=1782949500000,timeframe=15m": [
@@ -1924,8 +1924,8 @@
             "t": 1782952200000
           }
         ],
-        "exec_time": 0.31244421005249023,
-        "timestamp": 1783175399.0955791
+        "exec_time": 0.3045632839202881,
+        "timestamp": 1783283951.0780325
       }
     ],
     "count=300,end_ts=1782949500000,instrument_name=CLOUD_USD,start_ts=1782945900000,timeframe=15m": [
@@ -1964,8 +1964,8 @@
             "t": 1782948600000
           }
         ],
-        "exec_time": 0.29027795791625977,
-        "timestamp": 1783175399.408066
+        "exec_time": 0.33900880813598633,
+        "timestamp": 1783283951.3826532
       }
     ],
     "count=300,end_ts=1782945900000,instrument_name=CLOUD_USD,start_ts=1782942300000,timeframe=15m": [
@@ -2004,8 +2004,8 @@
             "t": 1782945000000
           }
         ],
-        "exec_time": 0.2916123867034912,
-        "timestamp": 1783175399.6983867
+        "exec_time": 0.3006715774536133,
+        "timestamp": 1783283951.7217019
       }
     ],
     "count=300,end_ts=1782942300000,instrument_name=CLOUD_USD,start_ts=1782938700000,timeframe=15m": [
@@ -2044,8 +2044,8 @@
             "t": 1782941400000
           }
         ],
-        "exec_time": 0.3565993309020996,
-        "timestamp": 1783175399.9900618
+        "exec_time": 0.32505083084106445,
+        "timestamp": 1783283952.0224
       }
     ],
     "count=300,end_ts=1782938700000,instrument_name=CLOUD_USD,start_ts=1782935100000,timeframe=15m": [
@@ -2084,8 +2084,8 @@
             "t": 1782937800000
           }
         ],
-        "exec_time": 0.29236483573913574,
-        "timestamp": 1783175400.3467114
+        "exec_time": 0.29685068130493164,
+        "timestamp": 1783283952.3474872
       }
     ],
     "count=300,end_ts=1782935100000,instrument_name=CLOUD_USD,start_ts=1782931500000,timeframe=15m": [
@@ -2124,8 +2124,8 @@
             "t": 1782934200000
           }
         ],
-        "exec_time": 0.30034542083740234,
-        "timestamp": 1783175400.6391187
+        "exec_time": 0.28584861755371094,
+        "timestamp": 1783283952.6443784
       }
     ],
     "count=300,end_ts=1782931500000,instrument_name=CLOUD_USD,start_ts=1782927900000,timeframe=15m": [
@@ -2164,8 +2164,8 @@
             "t": 1782930600000
           }
         ],
-        "exec_time": 0.37871789932250977,
-        "timestamp": 1783175400.9395115
+        "exec_time": 0.3277285099029541,
+        "timestamp": 1783283952.9302697
       }
     ],
     "count=300,end_ts=1782927900000,instrument_name=CLOUD_USD,start_ts=1782924300000,timeframe=15m": [
@@ -2204,8 +2204,8 @@
             "t": 1782927000000
           }
         ],
-        "exec_time": 0.3021872043609619,
-        "timestamp": 1783175401.3182826
+        "exec_time": 0.30582189559936523,
+        "timestamp": 1783283953.258055
       }
     ],
     "count=300,end_ts=1782924300000,instrument_name=CLOUD_USD,start_ts=1782920700000,timeframe=15m": [
@@ -2244,8 +2244,8 @@
             "t": 1782923400000
           }
         ],
-        "exec_time": 0.3521459102630615,
-        "timestamp": 1783175401.6205149
+        "exec_time": 0.3329794406890869,
+        "timestamp": 1783283953.563929
       }
     ],
     "count=300,end_ts=1782920700000,instrument_name=CLOUD_USD,start_ts=1782917100000,timeframe=15m": [
@@ -2284,8 +2284,8 @@
             "t": 1782919800000
           }
         ],
-        "exec_time": 0.31015515327453613,
-        "timestamp": 1783175401.9727063
+        "exec_time": 0.3146824836730957,
+        "timestamp": 1783283953.896949
       }
     ],
     "count=300,end_ts=1782917100000,instrument_name=CLOUD_USD,start_ts=1782913500000,timeframe=15m": [
@@ -2324,8 +2324,8 @@
             "t": 1782916200000
           }
         ],
-        "exec_time": 0.3147289752960205,
-        "timestamp": 1783175402.2829046
+        "exec_time": 0.2969233989715576,
+        "timestamp": 1783283954.211666
       }
     ],
     "count=300,end_ts=1782913500000,instrument_name=CLOUD_USD,start_ts=1782909900000,timeframe=15m": [
@@ -2364,8 +2364,8 @@
             "t": 1782912600000
           }
         ],
-        "exec_time": 0.30243778228759766,
-        "timestamp": 1783175402.5976853
+        "exec_time": 0.32801127433776855,
+        "timestamp": 1783283954.5086143
       }
     ],
     "count=300,end_ts=1782909900000,instrument_name=CLOUD_USD,start_ts=1782906300000,timeframe=15m": [
@@ -2404,8 +2404,8 @@
             "t": 1782909000000
           }
         ],
-        "exec_time": 0.29529285430908203,
-        "timestamp": 1783175402.900178
+        "exec_time": 0.324704647064209,
+        "timestamp": 1783283954.8366785
       }
     ],
     "count=300,end_ts=1782906300000,instrument_name=CLOUD_USD,start_ts=1782902700000,timeframe=15m": [
@@ -2444,8 +2444,8 @@
             "t": 1782905400000
           }
         ],
-        "exec_time": 0.30506134033203125,
-        "timestamp": 1783175403.1955254
+        "exec_time": 0.3253602981567383,
+        "timestamp": 1783283955.161411
       }
     ],
     "count=300,end_ts=1782902700000,instrument_name=CLOUD_USD,start_ts=1782899100000,timeframe=15m": [
@@ -2484,8 +2484,8 @@
             "t": 1782901800000
           }
         ],
-        "exec_time": 0.3638486862182617,
-        "timestamp": 1783175403.5006273
+        "exec_time": 0.35344552993774414,
+        "timestamp": 1783283955.486809
       }
     ],
     "count=300,end_ts=1782899100000,instrument_name=CLOUD_USD,start_ts=1782895500000,timeframe=15m": [
@@ -2524,8 +2524,8 @@
             "t": 1782898200000
           }
         ],
-        "exec_time": 0.3219034671783447,
-        "timestamp": 1783175403.8645298
+        "exec_time": 0.3784523010253906,
+        "timestamp": 1783283955.8402975
       }
     ],
     "count=300,end_ts=1782895500000,instrument_name=CLOUD_USD,start_ts=1782891900000,timeframe=15m": [
@@ -2564,8 +2564,8 @@
             "t": 1782894600000
           }
         ],
-        "exec_time": 0.3209235668182373,
-        "timestamp": 1783175404.1864824
+        "exec_time": 0.3021106719970703,
+        "timestamp": 1783283956.218782
       }
     ],
     "count=300,end_ts=1782891900000,instrument_name=CLOUD_USD,start_ts=1782888300000,timeframe=15m": [
@@ -2604,8 +2604,8 @@
             "t": 1782891000000
           }
         ],
-        "exec_time": 0.3079972267150879,
-        "timestamp": 1783175404.50745
+        "exec_time": 0.30181431770324707,
+        "timestamp": 1783283956.520921
       }
     ],
     "count=300,end_ts=1782888300000,instrument_name=CLOUD_USD,start_ts=1782884700000,timeframe=15m": [
@@ -2644,8 +2644,8 @@
             "t": 1782887400000
           }
         ],
-        "exec_time": 0.3326833248138428,
-        "timestamp": 1783175404.8154898
+        "exec_time": 0.3547024726867676,
+        "timestamp": 1783283956.8227837
       }
     ],
     "count=300,end_ts=1782884700000,instrument_name=CLOUD_USD,start_ts=1782881100000,timeframe=15m": [
@@ -2684,8 +2684,8 @@
             "t": 1782883800000
           }
         ],
-        "exec_time": 0.2945373058319092,
-        "timestamp": 1783175405.1482265
+        "exec_time": 0.2944936752319336,
+        "timestamp": 1783283957.1775277
       }
     ],
     "count=300,end_ts=1782881100000,instrument_name=CLOUD_USD,start_ts=1782877500000,timeframe=15m": [
@@ -2724,8 +2724,8 @@
             "t": 1782880200000
           }
         ],
-        "exec_time": 0.36469602584838867,
-        "timestamp": 1783175405.4428055
+        "exec_time": 0.30730628967285156,
+        "timestamp": 1783283957.4720604
       }
     ],
     "count=300,end_ts=1782877500000,instrument_name=CLOUD_USD,start_ts=1782873900000,timeframe=15m": [
@@ -2764,8 +2764,8 @@
             "t": 1782876600000
           }
         ],
-        "exec_time": 0.3443315029144287,
-        "timestamp": 1783175405.8075418
+        "exec_time": 0.2986006736755371,
+        "timestamp": 1783283957.7794082
       }
     ],
     "count=300,end_ts=1782873900000,instrument_name=CLOUD_USD,start_ts=1782870300000,timeframe=15m": [
@@ -2804,8 +2804,8 @@
             "t": 1782873000000
           }
         ],
-        "exec_time": 0.30386853218078613,
-        "timestamp": 1783175406.1519256
+        "exec_time": 0.2987034320831299,
+        "timestamp": 1783283958.07805
       }
     ],
     "count=300,end_ts=1782870300000,instrument_name=CLOUD_USD,start_ts=1782866700000,timeframe=15m": [
@@ -2844,8 +2844,8 @@
             "t": 1782869400000
           }
         ],
-        "exec_time": 0.32836294174194336,
-        "timestamp": 1783175406.4558318
+        "exec_time": 0.31292057037353516,
+        "timestamp": 1783283958.376796
       }
     ],
     "count=300,end_ts=1782866700000,instrument_name=CLOUD_USD,start_ts=1782863100000,timeframe=15m": [
@@ -2884,8 +2884,8 @@
             "t": 1782865800000
           }
         ],
-        "exec_time": 0.3309018611907959,
-        "timestamp": 1783175406.7842374
+        "exec_time": 0.3082275390625,
+        "timestamp": 1783283958.6897428
       }
     ],
     "count=300,end_ts=1782863100000,instrument_name=CLOUD_USD,start_ts=1782859500000,timeframe=15m": [
@@ -2924,8 +2924,8 @@
             "t": 1782862200000
           }
         ],
-        "exec_time": 0.30197572708129883,
-        "timestamp": 1783175407.1151912
+        "exec_time": 0.34000611305236816,
+        "timestamp": 1783283958.9980135
       }
     ],
     "count=300,end_ts=1782859500000,instrument_name=CLOUD_USD,start_ts=1782855900000,timeframe=15m": [
@@ -2964,8 +2964,8 @@
             "t": 1782858600000
           }
         ],
-        "exec_time": 0.31958985328674316,
-        "timestamp": 1783175407.4172156
+        "exec_time": 0.3035109043121338,
+        "timestamp": 1783283959.338047
       }
     ],
     "count=300,end_ts=1782855900000,instrument_name=CLOUD_USD,start_ts=1782852300000,timeframe=15m": [
@@ -3004,8 +3004,8 @@
             "t": 1782855000000
           }
         ],
-        "exec_time": 0.3632175922393799,
-        "timestamp": 1783175407.7368479
+        "exec_time": 0.32686853408813477,
+        "timestamp": 1783283959.641598
       }
     ]
   }
