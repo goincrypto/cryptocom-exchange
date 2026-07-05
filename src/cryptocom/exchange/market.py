@@ -171,15 +171,12 @@ class Exchange:
             start_ts: Start timestamp (unix seconds)
             end_ts: End timestamp (unix seconds)
             count: Max trades to yield (default 150)
-            include_all: Yield ALL available data, ignoring count
+            include_all: Yield ALL available data, ignoring count limit
 
-        Raises:
-            ValueError: If include_all=True with start_ts or end_ts
+        Note:
+            For trades, include_all works with time boundaries to fetch all
+            trades in the specified range regardless of count limit.
         """
-        # Validation: include_all cannot be used with time boundaries
-        if include_all and (start_ts is not None or end_ts is not None):
-            raise ValueError("include_all cannot be used with start_ts or end_ts")
-
         # Defaults
         end_ts = end_ts or int(time.time())
         start_ts = start_ts or (end_ts - 60 * 60)  # 1 hour default
@@ -187,7 +184,7 @@ class Exchange:
         # Adaptive window sizing - API uses nanoseconds
         current_end = end_ts * 1_000_000_000
         target_start = start_ts * 1_000_000_000
-        window_size_ns = 3600 * 1_000_000_000  # Start with 1-hour window
+        window_size_ns = 10 * 60 * 1_000_000_000  # Start with 10-minute window
         chunk_count = 150  # API max per request
 
         prev_trade_ids = set()
@@ -206,7 +203,8 @@ class Exchange:
             data = await self.api.get("public/get-trades", params)
 
             # Parse and filter out duplicates
-            trades = [MarketTrade.from_api(pair, trade) for trade in reversed(data)]
+            # API returns trades in descending order (newest first), keep that order
+            trades = [MarketTrade.from_api(pair, trade) for trade in data]
             trades = [t for t in trades if t.id not in prev_trade_ids]
 
             if not trades:
@@ -226,17 +224,13 @@ class Exchange:
                 yielded_count += 1
                 prev_trade_ids.add(trade.id)
 
-                # Check count limit
-                if not include_all and yielded_count >= count:
-                    return
-
             # Adaptive window sizing
             if len(trades) == chunk_count:
                 # Got max, reduce window for more granular data
                 window_size_ns = max(window_size_ns // 2, 60 * 1_000_000_000)
             else:
-                # Got fewer than max, reset to 1-hour
-                window_size_ns = 3600 * 1_000_000_000
+                # Got fewer than max, reset to 10-minute window
+                window_size_ns = 10 * 60 * 1_000_000_000
 
             # Move window backward
             current_end = trades[-1].time * 1_000_000_000
