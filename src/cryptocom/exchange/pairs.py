@@ -1344,13 +1344,6 @@ FIL_USDT = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
-FITFI_USD = Pair(
-    "FITFI_USD",
-    price_precision=7,
-    quantity_precision=0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
 FLIP_USD = Pair(
     "FLIP_USD",
     price_precision=4,
@@ -1424,20 +1417,6 @@ FM_USD = Pair(
 FOGO_USD = Pair(
     "FOGO_USD",
     price_precision=6,
-    quantity_precision=0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-FORTH_USD = Pair(
-    "FORTH_USD",
-    price_precision=4,
-    quantity_precision=1,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-FOXY_USD = Pair(
-    "FOXY_USD",
-    price_precision=7,
     quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
