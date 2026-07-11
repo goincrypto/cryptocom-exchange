@@ -359,7 +359,7 @@ ATOM_USDT = Pair(
 )
 ATWO_Z_USD = Pair(
     "A2Z_USD",
-    price_precision=7,
+    price_precision=9,
     quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
@@ -962,6 +962,13 @@ CVX_USD = Pair(
 CXT_USD = Pair(
     "CXT_USD",
     price_precision=7,
+    quantity_precision=0,
+    min_order_notional_usd=1.0,
+    max_order_notional_usd=1000000.0,
+)
+DATAIP_USD = Pair(
+    "DATAIP_USD",
+    price_precision=5,
     quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
@@ -1582,6 +1589,13 @@ GRASS_USD = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
+GROVE_USD = Pair(
+    "GROVE_USD",
+    price_precision=6,
+    quantity_precision=0,
+    min_order_notional_usd=1.0,
+    max_order_notional_usd=1000000.0,
+)
 GRT_USD = Pair(
     "GRT_USD",
     price_precision=5,
@@ -1824,13 +1838,6 @@ IO_USD = Pair(
     "IO_USD",
     price_precision=4,
     quantity_precision=1,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-IP_USD = Pair(
-    "IP_USD",
-    price_precision=4,
-    quantity_precision=2,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
@@ -2291,8 +2298,8 @@ MET_USD = Pair(
 )
 ME_USD = Pair(
     "ME_USD",
-    price_precision=4,
-    quantity_precision=1,
+    price_precision=6,
+    quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
@@ -2851,14 +2858,14 @@ PYTH_USDT = Pair(
 )
 PYUSD_USD = Pair(
     "PYUSD_USD",
-    price_precision=5,
+    price_precision=6,
     quantity_precision=1,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PYUSD_USDT = Pair(
     "PYUSD_USDT",
-    price_precision=5,
+    price_precision=6,
     quantity_precision=1,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
