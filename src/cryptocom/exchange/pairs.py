@@ -1750,13 +1750,6 @@ ICX_USD = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
-IDEX_USD = Pair(
-    "IDEX_USD",
-    price_precision=6,
-    quantity_precision=0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
 IKA_USD = Pair(
     "IKA_USD",
     price_precision=6,
@@ -1957,13 +1950,6 @@ KNC_USD = Pair(
     "KNC_USD",
     price_precision=4,
     quantity_precision=1,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-KRL_USD = Pair(
-    "KRL_USD",
-    price_precision=5,
-    quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
@@ -2698,13 +2684,6 @@ PEPE_USD = Pair(
 PEPE_USDT = Pair(
     "PEPE_USDT",
     price_precision=9,
-    quantity_precision=0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-PIRATE_USD = Pair(
-    "PIRATE_USD",
-    price_precision=7,
     quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
@@ -4015,13 +3994,6 @@ YFI_USD = Pair(
     "YFI_USD",
     price_precision=2,
     quantity_precision=5,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-YGG_USD = Pair(
-    "YGG_USD",
-    price_precision=6,
-    quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
