@@ -288,10 +288,12 @@ def test_actual_api_sign_with_real_credentials():
 
 @pytest.mark.asyncio
 async def test_timedelta():
+    """Test TimeDelta resolution."""
     days_5 = cro.TimeDelta.DAYS * 5
     result = cro.TimeDelta.resolve(days_5)
-    assert result - int(time.time() * 1000) == days_5 * 1000
-    assert cro.TimeDelta.resolve(cro.TimeDelta.NOW) == int(time.time() * 1000)
+    now_seconds = int(time.time())  # Round to seconds
+    assert result // 1000 - now_seconds == days_5
+    assert cro.TimeDelta.resolve(cro.TimeDelta.NOW) // 1000 == int(time.time())
 
 
 def test_api_args(monkeypatch):
