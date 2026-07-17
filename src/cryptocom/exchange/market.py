@@ -67,7 +67,8 @@ class Exchange:
         timeframe: Timeframe,
         start_ts: Optional[int] = None,
         end_ts: Optional[int] = None,
-        include_all: bool = False,
+        count: Optional[int] = None,
+        all_history: bool = False,
     ) -> AsyncGenerator[Candle, None]:
         """
         Yield candles iteratively using pagination.
@@ -77,33 +78,28 @@ class Exchange:
         Args:
             pair: Trading pair
             timeframe: Candle timeframe
-            start_ts: Start timestamp (unix seconds). None means no lower bound.
-            end_ts: End timestamp (unix seconds). None means use current time.
-            include_all: If True, fetch ALL candles in range ignoring 300 limit. Default False.
-
-        Note:
-            When include_all=True without time boundaries, fetches all historical candles.
-            When include_all=True with time boundaries, fetches all candles in that range.
-            By default (include_all=False), returns up to 300 candles.
+            start_ts: Start timestamp (unix seconds). Cannot be used with all_history=True.
+            end_ts: End timestamp (unix seconds). Cannot be used with all_history=True.
+            count: Maximum number of candles to yield. Default None (no limit).
+            all_history: If True, fetch ALL candles ignoring count limit.
+                Cannot be used with start_ts or end_ts.
         """
         logger = logging.getLogger(__name__)
 
-        # Validation: include_all requires at least one boundary or no count limit
-        if include_all and start_ts is None and end_ts is None:
-            # No boundaries specified - this would be infinite, require at least one
-            raise ValueError("include_all requires at least start_ts or end_ts")
+        # Validation: all_history cannot be used with time boundaries
+        if all_history and (start_ts is not None or end_ts is not None):
+            raise ValueError("'all_history' cannot be used with start_ts or end_ts")
 
-        # Defaults - only for end_ts, never for start_ts
         actual_end_ts = end_ts or int(time.time())
-        actual_start_ts = start_ts  # Never set a default
+        actual_start_ts = start_ts
 
         logger.info(
-            "get_candles: pair=%s timeframe=%s start_ts=%s end_ts=%s include_all=%s",
+            "get_candles: pair=%s timeframe=%s start_ts=%s end_ts=%s all_history=%s",
             pair,
             timeframe.value,
             actual_start_ts,
             actual_end_ts,
-            include_all,
+            all_history,
         )
 
         # Pagination constants - API uses milliseconds
@@ -167,28 +163,19 @@ class Exchange:
                 yielded_count += 1
                 prev_timestamps.add(candle.time)
 
-                # Check count limit (default 300 when include_all=False)
-                if not include_all and yielded_count >= chunk_size:
+                # Check count limit
+                if count is not None and yielded_count >= count:
                     return
 
             # Stop conditions:
-            # - When include_all=False: stop if got fewer than chunk_size (exhausted available data)
-            # - When include_all=True with start_ts: stop if we've reached start_ts or gone past it
-            if not include_all:
-                # Traditional mode: stop if last request returned partial results
-                if len(unique_candles) < chunk_size:
+            # - When start_ts provided: stop when we've reached or passed start boundary
+            # - Otherwise: stop when partial results (no more data)
+            if actual_start_ts is not None:
+                oldest_yet = unique_candles[-1].time
+                if oldest_yet <= actual_start_ts:
                     break
-            else:
-                # include_all mode: check if we've reached the start boundary
-                if actual_start_ts is not None:
-                    oldest_yet = unique_candles[-1].time
-                    if oldest_yet <= actual_start_ts:
-                        # Reached or passed start boundary, we're done
-                        break
-                else:
-                    # No boundaries at all - would be infinite, shouldn't happen due to validation
-                    if len(unique_candles) < chunk_size:
-                        break
+            elif len(unique_candles) < chunk_size:
+                break
 
             # Continue pagination: next request starts from oldest candle we just processed
             current_end = unique_candles[-1].time * 1000
@@ -198,7 +185,8 @@ class Exchange:
         pair: Pair,
         start_ts: Optional[int] = None,
         end_ts: Optional[int] = None,
-        include_all: bool = False,
+        count: Optional[int] = None,
+        all_history: bool = False,
     ) -> AsyncGenerator[MarketTrade, None]:
         """
         Yield trades iteratively using pagination.
@@ -207,32 +195,27 @@ class Exchange:
 
         Args:
             pair: Trading pair
-            start_ts: Start timestamp (unix seconds). None means no lower bound.
-            end_ts: End timestamp (unix seconds). None means use current time.
-            include_all: If True, fetch ALL trades in range ignoring 150 limit. Default False.
-
-        Note:
-            When include_all=True without time boundaries, fetches all historical trades.
-            When include_all=True with time boundaries, fetches all trades in that range.
-            By default (include_all=False), returns up to 150 trades.
+            start_ts: Start timestamp (unix seconds). Cannot be used with all_history=True.
+            end_ts: End timestamp (unix seconds). Cannot be used with all_history=True.
+            count: Maximum number of trades to yield. Default None (no limit).
+            all_history: If True, fetch ALL trades ignoring count limit.
+                Cannot be used with start_ts or end_ts.
         """
         logger = logging.getLogger(__name__)
 
-        # Validation: include_all requires at least one boundary or no count limit
-        if include_all and start_ts is None and end_ts is None:
-            # No boundaries specified - this would be infinite, require at least one
-            raise ValueError("include_all requires at least start_ts or end_ts")
+        # Validation: all_history cannot be used with time boundaries
+        if all_history and (start_ts is not None or end_ts is not None):
+            raise ValueError("'all_history' cannot be used with start_ts or end_ts")
 
-        # Defaults - only for end_ts, never for start_ts
         actual_end_ts = end_ts or int(time.time())
-        actual_start_ts = start_ts  # Never set a default
+        actual_start_ts = start_ts
 
         logger.info(
-            "get_trades: pair=%s start_ts=%s end_ts=%s include_all=%s",
+            "get_trades: pair=%s start_ts=%s end_ts=%s all_history=%s",
             pair,
             actual_start_ts,
             actual_end_ts,
-            include_all,
+            all_history,
         )
 
         # Pagination constants - API uses nanoseconds
@@ -295,28 +278,19 @@ class Exchange:
                 yielded_count += 1
                 prev_trade_ids.add(trade.id)
 
-                # Check count limit (default 150 when include_all=False)
-                if not include_all and yielded_count >= chunk_size:
+                # Check count limit
+                if count is not None and yielded_count >= count:
                     return
 
             # Stop conditions:
-            # - When include_all=False: stop if got fewer than chunk_size (exhausted available data)
-            # - When include_all=True with start_ts: stop if we've reached start_ts or gone past it
-            if not include_all:
-                # Traditional mode: stop if last request returned partial results
-                if len(unique_trades) < chunk_size:
+            # - When start_ts provided: stop when we've reached or passed start boundary
+            # - Otherwise: stop when partial results (no more data)
+            if actual_start_ts is not None:
+                oldest_yet = unique_trades[-1].time
+                if oldest_yet <= actual_start_ts:
                     break
-            else:
-                # include_all mode: check if we've reached the start boundary
-                if actual_start_ts is not None:
-                    oldest_yet = unique_trades[-1].time
-                    if oldest_yet <= actual_start_ts:
-                        # Reached or passed start boundary, we're done
-                        break
-                else:
-                    # No boundaries at all - would be infinite, shouldn't happen due to validation
-                    if len(unique_trades) < chunk_size:
-                        break
+            elif len(unique_trades) < chunk_size:
+                break
 
             # Continue pagination: next request starts from oldest trade we just processed
             current_end = unique_trades[-1].time * 1_000_000_000
