@@ -71,21 +71,22 @@ async def test_get_orderbook(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "timeframe,start_ts,end_ts,candles_len",
+    "timeframe,start_ts,end_ts,candles_len,count",
     [
-        # 15m candles: returns 300 (default chunk size) when no time boundaries
-        (cro.Timeframe.MIN_15, None, None, 300),
+        # 15m candles: returns 300 (chunk size) when no time boundaries and count=300
+        (cro.Timeframe.MIN_15, None, None, 300, 300),
         # 1D candles: 1 month range (June 1 - July 1, 2026)
         (
             cro.Timeframe.DAY,
             int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
             int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
             30,
+            None,  # No limit when using time boundaries
         ),
     ],
 )
 async def test_get_candles(
-    exchange: cro.Exchange, timeframe, start_ts, end_ts, candles_len
+    exchange: cro.Exchange, timeframe, start_ts, end_ts, candles_len, count
 ):
     candles = []
     async for candle in exchange.get_candles(
@@ -93,6 +94,7 @@ async def test_get_candles(
         timeframe,
         start_ts=start_ts,
         end_ts=end_ts,
+        count=count,
     ):
         candles.append(candle)
         assert candle.pair == cro.pairs.CLOUD_USD
@@ -181,18 +183,49 @@ async def test_get_candles_with_time_boundaries(
 
 
 @pytest.mark.asyncio
-async def test_get_candles_include_all_with_boundaries_error(
+async def test_get_candles_all_history_invalid_with_boundaries(
     exchange: cro.Exchange,
 ):
-    """Test that include_all without any time boundaries raises ValueError."""
-    # Test without any boundaries (this would be infinite)
-    with pytest.raises(ValueError, match="include_all requires"):
+    """Test that all_history cannot be used with start_ts or end_ts."""
+    # Test without any boundaries - should work (fetches all)
+    candles = []
+    async for candle in exchange.get_candles(
+        cro.pairs.CLOUD_USD,
+        cro.Timeframe.DAY,
+        all_history=True,
+    ):
+        candles.append(candle)
+    assert len(candles) > 0
+
+    # Test with only start_ts - should raise
+    with pytest.raises(ValueError, match="'all_history' cannot be used"):
         async for _ in exchange.get_candles(
             cro.pairs.CLOUD_USD,
             cro.Timeframe.DAY,
-            include_all=True,
+            start_ts=1000000000,
+            all_history=True,
         ):
             pass
+
+
+@pytest.mark.asyncio
+async def test_get_candles_count(exchange: cro.Exchange):
+    """Test that count=650 fetches up to 650 candles via pagination."""
+    start_ts = int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp())
+    end_ts = int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp())
+
+    candles = []
+    async for candle in exchange.get_candles(
+        cro.pairs.CLOUD_USD,
+        cro.Timeframe.MIN_15,
+        start_ts=start_ts,
+        end_ts=end_ts,
+        count=650,
+    ):
+        candles.append(candle)
+
+    # Should get exactly 650 candles (count limit enforced)
+    assert len(candles) == 650, f"Expected exactly 650 candles, got {len(candles)}"
 
 
 @pytest.mark.asyncio
@@ -230,6 +263,7 @@ async def test_get_trades_no_duplicates(exchange: cro.Exchange):
         cro.pairs.CRO_USDT,
         start_ts=start_ts,
         end_ts=end_ts,
+        count=None,  # Fetch all trades in range
     ):
         trades.append(trade)
 
@@ -416,7 +450,7 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
         cro.pairs.BTC_USD,
         start_ts=api_start_ts,
         end_ts=api_end_ts,
-        include_all=True,  # Fetch all trades in the range, ignoring 150 limit
+        count=None,  # Fetch all trades in range (no limit)
     ):
         trades.append(trade)
 
