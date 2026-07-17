@@ -71,22 +71,21 @@ async def test_get_orderbook(exchange: cro.Exchange):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "timeframe,start_ts,end_ts,count,candles_len",
+    "timeframe,start_ts,end_ts,candles_len",
     [
-        # 15m candles: 50 candles (no time boundaries)
-        (cro.Timeframe.MIN_15, None, None, 50, 50),
+        # 15m candles: returns 300 (default chunk size) when no time boundaries
+        (cro.Timeframe.MIN_15, None, None, 300),
         # 1D candles: 1 month range (June 1 - July 1, 2026)
         (
             cro.Timeframe.DAY,
             int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
             int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
             30,
-            30,
         ),
     ],
 )
 async def test_get_candles(
-    exchange: cro.Exchange, timeframe, start_ts, end_ts, count, candles_len
+    exchange: cro.Exchange, timeframe, start_ts, end_ts, candles_len
 ):
     candles = []
     async for candle in exchange.get_candles(
@@ -94,7 +93,6 @@ async def test_get_candles(
         timeframe,
         start_ts=start_ts,
         end_ts=end_ts,
-        count=count,
     ):
         candles.append(candle)
         assert candle.pair == cro.pairs.CLOUD_USD
@@ -186,13 +184,12 @@ async def test_get_candles_with_time_boundaries(
 async def test_get_candles_include_all_with_boundaries_error(
     exchange: cro.Exchange,
 ):
-    """Test that include_all with time boundaries raises ValueError."""
-    with pytest.raises(ValueError, match="include_all cannot be used"):
+    """Test that include_all without any time boundaries raises ValueError."""
+    # Test without any boundaries (this would be infinite)
+    with pytest.raises(ValueError, match="include_all requires"):
         async for _ in exchange.get_candles(
             cro.pairs.CLOUD_USD,
             cro.Timeframe.DAY,
-            start_ts=1234567890,
-            end_ts=1234567890,
             include_all=True,
         ):
             pass
@@ -419,7 +416,7 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
         cro.pairs.BTC_USD,
         start_ts=api_start_ts,
         end_ts=api_end_ts,
-        include_all=True,  # Fetch all trades regardless of count limit
+        include_all=True,  # Fetch all trades in the range, ignoring 150 limit
     ):
         trades.append(trade)
 

@@ -1,3 +1,4 @@
+import logging
 import time
 from typing import AsyncGenerator, Dict, List, Optional
 
@@ -66,174 +67,259 @@ class Exchange:
         timeframe: Timeframe,
         start_ts: Optional[int] = None,
         end_ts: Optional[int] = None,
-        count: int = 300,
         include_all: bool = False,
     ) -> AsyncGenerator[Candle, None]:
         """
-        Yield candles iteratively with adaptive window sizing.
+        Yield candles iteratively using pagination.
 
-        Candles are yielded in descending order (newest first), matching the
-        API response order.
+        Candles are yielded in descending order (newest first).
 
         Args:
             pair: Trading pair
             timeframe: Candle timeframe
-            start_ts: Start timestamp (unix seconds)
-            end_ts: End timestamp (unix seconds)
-            count: Max candles to yield (default 300)
-            include_all: Yield ALL available data, ignoring count
+            start_ts: Start timestamp (unix seconds). None means no lower bound.
+            end_ts: End timestamp (unix seconds). None means use current time.
+            include_all: If True, fetch ALL candles in range ignoring 300 limit. Default False.
 
-        Raises:
-            ValueError: If include_all=True with start_ts or end_ts
+        Note:
+            When include_all=True without time boundaries, fetches all historical candles.
+            When include_all=True with time boundaries, fetches all candles in that range.
+            By default (include_all=False), returns up to 300 candles.
         """
-        # Validation: include_all cannot be used with time boundaries
-        if include_all and (start_ts is not None or end_ts is not None):
-            raise ValueError("include_all cannot be used with start_ts or end_ts")
+        logger = logging.getLogger(__name__)
 
-        # Defaults
-        end_ts = end_ts or int(time.time())
-        start_ts = start_ts or (end_ts - 30 * 24 * 60 * 60)  # 30 days default
+        # Validation: include_all requires at least one boundary or no count limit
+        if include_all and start_ts is None and end_ts is None:
+            # No boundaries specified - this would be infinite, require at least one
+            raise ValueError("include_all requires at least start_ts or end_ts")
 
-        # Adaptive window sizing - API uses milliseconds
-        current_end = end_ts * 1000
-        target_start = start_ts * 1000
-        window_size_ms = 3600 * 1000  # Start with 1-hour window
-        chunk_size = 300  # API max per request
+        # Defaults - only for end_ts, never for start_ts
+        actual_end_ts = end_ts or int(time.time())
+        actual_start_ts = start_ts  # Never set a default
 
-        prev_timestamps = set()
+        logger.info(
+            "get_candles: pair=%s timeframe=%s start_ts=%s end_ts=%s include_all=%s",
+            pair,
+            timeframe.value,
+            actual_start_ts,
+            actual_end_ts,
+            include_all,
+        )
+
+        # Pagination constants - API uses milliseconds
+        chunk_size = 300  # API max per request, always used internally
         yielded_count = 0
+        prev_timestamps = set()
 
-        while current_end > target_start:
-            current_start = max(current_end - window_size_ms, target_start)
+        # First request: use end_ts to get latest candles
+        current_end = actual_end_ts * 1000
 
-            # Fetch candles
+        while True:
+            # Fetch candles up to 300 ending at current_end
             params = {
                 "instrument_name": pair.exchange_name,
                 "timeframe": timeframe.value,
                 "count": chunk_size,
-                "start_ts": int(current_start),
                 "end_ts": int(current_end),
             }
+
+            logger.debug(
+                "API request: end_ts=%s, chunk_size=%d", current_end / 1000, chunk_size
+            )
             data = await self.api.get("public/get-candlestick", params)
 
-            # Parse and filter out duplicates
+            if not data:
+                # No more data
+                break
+
+            # API returns candles ascending (oldest first), reverse for newest-first yield
             candles = [Candle.from_api(candle, pair) for candle in reversed(data)]
-            candles = [c for c in candles if c.time not in prev_timestamps]
 
-            if not candles:
-                # No new data, move window back
-                current_end = current_start
-                continue
+            # Filter duplicates
+            unique_candles = [c for c in candles if c.time not in prev_timestamps]
 
-            # Yield candles
-            for candle in candles:
-                # Check time boundaries
-                if start_ts is not None and candle.time < start_ts:
-                    return
-                if end_ts is not None and candle.time > end_ts:
+            logger.debug(
+                "Response: raw=%d candles unique=%d", len(data), len(unique_candles)
+            )
+
+            if not unique_candles:
+                # All duplicates, we're done
+                break
+
+            # Apply start_ts filter if specified
+            if actual_start_ts is not None:
+                oldest_candle_time = unique_candles[-1].time
+                if oldest_candle_time < actual_start_ts:
+                    # Filter to only candles >= start_ts
+                    unique_candles = [
+                        c for c in unique_candles if c.time >= actual_start_ts
+                    ]
+                    if not unique_candles:
+                        break
+
+            # Yield candles (already in newest-first order)
+            for candle in unique_candles:
+                # Check upper boundary
+                if actual_end_ts is not None and candle.time > actual_end_ts:
                     continue
 
                 yield candle
                 yielded_count += 1
                 prev_timestamps.add(candle.time)
 
-                # Check count limit
-                if not include_all and yielded_count >= count:
+                # Check count limit (default 300 when include_all=False)
+                if not include_all and yielded_count >= chunk_size:
                     return
 
-            # Adaptive window sizing
-            if len(candles) == chunk_size:
-                # Got max, reduce window for more granular data
-                window_size_ms = max(window_size_ms // 2, 60 * 1000)
+            # Stop conditions:
+            # - When include_all=False: stop if got fewer than chunk_size (exhausted available data)
+            # - When include_all=True with start_ts: stop if we've reached start_ts or gone past it
+            if not include_all:
+                # Traditional mode: stop if last request returned partial results
+                if len(unique_candles) < chunk_size:
+                    break
             else:
-                # Got fewer than max, reset to 1-hour
-                window_size_ms = 3600 * 1000
+                # include_all mode: check if we've reached the start boundary
+                if actual_start_ts is not None:
+                    oldest_yet = unique_candles[-1].time
+                    if oldest_yet <= actual_start_ts:
+                        # Reached or passed start boundary, we're done
+                        break
+                else:
+                    # No boundaries at all - would be infinite, shouldn't happen due to validation
+                    if len(unique_candles) < chunk_size:
+                        break
 
-            # Move window backward
-            current_end = candles[-1].time * 1000
+            # Continue pagination: next request starts from oldest candle we just processed
+            current_end = unique_candles[-1].time * 1000
 
     async def get_trades(
         self,
         pair: Pair,
         start_ts: Optional[int] = None,
         end_ts: Optional[int] = None,
-        count: int = 150,
         include_all: bool = False,
     ) -> AsyncGenerator[MarketTrade, None]:
         """
-        Yield trades iteratively with adaptive window sizing.
+        Yield trades iteratively using pagination.
 
-        Trades are yielded in descending order (newest first), matching the
-        API response order.
+        Trades are yielded in descending order (newest first).
 
         Args:
             pair: Trading pair
-            start_ts: Start timestamp (unix seconds)
-            end_ts: End timestamp (unix seconds)
-            count: Max trades to yield (default 150)
-            include_all: Yield ALL available data, ignoring count limit
+            start_ts: Start timestamp (unix seconds). None means no lower bound.
+            end_ts: End timestamp (unix seconds). None means use current time.
+            include_all: If True, fetch ALL trades in range ignoring 150 limit. Default False.
 
         Note:
-            For trades, include_all works with time boundaries to fetch all
-            trades in the specified range regardless of count limit.
+            When include_all=True without time boundaries, fetches all historical trades.
+            When include_all=True with time boundaries, fetches all trades in that range.
+            By default (include_all=False), returns up to 150 trades.
         """
-        # Defaults
-        end_ts = end_ts or int(time.time())
-        start_ts = start_ts or (end_ts - 60 * 60)  # 1 hour default
+        logger = logging.getLogger(__name__)
 
-        # Adaptive window sizing - API uses nanoseconds
-        current_end = end_ts * 1_000_000_000
-        target_start = start_ts * 1_000_000_000
-        window_size_ns = 10 * 60 * 1_000_000_000  # Start with 10-minute window
-        chunk_count = 150  # API max per request
+        # Validation: include_all requires at least one boundary or no count limit
+        if include_all and start_ts is None and end_ts is None:
+            # No boundaries specified - this would be infinite, require at least one
+            raise ValueError("include_all requires at least start_ts or end_ts")
 
-        prev_trade_ids = set()
+        # Defaults - only for end_ts, never for start_ts
+        actual_end_ts = end_ts or int(time.time())
+        actual_start_ts = start_ts  # Never set a default
+
+        logger.info(
+            "get_trades: pair=%s start_ts=%s end_ts=%s include_all=%s",
+            pair,
+            actual_start_ts,
+            actual_end_ts,
+            include_all,
+        )
+
+        # Pagination constants - API uses nanoseconds
+        chunk_size = 150  # API max per request, always used internally
         yielded_count = 0
+        prev_trade_ids = set()
 
-        while current_end > target_start:
-            current_start = max(current_end - window_size_ns, target_start)
+        # First request: use end_ts to get latest trades
+        current_end = actual_end_ts * 1_000_000_000
 
-            # Fetch trades
+        while True:
+            # Fetch trades up to 150 ending at current_end
             params = {
                 "instrument_name": pair.exchange_name,
-                "count": chunk_count,
-                "start_ts": int(current_start),
+                "count": chunk_size,
                 "end_ts": int(current_end),
             }
+
+            logger.debug(
+                "API request: end_ts=%s, chunk_size=%d", current_end / 1e9, chunk_size
+            )
             data = await self.api.get("public/get-trades", params)
 
-            # Parse and filter out duplicates
-            # API returns trades in descending order (newest first), keep that order
+            if not data:
+                # No more data
+                break
+
+            # API returns trades in descending order (newest first)
             trades = [MarketTrade.from_api(pair, trade) for trade in data]
-            trades = [t for t in trades if t.id not in prev_trade_ids]
 
-            if not trades:
-                # No new data, move window back
-                current_end = current_start
-                continue
+            # Filter duplicates
+            unique_trades = [t for t in trades if t.id not in prev_trade_ids]
 
-            # Yield trades
-            for trade in trades:
-                # Check time boundaries
-                if start_ts is not None and trade.time < start_ts:
-                    return
-                if end_ts is not None and trade.time > end_ts:
+            logger.debug(
+                "Response: raw=%d trades unique=%d", len(data), len(unique_trades)
+            )
+
+            if not unique_trades:
+                # All duplicates, we're done
+                break
+
+            # Apply start_ts filter if specified
+            if actual_start_ts is not None:
+                oldest_trade_time = unique_trades[-1].time
+                if oldest_trade_time < actual_start_ts:
+                    # Filter to only trades >= start_ts
+                    unique_trades = [
+                        t for t in unique_trades if t.time >= actual_start_ts
+                    ]
+                    if not unique_trades:
+                        break
+
+            # Yield trades (already in newest-first order)
+            for trade in unique_trades:
+                # Check upper boundary
+                if actual_end_ts is not None and trade.time > actual_end_ts:
                     continue
 
                 yield trade
                 yielded_count += 1
                 prev_trade_ids.add(trade.id)
 
-            # Adaptive window sizing
-            if len(trades) == chunk_count:
-                # Got max, reduce window for more granular data
-                window_size_ns = max(window_size_ns // 2, 60 * 1_000_000_000)
-            else:
-                # Got fewer than max, reset to 10-minute window
-                window_size_ns = 10 * 60 * 1_000_000_000
+                # Check count limit (default 150 when include_all=False)
+                if not include_all and yielded_count >= chunk_size:
+                    return
 
-            # Move window backward
-            current_end = trades[-1].time * 1_000_000_000
+            # Stop conditions:
+            # - When include_all=False: stop if got fewer than chunk_size (exhausted available data)
+            # - When include_all=True with start_ts: stop if we've reached start_ts or gone past it
+            if not include_all:
+                # Traditional mode: stop if last request returned partial results
+                if len(unique_trades) < chunk_size:
+                    break
+            else:
+                # include_all mode: check if we've reached the start boundary
+                if actual_start_ts is not None:
+                    oldest_yet = unique_trades[-1].time
+                    if oldest_yet <= actual_start_ts:
+                        # Reached or passed start boundary, we're done
+                        break
+                else:
+                    # No boundaries at all - would be infinite, shouldn't happen due to validation
+                    if len(unique_trades) < chunk_size:
+                        break
+
+            # Continue pagination: next request starts from oldest trade we just processed
+            current_end = unique_trades[-1].time * 1_000_000_000
 
     async def get_ticker(self, pair: Pair) -> MarketTicker:
         """Get ticker in for provided pair."""

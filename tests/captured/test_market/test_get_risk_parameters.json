@@ -15,7 +15,7 @@
           "default_short_pos_limit_futures": "-1.0",
           "default_unit_margin_rate": "0.05",
           "default_collateral_cap": "0.0",
-          "update_timestamp_ms": 1783088542735,
+          "update_timestamp_ms": 1784101761626,
           "base_currency_config": [
             {
               "instrument_name": "1INCH",
@@ -52,6 +52,15 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "AAOI",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.011",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "4053.0",
+              "short_pos_limit_perps": "4053.0"
             },
             {
               "instrument_name": "AAPL",
@@ -526,6 +535,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "BE",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.017",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "1695.0",
+              "short_pos_limit_perps": "1695.0"
+            },
+            {
               "instrument_name": "BEAMX",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -877,6 +895,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "COHR",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.018",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "1489.0",
+              "short_pos_limit_perps": "1489.0"
+            },
+            {
               "instrument_name": "COIN",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
@@ -1031,6 +1058,15 @@
               "instrument_name": "DATA",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
+              "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "DATAIP",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.00080",
+              "daily_notional_limit": "100000.0",
+              "order_limit": "1000.0",
+              "max_order_notional_usd": "1000.0",
               "min_order_notional_usd": "1.0"
             },
             {
@@ -1411,13 +1447,6 @@
               "min_order_notional_usd": "1.0"
             },
             {
-              "instrument_name": "FITFI",
-              "daily_notional_limit": "500000.0",
-              "order_limit": "50000.0",
-              "max_order_notional_usd": "50000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
               "instrument_name": "FLIP",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -1464,19 +1493,6 @@
               "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
-              "instrument_name": "FORTH",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
-              "instrument_name": "FOXY",
-              "daily_notional_limit": "100000.0",
-              "order_limit": "10000.0",
-              "max_order_notional_usd": "10000.0",
               "min_order_notional_usd": "1.0"
             },
             {
@@ -1640,6 +1656,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "GROVE",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.00030",
+              "daily_notional_limit": "100000.0",
+              "order_limit": "1000.0",
+              "max_order_notional_usd": "1000.0",
+              "min_order_notional_usd": "1.0"
+            },
+            {
               "instrument_name": "GRT",
               "collateral_cap_notional": "280000.0",
               "minimum_haircut": "0.33330000000000008",
@@ -1787,6 +1812,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "HYUNDAI",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.018",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "1581.0",
+              "short_pos_limit_perps": "1581.0"
+            },
+            {
               "instrument_name": "ICP",
               "collateral_cap_notional": "290000.0",
               "minimum_haircut": "0.33330000000000008",
@@ -1801,12 +1835,6 @@
             },
             {
               "instrument_name": "ICX",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
-              "instrument_name": "IDEX",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1904,16 +1932,22 @@
             {
               "instrument_name": "IP",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.001",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "unit_margin_rate": "0.001"
             },
             {
               "instrument_name": "IQ",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "IWM",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.017",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "1673.0",
+              "short_pos_limit_perps": "1673.0"
             },
             {
               "instrument_name": "JASMY",
@@ -1999,6 +2033,15 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "KIOXIA",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.021",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "1118.0",
+              "short_pos_limit_perps": "1118.0"
             },
             {
               "instrument_name": "KITE",
@@ -2593,6 +2636,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "NOK",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.0035",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "39968.0",
+              "short_pos_limit_perps": "39968.0"
+            },
+            {
               "instrument_name": "NOM",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -2613,6 +2665,15 @@
               "min_order_notional_usd": "1.0",
               "long_pos_limit_perps": "400000000",
               "short_pos_limit_perps": "400000000"
+            },
+            {
+              "instrument_name": "NOW",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.01",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "4633.0",
+              "short_pos_limit_perps": "4633.0"
             },
             {
               "instrument_name": "NRN",
@@ -2830,12 +2891,6 @@
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.0000025",
               "max_short_sell_limit": "3000000000",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
-              "instrument_name": "PIRATE",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -3326,6 +3381,15 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "SKHY",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.012",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "3571.0",
+              "short_pos_limit_perps": "3571.0"
             },
             {
               "instrument_name": "SKHYNIX",
@@ -4044,6 +4108,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "WDC",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.024",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "866.0",
+              "short_pos_limit_perps": "866.0"
+            },
+            {
               "instrument_name": "WEMIX",
               "daily_notional_limit": "10000.0",
               "order_limit": "1000.0",
@@ -4267,9 +4340,6 @@
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00030",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0",
               "long_pos_limit_perps": "11000000",
               "short_pos_limit_perps": "11000000"
             },
@@ -4395,6 +4465,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "AAOI",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "AAPL",
               "max_order_notional_usd": "100000.0"
             },
@@ -4611,6 +4685,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "BE",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "BEAMX",
               "max_order_notional_usd": "2500000.0"
             },
@@ -4775,6 +4853,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "COHR",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "COIN",
               "max_order_notional_usd": "100000.0"
             },
@@ -4853,6 +4935,10 @@
             {
               "instrument_name": "DATA",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "DATAIP",
+              "max_order_notional_usd": "500000.0"
             },
             {
               "instrument_name": "DBR",
@@ -5027,10 +5113,6 @@
               "max_order_notional_usd": "500000.0"
             },
             {
-              "instrument_name": "FITFI",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "FLIP",
               "max_order_notional_usd": "2500000.0"
             },
@@ -5057,14 +5139,6 @@
             {
               "instrument_name": "FOGO",
               "max_order_notional_usd": "500000.0"
-            },
-            {
-              "instrument_name": "FORTH",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "FOXY",
-              "max_order_notional_usd": "2500000.0"
             },
             {
               "instrument_name": "FRAX",
@@ -5155,6 +5229,10 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "GROVE",
+              "max_order_notional_usd": "500000.0"
+            },
+            {
               "instrument_name": "GRT",
               "max_order_notional_usd": "500000.0"
             },
@@ -5227,15 +5305,15 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "HYUNDAI",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "ICP",
               "max_order_notional_usd": "500000.0"
             },
             {
               "instrument_name": "ICX",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "IDEX",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -5279,12 +5357,12 @@
               "max_order_notional_usd": "500000.0"
             },
             {
-              "instrument_name": "IP",
-              "max_order_notional_usd": "500000.0"
-            },
-            {
               "instrument_name": "IQ",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "IWM",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "JASMY",
@@ -5325,6 +5403,10 @@
             {
               "instrument_name": "KERNEL",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "KIOXIA",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "KITE",
@@ -5619,6 +5701,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "NOK",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "NOM",
               "max_order_notional_usd": "2500000.0"
             },
@@ -5629,6 +5715,10 @@
             {
               "instrument_name": "NOT",
               "max_order_notional_usd": "500000.0"
+            },
+            {
+              "instrument_name": "NOW",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "NRN",
@@ -5733,10 +5823,6 @@
             {
               "instrument_name": "PEPE",
               "max_order_notional_usd": "500000.0"
-            },
-            {
-              "instrument_name": "PIRATE",
-              "max_order_notional_usd": "2500000.0"
             },
             {
               "instrument_name": "PIXEL",
@@ -5973,6 +6059,10 @@
             {
               "instrument_name": "SHIB",
               "max_order_notional_usd": "500000.0"
+            },
+            {
+              "instrument_name": "SKHY",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "SKHYNIX",
@@ -6315,6 +6405,10 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "WDC",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "WEMIX",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6408,10 +6502,6 @@
             },
             {
               "instrument_name": "YFI",
-              "max_order_notional_usd": "500000.0"
-            },
-            {
-              "instrument_name": "YGG",
               "max_order_notional_usd": "500000.0"
             },
             {
@@ -6485,6 +6575,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "AAOI",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "AAPL",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6701,6 +6795,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "BE",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "BEAMX",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6865,6 +6963,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "COHR",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "COIN",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6942,6 +7044,10 @@
             },
             {
               "instrument_name": "DATA",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "DATAIP",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7117,10 +7223,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "FITFI",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "FLIP",
               "max_order_notional_usd": "2500000.0"
             },
@@ -7146,14 +7248,6 @@
             },
             {
               "instrument_name": "FOGO",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "FORTH",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "FOXY",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7245,6 +7339,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "GROVE",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "GRT",
               "max_order_notional_usd": "2500000.0"
             },
@@ -7317,15 +7415,15 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "HYUNDAI",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "ICP",
               "max_order_notional_usd": "2500000.0"
             },
             {
               "instrument_name": "ICX",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "IDEX",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7369,11 +7467,11 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "IP",
+              "instrument_name": "IQ",
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "IQ",
+              "instrument_name": "IWM",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7414,6 +7512,10 @@
             },
             {
               "instrument_name": "KERNEL",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "KIOXIA",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7709,6 +7811,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "NOK",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "NOM",
               "max_order_notional_usd": "2500000.0"
             },
@@ -7718,6 +7824,10 @@
             },
             {
               "instrument_name": "NOT",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "NOW",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7822,10 +7932,6 @@
             },
             {
               "instrument_name": "PEPE",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "PIRATE",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -8062,6 +8168,10 @@
             },
             {
               "instrument_name": "SHIB",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "SKHY",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -8405,6 +8515,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "WDC",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "WEMIX",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8501,10 +8615,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "YGG",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "ZBC",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8558,8 +8668,8 @@
             }
           ]
         },
-        "exec_time": 0.3766007423400879,
-        "timestamp": 1783284036.983725
+        "exec_time": 0.4298520088195801,
+        "timestamp": 1784309422.572468
       }
     ]
   }
