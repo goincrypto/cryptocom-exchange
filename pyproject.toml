@@ -6,6 +6,7 @@ name = "cryptocom-exchange"
 packages = [
   {include = "cryptocom", from = "src"},
 ]
+exclude = ["openapi_docs/"]
 version = "1.1.2"
 readme = "README.md"
 classifiers = [

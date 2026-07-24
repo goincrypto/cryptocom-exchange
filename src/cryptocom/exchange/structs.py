@@ -164,6 +164,7 @@ class DefaultPairDict(dict[str, Pair]):
                 name,
                 8,
                 8,
+                inst_type=InstrumentType.SPOT,
                 min_order_notional_usd=1.0,
                 max_order_notional_usd=1000000.0,
             )
