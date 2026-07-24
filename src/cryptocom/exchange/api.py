@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import hmac
 import json
+import logging
 import os
 import pathlib
 import random
@@ -136,8 +137,9 @@ class ApiProvider:
         retries=5,
         root_url="https://api.crypto.com/exchange/v1/",
         ws_root_url="wss://stream.crypto.com/exchange/v1/",
-        logger=None,
+        logger: logging.Logger | None = None,
     ):
+        self.logger = logger or logging.getLogger(__name__)
         self.ssl_context = httpx.create_ssl_context()
         self.api_key = api_key
         self.api_secret = api_secret
@@ -205,8 +207,10 @@ class ApiProvider:
 
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
+        self.logger.debug(f"{method.upper()} {path} params={params} data={data}")
         limiter = self.get_limiter(path)
         count = 0
+        start_time = time.time()
         while count <= self.retries:
             client = httpx.AsyncClient(
                 timeout=httpx.Timeout(timeout=self.timeout),
@@ -245,6 +249,9 @@ class ApiProvider:
                         f"Timeout or read error, retries: {self.retries}. "
                         f"Path: {path}. Data: {data}. Exc: {exc}"
                     ) from exc
+                self.logger.warning(
+                    f"Retry {count}/{self.retries}: {method} {path} - {exc}"
+                )
                 continue
             finally:
                 await client.aclose()
@@ -258,6 +265,8 @@ class ApiProvider:
                 if data:
                     if data["id"] != resp_json["id"]:
                         raise ApiError(f"Not matched req = resp {resp_json}")
+                elapsed = time.time() - start_time
+                self.logger.debug(f"{method.upper()} {path} received in {elapsed:.3f}s")
                 return result
 
             if count == self.retries:
@@ -345,6 +354,9 @@ class RecordApiProvider(ApiProvider):
             except KeyError:
                 available_args = list(self.records.get(key, {}).keys())
                 if available_args:
+                    self.logger.debug(
+                        f"No exact match for {key}, using first available: {available_args[0]}"
+                    )
                     record = self.records[key][available_args[0]].pop(0)
                 else:
                     raise ApiError(f"No path found: {key}, {args}")

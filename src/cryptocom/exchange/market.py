@@ -3,7 +3,7 @@ import time
 from collections.abc import AsyncGenerator
 
 from . import pairs
-from .api import ApiProvider
+from .api import ApiError, ApiProvider
 from .structs import (
     Candle,
     DefaultPairDict,
@@ -23,9 +23,15 @@ class Exchange:
 
     api: ApiProvider
     pairs: DefaultPairDict
+    logger: logging.Logger
 
-    def __init__(self, api: ApiProvider | None = None) -> None:
+    def __init__(
+        self,
+        api: ApiProvider | None = None,
+        logger: logging.Logger | None = None,
+    ) -> None:
         self.api = api or ApiProvider(auth_required=False)
+        self.logger = logger or logging.getLogger(__name__)
         self.pairs = DefaultPairDict(**{pair.name: pair for pair in pairs.all()})
 
     async def sync_pairs(self):
@@ -47,12 +53,13 @@ class Exchange:
         """
         data = await self.api.get("public/get-instruments")
         pairs = []
-        for inst in data:
-            try:
-                pairs.append(Pair.from_api(inst, filter_derivatives=True))
-            except ValueError:
-                # Skip derivatives and other filtered instruments
-                continue
+        if data:
+            for inst in data:
+                try:
+                    pairs.append(Pair.from_api(inst, filter_derivatives=True))
+                except ValueError:
+                    # Skip derivatives and other filtered instruments
+                    continue
         return pairs
 
     async def get_orderbook(self, pair: Pair, depth: int = 150) -> OrderBook:
@@ -61,6 +68,8 @@ class Exchange:
             "public/get-book",
             {"instrument_name": pair.exchange_name, "depth": depth},
         )
+        if not data or not data[0]:
+            raise ApiError("Invalid orderbook data")
         buys = [
             OrderInBook.from_api(order, pair, OrderSide.BUY)
             for order in data[0]["bids"]
@@ -310,11 +319,15 @@ class Exchange:
         data = await self.api.get(
             "public/get-tickers", {"instrument_name": pair.exchange_name}
         )
+        if not data or not data[0]:
+            raise ApiError("Invalid ticker data")
         return MarketTicker.from_api(pair, data[0])
 
     async def get_tickers(self) -> dict[Pair, MarketTicker]:
         """Get tickers in all available markets."""
         data = await self.api.get("public/get-tickers")
+        if not data:
+            return {}
         return {
             self.pairs[ticker["i"]]: MarketTicker.from_api(
                 self.pairs[ticker["i"]], ticker
@@ -323,16 +336,13 @@ class Exchange:
             if ticker["i"] in self.pairs
         }
 
-    async def get_price(self, pair: Pair) -> float:
+    async def get_price(self, pair: Pair) -> float | None:
         """Get latest price of pair."""
         return (await self.get_ticker(pair)).trade_price
 
     async def listen_candles(
-        self, timeframe: Timeframe, *pairs: list[Pair]
+        self, timeframe: Timeframe, *pairs: Pair
     ) -> AsyncGenerator[Candle, None]:
-        if not isinstance(timeframe, Timeframe):
-            raise ValueError(f"Provide Timeframe enum not {timeframe}")
-
         channels = [
             f"candlestick.{timeframe.value}.{pair.exchange_name}" for pair in pairs
         ]
@@ -342,18 +352,14 @@ class Exchange:
             for candle in data["data"]:
                 yield Candle.from_api(candle, pair)
 
-    async def listen_trades(
-        self, *pairs: list[Pair]
-    ) -> AsyncGenerator[MarketTrade, None]:
+    async def listen_trades(self, *pairs: Pair) -> AsyncGenerator[MarketTrade, None]:
         channels = [f"trade.{pair.exchange_name}" for pair in pairs]
         async for data in self.api.listen("market", *channels):
             for trade in data["data"]:
                 pair = self.pairs[data["instrument_name"]]
                 yield MarketTrade.from_api(pair, trade)
 
-    async def listen_orderbook(
-        self, *pairs: list[Pair]
-    ) -> AsyncGenerator[OrderBook, None]:
+    async def listen_orderbook(self, *pairs: Pair) -> AsyncGenerator[OrderBook, None]:
         channels = [f"book.{pair.exchange_name}.50" for pair in pairs]
         async for data in self.api.listen("market", *channels):
             pair = self.pairs[data["instrument_name"]]
@@ -370,4 +376,6 @@ class Exchange:
     async def get_risk_parameters(self) -> RiskParameters:
         """Get risk parameters for Smart Cross Margin including min/max order notional."""
         data = await self.api.get("public/get-risk-parameters")
+        if not data:
+            raise ApiError("Invalid risk parameters data")
         return RiskParameters.from_api(data)

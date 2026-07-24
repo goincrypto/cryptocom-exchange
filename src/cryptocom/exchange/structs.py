@@ -306,7 +306,7 @@ class MarketTicker:
     pair: Pair
     buy_price: float | None  # Best bid price
     sell_price: float | None  # Best ask price
-    trade_price: float  # Latest trade price
+    trade_price: float | None  # Latest trade price
     time: int  # Timestamp (seconds)
     volume: float  # 24h traded volume (quantity)
     high: float  # 24h highest trade price
@@ -316,7 +316,7 @@ class MarketTicker:
     open_interest: float | None = None  # Open interest (derivatives only)
 
     @classmethod
-    def from_api(cls, pair, data):
+    def from_api(cls, pair: Pair, data: dict[str, Any]) -> "MarketTicker":
         """Parse ticker from API response.
 
         API fields:
@@ -420,7 +420,7 @@ class Candle:
     low: float
     close: float
     quantity: float  # Volume
-    pair: Pair = None
+    pair: Pair | None = None
     interval: str | None = None  # Optional timeframe (M1, M5, H1, etc.)
 
     @classmethod
@@ -573,8 +573,14 @@ class OrderStatus(str, Enum):
     PENDING = "PENDING"
 
 
-class OrderExecType(str, Enum):
+class OrderExecFlag(str, Enum):
+    """Execution flag for orders."""
+
     POST_ONLY = "POST_ONLY"
+    REDUCE_ONLY = "REDUCE_ONLY"
+    SMART_POST_ONLY = "SMART_POST_ONLY"
+    ISOLATED_MARGIN = "ISOLATED_MARGIN"
+    MARGIN_ORDER = "MARGIN_ORDER"
     LIQUIDATION = "LIQUIDATION"
     NOTIONAL_ORDER = "NOTIONAL_ORDER"
 
@@ -643,7 +649,7 @@ class Order:
     type: OrderType
     status: OrderStatus
     side: OrderSide
-    exec_type: OrderExecType
+    exec_flags: list[OrderExecFlag]
     limit_price: float | None
     value: float
     quantity: float
@@ -695,6 +701,12 @@ class Order:
         return self.status == OrderStatus.PENDING
 
     @cached_property
+    def price(self):
+        """Order price (filled price preferred, otherwise limit price)."""
+        # For filled orders, use filled_price; otherwise use limit_price
+        return self.filled_price if self.filled_price else self.limit_price
+
+    @cached_property
     def volume(self):
         return self.pair.round_price(self.price * self.quantity)
 
@@ -718,6 +730,13 @@ class Order:
         data: dict[str, Any],
         trades: list[dict[str, Any]] | None = None,
     ) -> "Order":
+        # Parse exec_inst as array of OrderExecFlag
+        exec_flags = [
+            OrderExecFlag(inst)
+            for inst in data.get("exec_inst", [])
+            if inst in [e.value for e in OrderExecFlag]
+        ]
+
         return cls(
             id=data["order_id"],
             account_id=data["account_id"],
@@ -725,9 +744,7 @@ class Order:
             type=OrderType(data["order_type"]),
             force_type=OrderForceType(data["time_in_force"]),
             side=OrderSide(data["side"]),
-            exec_type=OrderExecType(data["exec_inst"][0])
-            if data["exec_inst"]
-            else None,
+            exec_flags=exec_flags,
             quantity=float(data["quantity"]),
             limit_price=float(data["limit_price"]) if "limit_price" in data else None,
             value=float(data["order_value"]),
