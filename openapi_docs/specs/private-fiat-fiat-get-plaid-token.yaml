@@ -1,0 +1,226 @@
+openapi: 3.0.3
+info:
+  title: private/fiat/fiat-get-plaid-token
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/fiat/fiat-get-plaid-token:
+    post:
+      tags:
+        - Fiat Wallet
+      x-apply-to:
+        - rest
+      summary: private/fiat/fiat-get-plaid-token
+      description: Get a Plaid link token for the user. Must call this before initiating the Plaid Link flow on the frontend. The token is single-use and expires — a new token is generated each time.
+      operationId: privateFiatFiatGetPlaidToken
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateFiatFiatGetPlaidToken({});
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_fiat_fiat_get_plaid_token({})
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateFiatFiatGetPlaidTokenRequest"
+            example:
+              id: "10"
+              method: private/fiat/fiat-get-plaid-token
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1773372503821"
+              params: {}
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetPlaidTokenResponse"
+              example:
+                id: "10"
+                method: private/fiat/fiat-get-plaid-token
+                code: "0"
+                result:
+                  link_token: link-sandbox-af1a0311-da53-4636-b754-dd15c7a2
+                  expiration: "2026-03-18T20:00:00Z"
+                  request_id: req-id-001
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetPlaidTokenResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-plaid-token
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetPlaidTokenResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-plaid-token
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetPlaidTokenResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-plaid-token
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetPlaidTokenResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-plaid-token
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetPlaidTokenResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-plaid-token
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateFiatFiatGetPlaidTokenRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - on_behalf_of_account_uuid
+        - params
+      description: Request body for private/fiat/fiat-get-plaid-token. Used by FCM/DCM brokers to obtain a Plaid link token for their users.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/fiat/fiat-get-plaid-token"
+          example: private/fiat/fiat-get-plaid-token
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1773372503821".
+        on_behalf_of_account_uuid:
+          type: string
+          description: The account UUID of the user on whose behalf the broker is making the request
+        params:
+          type: object
+          properties:
+            redirect_uri:
+              type: string
+              format: uri
+              description: |
+                Plaid Link redirect URI. Required for iOS. Must match a URI pre-registered
+                with CDC during broker onboarding.
+              example: https://partner.example.com/plaid/callback
+            android_package_name:
+              type: string
+              description: |
+                Android package name used by Plaid Link for deep-link return.
+                Required for Android.
+              example: com.example.partnerapp
+            bank_account_id:
+              type: string
+              format: uuid
+              description: |
+                Optional. When provided, puts Plaid Link into update (relink) mode for the
+                specified bank account. Use when the account has status: expired. Omit for
+                the initial linking flow.
+              example: bank-acct-uuid-001
+    PrivateFiatFiatGetPlaidTokenResponse:
+      type: object
+      description: |
+        Response for private/fiat/fiat-get-plaid-token (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. Contains Plaid link token information.
+          required:
+            - link_token
+            - expiration
+            - request_id
+          properties:
+            link_token:
+              type: string
+              description: Plaid link token for initiating Plaid Link flow (single-use)
+            expiration:
+              type: string
+              description: Token expiration timestamp in ISO 8601 format
+            request_id:
+              type: string
+              description: Request identifier for tracking
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.

@@ -300,26 +300,26 @@ class RecordApiProvider(ApiProvider):
         self.capture = capture
         self.cache_file = cache_file
         self.divide_delay = divide_delay
-
-        # TODO: implement auto-replacement
         self.fake_account_id = fake_account_id
 
+        # Set records based on capture mode
         if self.capture:
+            # Capture mode: read keys from env but don't validate in parent
+            os.environ.setdefault("CRYPTOCOM_API_KEY", "")
+            os.environ.setdefault("CRYPTOCOM_API_SECRET", "")
             self.cache_file.parent.mkdir(exist_ok=True, parents=True)
             if self.cache_file.exists():
                 self.cache_file.unlink()
             self.records = {}
-
-        if self.cache_file.exists():
-            self.records = json.loads(self.cache_file.read_text())
+            # Call parent with empty keys - they won't be validated since auth_required=False for public calls
+            super().__init__(api_key="", api_secret="", auth_required=False)
         else:
+            # Replay mode: use dummy keys
             self.records = {}
-
-        kwargs = {"from_env": capture}
-        if not self.capture:
-            kwargs["api_key"] = "dummy"
-            kwargs["api_secret"] = "dummy"
-        super().__init__(**kwargs)
+            if self.cache_file.exists():
+                self.records = json.loads(self.cache_file.read_text())
+            # Pass dummy keys
+            super().__init__(api_key="dummy", api_secret="dummy", auth_required=False)
 
     async def request(self, method, path, params=None, data=None, sign=False):
         key = f"{method}_{path}"

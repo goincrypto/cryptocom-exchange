@@ -1,0 +1,243 @@
+openapi: 3.0.3
+info:
+  title: public/get-instruments
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /public/get-instruments:
+    get:
+      tags:
+        - Reference and Market Data
+      x-parent-guide: prediction-reference-data
+      x-apply-to:
+        - rest
+      summary: public/get-instruments
+      description: Provides information on all supported instruments (e.g. BTCUSD-PERP).
+      operationId: publicGetInstruments
+      x-codeSamples:
+        - lang: cURL
+          label: cURL
+          source: |
+            curl -X GET "https://api.crypto.com/exchange/v1/public/get-instruments" \
+              -H "Content-Type: application/json"
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({ enableRateLimit: true });
+            const res = await exchange.v1PublicGetPublicGetInstruments();
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({'enableRateLimit': True})
+            res = exchange.v1_public_get_public_get_instruments()
+            print(res)
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInstrumentsResponse"
+              example:
+                id: "1"
+                method: public/get-instruments
+                code: "0"
+                result:
+                  data:
+                    - symbol: BTCUSD-PERP
+                      inst_type: PERPETUAL_SWAP
+                      display_name: BTCUSD Perpetual
+                      base_ccy: BTC
+                      quote_ccy: USD
+                      quote_decimals: "2"
+                      quantity_decimals: "4"
+                      price_tick_size: "0.5"
+                      qty_tick_size: "0.0001"
+                      max_leverage: "50"
+                      tradable: true
+                      expiry_timestamp_ms: "1624012801123"
+                      underlying_symbol: BTCUSD-INDEX
+                      product_type: DIGITAL_CURRENCIES
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInstrumentsResponse"
+              example:
+                id: "1"
+                method: public/get-instruments
+                code: "40001"
+                message: BAD_REQUEST
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInstrumentsResponse"
+              example:
+                id: "1"
+                method: public/get-instruments
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInstrumentsResponse"
+              example:
+                id: "1"
+                method: public/get-instruments
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInstrumentsResponse"
+              example:
+                id: "1"
+                method: public/get-instruments
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PublicGetInstrumentsResponse:
+      type: object
+      description: |
+        Response for public/get-instruments (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. Instruments (data array).
+          properties:
+            data:
+              type: array
+              description: List of instruments.
+              items:
+                $ref: "#/components/schemas/InstrumentItem"
+            next_cursor:
+              type: string
+              x-business-units:
+                - fcm
+                - dcm
+              description: Cursor for pagination. Use this value in the cursor parameter of the next request.
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    InstrumentItem:
+      type: object
+      description: Instrument information. Shared by REST public/get-instruments and WS instrument channel.
+      properties:
+        symbol:
+          type: string
+          description: Instrument name, e.g. BTCUSD-PERP
+        inst_type:
+          type: string
+          description: Instrument type, e.g. PERPETUAL_SWAP
+        display_name:
+          type: string
+          description: Display name, e.g. BTCUSD Perpetual
+        base_ccy:
+          type: string
+          description: Base currency, e.g. BTC
+        quote_ccy:
+          type: string
+          description: Quote currency, e.g. USD
+        quote_decimals:
+          type: string
+          format: int32
+          description: Minimum decimal place for price field
+        quantity_decimals:
+          type: string
+          format: int32
+          description: Minimum decimal place for qty field
+        price_tick_size:
+          type: string
+          format: decimal
+          description: Minimum price tick size
+        qty_tick_size:
+          type: string
+          format: decimal
+          description: Minimum trading quantity / tick size
+        max_leverage:
+          type: string
+          format: decimal
+          description: Max leverage of the product
+        tradable:
+          type: boolean
+          description: True or false
+        expiry_timestamp_ms:
+          type: string
+          format: int64
+          description: Expiry timestamp in milliseconds
+        beta_product:
+          type: boolean
+          x-business-units:
+            - fcm
+            - dcm
+          description: Whether this is a beta product.
+        underlying_symbol:
+          type: string
+          description: Underlying symbol
+        product_type:
+          type: string
+          description: "Product type of the instrument. Possible values: COMMODITIES, EQUITY_IND, CURRENCIES, DIGITAL_CURRENCIES, EVENTS, EQUITY, PRE_IPO. Only returned if applicable."
+        contract_size:
+          type: string
+          format: decimal
+          x-business-units:
+            - fcm
+            - dcm
+          description: Contract size for the instrument.
+        margin_buy_enabled:
+          type: boolean
+          x-business-units:
+            - fcm
+            - dcm
+          description: Whether margin buying is enabled for this instrument.
+        margin_sell_enabled:
+          type: boolean
+          x-business-units:
+            - fcm
+            - dcm
+          description: Whether margin selling is enabled for this instrument.
+        event_details:
+          type: object
+          x-business-units:
+            - fcm
+            - dcm
+          description: Event details for prediction market instruments. Structure is flexible and defined by external systems.
+          additionalProperties: true
+        last_updated_time:
+          type: integer
+          format: int64
+          x-business-units:
+            - fcm
+            - dcm
+          description: Unix timestamp in nanoseconds when the instrument was last updated.

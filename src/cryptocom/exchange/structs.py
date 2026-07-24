@@ -31,11 +31,36 @@ class Instrument:
         return list(Instrument._registry.values()) if Instrument._registry else []
 
 
+class InstrumentType(str, Enum):
+    """Type of trading instrument.
+
+    Clean names that also work as the actual API values.
+    Access SPOT.value to get the API string if needed.
+    """
+
+    SPOT = "CCY_PAIR"  # Spot trading pairs
+    PERPETUAL = "DERIVATIVES"  # Perpetual futures
+    FUTURES = "FUTURES"  # Expiring futures contracts
+
+
 @dataclass(frozen=True)
 class Pair:
+    """Trading pair with precision and order limits."""
+
     exchange_name: str
     price_precision: int
     quantity_precision: int
+    # Additional instrument metadata from public/get-instruments
+    inst_type: InstrumentType  # Required - will raise if API returns unknown type
+    display_name: str | None = None
+    base_currency: Instrument | None = None
+    quote_currency: Instrument | None = None
+    quantity_tick_size: float | None = None  # Min quantity increment
+    price_tick_size: float | None = None  # Min price increment
+    min_order_quantity: float | None = None  # Min order quantity
+    max_order_quantity: float | None = None  # Max order quantity
+    maker_fee_rate: float | None = None  # Maker fee rate
+    taker_fee_rate: float | None = None  # Taker fee rate
     min_order_notional_usd: float = 1.0
     max_order_notional_usd: float = 1000000.0
     _registry: ClassVar[dict[str, "Pair"] | None] = field(default=None, init=False)
@@ -57,6 +82,56 @@ class Pair:
     @classmethod
     def all(cls) -> list["Pair"]:
         return list(Pair._registry.values()) if Pair._registry else []
+
+    @classmethod
+    def from_api(cls, data: dict[str, Any], filter_derivatives: bool = True) -> "Pair":
+        """Create Pair from API instrument data.
+
+        Args:
+            data: Instrument data from public/get-instruments
+            filter_derivatives: If True, skip derivative instruments (skip if symbol contains '-' or '@')
+
+        Returns:
+            Pair with full instrument metadata
+
+        Raises:
+            ValueError: If symbol contains '-' or '@' when filter_derivatives=True
+        """
+        symbol = data.get("symbol", "")
+
+        # Skip derivatives if filtering
+        if filter_derivatives and ("-" in symbol or "@" in symbol):
+            raise ValueError(f"Skipping derivative symbol: {symbol}")
+
+        # Parse instrument type - will raise error if unknown
+        inst_type_str = data.get("inst_type", "")
+        inst_type = InstrumentType(inst_type_str)
+
+        return cls(
+            exchange_name=symbol,
+            price_precision=data.get("quote_decimals", 8),
+            quantity_precision=data.get("quantity_decimals", 8),
+            min_order_notional_usd=float(data.get("min_order_qty", 1.0)) * 100
+            if data.get("min_order_qty")
+            else 1.0,
+            max_order_notional_usd=float(data.get("max_order_qty", 1000000.0)) * 100
+            if data.get("max_order_qty")
+            else 1000000.0,
+            inst_type=inst_type,
+            display_name=data.get("display_name", symbol),
+            base_currency=Instrument(data["base_ccy"])
+            if data.get("base_ccy")
+            else None,
+            quote_currency=Instrument(data["quote_ccy"])
+            if data.get("quote_ccy")
+            else None,
+            quantity_tick_size=float(data.get("qty_tick_size", 0)),
+            price_tick_size=float(data.get("price_tick_size", 0)),
+            min_order_quantity=float(data.get("min_order_qty", 0)),
+            max_order_quantity=float(data.get("max_order_qty", 0)),
+            maker_fee_rate=float(data.get("maker_fee_rate", 0)),
+            taker_fee_rate=float(data.get("taker_fee_rate", 0)),
+        )
 
     @cached_property
     def base_instrument(self) -> Instrument:
@@ -225,28 +300,48 @@ class RiskParameters:
 
 @dataclass
 class MarketTicker:
+    """Market ticker with 24h statistics and optional derivatives data."""
+
     pair: Pair
-    buy_price: float | None
-    sell_price: float | None
-    trade_price: float
-    time: int
-    volume: float
-    high: float
-    low: float
-    change: float
+    buy_price: float | None  # Best bid price
+    sell_price: float | None  # Best ask price
+    trade_price: float  # Latest trade price
+    time: int  # Timestamp (seconds)
+    volume: float  # 24h traded volume (quantity)
+    high: float  # 24h highest trade price
+    low: float  # 24h lowest trade price
+    change: float  # 24h price change
+    volume_usd: float | None = None  # 24h volume value in USD
+    open_interest: float | None = None  # Open interest (derivatives only)
 
     @classmethod
     def from_api(cls, pair, data):
+        """Parse ticker from API response.
+
+        API fields:
+        - a: latest trade price
+        - b: best bid price
+        - k: best ask price
+        - c: 24h change
+        - h: 24h high
+        - l: 24h low
+        - t: timestamp (ms)
+        - v: 24h volume
+        - vv: 24h volume value in USD
+        - oi: open interest (derivatives)
+        """
         return cls(
             pair=pair,
-            buy_price=float(data["b"]) if data["b"] else None,
-            sell_price=float(data["k"]) if data["k"] else None,
-            trade_price=float(data["a"]) if data["a"] else None,
-            time=int(data["t"] / 1000),
-            volume=float(data["v"]),
-            high=float(data["h"]),
-            low=float(data["l"]),
-            change=float(data["c"]),
+            buy_price=float(data["b"]) if data.get("b") else None,
+            sell_price=float(data["k"]) if data.get("k") else None,
+            trade_price=float(data["a"]) if data.get("a") else None,
+            time=int(float(data["t"]) / 1000) if data.get("t") else 0,
+            volume=float(data.get("v", 0)),
+            high=float(data.get("h", 0)),
+            low=float(data.get("l", 0)),
+            change=float(data.get("c", 0)),
+            volume_usd=float(data["vv"]) if data.get("vv") else None,
+            open_interest=float(data["oi"]) if data.get("oi") else None,
         )
 
 
@@ -257,23 +352,45 @@ class OrderSide(str, Enum):
 
 @dataclass
 class MarketTrade:
+    """Public market trade with optional nanosecond precision and match ID."""
+
     id: str
-    time: int
+    time: int  # Timestamp (seconds)
     price: float
     quantity: float
     side: OrderSide
     pair: Pair
+    timestamp_ns: int | None = None  # Nanosecond timestamp (REST only)
+    instrument_name: str | None = None  # Original instrument name
+    match_id: str | None = None  # Trade match ID for WebSocket sync
 
     @classmethod
     def from_api(cls, pair: Pair, data: dict[str, Any]):
-        time_ns = data.get("tn") or data.get("t") * 1e6
+        """Parse trade from API response.
+
+        API fields:
+        - d: trade ID
+        - t: timestamp (ms)
+        - tn: timestamp (ns) - REST only
+        - p: price
+        - q: quantity
+        - s: side (BUY/SELL)
+        - i: instrument name
+        - m: match ID
+        """
+        time_ms = float(data.get("t", 0))
+        time_ns = float(data.get("tn", 0)) or (time_ms * 1_000_000 if time_ms else 0)
+
         return cls(
             id=data["d"],
-            time=time_ns / 1e9,
+            time=int(time_ns / 1_000_000_000) if time_ns else int(time_ms / 1000),
+            timestamp_ns=int(time_ns) if time_ns else None,
             price=float(data["p"]),
             quantity=float(data["q"]),
             side=OrderSide(data["s"].upper()),
             pair=pair,
+            instrument_name=data.get("i"),
+            match_id=data.get("m"),
         )
 
 
@@ -294,29 +411,48 @@ class Timeframe(str, Enum):
 
 @dataclass(frozen=True)
 class Candle:
-    time: int
+    """Candlestick with OHLCV data."""
+
+    time: int  # Timestamp (seconds)
     open: float
     high: float
     low: float
     close: float
-    quantity: float
+    quantity: float  # Volume
     pair: Pair = None
+    interval: str | None = None  # Optional timeframe (M1, M5, H1, etc.)
 
     @classmethod
     def from_api(cls, data: dict[str, Any], pair: Pair | None = None):
+        """Parse candle from API response.
+
+        API fields:
+        - t: timestamp (ms)
+        - o: open
+        - h: high
+        - l: low
+        - c: close
+        - v: volume
+        """
         return cls(
-            time=int(data["t"] / 1000),
+            time=int(float(data["t"]) / 1000) if data.get("t") else 0,
             open=float(data["o"]),
             high=float(data["h"]),
             low=float(data["l"]),
             close=float(data["c"]),
             quantity=float(data["v"]),
             pair=pair,
+            interval=data.get("interval"),
         )
 
 
 @dataclass
 class OrderInBook:
+    """Order book level.
+
+    Note: count field often returns 0 due to API limitation.
+    """
+
     price: float
     quantity: float
     count: int
@@ -329,9 +465,16 @@ class OrderInBook:
 
     @classmethod
     def from_api(cls, order, pair, side):
-        order[0] = float(order[0])
-        order[1] = float(order[1])
-        return cls(*order, pair, side)
+        """Parse orderbook level from API response.
+
+        Format: [price, quantity, count(optional)]
+        Known issue: count often returns 0.
+        """
+        price = float(order[0])
+        quantity = float(order[1])
+        # Handle variable-length arrays - count may be missing or unreliable
+        count = int(order[2]) if len(order) > 2 else 0
+        return cls(price, quantity, count, pair, side)
 
 
 @dataclass

@@ -1,0 +1,263 @@
+openapi: 3.0.3
+info:
+  title: private/get-positions
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/get-positions:
+    post:
+      tags:
+        - Account Balance and Positions
+      x-apply-to:
+        - rest
+      summary: private/get-positions
+      description: |
+        Returns the user's position.
+      operationId: privateGetPositions
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateGetPositions({});
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_get_positions({})
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateGetPositionsRequest"
+            example:
+              id: "1"
+              method: private/get-positions
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              params: {}
+              nonce: "1611022832613"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetPositionsResponse"
+              example:
+                id: "1"
+                method: private/get-positions
+                code: "0"
+                result:
+                  data:
+                    - account_id: 858dbc8b-22fd-49fa-bff4-d342d98a8acb
+                      quantity: "-0.1984"
+                      cost: "-10159.573500"
+                      open_position_pnl: "-497.743736"
+                      open_pos_cost: "-10159.352200"
+                      session_pnl: "2.236145"
+                      update_timestamp_ms: "1613552240770"
+                      instrument_name: BTCUSD-PERP
+                      type: PERPETUAL_SWAP
+                    - account_id: 858dbc8b-22fd-49fa-bff4-d342d98a8acb
+                      quantity: "-0.1984"
+                      cost: "-10159.573500"
+                      open_position_pnl: "-497.743736"
+                      open_pos_cost: "-10159.352200"
+                      session_pnl: "2.236145"
+                      update_timestamp_ms: "1613552240771"
+                      instrument_name: BTCUSD-PERP
+                      type: PERPETUAL_SWAP
+                      isolation_id: "19848526"
+                      isolation_type: ISOLATED_MARGIN
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetPositionsResponse"
+              example:
+                id: "1"
+                method: private/get-positions
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetPositionsResponse"
+              example:
+                id: "1"
+                method: private/get-positions
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetPositionsResponse"
+              example:
+                id: "1"
+                method: private/get-positions
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetPositionsResponse"
+              example:
+                id: "1"
+                method: private/get-positions
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetPositionsResponse"
+              example:
+                id: "1"
+                method: private/get-positions
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateGetPositionsRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/get-positions.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/get-positions"
+          example: private/get-positions
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            instrument_name:
+              type: string
+              example: BTCUSD-PERP
+              description: E.g. BTCUSD-PERP. Omit for 'all'.
+    PrivateGetPositionsResponse:
+      type: object
+      description: |
+        Response for private/get-positions (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. result.data[] per docs (account_id, quantity, cost, open_position_pnl, etc.).
+          properties:
+            data:
+              type: array
+              description: List of positions.
+              items:
+                $ref: "#/components/schemas/UserPositionItem"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    UserPositionItem:
+      description: Position item for REST private/get-positions result.data[]. Same as UserPositionItemBase.
+      $ref: "#/components/schemas/UserPositionItemBase"
+    UserPositionItemBase:
+      type: object
+      description: |
+        Common position fields shared by REST private/get-positions result.data[] and WS user.positions result.data[].
+      properties:
+        account_id:
+          type: string
+          description: Account ID.
+        instrument_name:
+          type: string
+          description: E.g. BTCUSD-PERP.
+        type:
+          type: string
+          description: E.g. PERPETUAL_SWAP.
+        quantity:
+          type: string
+          format: decimal
+          description: Position quantity.
+        cost:
+          type: string
+          description: Position cost or value in USD.
+        open_position_pnl:
+          type: string
+          description: Profit and loss for the open position.
+        open_pos_cost:
+          type: string
+          description: Open position cost.
+        session_pnl:
+          type: string
+          description: Profit and loss in the current trading session.
+        update_timestamp_ms:
+          type: string
+          format: int64
+          description: Updated time (Unix timestamp).
+        isolation_id:
+          type: string
+          description: Isolation ID of the isolated position.
+        isolation_type:
+          $ref: "#/components/schemas/IsolationType"
+    IsolationType:
+      type: string
+      enum:
+        - ISOLATED_MARGIN
+      description: Isolation type

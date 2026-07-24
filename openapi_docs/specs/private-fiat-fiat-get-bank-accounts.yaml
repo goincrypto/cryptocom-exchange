@@ -1,0 +1,364 @@
+openapi: 3.0.3
+info:
+  title: private/fiat/fiat-get-bank-accounts
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/fiat/fiat-get-bank-accounts:
+    post:
+      tags:
+        - Fiat Wallet
+      x-apply-to:
+        - rest
+      summary: private/fiat/fiat-get-bank-accounts
+      description: Retrieves user's bank accounts with optional payment network filtering.
+      operationId: privateFiatFiatGetBankAccounts
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateFiatFiatGetBankAccounts({
+              payment_networks: 'usd_cubix',
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_fiat_fiat_get_bank_accounts({
+                'payment_networks': 'usd_cubix',
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateFiatFiatGetBankAccountsRequest"
+            example:
+              id: "123456"
+              method: private/fiat/fiat-get-bank-accounts
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1640995200000"
+              params:
+                payment_networks: usd_cubix
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetBankAccountsResponse"
+              examples:
+                Example - usd_cubix:
+                  value:
+                    id: "123456"
+                    method: private/fiat/fiat-get-bank-accounts
+                    code: "0"
+                    msg: success
+                    result:
+                      bank_accounts_list:
+                        - ok: null
+                          code: null
+                          message: null
+                          id: 4c662477-a16d-4c99-a27b-a492b592ed62
+                          account_id: adb80cff-f420-469c-b439-4d90272bf1a1
+                          user_uuid: f0857b97-0d47-5897-8b1f-e358725cf49c
+                          status: completed
+                          bank_name: Customers Bank
+                          bank_city: ""
+                          bank_country: US
+                          bank_identifier_type: cubix_account_number_last_4_digits
+                          bank_identifier_value: "****2565"
+                          bank_account_holder_name: null
+                          account_identifier_type: cubix_account_id
+                          account_identifier_value: "****cc63"
+                          account_holder_name: Smoke Test Co
+                          account_type: null
+                          currency: USD
+                          verified_by: Cubix
+                          reason: reason
+                          supported_payment_networks:
+                            - usd_cubix
+                          withdrawal_payment_networks: null
+                          payment_network_identifier_value: dbbb3eda-960f-4406-ae3c-b250010e7bef
+                          bank_details:
+                            institutional_street_address: null
+                            bank_street_address: null
+                            account_holder_address: null
+                            bank_account_address: null
+                            intermediate_bank: null
+                            intermediate_bank_options: null
+                          created_at: "1751126400000"
+                          updated_at: "1751126400000"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetBankAccountsResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-bank-accounts
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetBankAccountsResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-bank-accounts
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetBankAccountsResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-bank-accounts
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetBankAccountsResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-bank-accounts
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatGetBankAccountsResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-get-bank-accounts
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateFiatFiatGetBankAccountsRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/fiat/fiat-get-bank-accounts.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/fiat/fiat-get-bank-accounts"
+          example: private/fiat/fiat-get-bank-accounts
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            payment_networks:
+              type: string
+              description: Comma-separated list of payment networks to filter by
+    PrivateFiatFiatGetBankAccountsResponse:
+      type: object
+      description: |
+        Response for private/fiat/fiat-get-bank-accounts (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. bank_accounts_list per docs.
+          required:
+            - bank_accounts_list
+          properties:
+            bank_accounts_list:
+              type: array
+              description: List of user's bank accounts
+              items:
+                type: object
+                required:
+                  - id
+                  - status
+                  - bank_name
+                  - account_holder_name
+                  - currency
+                  - supported_payment_networks
+                  - created_at
+                  - updated_at
+                properties:
+                  ok:
+                    type: string
+                    description: Status indicator (null in most cases)
+                  code:
+                    type: string
+                    description: Response code (null in most cases)
+                  message:
+                    type: string
+                    description: Response message (null in most cases)
+                  id:
+                    type: string
+                    description: Unique bank account ID (use this for withdrawals)
+                  account_id:
+                    type: string
+                    description: Account ID (cannot be used for withdrawal)
+                  user_uuid:
+                    type: string
+                    description: User UUID
+                  status:
+                    type: string
+                    description: Bank account status. When `expired`, the bank account token has expired and the user must relink via the Plaid relink flow before withdrawals can resume.
+                    enum:
+                      - pending
+                      - submitted
+                      - pending_authorize
+                      - authenticated
+                      - transaction_enabled
+                      - pending_proof
+                      - proof_submitted
+                      - approved
+                      - rejected
+                      - escalated
+                      - completed
+                      - deleted
+                      - expired
+                  bank_name:
+                    type: string
+                    description: Bank name
+                  bank_city:
+                    type: string
+                    description: Bank city
+                  bank_country:
+                    type: string
+                    description: Bank country code
+                  bank_identifier_type:
+                    type: string
+                    description: Type of bank identifier (e.g., cubix_account_number_last_4_digits, bic_swift)
+                  bank_identifier_value:
+                    type: string
+                    description: Masked bank identifier value
+                  bank_account_holder_name:
+                    type: string
+                    description: Bank account holder name
+                  account_identifier_type:
+                    type: string
+                    description: Type of account identifier (e.g., cubix_account_id, iban)
+                  account_identifier_value:
+                    type: string
+                    description: Masked account identifier value
+                  account_holder_name:
+                    type: string
+                    description: Account holder name
+                  account_type:
+                    type: string
+                    description: Account type (null in most cases)
+                  currency:
+                    type: string
+                    description: Currency code (e.g., USD)
+                  verified_by:
+                    type: string
+                    description: Verification method (e.g., Cubix, Deposit)
+                  reason:
+                    type: string
+                    description: Reason or additional information
+                  supported_payment_networks:
+                    type: array
+                    items:
+                      type: string
+                    description: Array of supported payment network identifiers
+                  withdrawal_payment_networks:
+                    type: array
+                    items:
+                      type: string
+                    description: Array of withdrawal payment networks (null if not applicable)
+                  payment_network_identifier_value:
+                    type: string
+                    description: Payment network identifier value
+                  bank_details:
+                    type: object
+                    description: Bank details object
+                    properties:
+                      institutional_street_address:
+                        type: string
+                        description: Institutional street address
+                      bank_street_address:
+                        type: string
+                        description: Bank street address
+                      account_holder_address:
+                        type: string
+                        description: Account holder address
+                      bank_account_address:
+                        type: object
+                        description: Bank account address object
+                      intermediate_bank:
+                        type: object
+                        description: Intermediate bank information
+                      intermediate_bank_options:
+                        type: array
+                        description: Array of intermediate bank options
+                  created_at:
+                    type: string
+                    format: int64
+                    description: Account creation timestamp (ms).
+                  updated_at:
+                    type: string
+                    format: int64
+                    description: Account last update timestamp (ms).
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.

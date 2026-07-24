@@ -1,0 +1,322 @@
+openapi: 3.0.3
+info:
+  title: private/otc/get-deal-history (RFQ)
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/otc/get-deal-history:
+    post:
+      tags:
+        - OTC RFQ for Taker
+      x-apply-to:
+        - rest
+      summary: private/otc/get-deal-history (RFQ)
+      description: Get closed deals for given user.
+      operationId: privateOtcGetDealHistory_RFQ
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          x-discriminator-value: RFQ
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateOtcGetDealHistory({
+              deal_type: 'QUOTE_REQUEST',
+              start_time: 1696154400000,
+              end_time: 1697364000000,
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          x-discriminator-value: RFQ
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_otc_get_deal_history({
+                'deal_type': 'QUOTE_REQUEST',
+                'start_time': 1696154400000,
+                'end_time': 1697364000000,
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateOtcGetDealHistoryRequest"
+            example:
+              id: "12"
+              method: private/otc/get-deal-history
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1610905028000"
+              params:
+                deal_type: QUOTE_REQUEST
+                start_time: 1696154400000
+                end_time: 1697364000000
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetDealHistoryResponse"
+              example:
+                id: 12
+                method: private/otc/get-deal-history
+                code: 0
+                result:
+                  deal_list:
+                    - deal_id: "111222333444555777"
+                      quote_id: "98764"
+                      cl_deal_id: external_deal_id_123
+                      deal_type: QUOTE_REQUEST
+                      deal_status: SETTLED
+                      settlement_arrangement: IMMEDIATE
+                      create_time_ns: "1696152390000000000"
+                      update_time_ns: "1696152400000000000"
+                      quote_req_id: "77665544"
+                      leg_list:
+                        - instrument_name: BTC_USD
+                          quantity: "0.1"
+                          executed_quantity: "0.1"
+                          executed_notional: "2600.05"
+                          price: "26000.5"
+                          side: BUY
+                          type: PRICE
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetDealHistoryResponse"
+              example:
+                id: "12"
+                method: private/otc/get-deal-history
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetDealHistoryResponse"
+              example:
+                id: "12"
+                method: private/otc/get-deal-history
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetDealHistoryResponse"
+              example:
+                id: "12"
+                method: private/otc/get-deal-history
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetDealHistoryResponse"
+              example:
+                id: "12"
+                method: private/otc/get-deal-history
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetDealHistoryResponse"
+              example:
+                id: "12"
+                method: private/otc/get-deal-history
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateOtcGetDealHistoryRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/otc/get-deal-history. Get closed deals (RFQ flow).
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/otc/get-deal-history"
+          example: private/otc/get-deal-history
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          required:
+            - deal_type
+          properties:
+            deal_type:
+              type: string
+              enum:
+                - QUOTE_REQUEST
+              description: QUOTE_REQUEST
+            deal_id:
+              type: string
+              description: System generated unique ID for the Deal
+            start_time:
+              type: string
+              format: int64
+              description: "Start time in Unix time format (inclusive). Default: end_time - 1 day. Nanosecond recommended for accurate pagination."
+            end_time:
+              type: string
+              format: int64
+              description: "End time in Unix time format (exclusive). Default: current system timestamp. Nanosecond recommended for accurate pagination."
+    PrivateOtcGetDealHistoryResponse:
+      type: object
+      description: |
+        Response for private/otc/get-deal-history (HTTP 200/4xx/5xx).
+        code === 0 → success, result present with deal_list.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0.
+          properties:
+            deal_list:
+              type: array
+              description: List of closed deals.
+              items:
+                type: object
+                properties:
+                  deal_id:
+                    type: string
+                    description: System generated unique ID for the Deal
+                  quote_id:
+                    type: string
+                    description: System generated unique ID for the Quote
+                  cl_deal_id:
+                    type: string
+                    description: Client provided ID for the deal
+                  deal_type:
+                    type: string
+                    enum:
+                      - QUOTE_REQUEST
+                    description: QUOTE_REQUEST
+                  deal_status:
+                    type: string
+                    enum:
+                      - ACCEPTED
+                      - CONFIRMED
+                      - SETTLED
+                      - REJECTED
+                    description: ACCEPTED = system received deal; CONFIRMED = liquidity provider has executed deal; SETTLED = deal settled and funds transferred; REJECTED = deal rejected
+                  settlement_arrangement:
+                    type: string
+                    enum:
+                      - IMMEDIATE
+                      - T1
+                    description: Settlement arrangement of the Deal
+                  create_time_ns:
+                    type: string
+                    description: Create time of the Deal (in nanoseconds)
+                  update_time_ns:
+                    type: string
+                    description: Last updated time of the Deal (in nanoseconds)
+                  settle_time_ns:
+                    type: string
+                    description: Scheduled time the deal is to be settled at (in nanoseconds). Early settled deal reflected on update_time_ns. 0 or not present for IMMEDIATE deal.
+                  quote_req_id:
+                    type: string
+                    description: System generated unique ID for the quote request
+                  leg_list:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PrivateOtcGetOpenDealsDealListLegItem"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    PrivateOtcGetOpenDealsDealListLegItem:
+      type: object
+      description: One leg in a deal (get-open-deals result). Either quantity or notional; executed_quantity/executed_notional when applicable.
+      properties:
+        instrument_name:
+          type: string
+          description: Instrument of the Deal (e.g., BTC_USD)
+        quantity:
+          type: string
+          format: decimal
+          description: Either quantity or notional of the Deal
+        notional:
+          type: string
+          format: decimal
+          description: Either quantity or notional of the Deal
+        executed_quantity:
+          type: string
+          format: decimal
+          description: Executed qty of the Deal
+        executed_notional:
+          type: string
+          format: decimal
+          description: Executed notional of the Deal
+        price:
+          type: string
+          format: decimal
+          description: Price of the Deal
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+          description: The side of the deal
+        type:
+          type: string
+          enum:
+            - PRICE
+          description: e.g. PRICE

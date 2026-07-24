@@ -1,0 +1,4135 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "private-advanced-amend-order",
+      "method": "POST",
+      "path": "/private/advanced/amend-order",
+      "summary": "private/advanced/amend-order",
+      "operation_id": "privateAdvancedAmendOrder",
+      "request_ref": "#/components/schemas/PrivateAdvancedAmendOrderRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedAmendOrderResponse"
+    },
+    {
+      "endpoint": "private-advanced-cancel-all-orders",
+      "method": "POST",
+      "path": "/private/advanced/cancel-all-orders",
+      "summary": "private/advanced/cancel-all-orders",
+      "operation_id": "privateAdvancedCancelAllOrders",
+      "request_ref": "#/components/schemas/PrivateAdvancedCancelAllOrdersRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCancelAllOrdersResponse"
+    },
+    {
+      "endpoint": "private-advanced-cancel-oco",
+      "method": "POST",
+      "path": "/private/advanced/cancel-oco",
+      "summary": "private/advanced/cancel-oco",
+      "operation_id": "privateAdvancedCancelOco",
+      "request_ref": "#/components/schemas/PrivateAdvancedCancelOcoRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCancelOcoResponse"
+    },
+    {
+      "endpoint": "private-advanced-cancel-order",
+      "method": "POST",
+      "path": "/private/advanced/cancel-order",
+      "summary": "private/advanced/cancel-order",
+      "operation_id": "privateAdvancedCancelOrder",
+      "request_ref": "#/components/schemas/PrivateAdvancedCancelOrderRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCancelOrderResponse"
+    },
+    {
+      "endpoint": "private-advanced-cancel-order-list",
+      "method": "POST",
+      "path": "/private/advanced/cancel-order-list",
+      "summary": "private/advanced/cancel-order-list",
+      "operation_id": "privateAdvancedCancelOrderList",
+      "request_ref": "#/components/schemas/PrivateAdvancedCancelOrderListRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCancelOrderListResponse"
+    },
+    {
+      "endpoint": "private-advanced-cancel-oto",
+      "method": "POST",
+      "path": "/private/advanced/cancel-oto",
+      "summary": "private/advanced/cancel-oto",
+      "operation_id": "privateAdvancedCancelOto",
+      "request_ref": "#/components/schemas/PrivateAdvancedCancelOtoRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCancelOtoResponse"
+    },
+    {
+      "endpoint": "private-advanced-cancel-otoco",
+      "method": "POST",
+      "path": "/private/advanced/cancel-otoco",
+      "summary": "private/advanced/cancel-otoco",
+      "operation_id": "privateAdvancedCancelOtoco",
+      "request_ref": "#/components/schemas/PrivateAdvancedCancelOtocoRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCancelOtocoResponse"
+    },
+    {
+      "endpoint": "private-advanced-create-oco",
+      "method": "POST",
+      "path": "/private/advanced/create-oco",
+      "summary": "private/advanced/create-oco",
+      "operation_id": "privateAdvancedCreateOco",
+      "request_ref": "#/components/schemas/PrivateAdvancedCreateOcoRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCreateOcoResponse"
+    },
+    {
+      "endpoint": "private-advanced-create-order",
+      "method": "POST",
+      "path": "/private/advanced/create-order",
+      "summary": "private/advanced/create-order",
+      "operation_id": "privateAdvancedCreateOrder",
+      "request_ref": "#/components/schemas/PrivateAdvancedCreateOrderRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCreateOrderResponse"
+    },
+    {
+      "endpoint": "private-advanced-create-order-list",
+      "method": "POST",
+      "path": "/private/advanced/create-order-list",
+      "summary": "private/advanced/create-order-list",
+      "operation_id": "privateAdvancedCreateOrderList",
+      "request_ref": "#/components/schemas/PrivateAdvancedCreateOrderListRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCreateOrderListResponse"
+    },
+    {
+      "endpoint": "private-advanced-create-oto",
+      "method": "POST",
+      "path": "/private/advanced/create-oto",
+      "summary": "private/advanced/create-oto",
+      "operation_id": "privateAdvancedCreateOto",
+      "request_ref": "#/components/schemas/PrivateAdvancedCreateOtoRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCreateOtoResponse"
+    },
+    {
+      "endpoint": "private-advanced-create-otoco",
+      "method": "POST",
+      "path": "/private/advanced/create-otoco",
+      "summary": "private/advanced/create-otoco",
+      "operation_id": "privateAdvancedCreateOtoco",
+      "request_ref": "#/components/schemas/PrivateAdvancedCreateOtocoRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedCreateOtocoResponse"
+    },
+    {
+      "endpoint": "private-advanced-get-open-orders",
+      "method": "POST",
+      "path": "/private/advanced/get-open-orders",
+      "summary": "private/advanced/get-open-orders",
+      "operation_id": "privateAdvancedGetOpenOrders",
+      "request_ref": "#/components/schemas/PrivateAdvancedGetOpenOrdersRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedGetOpenOrdersResponse"
+    },
+    {
+      "endpoint": "private-advanced-get-order-detail",
+      "method": "POST",
+      "path": "/private/advanced/get-order-detail",
+      "summary": "private/advanced/get-order-detail",
+      "operation_id": "privateAdvancedGetOrderDetail",
+      "request_ref": "#/components/schemas/PrivateAdvancedGetOrderDetailRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedGetOrderDetailResponse"
+    },
+    {
+      "endpoint": "private-advanced-get-order-history",
+      "method": "POST",
+      "path": "/private/advanced/get-order-history",
+      "summary": "private/advanced/get-order-history",
+      "operation_id": "privateAdvancedGetOrderHistory",
+      "request_ref": "#/components/schemas/PrivateAdvancedGetOrderHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedGetOrderHistoryResponse"
+    },
+    {
+      "endpoint": "private-advanced-get-order-list-detail",
+      "method": "POST",
+      "path": "/private/advanced/get-order-list-detail",
+      "summary": "private/advanced/get-order-list-detail",
+      "operation_id": "privateAdvancedGetOrderListDetail",
+      "request_ref": "#/components/schemas/PrivateAdvancedGetOrderListDetailRequest",
+      "response_ref": "#/components/schemas/PrivateAdvancedGetOrderListDetailResponse"
+    },
+    {
+      "endpoint": "private-amend-order",
+      "method": "POST",
+      "path": "/private/amend-order",
+      "summary": "private/amend-order",
+      "operation_id": "privateAmendOrder",
+      "request_ref": "#/components/schemas/PrivateAmendOrderRequest",
+      "response_ref": "#/components/schemas/PrivateAmendOrderResponse"
+    },
+    {
+      "endpoint": "private-bot-create-trading-bot-dca",
+      "method": "POST",
+      "path": "/private/bot/create-trading-bot",
+      "summary": "private/bot/create-trading-bot (DCA)",
+      "operation_id": "privateBotCreateTradingBot_DCA",
+      "request_ref": "#/components/schemas/PrivateBotCreateTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotCreateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-create-trading-bot-funding-arbitrage",
+      "method": "POST",
+      "path": "/private/bot/create-trading-bot",
+      "summary": "private/bot/create-trading-bot (FUNDING_ARBITRAGE)",
+      "operation_id": "privateBotCreateTradingBot_FUNDING_ARBITRAGE",
+      "request_ref": "#/components/schemas/PrivateBotCreateTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotCreateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-create-trading-bot-grid",
+      "method": "POST",
+      "path": "/private/bot/create-trading-bot",
+      "summary": "private/bot/create-trading-bot (GRID)",
+      "operation_id": "privateBotCreateTradingBot_GRID",
+      "request_ref": "#/components/schemas/PrivateBotCreateTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotCreateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-create-trading-bot-twap",
+      "method": "POST",
+      "path": "/private/bot/create-trading-bot",
+      "summary": "private/bot/create-trading-bot (TWAP)",
+      "operation_id": "privateBotCreateTradingBot_TWAP",
+      "request_ref": "#/components/schemas/PrivateBotCreateTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotCreateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-get-trading-bot-executions",
+      "method": "POST",
+      "path": "/private/bot/get-trading-bot-executions",
+      "summary": "private/bot/get-trading-bot-executions",
+      "operation_id": "privateBotGetTradingBotExecutions",
+      "request_ref": "#/components/schemas/PrivateBotGetTradingBotExecutionsRequest",
+      "response_ref": "#/components/schemas/PrivateBotGetTradingBotExecutionsResponse"
+    },
+    {
+      "endpoint": "private-bot-get-trading-bots",
+      "method": "POST",
+      "path": "/private/bot/get-trading-bots",
+      "summary": "private/bot/get-trading-bots",
+      "operation_id": "privateBotGetTradingBots",
+      "request_ref": "#/components/schemas/PrivateBotGetTradingBotsRequest",
+      "response_ref": "#/components/schemas/PrivateBotGetTradingBotsResponse"
+    },
+    {
+      "endpoint": "private-bot-pause-trading-bot",
+      "method": "POST",
+      "path": "/private/bot/pause-trading-bot",
+      "summary": "private/bot/pause-trading-bot",
+      "operation_id": "privateBotPauseTradingBot",
+      "request_ref": "#/components/schemas/PrivateBotPauseTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotPauseTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-resume-trading-bot",
+      "method": "POST",
+      "path": "/private/bot/resume-trading-bot",
+      "summary": "private/bot/resume-trading-bot",
+      "operation_id": "privateBotResumeTradingBot",
+      "request_ref": "#/components/schemas/PrivateBotResumeTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotResumeTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-terminate-trading-bot",
+      "method": "POST",
+      "path": "/private/bot/terminate-trading-bot",
+      "summary": "private/bot/terminate-trading-bot",
+      "operation_id": "privateBotTerminateTradingBot",
+      "request_ref": "#/components/schemas/PrivateBotTerminateTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotTerminateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-update-trading-bot-dca",
+      "method": "POST",
+      "path": "/private/bot/update-trading-bot",
+      "summary": "private/bot/update-trading-bot (DCA)",
+      "operation_id": "privateBotUpdateTradingBot_DCA",
+      "request_ref": "#/components/schemas/PrivateBotUpdateTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-update-trading-bot-funding-arbitrage",
+      "method": "POST",
+      "path": "/private/bot/update-trading-bot",
+      "summary": "private/bot/update-trading-bot (FUNDING_ARBITRAGE)",
+      "operation_id": "privateBotUpdateTradingBot_FUNDING_ARBITRAGE",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-update-trading-bot-grid",
+      "method": "POST",
+      "path": "/private/bot/update-trading-bot",
+      "summary": "private/bot/update-trading-bot (GRID)",
+      "operation_id": "privateBotUpdateTradingBot_GRID",
+      "request_ref": "#/components/schemas/PrivateBotUpdateTradingBotRequest",
+      "response_ref": "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-bot-update-trading-bot-twap",
+      "method": "POST",
+      "path": "/private/bot/update-trading-bot",
+      "summary": "private/bot/update-trading-bot (TWAP)",
+      "operation_id": "privateBotUpdateTradingBot_TWAP",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+    },
+    {
+      "endpoint": "private-cancel-all-orders",
+      "method": "POST",
+      "path": "/private/cancel-all-orders",
+      "summary": "private/cancel-all-orders",
+      "operation_id": "privateCancelAllOrders",
+      "request_ref": "#/components/schemas/PrivateCancelAllOrdersRequest",
+      "response_ref": "#/components/schemas/PrivateCancelAllOrdersResponse"
+    },
+    {
+      "endpoint": "private-cancel-order",
+      "method": "POST",
+      "path": "/private/cancel-order",
+      "summary": "private/cancel-order",
+      "operation_id": "privateCancelOrder",
+      "request_ref": "#/components/schemas/PrivateCancelOrderRequest",
+      "response_ref": "#/components/schemas/PrivateCancelOrderResponse"
+    },
+    {
+      "endpoint": "private-cancel-order-list",
+      "method": "POST",
+      "path": "/private/cancel-order-list",
+      "summary": "private/cancel-order-list (LIST)",
+      "operation_id": "privateCancelOrderList",
+      "request_ref": "#/components/schemas/PrivateCancelOrderListRequest",
+      "response_ref": "#/components/schemas/PrivateCancelOrderListResponse"
+    },
+    {
+      "endpoint": "private-change-account-leverage",
+      "method": "POST",
+      "path": "/private/change-account-leverage",
+      "summary": "private/change-account-leverage",
+      "operation_id": "privateChangeAccountLeverage",
+      "request_ref": "#/components/schemas/PrivateChangeAccountLeverageRequest",
+      "response_ref": "#/components/schemas/PrivateChangeAccountLeverageResponse"
+    },
+    {
+      "endpoint": "private-change-account-settings",
+      "method": "POST",
+      "path": "/private/change-account-settings",
+      "summary": "private/change-account-settings",
+      "operation_id": "privateChangeAccountSettings",
+      "request_ref": "#/components/schemas/PrivateChangeAccountSettingsRequest",
+      "response_ref": "#/components/schemas/PrivateChangeAccountSettingsResponse"
+    },
+    {
+      "endpoint": "private-change-isolated-margin-leverage",
+      "method": "POST",
+      "path": "/private/change-isolated-margin-leverage",
+      "summary": "private/change-isolated-margin-leverage",
+      "operation_id": "privateChangeIsolatedMarginLeverage",
+      "request_ref": "#/components/schemas/PrivateChangeIsolatedMarginLeverageRequest",
+      "response_ref": "#/components/schemas/PrivateChangeIsolatedMarginLeverageResponse"
+    },
+    {
+      "endpoint": "private-close-position",
+      "method": "POST",
+      "path": "/private/close-position",
+      "summary": "private/close-position",
+      "operation_id": "privateClosePosition",
+      "request_ref": "#/components/schemas/PrivateClosePositionRequest",
+      "response_ref": "#/components/schemas/PrivateClosePositionResponse"
+    },
+    {
+      "endpoint": "private-create-isolated-margin-transfer",
+      "method": "POST",
+      "path": "/private/create-isolated-margin-transfer",
+      "summary": "private/create-isolated-margin-transfer",
+      "operation_id": "privateCreateIsolatedMarginTransfer",
+      "request_ref": "#/components/schemas/PrivateCreateIsolatedMarginTransferRequest",
+      "response_ref": "#/components/schemas/PrivateCreateIsolatedMarginTransferResponse"
+    },
+    {
+      "endpoint": "private-create-order-dma",
+      "method": "POST",
+      "path": "/private/create-order",
+      "summary": "private/create-order",
+      "operation_id": "privateCreateOrder_DMA",
+      "request_ref": "#/components/schemas/PrivateCreateOrderRequest",
+      "response_ref": "#/components/schemas/PrivateCreateOrderResponse"
+    },
+    {
+      "endpoint": "private-create-order-list",
+      "method": "POST",
+      "path": "/private/create-order-list",
+      "summary": "private/create-order-list (LIST)",
+      "operation_id": "privateCreateOrderList",
+      "request_ref": "#/components/schemas/PrivateCreateOrderListRequest",
+      "response_ref": "#/components/schemas/PrivateCreateOrderListResponse"
+    },
+    {
+      "endpoint": "private-create-subaccount-transfer",
+      "method": "POST",
+      "path": "/private/create-subaccount-transfer",
+      "summary": "private/create-subaccount-transfer",
+      "operation_id": "privateCreateSubaccountTransfer",
+      "request_ref": "#/components/schemas/PrivateCreateSubaccountTransferRequest",
+      "response_ref": "#/components/schemas/PrivateCreateSubaccountTransferResponse"
+    },
+    {
+      "endpoint": "private-create-withdrawal",
+      "method": "POST",
+      "path": "/private/create-withdrawal",
+      "summary": "private/create-withdrawal",
+      "operation_id": "privateCreateWithdrawal",
+      "request_ref": "#/components/schemas/PrivateCreateWithdrawalRequest",
+      "response_ref": "#/components/schemas/PrivateCreateWithdrawalResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-access",
+      "method": "POST",
+      "path": "/private/fiat/fiat-access",
+      "summary": "private/fiat/fiat-access",
+      "operation_id": "privateFiatFiatAccess",
+      "request_ref": "#/components/schemas/PrivateFiatFiatAccessRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatAccessResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-create-bank-account",
+      "method": "POST",
+      "path": "/private/fiat/fiat-create-bank-account",
+      "summary": "private/fiat/fiat-create-bank-account",
+      "operation_id": "privateFiatFiatCreateBankAccount",
+      "request_ref": "#/components/schemas/PrivateFiatFiatCreateBankAccountRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-create-withdraw",
+      "method": "POST",
+      "path": "/private/fiat/fiat-create-withdraw",
+      "summary": "private/fiat/fiat-create-withdraw",
+      "operation_id": "privateFiatFiatCreateWithdraw",
+      "request_ref": "#/components/schemas/PrivateFiatFiatCreateWithdrawRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatCreateWithdrawResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-deposit-history",
+      "method": "POST",
+      "path": "/private/fiat/fiat-deposit-history",
+      "summary": "private/fiat/fiat-deposit-history",
+      "operation_id": "privateFiatFiatDepositHistory",
+      "request_ref": "#/components/schemas/PrivateFiatFiatDepositHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatDepositHistoryResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-deposit-info",
+      "method": "POST",
+      "path": "/private/fiat/fiat-deposit-info",
+      "summary": "private/fiat/fiat-deposit-info",
+      "operation_id": "privateFiatFiatDepositInfo",
+      "request_ref": "#/components/schemas/PrivateFiatFiatDepositInfoRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatDepositInfoResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-get-bank-accounts",
+      "method": "POST",
+      "path": "/private/fiat/fiat-get-bank-accounts",
+      "summary": "private/fiat/fiat-get-bank-accounts",
+      "operation_id": "privateFiatFiatGetBankAccounts",
+      "request_ref": "#/components/schemas/PrivateFiatFiatGetBankAccountsRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatGetBankAccountsResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-get-plaid-token",
+      "method": "POST",
+      "path": "/private/fiat/fiat-get-plaid-token",
+      "summary": "private/fiat/fiat-get-plaid-token",
+      "operation_id": "privateFiatFiatGetPlaidToken",
+      "request_ref": "#/components/schemas/PrivateFiatFiatGetPlaidTokenRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatGetPlaidTokenResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-transaction-limit",
+      "method": "POST",
+      "path": "/private/fiat/fiat-transaction-limit",
+      "summary": "private/fiat/fiat-transaction-limit",
+      "operation_id": "privateFiatFiatTransactionLimit",
+      "request_ref": "#/components/schemas/PrivateFiatFiatTransactionLimitRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatTransactionLimitResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-transaction-quota",
+      "method": "POST",
+      "path": "/private/fiat/fiat-transaction-quota",
+      "summary": "private/fiat/fiat-transaction-quota",
+      "operation_id": "privateFiatFiatTransactionQuota",
+      "request_ref": "#/components/schemas/PrivateFiatFiatTransactionQuotaRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatTransactionQuotaResponse"
+    },
+    {
+      "endpoint": "private-fiat-fiat-withdraw-history",
+      "method": "POST",
+      "path": "/private/fiat/fiat-withdraw-history",
+      "summary": "private/fiat/fiat-withdraw-history",
+      "operation_id": "privateFiatFiatWithdrawHistory",
+      "request_ref": "#/components/schemas/PrivateFiatFiatWithdrawHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateFiatFiatWithdrawHistoryResponse"
+    },
+    {
+      "endpoint": "private-get-account-settings",
+      "method": "POST",
+      "path": "/private/get-account-settings",
+      "summary": "private/get-account-settings",
+      "operation_id": "privateGetAccountSettings",
+      "request_ref": "#/components/schemas/PrivateGetAccountSettingsRequest",
+      "response_ref": "#/components/schemas/PrivateGetAccountSettingsResponse"
+    },
+    {
+      "endpoint": "private-get-accounts",
+      "method": "POST",
+      "path": "/private/get-accounts",
+      "summary": "private/get-accounts",
+      "operation_id": "privateGetAccounts",
+      "request_ref": "#/components/schemas/PrivateGetAccountsRequest",
+      "response_ref": "#/components/schemas/PrivateGetAccountsResponse"
+    },
+    {
+      "endpoint": "private-get-currency-networks",
+      "method": "POST",
+      "path": "/private/get-currency-networks",
+      "summary": "private/get-currency-networks",
+      "operation_id": "privateGetCurrencyNetworks",
+      "request_ref": "#/components/schemas/PrivateGetCurrencyNetworksRequest",
+      "response_ref": "#/components/schemas/PrivateGetCurrencyNetworksResponse"
+    },
+    {
+      "endpoint": "private-get-deposit-address",
+      "method": "POST",
+      "path": "/private/get-deposit-address",
+      "summary": "private/get-deposit-address",
+      "operation_id": "privateGetDepositAddress",
+      "request_ref": "#/components/schemas/PrivateGetDepositAddressRequest",
+      "response_ref": "#/components/schemas/PrivateGetDepositAddressResponse"
+    },
+    {
+      "endpoint": "private-get-deposit-history",
+      "method": "POST",
+      "path": "/private/get-deposit-history",
+      "summary": "private/get-deposit-history",
+      "operation_id": "privateGetDepositHistory",
+      "request_ref": "#/components/schemas/PrivateGetDepositHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateGetDepositHistoryResponse"
+    },
+    {
+      "endpoint": "private-get-fee-credit-balances",
+      "method": "POST",
+      "path": "/private/get-fee-credit-balances",
+      "summary": "private/get-fee-credit-balances",
+      "operation_id": "privateGetFeeCreditBalances",
+      "request_ref": "#/components/schemas/PrivateGetFeeCreditBalancesRequest",
+      "response_ref": "#/components/schemas/PrivateGetFeeCreditBalancesResponse"
+    },
+    {
+      "endpoint": "private-get-fee-rate",
+      "method": "POST",
+      "path": "/private/get-fee-rate",
+      "summary": "private/get-fee-rate",
+      "operation_id": "privateGetFeeRate",
+      "request_ref": "#/components/schemas/PrivateGetFeeRateRequest",
+      "response_ref": "#/components/schemas/PrivateGetFeeRateResponse"
+    },
+    {
+      "endpoint": "private-get-instrument-fee-rate",
+      "method": "POST",
+      "path": "/private/get-instrument-fee-rate",
+      "summary": "private/get-instrument-fee-rate",
+      "operation_id": "privateGetInstrumentFeeRate",
+      "request_ref": "#/components/schemas/PrivateGetInstrumentFeeRateRequest",
+      "response_ref": "#/components/schemas/PrivateGetInstrumentFeeRateResponse"
+    },
+    {
+      "endpoint": "private-get-open-orders",
+      "method": "POST",
+      "path": "/private/get-open-orders",
+      "summary": "private/get-open-orders",
+      "operation_id": "privateGetOpenOrders",
+      "request_ref": "#/components/schemas/PrivateGetOpenOrdersRequest",
+      "response_ref": "#/components/schemas/PrivateGetOpenOrdersResponse"
+    },
+    {
+      "endpoint": "private-get-order-detail",
+      "method": "POST",
+      "path": "/private/get-order-detail",
+      "summary": "private/get-order-detail",
+      "operation_id": "privateGetOrderDetail",
+      "request_ref": "#/components/schemas/PrivateGetOrderDetailRequest",
+      "response_ref": "#/components/schemas/PrivateGetOrderDetailResponse"
+    },
+    {
+      "endpoint": "private-get-order-history",
+      "method": "POST",
+      "path": "/private/get-order-history",
+      "summary": "private/get-order-history",
+      "operation_id": "privateGetOrderHistory",
+      "request_ref": "#/components/schemas/PrivateGetOrderHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateGetOrderHistoryResponse"
+    },
+    {
+      "endpoint": "private-get-positions",
+      "method": "POST",
+      "path": "/private/get-positions",
+      "summary": "private/get-positions",
+      "operation_id": "privateGetPositions",
+      "request_ref": "#/components/schemas/PrivateGetPositionsRequest",
+      "response_ref": "#/components/schemas/PrivateGetPositionsResponse"
+    },
+    {
+      "endpoint": "private-get-subaccount-balances",
+      "method": "POST",
+      "path": "/private/get-subaccount-balances",
+      "summary": "private/get-subaccount-balances",
+      "operation_id": "privateGetSubaccountBalances",
+      "request_ref": "#/components/schemas/PrivateGetSubaccountBalancesRequest",
+      "response_ref": "#/components/schemas/PrivateGetSubaccountBalancesResponse"
+    },
+    {
+      "endpoint": "private-get-trades",
+      "method": "POST",
+      "path": "/private/get-trades",
+      "summary": "private/get-trades",
+      "operation_id": "privateGetTrades",
+      "request_ref": "#/components/schemas/PrivateGetTradesRequest",
+      "response_ref": "#/components/schemas/PrivateGetTradesResponse"
+    },
+    {
+      "endpoint": "private-get-transactions",
+      "method": "POST",
+      "path": "/private/get-transactions",
+      "summary": "private/get-transactions",
+      "operation_id": "privateGetTransactions",
+      "request_ref": "#/components/schemas/PrivateGetTransactionsRequest",
+      "response_ref": "#/components/schemas/PrivateGetTransactionsResponse"
+    },
+    {
+      "endpoint": "private-get-withdrawal-history",
+      "method": "POST",
+      "path": "/private/get-withdrawal-history",
+      "summary": "private/get-withdrawal-history",
+      "operation_id": "privateGetWithdrawalHistory",
+      "request_ref": "#/components/schemas/PrivateGetWithdrawalHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateGetWithdrawalHistoryResponse"
+    },
+    {
+      "endpoint": "private-otc-get-deal-history-rfq",
+      "method": "POST",
+      "path": "/private/otc/get-deal-history",
+      "summary": "private/otc/get-deal-history (RFQ)",
+      "operation_id": "privateOtcGetDealHistory_RFQ",
+      "request_ref": "#/components/schemas/PrivateOtcGetDealHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetDealHistoryResponse"
+    },
+    {
+      "endpoint": "private-otc-get-open-deals-rfq",
+      "method": "POST",
+      "path": "/private/otc/get-open-deals",
+      "summary": "private/otc/get-open-deals (RFQ)",
+      "operation_id": "privateOtcGetOpenDeals_RFQ",
+      "request_ref": "#/components/schemas/PrivateOtcGetOpenDealsRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetOpenDealsResponse"
+    },
+    {
+      "endpoint": "private-otc-get-open-quote-requests",
+      "method": "POST",
+      "path": "/private/otc/get-open-quote-requests",
+      "summary": "private/otc/get-open-quote-requests",
+      "operation_id": "privateOtcGetOpenQuoteRequests",
+      "request_ref": "#/components/schemas/PrivateOtcGetOpenQuoteRequestsRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetOpenQuoteRequestsResponse"
+    },
+    {
+      "endpoint": "private-otc-get-open-quotes",
+      "method": "POST",
+      "path": "/private/otc/get-open-quotes",
+      "summary": "private/otc/get-open-quotes",
+      "operation_id": "privateOtcGetOpenQuotes",
+      "request_ref": "#/components/schemas/PrivateOtcGetOpenQuotesRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetOpenQuotesResponse"
+    },
+    {
+      "endpoint": "private-otc-get-otc-instruments",
+      "method": "POST",
+      "path": "/private/otc/get-otc-instruments",
+      "summary": "private/otc/get-otc-instruments",
+      "operation_id": "privateOtcGetOtcInstruments",
+      "request_ref": "#/components/schemas/PrivateOtcGetOtcInstrumentsRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetOtcInstrumentsResponse"
+    },
+    {
+      "endpoint": "private-otc-get-quote-history",
+      "method": "POST",
+      "path": "/private/otc/get-quote-history",
+      "summary": "private/otc/get-quote-history",
+      "operation_id": "privateOtcGetQuoteHistory",
+      "request_ref": "#/components/schemas/PrivateOtcGetQuoteHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetQuoteHistoryResponse"
+    },
+    {
+      "endpoint": "private-otc-get-quote-request-history",
+      "method": "POST",
+      "path": "/private/otc/get-quote-request-history",
+      "summary": "private/otc/get-quote-request-history",
+      "operation_id": "privateOtcGetQuoteRequestHistory",
+      "request_ref": "#/components/schemas/PrivateOtcGetQuoteRequestHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetQuoteRequestHistoryResponse"
+    },
+    {
+      "endpoint": "private-otc-get-settle-later-limit",
+      "method": "POST",
+      "path": "/private/otc/get-settle-later-limit",
+      "summary": "private/otc/get-settle-later-limit",
+      "operation_id": "privateOtcGetSettleLaterLimit",
+      "request_ref": "#/components/schemas/PrivateOtcGetSettleLaterLimitRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetSettleLaterLimitResponse"
+    },
+    {
+      "endpoint": "private-otc-get-unsettled-amounts",
+      "method": "POST",
+      "path": "/private/otc/get-unsettled-amounts",
+      "summary": "private/otc/get-unsettled-amounts",
+      "operation_id": "privateOtcGetUnsettledAmounts",
+      "request_ref": "#/components/schemas/PrivateOtcGetUnsettledAmountsRequest",
+      "response_ref": "#/components/schemas/PrivateOtcGetUnsettledAmountsResponse"
+    },
+    {
+      "endpoint": "private-otc-request-deal-rfq",
+      "method": "POST",
+      "path": "/private/otc/request-deal",
+      "summary": "private/otc/request-deal (RFQ)",
+      "operation_id": "privateOtcRequestDeal_RFQ",
+      "request_ref": "#/components/schemas/PrivateOtcRequestDealRequest",
+      "response_ref": "#/components/schemas/PrivateOtcRequestDealResponse"
+    },
+    {
+      "endpoint": "private-otc-request-quote",
+      "method": "POST",
+      "path": "/private/otc/request-quote",
+      "summary": "private/otc/request-quote",
+      "operation_id": "privateOtcRequestQuote",
+      "request_ref": "#/components/schemas/PrivateOtcRequestQuoteRequest",
+      "response_ref": "#/components/schemas/PrivateOtcRequestQuoteResponse"
+    },
+    {
+      "endpoint": "private-staking-convert",
+      "method": "POST",
+      "path": "/private/staking/convert",
+      "summary": "private/staking/convert",
+      "operation_id": "privateStakingConvert",
+      "request_ref": "#/components/schemas/PrivateStakingConvertRequest",
+      "response_ref": "#/components/schemas/PrivateStakingConvertResponse"
+    },
+    {
+      "endpoint": "private-staking-get-convert-history",
+      "method": "POST",
+      "path": "/private/staking/get-convert-history",
+      "summary": "private/staking/get-convert-history",
+      "operation_id": "privateStakingGetConvertHistory",
+      "request_ref": "#/components/schemas/PrivateStakingGetConvertHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateStakingGetConvertHistoryResponse"
+    },
+    {
+      "endpoint": "private-staking-get-open-convert",
+      "method": "POST",
+      "path": "/private/staking/get-open-convert",
+      "summary": "private/staking/get-open-convert",
+      "operation_id": "privateStakingGetOpenConvert",
+      "request_ref": "#/components/schemas/PrivateStakingGetOpenConvertRequest",
+      "response_ref": "#/components/schemas/PrivateStakingGetOpenConvertResponse"
+    },
+    {
+      "endpoint": "private-staking-get-open-stake",
+      "method": "POST",
+      "path": "/private/staking/get-open-stake",
+      "summary": "private/staking/get-open-stake",
+      "operation_id": "privateStakingGetOpenStake",
+      "request_ref": "#/components/schemas/PrivateStakingGetOpenStakeRequest",
+      "response_ref": "#/components/schemas/PrivateStakingGetOpenStakeResponse"
+    },
+    {
+      "endpoint": "private-staking-get-reward-history",
+      "method": "POST",
+      "path": "/private/staking/get-reward-history",
+      "summary": "private/staking/get-reward-history",
+      "operation_id": "privateStakingGetRewardHistory",
+      "request_ref": "#/components/schemas/PrivateStakingGetRewardHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateStakingGetRewardHistoryResponse"
+    },
+    {
+      "endpoint": "private-staking-get-stake-history",
+      "method": "POST",
+      "path": "/private/staking/get-stake-history",
+      "summary": "private/staking/get-stake-history",
+      "operation_id": "privateStakingGetStakeHistory",
+      "request_ref": "#/components/schemas/PrivateStakingGetStakeHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateStakingGetStakeHistoryResponse"
+    },
+    {
+      "endpoint": "private-staking-get-staking-instruments",
+      "method": "POST",
+      "path": "/private/staking/get-staking-instruments",
+      "summary": "private/staking/get-staking-instruments",
+      "operation_id": "privateStakingGetStakingInstruments",
+      "request_ref": "#/components/schemas/PrivateStakingGetStakingInstrumentsRequest",
+      "response_ref": "#/components/schemas/PrivateStakingGetStakingInstrumentsResponse"
+    },
+    {
+      "endpoint": "private-staking-get-staking-position",
+      "method": "POST",
+      "path": "/private/staking/get-staking-position",
+      "summary": "private/staking/get-staking-position",
+      "operation_id": "privateStakingGetStakingPosition",
+      "request_ref": "#/components/schemas/PrivateStakingGetStakingPositionRequest",
+      "response_ref": "#/components/schemas/PrivateStakingGetStakingPositionResponse"
+    },
+    {
+      "endpoint": "private-staking-stake",
+      "method": "POST",
+      "path": "/private/staking/stake",
+      "summary": "private/staking/stake",
+      "operation_id": "privateStakingStake",
+      "request_ref": "#/components/schemas/PrivateStakingStakeRequest",
+      "response_ref": "#/components/schemas/PrivateStakingStakeResponse"
+    },
+    {
+      "endpoint": "private-staking-unstake",
+      "method": "POST",
+      "path": "/private/staking/unstake",
+      "summary": "private/staking/unstake",
+      "operation_id": "privateStakingUnstake",
+      "request_ref": "#/components/schemas/PrivateStakingUnstakeRequest",
+      "response_ref": "#/components/schemas/PrivateStakingUnstakeResponse"
+    },
+    {
+      "endpoint": "private-user-balance",
+      "method": "POST",
+      "path": "/private/user-balance",
+      "summary": "private/user-balance",
+      "operation_id": "privateUserBalance",
+      "request_ref": "#/components/schemas/PrivateUserBalanceRequest",
+      "response_ref": "#/components/schemas/PrivateUserBalanceResponse"
+    },
+    {
+      "endpoint": "private-user-balance-history",
+      "method": "POST",
+      "path": "/private/user-balance-history",
+      "summary": "private/user-balance-history",
+      "operation_id": "privateUserBalanceHistory",
+      "request_ref": "#/components/schemas/PrivateUserBalanceHistoryRequest",
+      "response_ref": "#/components/schemas/PrivateUserBalanceHistoryResponse"
+    },
+    {
+      "endpoint": "public-get-book",
+      "method": "GET",
+      "path": "/public/get-book",
+      "summary": "public/get-book",
+      "operation_id": "publicGetBook",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetBookResponse"
+    },
+    {
+      "endpoint": "public-get-candlestick",
+      "method": "GET",
+      "path": "/public/get-candlestick",
+      "summary": "public/get-candlestick",
+      "operation_id": "publicGetCandlestick",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetCandlestickResponse"
+    },
+    {
+      "endpoint": "public-get-expired-settlement-price",
+      "method": "GET",
+      "path": "/public/get-expired-settlement-price",
+      "summary": "public/get-expired-settlement-price",
+      "operation_id": "publicGetExpiredSettlementPrice",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetExpiredSettlementPriceResponse"
+    },
+    {
+      "endpoint": "public-get-instruments",
+      "method": "GET",
+      "path": "/public/get-instruments",
+      "summary": "public/get-instruments",
+      "operation_id": "publicGetInstruments",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetInstrumentsResponse"
+    },
+    {
+      "endpoint": "public-get-insurance",
+      "method": "GET",
+      "path": "/public/get-insurance",
+      "summary": "public/get-insurance",
+      "operation_id": "publicGetInsurance",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetInsuranceResponse"
+    },
+    {
+      "endpoint": "public-get-risk-parameters",
+      "method": "GET",
+      "path": "/public/get-risk-parameters",
+      "summary": "public/get-risk-parameters",
+      "operation_id": "publicGetRiskParameters",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetRiskParametersResponse"
+    },
+    {
+      "endpoint": "public-get-tickers",
+      "method": "GET",
+      "path": "/public/get-tickers",
+      "summary": "public/get-tickers",
+      "operation_id": "publicGetTickers",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetTickersResponse"
+    },
+    {
+      "endpoint": "public-get-trades",
+      "method": "GET",
+      "path": "/public/get-trades",
+      "summary": "public/get-trades",
+      "operation_id": "publicGetTrades",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetTradesResponse"
+    },
+    {
+      "endpoint": "public-get-valuations",
+      "method": "GET",
+      "path": "/public/get-valuations",
+      "summary": "public/get-valuations",
+      "operation_id": "publicGetValuations",
+      "request_ref": "",
+      "response_ref": "#/components/schemas/PublicGetValuationsResponse"
+    },
+    {
+      "endpoint": "public-staking-get-conversion-rate",
+      "method": "POST",
+      "path": "/public/staking/get-conversion-rate",
+      "summary": "public/staking/get-conversion-rate",
+      "operation_id": "publicStakingGetConversionRate",
+      "request_ref": "#/components/schemas/PublicStakingGetConversionRateRequest",
+      "response_ref": "#/components/schemas/PublicStakingGetConversionRateResponse"
+    }
+  ],
+  "schemas": {
+    "PrivateAdvancedAmendOrderRequest": {
+      "source": "private-advanced-amend-order",
+      "type": "object",
+      "description": "Request body for private/advanced/amend-order.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedAmendOrderResponse": {
+      "source": "private-advanced-amend-order",
+      "type": "object",
+      "description": "Response for private/advanced/amend-order (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original presen",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCancelAllOrdersRequest": {
+      "source": "private-advanced-cancel-all-orders",
+      "type": "object",
+      "description": "Request body for private/advanced/cancel-all-orders.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "CancelOrderType": {
+      "source": "private-advanced-cancel-all-orders",
+      "type": "string",
+      "description": "Allowed values depend on operation:\n- \u2796 **private/cancel-all-orders:** LIMIT, ALL\n- \u2796 **private/advanced/cancel-all-orders:** LIMIT, TRIGGER, ALL. For",
+      "properties": []
+    },
+    "PrivateAdvancedCancelAllOrdersResponse": {
+      "source": "private-advanced-cancel-all-orders",
+      "type": "object",
+      "description": "Response for private/advanced/cancel-all-orders (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success; no result block per docs (code 0 = queued).\ncode !== 0 \u2192 err",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCancelOcoRequest": {
+      "source": "private-advanced-cancel-oco",
+      "type": "object",
+      "description": "Request body for private/advanced/cancel-oco.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCancelOcoResponse": {
+      "source": "private-advanced-cancel-oco",
+      "type": "object",
+      "description": "Response for private/advanced/cancel-oco (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success. No result block is returned; code 0 indicates request queued.\ncode ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCancelOrderListRequest": {
+      "source": "private-advanced-cancel-order-list",
+      "type": "object",
+      "description": "Request body for private/advanced/cancel-order-list.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCancelOrderListResponse": {
+      "source": "private-advanced-cancel-order-list",
+      "type": "object",
+      "description": "Response for private/advanced/cancel-order-list (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCancelOrderRequest": {
+      "source": "private-advanced-cancel-order",
+      "type": "object",
+      "description": "Request body for private/advanced/cancel-order.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCancelOrderResponse": {
+      "source": "private-advanced-cancel-order",
+      "type": "object",
+      "description": "Response for private/advanced/cancel-order (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original prese",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCancelOtoRequest": {
+      "source": "private-advanced-cancel-oto",
+      "type": "object",
+      "description": "Request body for private/advanced/cancel-oto.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCancelOtoResponse": {
+      "source": "private-advanced-cancel-oto",
+      "type": "object",
+      "description": "Response for private/advanced/cancel-oto (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCancelOtocoRequest": {
+      "source": "private-advanced-cancel-otoco",
+      "type": "object",
+      "description": "Request body for private/advanced/cancel-otoco.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCancelOtocoResponse": {
+      "source": "private-advanced-cancel-otoco",
+      "type": "object",
+      "description": "Response for private/advanced/cancel-otoco (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success; no result block per docs (code 0 = queued).\ncode !== 0 \u2192 error, m",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCreateOcoRequest": {
+      "source": "private-advanced-create-oco",
+      "type": "object",
+      "description": "Request body for private/advanced/create-oco.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "CreateOrderParamsAdvancedMultiLeg": {
+      "source": "private-advanced-create-oco",
+      "type": null,
+      "description": "Order parameters for advanced multi-leg orders (OCO/OTO/OTOCO) that accept both LIMIT/MARKET and trigger types.",
+      "properties": []
+    },
+    "CreateOrderParamsBase": {
+      "source": "private-advanced-create-oco",
+      "type": "object",
+      "description": "Base order parameters shared by all create-order variants.",
+      "properties": [
+        "instrument_name",
+        "side",
+        "quantity",
+        "client_oid",
+        "time_in_force",
+        "exec_inst",
+        "fee_instrument_name",
+        "stp_id",
+        "stp_inst",
+        "stp_scope"
+      ]
+    },
+    "OrderSide": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "BUY or SELL",
+      "properties": []
+    },
+    "TimeInForce": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "Time in force",
+      "properties": []
+    },
+    "ExecInstCreateOrder": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "Execution instruction for create-order. POST_ONLY and SMART_POST_ONLY mutually exclusive.",
+      "properties": []
+    },
+    "StpInst": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "Self-trade prevention instruction. Used in private/change-account-settings (params) and private/get-account-settings (result). Mandatory if stp_scope ",
+      "properties": []
+    },
+    "StpScope": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "Self-trade prevention scope. Used in private/change-account-settings (params) and private/get-account-settings (result).\n- \u2796 M: Matches Master or Sub ",
+      "properties": []
+    },
+    "OrderType": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "Order type:\n- \u2796 LIMIT, MARKET\n- \u2796 STOP_LOSS, STOP_LIMIT, TAKE_PROFIT, TAKE_PROFIT_LIMIT: Trigger orders\n",
+      "properties": []
+    },
+    "RefPriceType": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "Reference price type for trigger orders",
+      "properties": []
+    },
+    "SpotMargin": {
+      "source": "private-advanced-create-oco",
+      "type": "string",
+      "description": "SPOT or MARGIN (spot/margin mode).",
+      "properties": []
+    },
+    "PrivateAdvancedCreateOcoResponse": {
+      "source": "private-advanced-create-oco",
+      "type": "object",
+      "description": "Response for private/advanced/create-oco (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCreateOrderListRequest": {
+      "source": "private-advanced-create-order-list",
+      "type": "object",
+      "description": "Request body for private/advanced/create-order-list.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "CreateOrderParamsAdvanced": {
+      "source": "private-advanced-create-order-list",
+      "type": null,
+      "description": "Order parameters for private/advanced/create-order (trigger orders).",
+      "properties": []
+    },
+    "PrivateAdvancedCreateOrderListResponse": {
+      "source": "private-advanced-create-order-list",
+      "type": "object",
+      "description": "Response for private/advanced/create-order-list (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCreateOrderRequest": {
+      "source": "private-advanced-create-order",
+      "type": "object",
+      "description": "Request body for private/advanced/create-order.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCreateOrderResponse": {
+      "source": "private-advanced-create-order",
+      "type": "object",
+      "description": "Response for private/advanced/create-order (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original prese",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCreateOtoRequest": {
+      "source": "private-advanced-create-oto",
+      "type": "object",
+      "description": "Request body for private/advanced/create-oto.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCreateOtoResponse": {
+      "source": "private-advanced-create-oto",
+      "type": "object",
+      "description": "Response for private/advanced/create-oto (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedCreateOtocoRequest": {
+      "source": "private-advanced-create-otoco",
+      "type": "object",
+      "description": "Request body for private/advanced/create-otoco.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedCreateOtocoResponse": {
+      "source": "private-advanced-create-otoco",
+      "type": "object",
+      "description": "Response for private/advanced/create-otoco (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original prese",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedGetOpenOrdersRequest": {
+      "source": "private-advanced-get-open-orders",
+      "type": "object",
+      "description": "Request body for private/advanced/get-open-orders.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedGetOpenOrdersResponse": {
+      "source": "private-advanced-get-open-orders",
+      "type": "object",
+      "description": "Response for private/advanced/get-open-orders (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pr",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOrder": {
+      "source": "private-advanced-get-open-orders",
+      "type": "object",
+      "description": "Order object shared by get-order-detail, get-open-orders, get-order-history and advanced variants. reason optional (detail/history). list_id, continge",
+      "properties": [
+        "account_id",
+        "order_id",
+        "client_oid",
+        "order_type",
+        "time_in_force",
+        "side",
+        "exec_inst",
+        "quantity",
+        "limit_price",
+        "order_value"
+      ]
+    },
+    "ExecInstOrderDetail": {
+      "source": "private-advanced-get-open-orders",
+      "type": "string",
+      "description": "Execution instruction as returned in order detail.",
+      "properties": []
+    },
+    "OrderStatus": {
+      "source": "private-advanced-get-open-orders",
+      "type": "string",
+      "description": "Order status",
+      "properties": []
+    },
+    "ContingencyType": {
+      "source": "private-advanced-get-open-orders",
+      "type": "string",
+      "description": "Contingency type for advanced orders:\n- \u2796 OCO: One-Cancels-the-Other\n- \u2796 OTO: One-Triggers-the-Other\n- \u2796 OTOCO: One-Triggers-a-One-Cancels-the-Other\n-",
+      "properties": []
+    },
+    "PrivateAdvancedGetOrderDetailRequest": {
+      "source": "private-advanced-get-order-detail",
+      "type": "object",
+      "description": "Request body for private/advanced/get-order-detail.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedGetOrderDetailResponse": {
+      "source": "private-advanced-get-order-detail",
+      "type": "object",
+      "description": "Response for private/advanced/get-order-detail (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original p",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedGetOrderHistoryRequest": {
+      "source": "private-advanced-get-order-history",
+      "type": "object",
+      "description": "Request body for private/advanced/get-order-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedGetOrderHistoryResponse": {
+      "source": "private-advanced-get-order-history",
+      "type": "object",
+      "description": "Response for private/advanced/get-order-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAdvancedGetOrderListDetailRequest": {
+      "source": "private-advanced-get-order-list-detail",
+      "type": "object",
+      "description": "Request body for private/advanced/get-order-list-detail.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAdvancedGetOrderListDetailResponse": {
+      "source": "private-advanced-get-order-list-detail",
+      "type": "object",
+      "description": "Response for private/advanced/get-order-list-detail (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or origi",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateAmendOrderRequest": {
+      "source": "private-amend-order",
+      "type": "object",
+      "description": "Request body for private/amend-order.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateAmendOrderResponse": {
+      "source": "private-amend-order",
+      "type": "object",
+      "description": "Response for private/amend-order (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateBotCreateTradingBotRequest": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Request body for private/bot/create-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "BotType": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "string",
+      "description": "Trading bot type:\n- DCA: Dollar Cost Averaging\n- TWAP: Time-Weighted Average Price\n- GRID: Grid trading\n- FUNDING_ARBITRAGE: Funding arbitrage\n",
+      "properties": []
+    },
+    "DcaBotSettings": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Settings for DCA bot",
+      "properties": [
+        "is_basket",
+        "allocations",
+        "investment_currency",
+        "side",
+        "type",
+        "auto_stake",
+        "price",
+        "quantity",
+        "total_investment",
+        "investment_frequency_mode"
+      ]
+    },
+    "DcaAllocation": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Allocation for DCA basket bot",
+      "properties": [
+        "instrument_name",
+        "allocated_percentage"
+      ]
+    },
+    "InvestmentFrequencyMode": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "string",
+      "description": "Investment frequency mode for DCA bots:\n- FIXED_DURATION: Fixed interval in milliseconds\n- MONTHLY: Monthly investment\n",
+      "properties": []
+    },
+    "TwapBotSettings": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Settings for TWAP bot",
+      "properties": [
+        "instrument_name",
+        "side",
+        "type",
+        "price",
+        "quantity",
+        "start_time_millis",
+        "end_time_millis"
+      ]
+    },
+    "GridBotSettings": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Settings for Grid bot",
+      "properties": [
+        "instrument_name",
+        "total_investment",
+        "lower_price",
+        "upper_price",
+        "grid_mode",
+        "grid_no",
+        "margin_enabled",
+        "trailing_up_enabled",
+        "stop_price",
+        "take_profit_price"
+      ]
+    },
+    "GridMode": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "string",
+      "description": "Grid mode:\n- ARITHMETIC: Equal price intervals\n- GEOMETRIC: Geometric price intervals\n",
+      "properties": []
+    },
+    "FundingArbitrageBotSettings": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Settings for Funding Arbitrage bot",
+      "properties": [
+        "total_investment",
+        "investment_currency",
+        "spot_leg",
+        "perp_leg"
+      ]
+    },
+    "TradingLeg": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Trading leg for funding arbitrage",
+      "properties": [
+        "instrument_name",
+        "side"
+      ]
+    },
+    "PrivateBotCreateTradingBotResponse": {
+      "source": "private-bot-create-trading-bot-dca",
+      "type": "object",
+      "description": "Response for private/bot/create-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message",
+        "result"
+      ]
+    },
+    "PrivateBotGetTradingBotExecutionsRequest": {
+      "source": "private-bot-get-trading-bot-executions",
+      "type": "object",
+      "description": "Request body for private/bot/get-trading-bot-executions.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "BasketBotFilter": {
+      "source": "private-bot-get-trading-bot-executions",
+      "type": "object",
+      "description": "Filter for basket DCA bots",
+      "properties": [
+        "include_child_symbols"
+      ]
+    },
+    "PrivateBotGetTradingBotExecutionsResponse": {
+      "source": "private-bot-get-trading-bot-executions",
+      "type": "object",
+      "description": "Response for private/bot/get-trading-bot-executions.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message",
+        "result"
+      ]
+    },
+    "BotExecution": {
+      "source": "private-bot-get-trading-bot-executions",
+      "type": "object",
+      "description": "Bot order execution information",
+      "properties": [
+        "instrument_name",
+        "symbol",
+        "execution_time",
+        "schedule_time",
+        "order_status",
+        "side",
+        "price",
+        "quantity",
+        "avg_price",
+        "cum_qty"
+      ]
+    },
+    "PrivateBotGetTradingBotsRequest": {
+      "source": "private-bot-get-trading-bots",
+      "type": "object",
+      "description": "Request body for private/bot/get-trading-bots.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "BotState": {
+      "source": "private-bot-get-trading-bots",
+      "type": "string",
+      "description": "Trading bot state:\n- RUNNING: Bot is actively placing orders\n- PAUSED: Bot is paused and not placing orders\n- TERMINATED: Bot has been permanently sto",
+      "properties": []
+    },
+    "PrivateBotGetTradingBotsResponse": {
+      "source": "private-bot-get-trading-bots",
+      "type": "object",
+      "description": "Response for private/bot/get-trading-bots.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message",
+        "result"
+      ]
+    },
+    "BotInfo": {
+      "source": "private-bot-get-trading-bots",
+      "type": "object",
+      "description": "Trading Bot information",
+      "properties": [
+        "bot_id",
+        "bot_type",
+        "display_name",
+        "state",
+        "reason",
+        "create_time",
+        "update_time",
+        "end_time",
+        "migrated",
+        "settings"
+      ]
+    },
+    "PrivateBotPauseTradingBotRequest": {
+      "source": "private-bot-pause-trading-bot",
+      "type": "object",
+      "description": "Request body for private/bot/pause-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateBotPauseTradingBotResponse": {
+      "source": "private-bot-pause-trading-bot",
+      "type": "object",
+      "description": "Response for private/bot/pause-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message"
+      ]
+    },
+    "PrivateBotResumeTradingBotRequest": {
+      "source": "private-bot-resume-trading-bot",
+      "type": "object",
+      "description": "Request body for private/bot/resume-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateBotResumeTradingBotResponse": {
+      "source": "private-bot-resume-trading-bot",
+      "type": "object",
+      "description": "Response for private/bot/resume-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message"
+      ]
+    },
+    "PrivateBotTerminateTradingBotRequest": {
+      "source": "private-bot-terminate-trading-bot",
+      "type": "object",
+      "description": "Request body for private/bot/terminate-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateBotTerminateTradingBotResponse": {
+      "source": "private-bot-terminate-trading-bot",
+      "type": "object",
+      "description": "Response for private/bot/terminate-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message"
+      ]
+    },
+    "PrivateBotUpdateTradingBotRequest": {
+      "source": "private-bot-update-trading-bot-dca",
+      "type": "object",
+      "description": "Request body for private/bot/update-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "DcaBotUpdateSettings": {
+      "source": "private-bot-update-trading-bot-dca",
+      "type": "object",
+      "description": "Updatable settings for DCA bot",
+      "properties": [
+        "allocations",
+        "type",
+        "price",
+        "max_order",
+        "stop_price",
+        "take_profit_price",
+        "auto_stake",
+        "investment_duration",
+        "investment_frequency",
+        "quantity"
+      ]
+    },
+    "GridBotUpdateSettings": {
+      "source": "private-bot-update-trading-bot-dca",
+      "type": "object",
+      "description": "Updatable settings for Grid bot",
+      "properties": [
+        "stop_price",
+        "take_profit_price",
+        "trailing_up_price_cap"
+      ]
+    },
+    "PrivateBotUpdateTradingBotResponse": {
+      "source": "private-bot-update-trading-bot-dca",
+      "type": "object",
+      "description": "Response for private/bot/update-trading-bot.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "message"
+      ]
+    },
+    "PrivateCancelAllOrdersRequest": {
+      "source": "private-cancel-all-orders",
+      "type": "object",
+      "description": "Request body for private/cancel-all-orders.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateCancelAllOrdersResponse": {
+      "source": "private-cancel-all-orders",
+      "type": "object",
+      "description": "Response for private/cancel-all-orders (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateCancelOrderListRequest": {
+      "source": "private-cancel-order-list",
+      "type": "object",
+      "description": "Request body for private/cancel-order-list.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "ContingencyTypeList": {
+      "source": "private-cancel-order-list",
+      "type": "string",
+      "description": "Must be LIST for order-list APIs",
+      "properties": []
+    },
+    "PrivateCancelOrderListResponse": {
+      "source": "private-cancel-order-list",
+      "type": "object",
+      "description": "Response for private/cancel-order-list (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateCancelOrderRequest": {
+      "source": "private-cancel-order",
+      "type": "object",
+      "description": "Request body for private/cancel-order.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateCancelOrderResponse": {
+      "source": "private-cancel-order",
+      "type": "object",
+      "description": "Response for private/cancel-order (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateChangeAccountLeverageRequest": {
+      "source": "private-change-account-leverage",
+      "type": "object",
+      "description": "Request body for private/change-account-leverage.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateChangeAccountLeverageResponse": {
+      "source": "private-change-account-leverage",
+      "type": "object",
+      "description": "Response for private/change-account-leverage (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pre",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateChangeAccountSettingsRequest": {
+      "source": "private-change-account-settings",
+      "type": "object",
+      "description": "Request body for private/change-account-settings.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateChangeAccountSettingsResponse": {
+      "source": "private-change-account-settings",
+      "type": "object",
+      "description": "Response for private/change-account-settings (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pre",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateChangeIsolatedMarginLeverageRequest": {
+      "source": "private-change-isolated-margin-leverage",
+      "type": "object",
+      "description": "Request body for private/change-isolated-margin-leverage.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateChangeIsolatedMarginLeverageResponse": {
+      "source": "private-change-isolated-margin-leverage",
+      "type": "object",
+      "description": "Response for private/change-isolated-margin-leverage (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or orig",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateClosePositionRequest": {
+      "source": "private-close-position",
+      "type": "object",
+      "description": "Request body for private/close-position.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "ClosePositionType": {
+      "source": "private-close-position",
+      "type": "string",
+      "description": "LIMIT or MARKET",
+      "properties": []
+    },
+    "PrivateClosePositionResponse": {
+      "source": "private-close-position",
+      "type": "object",
+      "description": "Response for private/close-position (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateCreateIsolatedMarginTransferRequest": {
+      "source": "private-create-isolated-margin-transfer",
+      "type": "object",
+      "description": "Request body for private/create-isolated-margin-transfer.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "IsolatedMarginTransferDirection": {
+      "source": "private-create-isolated-margin-transfer",
+      "type": "string",
+      "description": "CREDIT for credit to the isolated position; DEBIT for debit from the isolated position.",
+      "properties": []
+    },
+    "PrivateCreateIsolatedMarginTransferResponse": {
+      "source": "private-create-isolated-margin-transfer",
+      "type": "object",
+      "description": "Response for private/create-isolated-margin-transfer (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or orig",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateCreateOrderRequest": {
+      "source": "private-create-order-dma",
+      "type": "object",
+      "description": "Request body for private/create-order. All numbers in params must be strings. Trigger types (STOP_LOSS, STOP_LIMIT, TAKE_PROFIT, TAKE_PROFIT_LIMIT) re",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "CreateOrderParams": {
+      "source": "private-create-order-dma",
+      "type": null,
+      "description": "Order parameters for private/create-order (LIMIT, MARKET orders).",
+      "properties": []
+    },
+    "PrivateCreateOrderResponse": {
+      "source": "private-create-order-dma",
+      "type": "object",
+      "description": "Response for private/create-order (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateCreateOrderListRequest": {
+      "source": "private-create-order-list",
+      "type": "object",
+      "description": "Request body for private/create-order-list.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateCreateOrderListResponse": {
+      "source": "private-create-order-list",
+      "type": "object",
+      "description": "Response for private/create-order-list (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateCreateSubaccountTransferRequest": {
+      "source": "private-create-subaccount-transfer",
+      "type": "object",
+      "description": "Request body for private/create-subaccount-transfer.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateCreateSubaccountTransferResponse": {
+      "source": "private-create-subaccount-transfer",
+      "type": "object",
+      "description": "Response for private/create-subaccount-transfer (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateCreateWithdrawalRequest": {
+      "source": "private-create-withdrawal",
+      "type": "object",
+      "description": "Request body for private/create-withdrawal.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateCreateWithdrawalResponse": {
+      "source": "private-create-withdrawal",
+      "type": "object",
+      "description": "Response for private/create-withdrawal (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatAccessRequest": {
+      "source": "private-fiat-fiat-access",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-access. Used by FCM/DCM brokers to check fiat access permissions on behalf of their users.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "on_behalf_of_account_uuid",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatAccessResponse": {
+      "source": "private-fiat-fiat-access",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-access (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatCreateBankAccountRequest": {
+      "source": "private-fiat-fiat-create-bank-account",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-create-bank-account. Used by FCM/DCM brokers to link a user's bank account via Plaid.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "on_behalf_of_account_uuid",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatCreateBankAccountResponse": {
+      "source": "private-fiat-fiat-create-bank-account",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-create-bank-account (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or origin",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatCreateWithdrawRequest": {
+      "source": "private-fiat-fiat-create-withdraw",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-create-withdraw.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatCreateWithdrawResponse": {
+      "source": "private-fiat-fiat-create-withdraw",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-create-withdraw (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original p",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatDepositHistoryRequest": {
+      "source": "private-fiat-fiat-deposit-history",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-deposit-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatDepositHistoryResponse": {
+      "source": "private-fiat-fiat-deposit-history",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-deposit-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original p",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "FiatTransactionParty": {
+      "source": "private-fiat-fiat-deposit-history",
+      "type": "object",
+      "description": "Sender or beneficiary in a fiat deposit/withdraw transaction.",
+      "properties": [
+        "account_identifier_value"
+      ]
+    },
+    "PrivateFiatFiatDepositInfoRequest": {
+      "source": "private-fiat-fiat-deposit-info",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-deposit-info.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatDepositInfoResponse": {
+      "source": "private-fiat-fiat-deposit-info",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-deposit-info (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pres",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatGetBankAccountsRequest": {
+      "source": "private-fiat-fiat-get-bank-accounts",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-get-bank-accounts.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatGetBankAccountsResponse": {
+      "source": "private-fiat-fiat-get-bank-accounts",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-get-bank-accounts (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatGetPlaidTokenRequest": {
+      "source": "private-fiat-fiat-get-plaid-token",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-get-plaid-token. Used by FCM/DCM brokers to obtain a Plaid link token for their users.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "on_behalf_of_account_uuid",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatGetPlaidTokenResponse": {
+      "source": "private-fiat-fiat-get-plaid-token",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-get-plaid-token (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original p",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatTransactionLimitRequest": {
+      "source": "private-fiat-fiat-transaction-limit",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-transaction-limit.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatTransactionLimitResponse": {
+      "source": "private-fiat-fiat-transaction-limit",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-transaction-limit (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "CurrencyAmount": {
+      "source": "private-fiat-fiat-transaction-limit",
+      "type": "object",
+      "description": "Currency and amount pair (amount may be null to indicate no limit).",
+      "properties": [
+        "currency",
+        "amount"
+      ]
+    },
+    "FiatMinMaxUnit": {
+      "source": "private-fiat-fiat-transaction-limit",
+      "type": "object",
+      "description": "",
+      "properties": [
+        "min",
+        "max",
+        "unit"
+      ]
+    },
+    "PrivateFiatFiatTransactionQuotaRequest": {
+      "source": "private-fiat-fiat-transaction-quota",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-transaction-quota.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatTransactionQuotaResponse": {
+      "source": "private-fiat-fiat-transaction-quota",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-transaction-quota (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateFiatFiatWithdrawHistoryRequest": {
+      "source": "private-fiat-fiat-withdraw-history",
+      "type": "object",
+      "description": "Request body for private/fiat/fiat-withdraw-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateFiatFiatWithdrawHistoryResponse": {
+      "source": "private-fiat-fiat-withdraw-history",
+      "type": "object",
+      "description": "Response for private/fiat/fiat-withdraw-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetAccountSettingsRequest": {
+      "source": "private-get-account-settings",
+      "type": "object",
+      "description": "Request body for private/get-account-settings.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetAccountSettingsResponse": {
+      "source": "private-get-account-settings",
+      "type": "object",
+      "description": "Response for private/get-account-settings (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original presen",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetAccountsRequest": {
+      "source": "private-get-accounts",
+      "type": "object",
+      "description": "Request body for private/get-accounts.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetAccountsResponse": {
+      "source": "private-get-accounts",
+      "type": "object",
+      "description": "Response for private/get-accounts (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetAccountsThisAccount": {
+      "source": "private-get-accounts",
+      "type": "object",
+      "description": "Information about the current API key's account.",
+      "properties": [
+        "uuid",
+        "hierarchy"
+      ]
+    },
+    "AccountHierarchy": {
+      "source": "private-get-accounts",
+      "type": "string",
+      "description": "Account type of the API key: MASTER or SUB_ACCOUNT.",
+      "properties": []
+    },
+    "PrivateGetAccountsAccount": {
+      "source": "private-get-accounts",
+      "type": "object",
+      "description": "Account object shared by master_account and sub_account_list in private/get-accounts result.",
+      "properties": [
+        "uuid",
+        "hierarchy",
+        "master_account_uuid",
+        "margin_account_uuid",
+        "label",
+        "enabled",
+        "tradable",
+        "name",
+        "email",
+        "mobile_number"
+      ]
+    },
+    "AccessLevel": {
+      "source": "private-get-accounts",
+      "type": "string",
+      "description": "DEFAULT or DISABLED",
+      "properties": []
+    },
+    "PrivateGetCurrencyNetworksRequest": {
+      "source": "private-get-currency-networks",
+      "type": "object",
+      "description": "Request body for private/get-currency-networks.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetCurrencyNetworksResponse": {
+      "source": "private-get-currency-networks",
+      "type": "object",
+      "description": "Response for private/get-currency-networks (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original prese",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetDepositAddressRequest": {
+      "source": "private-get-deposit-address",
+      "type": "object",
+      "description": "Request body for private/get-deposit-address.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetDepositAddressResponse": {
+      "source": "private-get-deposit-address",
+      "type": "object",
+      "description": "Response for private/get-deposit-address (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetDepositHistoryRequest": {
+      "source": "private-get-deposit-history",
+      "type": "object",
+      "description": "Request body for private/get-deposit-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "DepositStatus": {
+      "source": "private-get-deposit-history",
+      "type": "string",
+      "description": "Deposit status. Used in private/get-deposit-history request (filter) and response (deposit_list[].status).\n- \u2796 0: Not Arrived\n- \u2796 1: Arrived\n- \u2796 2: Fa",
+      "properties": []
+    },
+    "PrivateGetDepositHistoryResponse": {
+      "source": "private-get-deposit-history",
+      "type": "object",
+      "description": "Response for private/get-deposit-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetFeeCreditBalancesRequest": {
+      "source": "private-get-fee-credit-balances",
+      "type": "object",
+      "description": "Request body for private/get-fee-credit-balances.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetFeeCreditBalancesResponse": {
+      "source": "private-get-fee-credit-balances",
+      "type": "object",
+      "description": "Response for private/get-fee-credit-balances (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pre",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "FeeCreditItem": {
+      "source": "private-get-fee-credit-balances",
+      "type": "object",
+      "description": "Fee credit entry grouped by expiry date.",
+      "properties": [
+        "expiry_date",
+        "type",
+        "distributed_amount",
+        "available_balance",
+        "details"
+      ]
+    },
+    "FeeCreditDetail": {
+      "source": "private-get-fee-credit-balances",
+      "type": "object",
+      "description": "Per-campaign fee credit detail.",
+      "properties": [
+        "type",
+        "distribution_date",
+        "distributed_amount"
+      ]
+    },
+    "PrivateGetFeeRateRequest": {
+      "source": "private-get-fee-rate",
+      "type": "object",
+      "description": "Request body for private/get-fee-rate.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetFeeRateResponse": {
+      "source": "private-get-fee-rate",
+      "type": "object",
+      "description": "Response for private/get-fee-rate (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetInstrumentFeeRateRequest": {
+      "source": "private-get-instrument-fee-rate",
+      "type": "object",
+      "description": "Request body for private/get-instrument-fee-rate.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetInstrumentFeeRateResponse": {
+      "source": "private-get-instrument-fee-rate",
+      "type": "object",
+      "description": "Response for private/get-instrument-fee-rate (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pre",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetOpenOrdersRequest": {
+      "source": "private-get-open-orders",
+      "type": "object",
+      "description": "Request body for private/get-open-orders.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetOpenOrdersResponse": {
+      "source": "private-get-open-orders",
+      "type": "object",
+      "description": "Response for private/get-open-orders (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetOrderDetailRequest": {
+      "source": "private-get-order-detail",
+      "type": "object",
+      "description": "Request body for private/get-order-detail.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetOrderDetailResponse": {
+      "source": "private-get-order-detail",
+      "type": "object",
+      "description": "Response for private/get-order-detail (HTTP 200).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetOrderHistoryRequest": {
+      "source": "private-get-order-history",
+      "type": "object",
+      "description": "Request body for private/get-order-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetOrderHistoryResponse": {
+      "source": "private-get-order-history",
+      "type": "object",
+      "description": "Response for private/get-order-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetPositionsRequest": {
+      "source": "private-get-positions",
+      "type": "object",
+      "description": "Request body for private/get-positions.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetPositionsResponse": {
+      "source": "private-get-positions",
+      "type": "object",
+      "description": "Response for private/get-positions (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "UserPositionItem": {
+      "source": "private-get-positions",
+      "type": null,
+      "description": "Position item for REST private/get-positions result.data[]. Same as UserPositionItemBase.",
+      "properties": []
+    },
+    "UserPositionItemBase": {
+      "source": "private-get-positions",
+      "type": "object",
+      "description": "Common position fields shared by REST private/get-positions result.data[] and WS user.positions result.data[].\n",
+      "properties": [
+        "account_id",
+        "instrument_name",
+        "type",
+        "quantity",
+        "cost",
+        "open_position_pnl",
+        "open_pos_cost",
+        "session_pnl",
+        "update_timestamp_ms",
+        "isolation_id"
+      ]
+    },
+    "IsolationType": {
+      "source": "private-get-positions",
+      "type": "string",
+      "description": "Isolation type",
+      "properties": []
+    },
+    "PrivateGetSubaccountBalancesRequest": {
+      "source": "private-get-subaccount-balances",
+      "type": "object",
+      "description": "Request body for private/get-subaccount-balances.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetSubaccountBalancesResponse": {
+      "source": "private-get-subaccount-balances",
+      "type": "object",
+      "description": "Response for private/get-subaccount-balances (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pre",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "SubaccountBalanceItem": {
+      "source": "private-get-subaccount-balances",
+      "type": null,
+      "description": "One sub-account balance in private/get-subaccount-balances result.data. Same shape as BalanceItem.",
+      "properties": []
+    },
+    "BalanceItem": {
+      "source": "private-get-subaccount-balances",
+      "type": "object",
+      "description": "Single balance-row schema for both private/user-balance and private/get-subaccount-balances result.data[].\nExtends AccountBalanceItem with optional ac",
+      "properties": []
+    },
+    "AccountBalanceItem": {
+      "source": "private-get-subaccount-balances",
+      "type": "object",
+      "description": "Balance row with scalar fields and position_balances. Used by private/user-balance, private/get-subaccount-balances, WS user.balance, and IsolatedPosi",
+      "properties": []
+    },
+    "AccountBalanceBase": {
+      "source": "private-get-subaccount-balances",
+      "type": "object",
+      "description": "Shared scalar balance/risk fields for REST/WS balance and account-risk rows.\nCollateral and position arrays are defined in extending schemas (e.g. Acc",
+      "properties": [
+        "instrument_name",
+        "total_available_balance",
+        "total_margin_balance",
+        "total_initial_margin",
+        "total_maintenance_margin",
+        "total_position_cost",
+        "total_cash_balance",
+        "total_collateral_value",
+        "total_session_unrealized_pnl",
+        "total_session_realized_pnl"
+      ]
+    },
+    "PositionBalanceItem": {
+      "source": "private-get-subaccount-balances",
+      "type": "object",
+      "description": "Collateral balance entry within balance data (position_balances or balances array).\nUsed in private/user-balance, private/get-subaccount-balances, and",
+      "properties": [
+        "instrument_name",
+        "quantity",
+        "market_value",
+        "collateral_eligible",
+        "haircut",
+        "collateral_amount",
+        "max_withdrawal_balance",
+        "reserved_qty",
+        "hourly_interest_rate"
+      ]
+    },
+    "IsolatedPositionItem": {
+      "source": "private-get-subaccount-balances",
+      "type": "object",
+      "description": "Balance of an isolated position; extends AccountBalanceItem with isolation_id, leverage, isolation_type.\nOwn schema only (no isolated_positions), so n",
+      "properties": []
+    },
+    "PrivateGetTradesRequest": {
+      "source": "private-get-trades",
+      "type": "object",
+      "description": "Request body for private/get-trades.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateGetTradesResponse": {
+      "source": "private-get-trades",
+      "type": "object",
+      "description": "Response for private/get-trades (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "TradeItem": {
+      "source": "private-get-trades",
+      "type": null,
+      "description": "Trade item for REST private/get-trades result.data[]; extends core with transact_time_ns.",
+      "properties": []
+    },
+    "TradeItemBase": {
+      "source": "private-get-trades",
+      "type": "object",
+      "description": "Common trade fields shared by WS user.trade and REST private/get-trades result.data[].\nTransaction time is channel-specific: use WsTradeItem (transact",
+      "properties": [
+        "account_id",
+        "event_date",
+        "journal_type",
+        "traded_quantity",
+        "traded_price",
+        "fees",
+        "fee_credits",
+        "order_id",
+        "trade_id",
+        "trade_match_id"
+      ]
+    },
+    "TakerSide": {
+      "source": "private-get-trades",
+      "type": "string",
+      "description": "Maker or taker side of the trade",
+      "properties": []
+    },
+    "PrivateGetTransactionsRequest": {
+      "source": "private-get-transactions",
+      "type": "object",
+      "description": "Request body for private/get-transactions.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "JournalType": {
+      "source": "private-get-transactions",
+      "type": "string",
+      "description": "Journal / transaction type",
+      "properties": []
+    },
+    "PrivateGetTransactionsResponse": {
+      "source": "private-get-transactions",
+      "type": "object",
+      "description": "Response for private/get-transactions (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateGetWithdrawalHistoryRequest": {
+      "source": "private-get-withdrawal-history",
+      "type": "object",
+      "description": "Request body for private/get-withdrawal-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "WithdrawalStatus": {
+      "source": "private-get-withdrawal-history",
+      "type": "string",
+      "description": "Withdrawal status. Used in private/get-withdrawal-history request (filter) and response (withdrawal_list[].status).\n- \u2796 0: Pending\n- \u2796 1: Processing\n-",
+      "properties": []
+    },
+    "PrivateGetWithdrawalHistoryResponse": {
+      "source": "private-get-withdrawal-history",
+      "type": "object",
+      "description": "Response for private/get-withdrawal-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pres",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetDealHistoryRequest": {
+      "source": "private-otc-get-deal-history-rfq",
+      "type": "object",
+      "description": "Request body for private/otc/get-deal-history. Get closed deals (RFQ flow).",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetDealHistoryResponse": {
+      "source": "private-otc-get-deal-history-rfq",
+      "type": "object",
+      "description": "Response for private/otc/get-deal-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with deal_list.\ncode !== 0 \u2192 error, message and/or ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetOpenDealsDealListLegItem": {
+      "source": "private-otc-get-deal-history-rfq",
+      "type": "object",
+      "description": "One leg in a deal (get-open-deals result). Either quantity or notional; executed_quantity/executed_notional when applicable.",
+      "properties": [
+        "instrument_name",
+        "quantity",
+        "notional",
+        "executed_quantity",
+        "executed_notional",
+        "price",
+        "side",
+        "type"
+      ]
+    },
+    "PrivateOtcGetOpenDealsRequest": {
+      "source": "private-otc-get-open-deals-rfq",
+      "type": "object",
+      "description": "Request body for private/otc/get-open-deals. Get open deals (RFQ flow).",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetOpenDealsResponse": {
+      "source": "private-otc-get-open-deals-rfq",
+      "type": "object",
+      "description": "Response for private/otc/get-open-deals (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with deal_list.\ncode !== 0 \u2192 error, message and/or or",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetOpenQuoteRequestsRequest": {
+      "source": "private-otc-get-open-quote-requests",
+      "type": "object",
+      "description": "Request body for private/otc/get-open-quote-requests. Get open quote requests (active only: status NEW or ACTIVE).",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetOpenQuoteRequestsResponse": {
+      "source": "private-otc-get-open-quote-requests",
+      "type": "object",
+      "description": "Response for private/otc/get-open-quote-requests (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with count and quote_request_list.\ncode !== ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetOpenQuoteRequestsOpenQuoteRequestLegItem": {
+      "source": "private-otc-get-open-quote-requests",
+      "type": "object",
+      "description": "One leg in an open quote request. Either quantity or notional.",
+      "properties": [
+        "instrument_name",
+        "quantity",
+        "notional",
+        "side",
+        "type"
+      ]
+    },
+    "PrivateOtcGetOpenQuotesRequest": {
+      "source": "private-otc-get-open-quotes",
+      "type": "object",
+      "description": "Request body for private/otc/get-open-quotes. Get open quotes (active only: status = ACTIVE).",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetOpenQuotesResponse": {
+      "source": "private-otc-get-open-quotes",
+      "type": "object",
+      "description": "Response for private/otc/get-open-quotes (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with count and quote_list.\ncode !== 0 \u2192 error, messa",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetOpenQuotesQuoteListLegItem": {
+      "source": "private-otc-get-open-quotes",
+      "type": "object",
+      "description": "One leg in an open quote. Either quantity or notional; bid/ask when quote has pricing.",
+      "properties": [
+        "instrument_name",
+        "quantity",
+        "notional",
+        "bid",
+        "ask",
+        "type"
+      ]
+    },
+    "PrivateOtcGetOtcInstrumentsRequest": {
+      "source": "private-otc-get-otc-instruments",
+      "type": "object",
+      "description": "Request body for private/otc/get-otc-instruments. Retrieves available OTC instruments.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetOtcInstrumentsResponse": {
+      "source": "private-otc-get-otc-instruments",
+      "type": "object",
+      "description": "Response for private/otc/get-otc-instruments (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with instrument_list.\ncode !== 0 \u2192 error, messag",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetOtcInstrumentsInstrumentItem": {
+      "source": "private-otc-get-otc-instruments",
+      "type": "object",
+      "description": "OTC instrument details.",
+      "properties": [
+        "instrument_name",
+        "base_currency",
+        "quote_currency",
+        "type",
+        "price_tick_size",
+        "quote_decimals",
+        "qty_tick_size",
+        "qty_decimals"
+      ]
+    },
+    "PrivateOtcGetQuoteHistoryRequest": {
+      "source": "private-otc-get-quote-history",
+      "type": "object",
+      "description": "Request body for private/otc/get-quote-history. Get quotes history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetQuoteHistoryResponse": {
+      "source": "private-otc-get-quote-history",
+      "type": "object",
+      "description": "Response for private/otc/get-quote-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with count and quote_list.\ncode !== 0 \u2192 error, mes",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetQuoteHistoryQuoteListLegItem": {
+      "source": "private-otc-get-quote-history",
+      "type": "object",
+      "description": "One leg in a quote history item. Either quantity or notional; bid/ask when quote has pricing.",
+      "properties": [
+        "instrument_name",
+        "quantity",
+        "notional",
+        "bid",
+        "ask",
+        "type"
+      ]
+    },
+    "PrivateOtcGetQuoteRequestHistoryRequest": {
+      "source": "private-otc-get-quote-request-history",
+      "type": "object",
+      "description": "Request body for private/otc/get-quote-request-history. Get quote requests history (closed only: status = COMPLETED or REJECTED).",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetQuoteRequestHistoryResponse": {
+      "source": "private-otc-get-quote-request-history",
+      "type": "object",
+      "description": "Response for private/otc/get-quote-request-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with count and quote_request_list.\ncode !=",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetQuoteRequestHistoryQuoteRequestLegItem": {
+      "source": "private-otc-get-quote-request-history",
+      "type": "object",
+      "description": "One leg in a quote request (history entry). Either quantity or notional.",
+      "properties": [
+        "instrument_name",
+        "quantity",
+        "notional",
+        "side",
+        "type"
+      ]
+    },
+    "PrivateOtcGetSettleLaterLimitRequest": {
+      "source": "private-otc-get-settle-later-limit",
+      "type": "object",
+      "description": "Request body for private/otc/get-settle-later-limit. No request params.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetSettleLaterLimitResponse": {
+      "source": "private-otc-get-settle-later-limit",
+      "type": "object",
+      "description": "Response for private/otc/get-settle-later-limit (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with account_id, configured_limit, used_limit",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcGetUnsettledAmountsRequest": {
+      "source": "private-otc-get-unsettled-amounts",
+      "type": "object",
+      "description": "Request body for private/otc/get-unsettled-amounts. No request params.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcGetUnsettledAmountsResponse": {
+      "source": "private-otc-get-unsettled-amounts",
+      "type": "object",
+      "description": "Response for private/otc/get-unsettled-amounts (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with unsettled_ccys (map by date and instrumen",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcRequestDealRequest": {
+      "source": "private-otc-request-deal-rfq",
+      "type": "object",
+      "description": "Request body for private/otc/request-deal. Request a deal from a quote (RFQ flow).",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcRequestDealLegItem": {
+      "source": "private-otc-request-deal-rfq",
+      "type": "object",
+      "description": "One leg of an OTC deal request. Client either provide quantity or notional (same value used in request-quote).",
+      "properties": [
+        "instrument_name",
+        "price",
+        "quantity",
+        "notional",
+        "side"
+      ]
+    },
+    "PrivateOtcRequestDealResponse": {
+      "source": "private-otc-request-deal-rfq",
+      "type": "object",
+      "description": "Response for private/otc/request-deal (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with deal_id, cl_deal_id, quote_id, quote_req_id, deal_",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateOtcRequestDealResponseLegItem": {
+      "source": "private-otc-request-deal-rfq",
+      "type": "object",
+      "description": "One leg in the deal result. Echoed back from quote/quote request; executed_quantity and executed_notional when applicable.",
+      "properties": [
+        "instrument_name",
+        "price",
+        "quantity",
+        "notional",
+        "executed_quantity",
+        "executed_notional",
+        "side",
+        "type"
+      ]
+    },
+    "PrivateOtcRequestQuoteRequest": {
+      "source": "private-otc-request-quote",
+      "type": "object",
+      "description": "Request body for private/otc/request-quote. Create a quote request (RFQ flow).",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateOtcRequestQuoteLegItem": {
+      "source": "private-otc-request-quote",
+      "type": "object",
+      "description": "One leg of an OTC RFQ. Either quantity or notional must be provided but not both.",
+      "properties": [
+        "instrument_name",
+        "side",
+        "quantity",
+        "notional"
+      ]
+    },
+    "PrivateOtcRequestQuoteResponse": {
+      "source": "private-otc-request-quote",
+      "type": "object",
+      "description": "Response for private/otc/request-quote (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present with quote_req_id and cl_quote_req_id.\ncode !== 0 \u2192 er",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateStakingConvertRequest": {
+      "source": "private-staking-convert",
+      "type": "object",
+      "description": "Request body for private/staking/convert.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingConvertResponse": {
+      "source": "private-staking-convert",
+      "type": "object",
+      "description": "Response for private/staking/convert (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateStakingGetConvertHistoryRequest": {
+      "source": "private-staking-get-convert-history",
+      "type": "object",
+      "description": "Request body for private/staking/get-convert-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingGetConvertHistoryResponse": {
+      "source": "private-staking-get-convert-history",
+      "type": "object",
+      "description": "Response for private/staking/get-convert-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "StakingConvertHistoryItem": {
+      "source": "private-staking-get-convert-history",
+      "type": "object",
+      "description": "One convert history entry in private/staking/get-convert-history result.data.",
+      "properties": [
+        "from_instrument_name",
+        "to_instrument_name",
+        "expected_rate",
+        "from_quantity",
+        "slippage_tolerance_bps",
+        "actual_rate",
+        "to_quantity",
+        "convert_id",
+        "status",
+        "create_timestamp_ms"
+      ]
+    },
+    "ConvertStatus": {
+      "source": "private-staking-get-convert-history",
+      "type": "string",
+      "description": "Status of a convert request (used wherever convert_id is present).\n- \u2796 NEW: Request created\n- \u2796 COMPLETED: Conversion completed\n- \u2796 REJECTED: Conversi",
+      "properties": []
+    },
+    "PrivateStakingGetOpenConvertRequest": {
+      "source": "private-staking-get-open-convert",
+      "type": "object",
+      "description": "Request body for private/staking/get-open-convert.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingGetOpenConvertResponse": {
+      "source": "private-staking-get-open-convert",
+      "type": "object",
+      "description": "Response for private/staking/get-open-convert (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pr",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "StakingOpenConvertItem": {
+      "source": "private-staking-get-open-convert",
+      "type": "object",
+      "description": "One open convert entry in private/staking/get-open-convert result.data.",
+      "properties": [
+        "from_instrument_name",
+        "to_instrument_name",
+        "expected_rate",
+        "from_quantity",
+        "slippage_tolerance_bps",
+        "actual_rate",
+        "to_quantity",
+        "convert_id",
+        "status",
+        "create_timestamp_ms"
+      ]
+    },
+    "PrivateStakingGetOpenStakeRequest": {
+      "source": "private-staking-get-open-stake",
+      "type": "object",
+      "description": "Request body for private/staking/get-open-stake.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingGetOpenStakeResponse": {
+      "source": "private-staking-get-open-stake",
+      "type": "object",
+      "description": "Response for private/staking/get-open-stake (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original pres",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "StakingOpenStakeItem": {
+      "source": "private-staking-get-open-stake",
+      "type": "object",
+      "description": "One open stake entry in private/staking/get-open-stake result.data.",
+      "properties": [
+        "instrument_name",
+        "underlying_inst_name",
+        "cycle_id",
+        "staking_id",
+        "status",
+        "account",
+        "quantity",
+        "side",
+        "create_timestamp_ms"
+      ]
+    },
+    "StakingStatus": {
+      "source": "private-staking-get-open-stake",
+      "type": "string",
+      "description": "- Possible values:\n- \u2796 NEW: Request created\n- \u2796 PENDING: In progress\n- \u2796 PENDING_WITHDRAWAL: Withdrawal pending\n- \u2796 PENDING_UNSTAKING: Unstaking pendi",
+      "properties": []
+    },
+    "StakingSide": {
+      "source": "private-staking-get-open-stake",
+      "type": "string",
+      "description": "STAKE or UNSTAKE",
+      "properties": []
+    },
+    "PrivateStakingGetRewardHistoryRequest": {
+      "source": "private-staking-get-reward-history",
+      "type": "object",
+      "description": "Request body for private/staking/get-reward-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingGetRewardHistoryResponse": {
+      "source": "private-staking-get-reward-history",
+      "type": "object",
+      "description": "Response for private/staking/get-reward-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateStakingGetStakeHistoryRequest": {
+      "source": "private-staking-get-stake-history",
+      "type": "object",
+      "description": "Request body for private/staking/get-stake-history.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingGetStakeHistoryResponse": {
+      "source": "private-staking-get-stake-history",
+      "type": "object",
+      "description": "Response for private/staking/get-stake-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original p",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "StakingStakeHistoryItem": {
+      "source": "private-staking-get-stake-history",
+      "type": "object",
+      "description": "One stake history entry in private/staking/get-stake-history result.data.",
+      "properties": [
+        "instrument_name",
+        "underlying_inst_name",
+        "cycle_id",
+        "staking_id",
+        "status",
+        "account",
+        "quantity",
+        "side",
+        "create_timestamp_ms"
+      ]
+    },
+    "PrivateStakingGetStakingInstrumentsRequest": {
+      "source": "private-staking-get-staking-instruments",
+      "type": "object",
+      "description": "Request body for private/staking/get-staking-instruments.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingGetStakingInstrumentsResponse": {
+      "source": "private-staking-get-staking-instruments",
+      "type": "object",
+      "description": "Response for private/staking/get-staking-instruments (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or orig",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "StakingInstrumentItem": {
+      "source": "private-staking-get-staking-instruments",
+      "type": "object",
+      "description": "One staking instrument in private/staking/get-staking-instruments result.data.",
+      "properties": [
+        "instrument_name",
+        "underlying_inst_name",
+        "reward_inst_name",
+        "out_of_stock",
+        "block_unstake",
+        "est_rewards",
+        "apr_y",
+        "min_stake_amt",
+        "reward_frequency",
+        "lock_up_period"
+      ]
+    },
+    "AprUnit": {
+      "source": "private-staking-get-staking-instruments",
+      "type": "string",
+      "description": "APR or APY",
+      "properties": []
+    },
+    "PrivateStakingGetStakingPositionRequest": {
+      "source": "private-staking-get-staking-position",
+      "type": "object",
+      "description": "Request body for private/staking/get-staking-position.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingGetStakingPositionResponse": {
+      "source": "private-staking-get-staking-position",
+      "type": "object",
+      "description": "Response for private/staking/get-staking-position (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or origina",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "StakingPositionItem": {
+      "source": "private-staking-get-staking-position",
+      "type": "object",
+      "description": "One staking position in private/staking/get-staking-position result.data.",
+      "properties": [
+        "instrument_name",
+        "underlying_inst_name",
+        "staked_quantity",
+        "pending_staked_quantity",
+        "pending_unstaked_quantity",
+        "reward_eligible_quantity"
+      ]
+    },
+    "PrivateStakingStakeRequest": {
+      "source": "private-staking-stake",
+      "type": "object",
+      "description": "Request body for private/staking/stake.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingStakeResponse": {
+      "source": "private-staking-stake",
+      "type": "object",
+      "description": "Response for private/staking/stake (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateStakingUnstakeRequest": {
+      "source": "private-staking-unstake",
+      "type": "object",
+      "description": "Request body for private/staking/unstake.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateStakingUnstakeResponse": {
+      "source": "private-staking-unstake",
+      "type": "object",
+      "description": "Response for private/staking/unstake (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PrivateUserBalanceHistoryRequest": {
+      "source": "private-user-balance-history",
+      "type": "object",
+      "description": "Request body for private/user-balance-history. Returns balance history; may temporarily differ from GUI.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "Timeframe": {
+      "source": "private-user-balance-history",
+      "type": "string",
+      "description": "H1 = hourly, D1 = daily",
+      "properties": []
+    },
+    "PrivateUserBalanceHistoryResponse": {
+      "source": "private-user-balance-history",
+      "type": "object",
+      "description": "Response for private/user-balance-history (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original presen",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "UserBalanceHistoryItem": {
+      "source": "private-user-balance-history",
+      "type": "object",
+      "description": "Single balance-history point for private/user-balance-history result.data[].",
+      "properties": [
+        "t",
+        "c"
+      ]
+    },
+    "PrivateUserBalanceRequest": {
+      "source": "private-user-balance",
+      "type": "object",
+      "description": "Request body for private/user-balance. Pass empty params {}.",
+      "properties": [
+        "id",
+        "method",
+        "api_key",
+        "sig",
+        "nonce",
+        "params"
+      ]
+    },
+    "PrivateUserBalanceResponse": {
+      "source": "private-user-balance",
+      "type": "object",
+      "description": "Response for private/user-balance (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PublicGetBookResponse": {
+      "source": "public-get-book",
+      "type": "object",
+      "description": "Response for public/get-book (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "BookSnapshotLevel": {
+      "source": "public-get-book",
+      "type": "array",
+      "description": "[0] = Price, [1] = Quantity, [2] = Number of Orders. Known issue: Number of Orders currently returns 0.",
+      "properties": []
+    },
+    "CandlestickTimeframe": {
+      "source": "public-get-candlestick",
+      "type": "string",
+      "description": "Candlestick period. Default 1m.",
+      "properties": []
+    },
+    "PublicGetCandlestickResponse": {
+      "source": "public-get-candlestick",
+      "type": "object",
+      "description": "Response for public/get-candlestick (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "CandlestickItem": {
+      "source": "public-get-candlestick",
+      "type": "object",
+      "description": "Single candlestick (Open, High, Low, Close, Volume, Start time ms)",
+      "properties": [
+        "o",
+        "h",
+        "l",
+        "c",
+        "v",
+        "t"
+      ]
+    },
+    "PublicGetExpiredSettlementPriceResponse": {
+      "source": "public-get-expired-settlement-price",
+      "type": "object",
+      "description": "Response for public/get-expired-settlement-price (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PublicGetInstrumentsResponse": {
+      "source": "public-get-instruments",
+      "type": "object",
+      "description": "Response for public/get-instruments (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "InstrumentItem": {
+      "source": "public-get-instruments",
+      "type": "object",
+      "description": "Instrument information. Shared by REST public/get-instruments and WS instrument channel.",
+      "properties": [
+        "symbol",
+        "inst_type",
+        "display_name",
+        "base_ccy",
+        "quote_ccy",
+        "quote_decimals",
+        "quantity_decimals",
+        "price_tick_size",
+        "qty_tick_size",
+        "max_leverage"
+      ]
+    },
+    "PublicGetInsuranceResponse": {
+      "source": "public-get-insurance",
+      "type": "object",
+      "description": "Response for public/get-insurance (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PriceTimestampItem": {
+      "source": "public-get-insurance",
+      "type": "object",
+      "description": "Value with timestamp (used by index, mark, settlement, funding, etc.)",
+      "properties": [
+        "v",
+        "t"
+      ]
+    },
+    "PublicGetRiskParametersResponse": {
+      "source": "public-get-risk-parameters",
+      "type": "object",
+      "description": "Response for public/get-risk-parameters (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PublicGetTickersResponse": {
+      "source": "public-get-tickers",
+      "type": "object",
+      "description": "Response for public/get-tickers (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "TickerItemBase": {
+      "source": "public-get-tickers",
+      "type": "object",
+      "description": "Ticker row fields shared by REST public/get-tickers result.data[] and WS ticker channel result.data[].\nWS adds bs, ks (best bid/ask size) via TickerPa",
+      "properties": [
+        "h",
+        "l",
+        "a",
+        "c",
+        "b",
+        "k",
+        "i",
+        "v",
+        "vv",
+        "oi"
+      ]
+    },
+    "PublicGetTradesResponse": {
+      "source": "public-get-trades",
+      "type": "object",
+      "description": "Response for public/get-trades (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PublicTradeItem": {
+      "source": "public-get-trades",
+      "type": null,
+      "description": "One item in REST public/get-trades result.data[]. Extends MarketTradeItemBase with tn.",
+      "properties": []
+    },
+    "MarketTradeItemBase": {
+      "source": "public-get-trades",
+      "type": "object",
+      "description": "Public market trade row fields shared by REST public/get-trades result.data[] and WS trade channel result.data[].\nREST adds tn (timestamp nanoseconds)",
+      "properties": [
+        "d",
+        "t",
+        "p",
+        "q",
+        "s",
+        "i",
+        "m"
+      ]
+    },
+    "PublicGetValuationsResponse": {
+      "source": "public-get-valuations",
+      "type": "object",
+      "description": "Response for public/get-valuations (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original present.\n",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    },
+    "PublicStakingGetConversionRateRequest": {
+      "source": "public-staking-get-conversion-rate",
+      "type": "object",
+      "description": "Request body for public/staking/get-conversion-rate (no api_key/sig).",
+      "properties": [
+        "id",
+        "method",
+        "params",
+        "nonce"
+      ]
+    },
+    "PublicStakingGetConversionRateResponse": {
+      "source": "public-staking-get-conversion-rate",
+      "type": "object",
+      "description": "Response for public/staking/get-conversion-rate (HTTP 200/4xx/5xx).\ncode === 0 \u2192 success, result present.\ncode !== 0 \u2192 error, message and/or original ",
+      "properties": [
+        "id",
+        "method",
+        "code",
+        "result",
+        "message",
+        "original"
+      ]
+    }
+  },
+  "stats": {
+    "total_endpoints": 101,
+    "total_schemas": 269,
+    "files_processed": 101
+  }
+}

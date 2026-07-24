@@ -1,0 +1,379 @@
+openapi: 3.0.3
+info:
+  title: private/fiat/fiat-create-withdraw
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/fiat/fiat-create-withdraw:
+    post:
+      tags:
+        - Fiat Wallet
+      x-apply-to:
+        - rest
+      summary: private/fiat/fiat-create-withdraw
+      description: Creates a new fiat withdrawal request for the authenticated user.
+      operationId: privateFiatFiatCreateWithdraw
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateFiatFiatCreateWithdraw({
+              client_wid: 'c1d2e3f4-a5b6-7890-cdef-123456789abc',
+              account_id: 'bank-acct-uuid-001',
+              amount: '1000.00',
+              currency: 'USD',
+              payment_network: 'usd_swift',
+              intermediate_bank: {
+                bank_identifier_type: 'SWIFT',
+                bank_identifier_value: 'CHASUS33',
+                bank_name: 'JPMorgan Chase Bank',
+                address_1: '270 Park Avenue',
+                address_2: 'New York, NY 10017',
+              },
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_fiat_fiat_create_withdraw({
+                'client_wid': 'c1d2e3f4-a5b6-7890-cdef-123456789abc',
+                'account_id': 'bank-acct-uuid-001',
+                'amount': '1000.00',
+                'currency': 'USD',
+                'payment_network': 'usd_swift',
+                'intermediate_bank': {
+                    'bank_identifier_type': 'SWIFT',
+                    'bank_identifier_value': 'CHASUS33',
+                    'bank_name': 'JPMorgan Chase Bank',
+                    'address_1': '270 Park Avenue',
+                    'address_2': 'New York, NY 10017',
+                },
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateFiatFiatCreateWithdrawRequest"
+            example:
+              id: "123456"
+              method: private/fiat/fiat-create-withdraw
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1640995200000"
+              params:
+                client_wid: c1d2e3f4-a5b6-7890-cdef-123456789abc
+                account_id: bank-acct-uuid-001
+                amount: "1000.00"
+                currency: USD
+                payment_network: usd_swift
+                intermediate_bank:
+                  bank_identifier_type: SWIFT
+                  bank_identifier_value: CHASUS33
+                  bank_name: JPMorgan Chase Bank
+                  address_1: 270 Park Avenue
+                  address_2: New York, NY 10017
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateWithdrawResponse"
+              examples:
+                Example - usd (cubix):
+                  summary: Example - usd (cubix)
+                  value:
+                    id: "123456"
+                    method: private/fiat/fiat-create-withdraw
+                    code: "0"
+                    msg: success
+                    result:
+                      id: withdraw_789012345
+                      client_wid: c1d2e3f4-a5b6-7890-cdef-123456789abc
+                      status: pending
+                      payment_network: usd_cubix
+                      currency: USD
+                      amount: "1000.00"
+                      fee_currency: USD
+                      fee_amount: "25.00"
+                Example - usd (swift):
+                  summary: Example - usd (swift)
+                  value:
+                    id: "0"
+                    method: private/fiat/fiat-create-withdraw
+                    code: "0"
+                    result:
+                      id: 27f3b781-e8e4-4ae9-871e-0edd7f9deba9
+                      client_wid: c1d2e3f4-a5b6-7890-cdef-123456789abc
+                      status: debit_processing
+                      payment_network: usd_swift
+                      currency: USD
+                      amount: "500.0"
+                      fee_currency: USD
+                      fee_amount: "45.0"
+                Example - eur (openpayd):
+                  summary: Example - eur (openpayd)
+                  value:
+                    id: "0"
+                    method: private/fiat/fiat-create-withdraw
+                    code: "0"
+                    result:
+                      id: e21358d3-232a-4a7f-9a0d-d15bcf5ca0c9
+                      client_wid: c1d2e3f4-a5b6-7890-cdef-123456789abc
+                      status: debit_processing
+                      payment_network: openpayd_exchange_sepa
+                      currency: EUR
+                      amount: "100.0"
+                      fee_currency: EUR
+                      fee_amount: "0.0"
+                Example - aed:
+                  summary: Example - aed
+                  value:
+                    id: "0"
+                    method: private/fiat/fiat-create-withdraw
+                    code: "0"
+                    result:
+                      id: 3f28eea1-81c0-4a1b-b807-342ff14ed373
+                      client_wid: c1d2e3f4-a5b6-7890-cdef-123456789abc
+                      status: debit_processing
+                      payment_network: aed_ipi
+                      currency: AED
+                      amount: "105.0"
+                      fee_currency: AED
+                      fee_amount: "10.0"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateWithdrawResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-withdraw
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateWithdrawResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-withdraw
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateWithdrawResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-withdraw
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateWithdrawResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-withdraw
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateWithdrawResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-withdraw
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateFiatFiatCreateWithdrawRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/fiat/fiat-create-withdraw.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/fiat/fiat-create-withdraw"
+          example: private/fiat/fiat-create-withdraw
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          required:
+            - account_id
+            - amount
+            - currency
+            - payment_network
+          properties:
+            client_wid:
+              type: string
+              description: Optional client withdrawal ID. (Max 36 chars) Recommended for correlation.
+              maxLength: 36
+            account_id:
+              type: string
+              description: Linked bank account ID (UUID format); use id from private/fiat/fiat-get-bank-accounts response.
+            amount:
+              type: string
+              format: decimal
+              description: Withdrawal amount as string.
+            currency:
+              type: string
+              description: Currency code (3-letter format).
+            payment_network:
+              type: string
+              description: Payment network identifier.
+            intermediate_bank:
+              type: object
+              description: Only required for usd_swift. Intermediary bank information will update the bank intermediate bank info if provided. Please check with your bank for the correct information.
+              properties:
+                bank_identifier_type:
+                  type: string
+                  description: Type of bank identifier (e.g., SWIFT, ROUTING)
+                bank_identifier_value:
+                  type: string
+                  description: Bank identifier value
+                bank_name:
+                  type: string
+                  description: Name of the intermediary bank.
+                address_1:
+                  type: string
+                  description: Bank address line 1
+                address_2:
+                  type: string
+                  description: Bank address line 2
+            beneficiary_id:
+              type: string
+              description: Beneficiary ID (optional)
+            authorization_id:
+              type: string
+              description: Authorization ID (optional)
+            bank_identifier_value:
+              type: string
+              description: Only available to aed_ipi. Bank identifier value for the AED network.
+            account_identifier_value:
+              type: string
+              description: Only available to aed_ipi. Account identifier value for the AED network.
+    PrivateFiatFiatCreateWithdrawResponse:
+      type: object
+      description: |
+        Response for private/fiat/fiat-create-withdraw (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. Withdrawal result per docs.
+          required:
+            - id
+            - status
+            - payment_network
+            - currency
+            - amount
+            - fee_currency
+            - fee_amount
+          properties:
+            id:
+              type: string
+              description: System-generated withdrawal ID
+            client_wid:
+              type: string
+              description: Client withdrawal ID (echoed from request if provided)
+            account_id:
+              type: string
+              description: Linked bank account ID for the withdrawal
+            status:
+              type: string
+              description: Withdrawal status (e.g., pending)
+            payment_network:
+              type: string
+              description: Payment network identifier
+            currency:
+              type: string
+              description: Currency code
+            amount:
+              type: string
+              format: decimal
+              description: Withdrawal amount (string for precision).
+            amount_in_usd:
+              type: string
+              format: decimal
+              description: Withdrawal amount converted to USD (string for precision).
+            fee_currency:
+              type: string
+              description: Currency of the withdrawal fee
+            fee_amount:
+              type: string
+              format: decimal
+              description: Withdrawal fee amount (string for precision).
+            beneficiary_id:
+              type: string
+              description: Beneficiary identifier
+            authorization_id:
+              type: string
+              description: Authorization identifier for the withdrawal
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.

@@ -1,0 +1,202 @@
+openapi: 3.0.3
+info:
+  title: private/change-isolated-margin-leverage
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/change-isolated-margin-leverage:
+    post:
+      tags:
+        - Trading
+      x-apply-to:
+        - rest
+      summary: private/change-isolated-margin-leverage
+      description: Changes the maximum leverage of an isolated position.
+      operationId: privateChangeIsolatedMarginLeverage
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateChangeIsolatedMarginLeverage({
+              isolation_id: '19848526',
+              leverage: 10,
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_change_isolated_margin_leverage({
+                'isolation_id': '19848526',
+                'leverage': 10,
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateChangeIsolatedMarginLeverageRequest"
+            example:
+              id: "11"
+              method: private/change-isolated-margin-leverage
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1611022832613"
+              params:
+                isolation_id: "19848526"
+                leverage: "10"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateChangeIsolatedMarginLeverageResponse"
+              example:
+                id: "11"
+                method: private/change-isolated-margin-leverage
+                code: "0"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateChangeIsolatedMarginLeverageResponse"
+              example:
+                id: "1"
+                method: private/change-isolated-margin-leverage
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateChangeIsolatedMarginLeverageResponse"
+              example:
+                id: "1"
+                method: private/change-isolated-margin-leverage
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateChangeIsolatedMarginLeverageResponse"
+              example:
+                id: "1"
+                method: private/change-isolated-margin-leverage
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateChangeIsolatedMarginLeverageResponse"
+              example:
+                id: "1"
+                method: private/change-isolated-margin-leverage
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateChangeIsolatedMarginLeverageResponse"
+              example:
+                id: "1"
+                method: private/change-isolated-margin-leverage
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateChangeIsolatedMarginLeverageRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/change-isolated-margin-leverage.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/change-isolated-margin-leverage"
+          example: private/change-isolated-margin-leverage
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          required:
+            - isolation_id
+            - leverage
+          properties:
+            isolation_id:
+              type: string
+              description: Isolation ID of the isolated position to apply the leverage change to.
+            leverage:
+              type: string
+              format: decimal
+              description: The maximum leverage to be used for the isolated position.
+    PrivateChangeIsolatedMarginLeverageResponse:
+      type: object
+      description: |
+        Response for private/change-isolated-margin-leverage (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0; no result block per docs.
+          properties: {}
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.

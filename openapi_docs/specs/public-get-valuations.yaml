@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: public/get-valuations
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /public/get-valuations:
+    get:
+      tags:
+        - Reference and Market Data
+      x-apply-to:
+        - rest
+      summary: public/get-valuations
+      description: Fetches valuation type data for an instrument.
+      operationId: publicGetValuations
+      parameters:
+        - name: instrument_name
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTCUSD-INDEX
+          description: e.g. BTCUSD-INDEX
+        - name: valuation_type
+          in: query
+          required: true
+          schema:
+            type: string
+            example: index_price
+          description: |
+            **List of available types:**
+            - a. **index_price**: returns per minute data of underlying reference price of the instrument.
+            - b. **mark_price**: returns per minute data of mark price of the instrument.
+            - c. **funding_hist**: returns hourly data of the funding rate settled in past hourly settlement.
+            - d. **funding_rate**: returns per minute data of current hourly funding rate that will settle at the end of each hour of current 4-hour interval.
+            - e. **estimated_funding_rate**: returns per minute data of estimated funding rate for the next interval.
+        - name: count
+          in: query
+          schema:
+            type: string
+            format: int32
+            default: "25"
+          description: Default is 25
+        - name: start_ts
+          in: query
+          schema:
+            type: string
+            format: int64
+          description: Default timestamp is 30 days ago for funding_hist, and 1 day ago for other valuation_type (Unix timestamp).
+        - name: end_ts
+          in: query
+          schema:
+            type: string
+            format: int64
+          description: Default timestamp is current time (Unix timestamp).
+      x-codeSamples:
+        - lang: cURL
+          label: cURL
+          source: |
+            curl -X GET "https://api.crypto.com/exchange/v1/public/get-valuations?instrument_name=BTCUSD-INDEX&valuation_type=index_price&count=1" \
+              -H "Content-Type: application/json"
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({ enableRateLimit: true });
+            const res = await exchange.v1PublicGetPublicGetValuations({ instrument_name: 'BTCUSD-INDEX', valuation_type: 'index_price', count: "1" });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({'enableRateLimit': True})
+            res = exchange.v1_public_get_public_get_valuations({'instrument_name': 'BTCUSD-INDEX', 'valuation_type': 'index_price', 'count': "1"})
+            print(res)
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetValuationsResponse"
+              example:
+                id: "1"
+                method: public/get-valuations
+                code: "0"
+                result:
+                  data:
+                    - v: "50776.73000"
+                      t: "1613547318000"
+                  instrument_name: BTCUSD-INDEX
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetValuationsResponse"
+              example:
+                id: "1"
+                method: public/get-valuations
+                code: "40001"
+                message: BAD_REQUEST
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetValuationsResponse"
+              example:
+                id: "1"
+                method: public/get-valuations
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetValuationsResponse"
+              example:
+                id: "1"
+                method: public/get-valuations
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetValuationsResponse"
+              example:
+                id: "1"
+                method: public/get-valuations
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PublicGetValuationsResponse:
+      type: object
+      description: |
+        Response for public/get-valuations (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. instrument_name, data array (v, t per item).
+          properties:
+            instrument_name:
+              type: string
+              description: e.g. BTCUSD-INDEX
+            data:
+              type: array
+              description: Array of value and timestamp (v, t).
+              items:
+                $ref: "#/components/schemas/PriceTimestampItem"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    PriceTimestampItem:
+      type: object
+      description: Value with timestamp (used by index, mark, settlement, funding, etc.)
+      properties:
+        v:
+          type: string
+          format: decimal
+          description: Value
+        t:
+          type: string
+          format: int64
+          description: Timestamp (ms), e.g. "1771761038000".

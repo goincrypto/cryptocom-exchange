@@ -1,0 +1,175 @@
+openapi: 3.0.3
+info:
+  title: public/get-insurance
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /public/get-insurance:
+    get:
+      tags:
+        - Reference and Market Data
+      x-apply-to:
+        - rest
+      summary: public/get-insurance
+      description: Fetches the balance of the Insurance Fund for a particular currency.
+      operationId: publicGetInsurance
+      parameters:
+        - name: instrument_name
+          in: query
+          required: true
+          schema:
+            type: string
+            example: USD
+          description: e.g. USD
+        - name: count
+          in: query
+          schema:
+            type: string
+            format: int32
+            default: "25"
+          description: Default is 25
+        - name: start_ts
+          in: query
+          schema:
+            type: string
+            format: int64
+          description: Default timestamp is 1 day ago (Unix timestamp).
+        - name: end_ts
+          in: query
+          schema:
+            type: string
+            format: int64
+          description: Default timestamp is current time (Unix timestamp).
+      x-codeSamples:
+        - lang: cURL
+          label: cURL
+          source: |
+            curl -X GET "https://api.crypto.com/exchange/v1/public/get-insurance?instrument_name=USD&count=1" \
+              -H "Content-Type: application/json"
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({ enableRateLimit: true });
+            const res = await exchange.v1PublicGetPublicGetInsurance({ instrument_name: 'USD', count: "1" });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({'enableRateLimit': True})
+            res = exchange.v1_public_get_public_get_insurance({'instrument_name': 'USD', 'count': "1"})
+            print(res)
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInsuranceResponse"
+              example:
+                id: "1"
+                method: public/get-insurance
+                code: "0"
+                result:
+                  data:
+                    - v: "50000000"
+                      t: "1613539503965"
+                  instrument_name: USD
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInsuranceResponse"
+              example:
+                id: "1"
+                method: public/get-insurance
+                code: "40001"
+                message: BAD_REQUEST
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInsuranceResponse"
+              example:
+                id: "1"
+                method: public/get-insurance
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInsuranceResponse"
+              example:
+                id: "1"
+                method: public/get-insurance
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicGetInsuranceResponse"
+              example:
+                id: "1"
+                method: public/get-insurance
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PublicGetInsuranceResponse:
+      type: object
+      description: |
+        Response for public/get-insurance (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. instrument_name (e.g. USD), data[] has v (value), t (timestamp).
+          properties:
+            instrument_name:
+              type: string
+              description: e.g. USD
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/PriceTimestampItem"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    PriceTimestampItem:
+      type: object
+      description: Value with timestamp (used by index, mark, settlement, funding, etc.)
+      properties:
+        v:
+          type: string
+          format: decimal
+          description: Value
+        t:
+          type: string
+          format: int64
+          description: Timestamp (ms), e.g. "1771761038000".

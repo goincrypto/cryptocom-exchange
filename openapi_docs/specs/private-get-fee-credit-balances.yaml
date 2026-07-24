@@ -1,0 +1,279 @@
+openapi: 3.0.3
+info:
+  title: private/get-fee-credit-balances
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/get-fee-credit-balances:
+    post:
+      tags:
+        - Account Balance and Positions
+      x-business-units:
+        - exchange
+      x-apply-to:
+        - rest
+      summary: private/get-fee-credit-balances
+      description: |
+        Get fee credit balance details for the authenticated account. Fee credits are grouped by expiry date and sorted in ascending order. Values are not real-time and are updated daily at 00:00 UTC.
+      operationId: privateGetFeeCreditBalances
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateGetFeeCreditBalances({
+              page: 0,
+              page_size: 200
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_get_fee_credit_balances({
+                'page': 0,
+                'page_size': 200
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateGetFeeCreditBalancesRequest"
+            example:
+              id: "1"
+              method: private/get-fee-credit-balances
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              params:
+                page: 0
+                page_size: 200
+              nonce: "1721989202781"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetFeeCreditBalancesResponse"
+              example:
+                id: "1"
+                method: private/get-fee-credit-balances
+                code: "0"
+                result:
+                  fee_credits:
+                    - expiry_date: 1735689540000
+                      type: Campaign1, Campaign2
+                      distributed_amount: "200.00000000"
+                      available_balance: "150.00000000"
+                      details:
+                        - type: Campaign1
+                          distribution_date: 1704067140000
+                          distributed_amount: "100.00000000"
+                        - type: Campaign2
+                          distribution_date: 1706745540000
+                          distributed_amount: "100.00000000"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetFeeCreditBalancesResponse"
+              example:
+                id: "1"
+                method: private/get-fee-credit-balances
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetFeeCreditBalancesResponse"
+              example:
+                id: "1"
+                method: private/get-fee-credit-balances
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetFeeCreditBalancesResponse"
+              example:
+                id: "1"
+                method: private/get-fee-credit-balances
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetFeeCreditBalancesResponse"
+              example:
+                id: "1"
+                method: private/get-fee-credit-balances
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetFeeCreditBalancesResponse"
+              example:
+                id: "1"
+                method: private/get-fee-credit-balances
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateGetFeeCreditBalancesRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/get-fee-credit-balances.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/get-fee-credit-balances"
+          example: private/get-fee-credit-balances
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            page:
+              type: integer
+              minimum: 0
+              description: Page number (0-based).
+              example: 0
+            page_size:
+              type: integer
+              minimum: 1
+              maximum: 200
+              description: "Number of entries per page. Default: 200, Max: 200."
+              example: 200
+    PrivateGetFeeCreditBalancesResponse:
+      type: object
+      description: |
+        Response for private/get-fee-credit-balances (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0.
+          required:
+            - fee_credits
+          properties:
+            fee_credits:
+              type: array
+              description: List of fee credit entries grouped by expiry date, sorted in ascending order.
+              items:
+                $ref: "#/components/schemas/FeeCreditItem"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    FeeCreditItem:
+      type: object
+      description: Fee credit entry grouped by expiry date.
+      required:
+        - expiry_date
+        - available_balance
+      properties:
+        expiry_date:
+          type: integer
+          format: int64
+          description: Expiry date in epoch milliseconds (end of day 23:59 UTC)
+          example: 1735689540000
+        type:
+          type: string
+          description: Comma-separated campaign names. Master accounts only.
+          example: Campaign1, Campaign2
+        distributed_amount:
+          type: string
+          format: decimal
+          description: Total distributed amount (8 decimal places). Master accounts only.
+          example: "200.00000000"
+        available_balance:
+          type: string
+          format: decimal
+          description: Estimated available balance (8 decimal places)
+          example: "150.00000000"
+        details:
+          type: array
+          description: Per-campaign breakdown. Master accounts only.
+          items:
+            $ref: "#/components/schemas/FeeCreditDetail"
+    FeeCreditDetail:
+      type: object
+      description: Per-campaign fee credit detail.
+      required:
+        - type
+        - distribution_date
+        - distributed_amount
+      properties:
+        type:
+          type: string
+          description: Campaign name
+          example: Campaign1
+        distribution_date:
+          type: integer
+          format: int64
+          description: Distribution date in epoch milliseconds (end of day 23:59 UTC)
+          example: 1704067140000
+        distributed_amount:
+          type: string
+          format: decimal
+          description: Amount distributed for this campaign (8 decimal places)
+          example: "100.00000000"

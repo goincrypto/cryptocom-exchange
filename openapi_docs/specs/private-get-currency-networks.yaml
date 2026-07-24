@@ -1,0 +1,263 @@
+openapi: 3.0.3
+info:
+  title: private/get-currency-networks
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/get-currency-networks:
+    post:
+      tags:
+        - Crypto Wallet
+      x-apply-to:
+        - rest
+      summary: private/get-currency-networks
+      description: Get the symbol network mapping.
+      operationId: privateGetCurrencyNetworks
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateGetCurrencyNetworks({});
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_get_currency_networks({})
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateGetCurrencyNetworksRequest"
+            example:
+              id: "12"
+              method: private/get-currency-networks
+              params: {}
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1640830660110"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetCurrencyNetworksResponse"
+              example:
+                id: "123456"
+                method: private/get-currency-networks
+                code: "0"
+                result:
+                  update_time: "1641151604000"
+                  currency_map:
+                    AGLD:
+                      full_name: Adventure Gold
+                      default_network: null
+                      network_list:
+                        - network_id: ETH
+                          withdrawal_fee: null
+                          withdraw_enabled: true
+                          min_withdrawal_amount: "10.0"
+                          deposit_enabled: true
+                          confirmation_required: "12"
+                    MATIC:
+                      full_name: Polygon
+                      default_network: ETH
+                      network_list:
+                        - network_id: BNB
+                          withdrawal_fee: "0.80000000"
+                          withdraw_enabled: true
+                          min_withdrawal_amount: "1.6"
+                          deposit_enabled: true
+                          confirmation_required: "0"
+                        - network_id: ETH
+                          withdrawal_fee: "20.00000000"
+                          withdraw_enabled: true
+                          min_withdrawal_amount: "40.0"
+                          deposit_enabled: true
+                          confirmation_required: "0"
+                        - network_id: MATIC
+                          withdrawal_fee: "0.08000000"
+                          withdraw_enabled: true
+                          min_withdrawal_amount: "0.16"
+                          deposit_enabled: true
+                          confirmation_required: "0"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetCurrencyNetworksResponse"
+              example:
+                id: "1"
+                method: private/get-currency-networks
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetCurrencyNetworksResponse"
+              example:
+                id: "1"
+                method: private/get-currency-networks
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetCurrencyNetworksResponse"
+              example:
+                id: "1"
+                method: private/get-currency-networks
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetCurrencyNetworksResponse"
+              example:
+                id: "1"
+                method: private/get-currency-networks
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetCurrencyNetworksResponse"
+              example:
+                id: "1"
+                method: private/get-currency-networks
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateGetCurrencyNetworksRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/get-currency-networks.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/get-currency-networks"
+          example: private/get-currency-networks
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          description: No parameters; use empty object {}
+          additionalProperties: false
+    PrivateGetCurrencyNetworksResponse:
+      type: object
+      description: |
+        Response for private/get-currency-networks (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. update_time, currency_map (full_name, default_network, network_list).
+          properties:
+            update_time:
+              type: string
+              format: int64
+              description: Last update timestamp (ms).
+            currency_map:
+              type: object
+              description: Map of currency code to currency network info.
+              additionalProperties:
+                type: object
+                properties:
+                  full_name:
+                    type: string
+                    description: E.g. SHIBA INU.
+                  default_network:
+                    type: string
+                    description: If network is not provided in create-withdrawal, this is used when more than one network is available.
+                  network_list:
+                    type: array
+                    description: List of networks for this currency.
+                    items:
+                      type: object
+                      properties:
+                        network_id:
+                          type: string
+                          description: Network id; can be used in create-withdrawal.
+                        withdrawal_fee:
+                          type: string
+                          format: decimal
+                          description: Withdrawal fee.
+                        withdraw_enabled:
+                          type: boolean
+                          description: Whether withdrawal is enabled.
+                        min_withdrawal_amount:
+                          type: string
+                          format: decimal
+                          description: Minimum withdrawal amount.
+                        deposit_enabled:
+                          type: boolean
+                          description: Whether deposit is enabled.
+                        confirmation_required:
+                          type: string
+                          format: int32
+                          description: Confirmation blocks count.
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.

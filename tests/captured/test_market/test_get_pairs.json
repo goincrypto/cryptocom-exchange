@@ -2852,6 +2852,26 @@
             "margin_sell_enabled": false
           },
           {
+            "symbol": "BTCUSD-261030",
+            "inst_type": "FUTURE",
+            "display_name": "BTCUSD Futures 20261030",
+            "base_ccy": "BTC",
+            "quote_ccy": "USD",
+            "quote_decimals": 1,
+            "quantity_decimals": 4,
+            "price_tick_size": "0.1",
+            "qty_tick_size": "0.0001",
+            "max_leverage": "100",
+            "tradable": true,
+            "expiry_timestamp_ms": 1793347200000,
+            "beta_product": false,
+            "underlying_symbol": "BTCUSD-INDEX",
+            "contract_size": "1",
+            "product_type": "DIGITAL_CURRENCIES",
+            "margin_buy_enabled": false,
+            "margin_sell_enabled": false
+          },
+          {
             "symbol": "BTCUSD-261225",
             "inst_type": "FUTURE",
             "display_name": "BTCUSD Futures 20261225",
@@ -5452,6 +5472,26 @@
             "max_leverage": "100",
             "tradable": true,
             "expiry_timestamp_ms": 1790323200000,
+            "beta_product": false,
+            "underlying_symbol": "ETHUSD-INDEX",
+            "contract_size": "1",
+            "product_type": "DIGITAL_CURRENCIES",
+            "margin_buy_enabled": false,
+            "margin_sell_enabled": false
+          },
+          {
+            "symbol": "ETHUSD-261030",
+            "inst_type": "FUTURE",
+            "display_name": "ETHUSD Futures 20261030",
+            "base_ccy": "ETH",
+            "quote_ccy": "USD",
+            "quote_decimals": 2,
+            "quantity_decimals": 4,
+            "price_tick_size": "0.01",
+            "qty_tick_size": "0.0001",
+            "max_leverage": "100",
+            "tradable": true,
+            "expiry_timestamp_ms": 1793347200000,
             "beta_product": false,
             "underlying_symbol": "ETHUSD-INDEX",
             "contract_size": "1",
@@ -16973,8 +17013,8 @@
             "margin_sell_enabled": false
           }
         ],
-        "exec_time": 1.2137067317962646,
-        "timestamp": 1784846663.558504
+        "exec_time": 0.36437034606933594,
+        "timestamp": 1784923718.3925974
       }
     ]
   }

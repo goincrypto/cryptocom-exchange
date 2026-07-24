@@ -1,0 +1,420 @@
+openapi: 3.0.3
+info:
+  title: private/get-order-detail
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/get-order-detail:
+    post:
+      tags:
+        - Trading
+        - Transaction History
+      x-apply-to:
+        - rest
+      summary: private/get-order-detail
+      description: Gets detail of a single order by order_id or client_oid.
+      operationId: privateGetOrderDetail
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateGetOrderDetail({
+              order_id: '19848525',
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_get_order_detail({
+                'order_id': '19848525',
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateGetOrderDetailRequest"
+            example:
+              id: "1"
+              method: private/get-order-detail
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              params:
+                order_id: "19848525"
+              nonce: "1587846358253"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetOrderDetailResponse"
+              example:
+                id: "1"
+                method: private/get-order-detail
+                code: "0"
+                result:
+                  account_id: 52e7c00f-1324-5a6z-bfgt-de445bde21a5
+                  order_id: "19848525"
+                  client_oid: "1613571154900"
+                  order_type: LIMIT
+                  time_in_force: GOOD_TILL_CANCEL
+                  side: BUY
+                  exec_inst: []
+                  quantity: "0.0100"
+                  limit_price: "50000.0"
+                  order_value: "500.000000"
+                  maker_fee_rate: "0.000250"
+                  taker_fee_rate: "0.000400"
+                  avg_price: "0.0"
+                  cumulative_quantity: "0.0000"
+                  cumulative_value: "0.000000"
+                  cumulative_fee: "0.000000"
+                  status: ACTIVE
+                  instrument_name: BTCUSD-PERP
+                  fee_instrument_name: USD
+                  reason: "43012"
+                  create_time: "1613575617173"
+                  create_time_ns: "1613575617173123456"
+                  update_time: "1613575617173"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetOrderDetailResponse"
+              example:
+                id: "1"
+                method: private/get-order-detail
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetOrderDetailResponse"
+              example:
+                id: "1"
+                method: private/get-order-detail
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetOrderDetailResponse"
+              example:
+                id: "1"
+                method: private/get-order-detail
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetOrderDetailResponse"
+              example:
+                id: "1"
+                method: private/get-order-detail
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetOrderDetailResponse"
+              example:
+                id: "1"
+                method: private/get-order-detail
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateGetOrderDetailRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/get-order-detail.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/get-order-detail"
+          example: private/get-order-detail
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            order_id:
+              type: string
+              format: int64
+              example: "19848525"
+              description: Order ID. string format is highly recommended, especially for JavaScript client. If not provided, client_oid must be specified.
+            client_oid:
+              type: string
+              description: Client Order ID. If not provided, order_id must be specified.
+    PrivateGetOrderDetailResponse:
+      type: object
+      description: |
+        Response for private/get-order-detail (HTTP 200).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          $ref: "#/components/schemas/PrivateOrder"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    PrivateOrder:
+      type: object
+      description: Order object shared by get-order-detail, get-open-orders, get-order-history and advanced variants. reason optional (detail/history). list_id, contingency_type, leg_id, ref_price, ref_price_type optional (advanced OTO/OTOCO only).
+      properties:
+        account_id:
+          type: string
+          description: Account ID.
+        order_id:
+          type: string
+          format: int64
+          description: Order ID.
+        client_oid:
+          type: string
+          description: Client Order ID.
+        order_type:
+          $ref: "#/components/schemas/OrderType"
+        time_in_force:
+          $ref: "#/components/schemas/TimeInForce"
+        side:
+          $ref: "#/components/schemas/OrderSide"
+        exec_inst:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExecInstOrderDetail"
+          description: Execution instructions.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity specified in the order.
+        limit_price:
+          type: string
+          format: decimal
+          description: Limit price specified in the order.
+        order_value:
+          type: string
+          format: decimal
+          description: Order value.
+        maker_fee_rate:
+          type: string
+          format: decimal
+          description: User's maker fee rate.
+        taker_fee_rate:
+          type: string
+          format: decimal
+          description: User's taker fee rate.
+        avg_price:
+          type: string
+          format: decimal
+          description: Average price.
+        cumulative_quantity:
+          type: string
+          format: decimal
+          description: Cumulative executed quantity.
+        cumulative_value:
+          type: string
+          format: decimal
+          description: Cumulative executed value.
+        cumulative_fee:
+          type: string
+          format: decimal
+          description: Cumulative executed fee.
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        update_user_id:
+          type: string
+          description: Updated user.
+        order_date:
+          type: string
+          description: Order creation date.
+        instrument_name:
+          type: string
+          description: E.g. BTCUSD-PERP.
+        fee_instrument_name:
+          type: string
+          description: Currency used for the fees.
+        create_time:
+          type: string
+          format: int64
+          description: Order creation timestamp (ms), e.g. "1771761038000".
+        create_time_ns:
+          type: string
+          format: int64
+          description: Order creation timestamp (nanosecond), e.g. "1771761038000000000".
+        update_time:
+          type: string
+          format: int64
+          description: Order update timestamp (ms), e.g. "1771761038000".
+        reason:
+          type: string
+          description: Rejection reason code; present for get-order-detail and get-order-history.
+        isolation_id:
+          type: string
+          description: isolation_id of the isolated position the order is tied to (derivatives only).
+        isolation_type:
+          type: string
+          enum:
+            - ISOLATED_MARGIN
+          description: ISOLATED_MARGIN when isolation_id > 0 (derivatives only).
+        list_id:
+          type: string
+          format: int64
+          description: OTO/OTOCO/OCO list id; advanced only.
+        contingency_type:
+          $ref: "#/components/schemas/ContingencyType"
+        leg_id:
+          type: string
+          description: Leg id within OTO/OTOCO/OCO; advanced only.
+        ref_price:
+          type: string
+          format: decimal
+          description: Trigger reference price (trigger legs only).
+        ref_price_type:
+          type: string
+          enum:
+            - MARK_PRICE
+            - INDEX_PRICE
+            - LAST_PRICE
+          description: "Price source used for ref_price: MARK_PRICE, INDEX_PRICE, or LAST_PRICE (trigger legs only)."
+        attach_order_id:
+          type: string
+          format: int64
+          description: The order ID this trigger is attached to (for SpotAttach / DerivAttach attach-to-order orders).
+        attach_isolation_id:
+          type: string
+          description: "Position this trigger is attached to (DerivAttach attach-to-position): > 0 = isolation_id of the isolated position; 0 = cross-margin position."
+        exchange_order_id:
+          type: string
+          description: Order ID assigned by the exchange (present once the leg has been accepted).
+        reject_reason:
+          type: string
+          description: Rejection reason, if the leg was rejected.
+        leverage:
+          type: number
+          description: Leverage specified on the primary leg (derivatives only, when provided).
+        isolated_margin_amount:
+          type: string
+          format: decimal
+          description: Isolated margin amount specified on the primary leg (derivatives only, when provided).
+    OrderType:
+      type: string
+      enum:
+        - LIMIT
+        - MARKET
+        - STOP_LOSS
+        - STOP_LIMIT
+        - TAKE_PROFIT
+        - TAKE_PROFIT_LIMIT
+      description: |
+        Order type:
+        - ➖ LIMIT, MARKET
+        - ➖ STOP_LOSS, STOP_LIMIT, TAKE_PROFIT, TAKE_PROFIT_LIMIT: Trigger orders
+    TimeInForce:
+      type: string
+      enum:
+        - GOOD_TILL_CANCEL
+        - IMMEDIATE_OR_CANCEL
+        - FILL_OR_KILL
+      description: Time in force
+    OrderSide:
+      type: string
+      enum:
+        - BUY
+        - SELL
+      description: BUY or SELL
+    ExecInstOrderDetail:
+      type: string
+      enum:
+        - POST_ONLY
+        - REDUCE_ONLY
+        - SMART_POST_ONLY
+        - LIQUIDATION
+        - ISOLATED_MARGIN
+        - MARGIN_ORDER
+      description: Execution instruction as returned in order detail.
+    OrderStatus:
+      type: string
+      enum:
+        - PENDING
+        - NEW
+        - ACTIVE
+        - FILLED
+        - CANCELED
+        - REJECTED
+        - EXPIRED
+      description: Order status
+    ContingencyType:
+      type: string
+      enum:
+        - OCO
+        - OTO
+        - OTOCO
+        - SPOT_ATTACH
+        - DERIV_ATTACH
+      description: |
+        Contingency type for advanced orders:
+        - ➖ OCO: One-Cancels-the-Other
+        - ➖ OTO: One-Triggers-the-Other
+        - ➖ OTOCO: One-Triggers-a-One-Cancels-the-Other
+        - ➖ SPOT_ATTACH: SpotAttach (TP/SL attached to order for spot instruments)
+        - ➖ DERIV_ATTACH: DerivAttach (TP/SL attached to order or position for derivative instruments)

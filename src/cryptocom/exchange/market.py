@@ -36,17 +36,24 @@ class Exchange:
         )
 
     async def get_pairs(self) -> list[Pair]:
-        """List all available market pairs and store to provide pairs info."""
+        """List all available SPOT market pairs with full instrument metadata.
+
+        Returns Pairs enriched with:
+        - Fee rates (maker/taker)
+        - Order quantity limits
+        - Price/quantity tick sizes
+        - Base/quote currencies
+        - Instrument type
+        """
         data = await self.api.get("public/get-instruments")
-        return [
-            Pair(
-                i["symbol"],
-                price_precision=i["quote_decimals"],
-                quantity_precision=i["quantity_decimals"],
-            )
-            for i in data
-            if "-" not in i["symbol"] and "@" not in i["symbol"]
-        ]
+        pairs = []
+        for inst in data:
+            try:
+                pairs.append(Pair.from_api(inst, filter_derivatives=True))
+            except ValueError:
+                # Skip derivatives and other filtered instruments
+                continue
+        return pairs
 
     async def get_orderbook(self, pair: Pair, depth: int = 150) -> OrderBook:
         """Get the order book for a particular market."""

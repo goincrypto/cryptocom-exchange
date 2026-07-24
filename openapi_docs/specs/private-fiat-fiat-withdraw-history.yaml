@@ -1,0 +1,359 @@
+openapi: 3.0.3
+info:
+  title: private/fiat/fiat-withdraw-history
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/fiat/fiat-withdraw-history:
+    post:
+      tags:
+        - Fiat Wallet
+      x-apply-to:
+        - rest
+      summary: private/fiat/fiat-withdraw-history
+      description: Retrieves paginated fiat withdrawal transaction history for the authenticated user.
+      operationId: privateFiatFiatWithdrawHistory
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateFiatFiatWithdrawHistory({
+              page: "0",
+              page_size: "10",
+              start_time: '1781126400000',
+              end_time: '1781127400000',
+              payment_networks: 'usd_cubix',
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_fiat_fiat_withdraw_history({
+                'page': "0",
+                'page_size': "10",
+                'start_time': '1781126400000',
+                'end_time': '1781127400000',
+                'payment_networks': 'usd_cubix',
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateFiatFiatWithdrawHistoryRequest"
+            example:
+              id: "123456"
+              method: private/fiat/fiat-withdraw-history
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1640995200000"
+              params:
+                page: "0"
+                page_size: "10"
+                start_time: "1781126400000"
+                end_time: "1781127400000"
+                payment_networks: usd_cubix
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatWithdrawHistoryResponse"
+              examples:
+                Example - us_ach:
+                  value:
+                    id: "1"
+                    method: private/fiat/fiat-withdraw-history
+                    code: "0"
+                    result:
+                      page: "0"
+                      page_size: "2"
+                      total: "132"
+                      transaction_history_list:
+                        - id: a6a41d92-1cdc-4dd3-b845-85fa203405a2
+                          currency: USD
+                          amount: "10.0"
+                          fee_currency: USD
+                          fee_amount: "1.0"
+                          payment_network: us_ach
+                          status: pending
+                          created_at: "1778553420579"
+                          updated_at: "1778553420643"
+                        - id: fb372838-be75-4699-92c8-0db0efee6506
+                          currency: USD
+                          amount: "100.0"
+                          fee_currency: USD
+                          fee_amount: "1.0"
+                          payment_network: us_ach
+                          status: pending
+                          created_at: "1778212310417"
+                          updated_at: "1778212506975"
+                          vendor_transaction_id: db0fee89-6ab7-4431-b715-798655891555
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatWithdrawHistoryResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-withdraw-history
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatWithdrawHistoryResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-withdraw-history
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatWithdrawHistoryResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-withdraw-history
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatWithdrawHistoryResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-withdraw-history
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatWithdrawHistoryResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-withdraw-history
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateFiatFiatWithdrawHistoryRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/fiat/fiat-withdraw-history.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/fiat/fiat-withdraw-history"
+          example: private/fiat/fiat-withdraw-history
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          required:
+            - page
+            - page_size
+          properties:
+            page:
+              type: string
+              format: int32
+              description: Page number (0-based).
+            page_size:
+              type: string
+              format: int32
+              description: Number of items per page.
+            start_time:
+              type: string
+              format: int64
+              description: Start time for filtering transactions, as a Unix timestamp in milliseconds. Required if end_time is provided.
+            end_time:
+              type: string
+              format: int64
+              description: End time for filtering transactions, as a Unix timestamp in milliseconds.
+            payment_networks:
+              type: string
+              description: Comma-separated list of payment networks to filter by
+    PrivateFiatFiatWithdrawHistoryResponse:
+      type: object
+      description: |
+        Response for private/fiat/fiat-withdraw-history (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. transaction_history_list, page, page_size, total per docs.
+          required:
+            - page
+            - page_size
+            - total
+            - transaction_history_list
+          properties:
+            page:
+              type: string
+              format: int32
+              description: Current page number
+            page_size:
+              type: string
+              format: int32
+              description: Number of items per page
+            total:
+              type: string
+              format: int32
+              description: Total number of transactions
+            transaction_history_list:
+              type: array
+              description: List of withdrawal transactions
+              items:
+                type: object
+                required:
+                  - id
+                  - amount
+                  - currency
+                  - status
+                  - payment_network
+                  - created_at
+                properties:
+                  id:
+                    type: string
+                    format: int64
+                    description: Transaction ID.
+                  account_id:
+                    type: string
+                    format: int64
+                    description: Account ID.
+                  currency:
+                    type: string
+                    description: Currency code
+                  amount:
+                    type: string
+                    format: decimal
+                    description: Transaction amount
+                  amount_in_usd:
+                    type: string
+                    format: decimal
+                    nullable: true
+                    description: Amount in USD.
+                  fee_currency:
+                    type: string
+                    description: Fee currency
+                  fee_amount:
+                    type: string
+                    format: decimal
+                    description: Transaction fee amount
+                  fee_amount_in_usd:
+                    type: string
+                    format: decimal
+                    nullable: true
+                    description: Fee amount in USD
+                  fee:
+                    type: string
+                    format: decimal
+                    description: Transaction fee (alternate).
+                  payment_network:
+                    type: string
+                    description: Payment network identifier
+                  status:
+                    type: string
+                    description: Transaction status (pending, completed, failed, cancelled)
+                  created_at:
+                    type: string
+                    format: int64
+                    description: Transaction creation timestamp (ms).
+                  updated_at:
+                    type: string
+                    format: int64
+                    description: Transaction update timestamp (ms).
+                  completed_at:
+                    type: string
+                    format: int64
+                    nullable: true
+                    description: Transaction completion timestamp (ms).
+                  client_wid:
+                    type: string
+                    nullable: true
+                    description: Optional client withdrawal ID. Returns `null` if no `client_wid` was supplied at creation time.
+                  vendor_transaction_id:
+                    type: string
+                    nullable: true
+                    description: Transaction identifier assigned by the upstream fiat vendor / payment service provider (PSP) that processed the withdrawal.
+                  sender:
+                    allOf:
+                      - $ref: "#/components/schemas/FiatTransactionParty"
+                      - description: Sender details for the transaction.
+                    nullable: true
+                  beneficiary:
+                    allOf:
+                      - $ref: "#/components/schemas/FiatTransactionParty"
+                      - description: Beneficiary details for withdrawals.
+                    nullable: true
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    FiatTransactionParty:
+      type: object
+      description: Sender or beneficiary in a fiat deposit/withdraw transaction.
+      properties:
+        account_identifier_value:
+          type: string
+          description: Account identifier value

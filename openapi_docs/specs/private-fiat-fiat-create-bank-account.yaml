@@ -1,0 +1,289 @@
+openapi: 3.0.3
+info:
+  title: private/fiat/fiat-create-bank-account
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/fiat/fiat-create-bank-account:
+    post:
+      tags:
+        - Fiat Wallet
+      x-apply-to:
+        - rest
+      summary: private/fiat/fiat-create-bank-account
+      description: Link a bank account via Plaid for a user. Links the user's bank account to their profile for withdrawals using a Plaid integration payload.
+      operationId: privateFiatFiatCreateBankAccount
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateFiatFiatCreateBankAccount({
+              plaid_account_id: 'abc123',
+              plaid_public_token: 'public-sandbox-xyz',
+              currency: 'USD',
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_fiat_fiat_create_bank_account({
+                'plaid_account_id': 'abc123',
+                'plaid_public_token': 'public-sandbox-xyz',
+                'currency': 'USD',
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountRequest"
+            example:
+              id: "7"
+              method: private/fiat/fiat-create-bank-account
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1773372503821"
+              params:
+                plaid_account_id: abc123
+                plaid_public_token: public-sandbox-xyz
+                currency: USD
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
+              example:
+                id: "7"
+                method: private/fiat/fiat-create-bank-account
+                code: "0"
+                result:
+                  bank_accounts_list:
+                    - id: bank-acct-uuid-001
+                      status: completed
+                      bank_name: Chase
+                      currency: USD
+                      account_holder_name: John Doe
+                      account_identifier_value: "****6789"
+                      supported_payment_networks:
+                        - us_ach
+                      created_at: 1773372503821
+                      updated_at: 1773372503821
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-bank-account
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-bank-account
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-bank-account
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-bank-account
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
+              example:
+                id: "1"
+                method: private/fiat/fiat-create-bank-account
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateFiatFiatCreateBankAccountRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - on_behalf_of_account_uuid
+        - params
+      description: Request body for private/fiat/fiat-create-bank-account. Used by FCM/DCM brokers to link a user's bank account via Plaid.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/fiat/fiat-create-bank-account"
+          example: private/fiat/fiat-create-bank-account
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1773372503821".
+        on_behalf_of_account_uuid:
+          type: string
+          description: The account UUID of the user on whose behalf the broker is making the request
+        params:
+          type: object
+          required:
+            - plaid_account_id
+            - plaid_public_token
+            - currency
+          properties:
+            plaid_account_id:
+              type: string
+              description: The user's bank account ID from Plaid (selected by user in Plaid Link flow)
+            plaid_public_token:
+              type: string
+              description: Plaid public token received from the Plaid Link SDK's onSuccess callback on the frontend. This is NOT the link_token from private/fiat/fiat-get-plaid-token; the link_token is used to initialize Plaid Link, while the public_token is returned by Plaid after the user completes the bank linking flow.
+            currency:
+              type: string
+              description: Currency code (3-letter format)
+            bank_account_id:
+              type: string
+              description: Existing bank account ID. Used to link a Plaid-created bank account to an existing bank account record (e.g., re-linking or updating). Optional — omit on first creation.
+    PrivateFiatFiatCreateBankAccountResponse:
+      type: object
+      description: |
+        Response for private/fiat/fiat-create-bank-account (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. Returns list of bank accounts including the newly created one.
+          required:
+            - bank_accounts_list
+          properties:
+            bank_accounts_list:
+              type: array
+              description: List of user's bank accounts
+              items:
+                type: object
+                required:
+                  - id
+                  - status
+                  - bank_name
+                  - currency
+                  - account_holder_name
+                  - account_identifier_value
+                  - supported_payment_networks
+                  - created_at
+                  - updated_at
+                properties:
+                  id:
+                    type: string
+                    description: Unique bank account ID
+                  status:
+                    type: string
+                    description: Bank account status.
+                    enum:
+                      - pending
+                      - submitted
+                      - pending_authorize
+                      - authenticated
+                      - transaction_enabled
+                      - pending_proof
+                      - proof_submitted
+                      - approved
+                      - rejected
+                      - escalated
+                      - completed
+                      - deleted
+                  bank_name:
+                    type: string
+                    description: Bank name
+                  currency:
+                    type: string
+                    description: Currency code (e.g., USD)
+                  account_holder_name:
+                    type: string
+                    description: Account holder name
+                  account_identifier_value:
+                    type: string
+                    description: Masked account identifier value
+                  supported_payment_networks:
+                    type: array
+                    items:
+                      type: string
+                    description: Array of supported payment network identifiers
+                  created_at:
+                    type: string
+                    format: int64
+                    description: Account creation timestamp (ms).
+                  updated_at:
+                    type: string
+                    format: int64
+                    description: Account last update timestamp (ms).
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.

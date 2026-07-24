@@ -1,0 +1,377 @@
+openapi: 3.0.3
+info:
+  title: private/get-transactions
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/get-transactions:
+    post:
+      tags:
+        - Trading
+        - Transaction History
+      x-apply-to:
+        - rest
+      summary: private/get-transactions
+      description: Fetches recent transactions.
+      operationId: privateGetTransactions
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateGetTransactions({
+              instrument_name: 'BTCUSD-PERP',
+              start_time: '1619089031996081486',
+              end_time: '1619200052124211357',
+              limit: 20,
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_get_transactions({
+                'instrument_name': 'BTCUSD-PERP',
+                'start_time': '1619089031996081486',
+                'end_time': '1619200052124211357',
+                'limit': 20,
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateGetTransactionsRequest"
+            example:
+              id: "1"
+              method: private/get-transactions
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1613640752166"
+              params:
+                instrument_name: BTCUSD-PERP
+                start_time: "1619089031996081486"
+                end_time: "1619200052124211357"
+                limit: 20
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTransactionsResponse"
+              example:
+                id: "1"
+                method: private/get-transactions
+                code: "0"
+                result:
+                  data:
+                    - account_id: 88888888-8888-8888-8888-000000000123
+                      event_date: "2021-02-18"
+                      journal_type: TRADING
+                      journal_id: "187078"
+                      transaction_qty: "-0.0005"
+                      transaction_cost: "-24.500000"
+                      realized_pnl: "-0.006125"
+                      order_id: "72062"
+                      trade_id: "71497"
+                      trade_match_id: "8625"
+                      event_timestamp_ms: "1613640752166"
+                      event_timestamp_ns: "1613640752166234567"
+                      client_oid: 6ac2421d-5078-4ef6-a9d5-9680602ce123
+                      taker_side: MAKER
+                      side: SELL
+                      instrument_name: BTCUSD-PERP
+                    - account_id: 88888888-8888-8888-8888-000000000123
+                      event_date: "2021-02-18"
+                      journal_type: SESSION_SETTLE
+                      journal_id: "186959"
+                      transaction_qty: "0"
+                      transaction_cost: "0.000000"
+                      realized_pnl: "-0.007800"
+                      trade_match_id: "0"
+                      event_timestamp_ms: "1613638800001"
+                      event_timestamp_ns: "1613638800001124563"
+                      client_oid: ""
+                      taker_side: ""
+                      instrument_name: BTCUSD-PERP
+                    - account_id: 88888888-8888-8888-8888-000000000123
+                      event_date: "2021-02-18"
+                      journal_type: SESSION_SETTLE
+                      journal_id: "186959"
+                      transaction_qty: "0"
+                      transaction_cost: "0.000000"
+                      realized_pnl: "-0.007800"
+                      trade_match_id: "0"
+                      event_timestamp_ms: "1613638800002"
+                      event_timestamp_ns: "1613638800001124563"
+                      client_oid: ""
+                      taker_side: ""
+                      instrument_name: BTCUSD-PERP
+                      isolation_id: "19848526"
+                      isolation_type: ISOLATED_MARGIN
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTransactionsResponse"
+              example:
+                id: "1"
+                method: private/get-transactions
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTransactionsResponse"
+              example:
+                id: "1"
+                method: private/get-transactions
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTransactionsResponse"
+              example:
+                id: "1"
+                method: private/get-transactions
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTransactionsResponse"
+              example:
+                id: "1"
+                method: private/get-transactions
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTransactionsResponse"
+              example:
+                id: "1"
+                method: private/get-transactions
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateGetTransactionsRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/get-transactions.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/get-transactions"
+          example: private/get-transactions
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            instrument_name:
+              type: string
+              example: BTCUSD-PERP
+              description: E.g. BTCUSD-PERP. Omit for 'all'.
+            journal_type:
+              allOf:
+                - $ref: "#/components/schemas/JournalType"
+                - description: Filter by journal type. E.g. TRADING, TRADE_FEE, ...
+            start_time:
+              type: string
+              format: int64
+              description: "Start time in Unix time format (inclusive), ms or ns. Default: end_time - 1 day. Nanosecond recommended for accurate pagination."
+            end_time:
+              type: string
+              format: int64
+              description: "End time in Unix time format (exclusive), ms or ns. Default: current system timestamp. Nanosecond recommended for accurate pagination."
+            limit:
+              type: integer
+              format: int32
+              description: "Maximum number of transactions to retrieve before end_time. Default: 100. Max: 100."
+            isolation_id:
+              type: string
+              description: Optional filter for transactions of a particular isolated position. Omit for 'all'.
+    JournalType:
+      type: string
+      enum:
+        - TRADING
+        - TRADE_FEE
+        - ONCHAIN_WITHDRAWAL
+        - ONCHAIN_DEPOSIT
+        - FUNDING
+        - REALIZED_PNL
+        - INSURANCE_FUND
+        - SOCIALIZED_LOSS
+        - LIQUIDATION_FEE
+        - SESSION_RESET
+        - ADJUSTMENT
+        - SESSION_SETTLE
+        - UNCOVERED_LOSS
+        - ADMIN_ADJUSTMENT
+        - DELIST
+        - SETTLEMENT_FEE
+        - AUTO_CONVERSION
+        - MANUAL_CONVERSION
+        - SUBACCOUNT_TX
+        - FIAT_WITHDRAWAL_CANCEL
+        - MARGIN_TRADE_INTEREST
+      description: Journal / transaction type
+    PrivateGetTransactionsResponse:
+      type: object
+      description: |
+        Response for private/get-transactions (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. result.data[] per docs (journal_type, journal_id, transaction_qty, realized_pnl, etc.).
+          properties:
+            data:
+              type: array
+              description: List of transactions.
+              items:
+                type: object
+                properties:
+                  account_id:
+                    type: string
+                    description: Account ID.
+                  event_date:
+                    type: string
+                    description: Event date.
+                  journal_type:
+                    $ref: "#/components/schemas/JournalType"
+                  journal_id:
+                    type: string
+                    format: int64
+                    description: Journal ID.
+                  transaction_qty:
+                    type: string
+                    format: decimal
+                    description: Transaction quantity.
+                  transaction_cost:
+                    type: string
+                    format: decimal
+                    description: Transaction cost.
+                  realized_pnl:
+                    type: string
+                    format: decimal
+                    description: Realized PNL.
+                  order_id:
+                    type: string
+                    format: int64
+                    description: Order ID.
+                  trade_id:
+                    type: string
+                    format: int64
+                    description: Trade ID.
+                  trade_match_id:
+                    type: string
+                    format: int64
+                    description: Trade match ID; applicable to trades only; non-trade transactions may have zero or null.
+                  event_timestamp_ms:
+                    type: string
+                    format: int64
+                    description: Event timestamp in milliseconds.
+                  event_timestamp_ns:
+                    type: string
+                    format: int64
+                    description: Event timestamp in nanoseconds.
+                  client_oid:
+                    type: string
+                    description: Client Order ID (can be empty).
+                  taker_side:
+                    allOf:
+                      - $ref: "#/components/schemas/TakerSide"
+                      - description: MAKER or TAKER or empty.
+                  side:
+                    $ref: "#/components/schemas/OrderSide"
+                  instrument_name:
+                    type: string
+                    description: E.g. BTCUSD-PERP.
+                  isolation_id:
+                    type: string
+                    description: Isolation ID of the order if under isolated position.
+                  isolation_type:
+                    $ref: "#/components/schemas/IsolationType"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    TakerSide:
+      type: string
+      enum:
+        - MAKER
+        - TAKER
+      description: Maker or taker side of the trade
+    OrderSide:
+      type: string
+      enum:
+        - BUY
+        - SELL
+      description: BUY or SELL
+    IsolationType:
+      type: string
+      enum:
+        - ISOLATED_MARGIN
+      description: Isolation type

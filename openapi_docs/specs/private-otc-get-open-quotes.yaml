@@ -1,0 +1,294 @@
+openapi: 3.0.3
+info:
+  title: private/otc/get-open-quotes
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/otc/get-open-quotes:
+    post:
+      tags:
+        - OTC RFQ for Taker
+      x-apply-to:
+        - rest
+      summary: private/otc/get-open-quotes
+      description: Get open quotes. Only return active Quotes (status = ACTIVE).
+      operationId: privateOtcGetOpenQuotes
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            const res = await exchange.v1PrivatePostPrivateOtcGetOpenQuotes({
+              lp_quote_id: '98765',
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            res = exchange.v1_private_post_private_otc_get_open_quotes({
+                'lp_quote_id': '98765',
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateOtcGetOpenQuotesRequest"
+            example:
+              id: "12"
+              method: private/otc/get-open-quotes
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1610905028000"
+              params:
+                lp_quote_id: "98765"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetOpenQuotesResponse"
+              example:
+                id: 12
+                method: private/otc/get-open-quotes
+                code: 0
+                result:
+                  count: 1
+                  quote_list:
+                    - quote_id: "11223344556677"
+                      lp_quote_id: "98765"
+                      quote_req_id: "88997712345"
+                      status: ACTIVE
+                      reason: NO_ERROR
+                      response_time_ns: "1695153400000000000"
+                      expire_time_ns: "1696153400000000000"
+                      leg_list:
+                        - instrument_name: BTC_USD
+                          quantity: "1"
+                          bid: "95085.99"
+                          ask: "96086.01"
+                          type: PRICE
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetOpenQuotesResponse"
+              example:
+                id: "12"
+                method: private/otc/get-open-quotes
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetOpenQuotesResponse"
+              example:
+                id: "12"
+                method: private/otc/get-open-quotes
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetOpenQuotesResponse"
+              example:
+                id: "12"
+                method: private/otc/get-open-quotes
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetOpenQuotesResponse"
+              example:
+                id: "12"
+                method: private/otc/get-open-quotes
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateOtcGetOpenQuotesResponse"
+              example:
+                id: "12"
+                method: private/otc/get-open-quotes
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateOtcGetOpenQuotesRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: "Request body for private/otc/get-open-quotes. Get open quotes (active only: status = ACTIVE)."
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/otc/get-open-quotes"
+          example: private/otc/get-open-quotes
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          description: If quote_id or lp_quote_id provided, query ignores time range.
+          properties:
+            quote_id:
+              type: string
+              description: System supplied Quote ID; if provided
+              query will ignore time range: null
+            lp_quote_id:
+              type: string
+              description: LP supplied Quote ID; if provided
+              query will ignore time range: null
+            start_time:
+              type: string
+              format: int64
+              description: "Start time in Unix time format (inclusive). Default: end_time - 1 day. Nanosecond recommended for accurate pagination."
+            end_time:
+              type: string
+              format: int64
+              description: "End time in Unix time format (exclusive). Default: current system timestamp. Nanosecond recommended for accurate pagination."
+            limit:
+              type: integer
+              format: int32
+              description: "Page size (default: 20, max: 200)."
+    PrivateOtcGetOpenQuotesResponse:
+      type: object
+      description: |
+        Response for private/otc/get-open-quotes (HTTP 200/4xx/5xx).
+        code === 0 → success, result present with count and quote_list.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0.
+          properties:
+            count:
+              type: string
+              format: int32
+              description: Number of quotes returned
+            quote_list:
+              type: array
+              description: List of open quotes (status ACTIVE).
+              items:
+                type: object
+                properties:
+                  quote_id:
+                    type: string
+                    description: System generated unique ID for the quote
+                  lp_quote_id:
+                    type: string
+                    description: LP supplied ID for the quote
+                  quote_req_id:
+                    type: string
+                    description: System generated unique ID for the quote request
+                  status:
+                    type: string
+                    enum:
+                      - ACTIVE
+                    description: ACTIVE
+                  reason:
+                    type: string
+                    description: e.g. NO_ERROR
+                  response_time_ns:
+                    type: string
+                    description: Unix epoch time when quote was received in nanosecond
+                  expiry_time_ns:
+                    type: string
+                    description: Unix epoch time when quote expires in nanosecond
+                  expire_time_ns:
+                    type: string
+                    description: Alias for expiry_time_ns (Unix epoch time when quote expires in nanosecond).
+                  leg_list:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PrivateOtcGetOpenQuotesQuoteListLegItem"
+        message:
+          type: string
+          description: Present when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    PrivateOtcGetOpenQuotesQuoteListLegItem:
+      type: object
+      description: One leg in an open quote. Either quantity or notional; bid/ask when quote has pricing.
+      properties:
+        instrument_name:
+          type: string
+          description: Instrument for this leg, e.g. BTC_USD
+        quantity:
+          type: string
+          format: decimal
+          description: Either quantity or notional
+        notional:
+          type: string
+          format: decimal
+          description: Either quantity or notional
+        bid:
+          type: string
+          format: decimal
+          description: The bid price for the instrument
+        ask:
+          type: string
+          format: decimal
+          description: The ask price for the instrument
+        type:
+          type: string
+          enum:
+            - PRICE
+          description: PRICE. Only present when the quote has pricing (i.e. bid / ask).

@@ -15,7 +15,7 @@
           "default_short_pos_limit_futures": "-1.0",
           "default_unit_margin_rate": "0.05",
           "default_collateral_cap": "0.0",
-          "update_timestamp_ms": 1784101761626,
+          "update_timestamp_ms": 1784865496858,
           "base_currency_config": [
             {
               "instrument_name": "1INCH",
@@ -40,7 +40,7 @@
             {
               "instrument_name": "A",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00025",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
@@ -73,10 +73,10 @@
             },
             {
               "instrument_name": "AAVE",
-              "collateral_cap_notional": "1800000.0",
+              "collateral_cap_notional": "2000000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.008",
+              "unit_margin_rate": "0.007",
               "max_short_sell_limit": "200.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
@@ -85,12 +85,13 @@
             {
               "instrument_name": "ACH",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00015",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "28000000",
-              "short_pos_limit_perps": "28000000"
+              "long_pos_limit_perps": "25000000",
+              "short_pos_limit_perps": "25000000"
             },
             {
               "instrument_name": "ACS",
@@ -102,14 +103,14 @@
               "instrument_name": "ACT",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00025",
+              "unit_margin_rate": "0.00030",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
             },
             {
               "instrument_name": "ADA",
-              "collateral_cap_notional": "3500000.0",
+              "collateral_cap_notional": "2600000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.00025",
@@ -176,7 +177,7 @@
             },
             {
               "instrument_name": "AKT",
-              "collateral_cap_notional": "98000.0",
+              "collateral_cap_notional": "190000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.002",
@@ -187,7 +188,7 @@
             },
             {
               "instrument_name": "ALGO",
-              "collateral_cap_notional": "1400000.0",
+              "collateral_cap_notional": "720000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.00040",
@@ -242,18 +243,18 @@
               "instrument_name": "ANIME",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.000050",
+              "unit_margin_rate": "0.00010",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "78000000",
-              "short_pos_limit_perps": "78000000"
+              "long_pos_limit_perps": "100000000",
+              "short_pos_limit_perps": "100000000"
             },
             {
               "instrument_name": "ANKR",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00015",
+              "unit_margin_rate": "0.00010",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -285,12 +286,12 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "910000.0",
-              "short_pos_limit_perps": "910000.0"
+              "long_pos_limit_perps": "610000.0",
+              "short_pos_limit_perps": "610000.0"
             },
             {
               "instrument_name": "APT",
-              "collateral_cap_notional": "58000.0",
+              "collateral_cap_notional": "41000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.001",
@@ -314,7 +315,7 @@
             },
             {
               "instrument_name": "ARB",
-              "collateral_cap_notional": "750000.0",
+              "collateral_cap_notional": "660000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.00030",
@@ -327,7 +328,7 @@
               "instrument_name": "ARC",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00050",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -335,12 +336,12 @@
             {
               "instrument_name": "ARK",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00060",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "2800000.0",
-              "short_pos_limit_perps": "2800000.0"
+              "long_pos_limit_perps": "6200000.0",
+              "short_pos_limit_perps": "6200000.0"
             },
             {
               "instrument_name": "ARKM",
@@ -366,7 +367,7 @@
               "instrument_name": "ARPA",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -388,7 +389,7 @@
             },
             {
               "instrument_name": "ATOM",
-              "collateral_cap_notional": "250000.0",
+              "collateral_cap_notional": "220000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.002",
@@ -416,16 +417,16 @@
             },
             {
               "instrument_name": "AVAX",
-              "collateral_cap_notional": "2100000.0",
+              "collateral_cap_notional": "1200000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.001",
+              "unit_margin_rate": "0.002",
               "max_short_sell_limit": "6000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "820000.0",
-              "short_pos_limit_perps": "820000.0"
+              "long_pos_limit_perps": "250000.0",
+              "short_pos_limit_perps": "250000.0"
             },
             {
               "instrument_name": "AVGO",
@@ -456,8 +457,7 @@
             {
               "instrument_name": "AXS",
               "minimum_haircut": "0",
-              "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00060",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
@@ -486,7 +486,7 @@
               "instrument_name": "BAND",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00060",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -511,7 +511,8 @@
             {
               "instrument_name": "BAT",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00030",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -520,7 +521,7 @@
             },
             {
               "instrument_name": "BCH",
-              "collateral_cap_notional": "2000000.0",
+              "collateral_cap_notional": "1000000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.01",
@@ -559,7 +560,7 @@
               "instrument_name": "BERA",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.001",
+              "unit_margin_rate": "0.00090",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -589,7 +590,7 @@
             {
               "instrument_name": "BIRB",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00070",
+              "unit_margin_rate": "0.00050",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -621,8 +622,17 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "17000000",
-              "short_pos_limit_perps": "17000000"
+              "long_pos_limit_perps": "25000000",
+              "short_pos_limit_perps": "25000000"
+            },
+            {
+              "instrument_name": "BMNR",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.0042",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "29019.0",
+              "short_pos_limit_perps": "29019.0"
             },
             {
               "instrument_name": "BMT",
@@ -666,7 +676,7 @@
             },
             {
               "instrument_name": "BONK",
-              "collateral_cap_notional": "260000.0",
+              "collateral_cap_notional": "230000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.0000025",
@@ -685,7 +695,7 @@
               "instrument_name": "BREV",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -758,6 +768,14 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "CASHCAT",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.00060",
+              "order_limit": "100000.0",
+              "max_order_notional_usd": "100000.0",
+              "min_order_notional_usd": "1.0"
+            },
+            {
               "instrument_name": "CATI",
               "minimum_haircut": "0",
               "unit_margin_rate": "0.00030",
@@ -793,20 +811,20 @@
             },
             {
               "instrument_name": "CDCETH",
-              "collateral_cap_notional": "940000.0",
+              "collateral_cap_notional": "790000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
-              "unit_margin_rate": "0.05",
+              "unit_margin_rate": "0.04",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
             },
             {
               "instrument_name": "CDCSOL",
-              "collateral_cap_notional": "58000.0",
+              "collateral_cap_notional": "61000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
-              "unit_margin_rate": "0.02",
+              "unit_margin_rate": "0.01",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -815,7 +833,7 @@
               "instrument_name": "CELO",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00025",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
               "long_pos_limit_perps": "5200000.0",
@@ -837,6 +855,14 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "CFG",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.00070",
+              "order_limit": "100000.0",
+              "max_order_notional_usd": "100000.0",
+              "min_order_notional_usd": "1.0"
+            },
+            {
               "instrument_name": "CHILLGUY",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
@@ -849,7 +875,7 @@
               "instrument_name": "CHR",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -861,14 +887,14 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "32000000",
-              "short_pos_limit_perps": "32000000"
+              "long_pos_limit_perps": "55000000",
+              "short_pos_limit_perps": "55000000"
             },
             {
               "instrument_name": "CKB",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00015",
+              "unit_margin_rate": "0.00010",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -947,7 +973,7 @@
               "instrument_name": "COTI",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00030",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -969,7 +995,7 @@
             },
             {
               "instrument_name": "CRO",
-              "collateral_cap_notional": "2100000.0",
+              "collateral_cap_notional": "1100000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.00030",
@@ -994,7 +1020,7 @@
             },
             {
               "instrument_name": "CRV",
-              "collateral_cap_notional": "100000.0",
+              "collateral_cap_notional": "110000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00070",
@@ -1037,7 +1063,7 @@
               "instrument_name": "CTSI",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00040",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -1072,6 +1098,7 @@
             {
               "instrument_name": "DBR",
               "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00050",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -1090,7 +1117,7 @@
               "instrument_name": "DEGEN",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1130,16 +1157,16 @@
             },
             {
               "instrument_name": "DOGE",
-              "collateral_cap_notional": "5500000.0",
+              "collateral_cap_notional": "3700000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.000050",
+              "unit_margin_rate": "0.00010",
               "max_short_sell_limit": "1000000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "270000000",
-              "short_pos_limit_perps": "270000000"
+              "long_pos_limit_perps": "100000000",
+              "short_pos_limit_perps": "100000000"
             },
             {
               "instrument_name": "DOGS",
@@ -1154,21 +1181,21 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "25000000",
-              "short_pos_limit_perps": "25000000"
+              "long_pos_limit_perps": "34000000",
+              "short_pos_limit_perps": "34000000"
             },
             {
               "instrument_name": "DOT",
-              "collateral_cap_notional": "1800000.0",
+              "collateral_cap_notional": "710000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.00070",
+              "unit_margin_rate": "0.00080",
               "max_short_sell_limit": "30000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "2000000.0",
-              "short_pos_limit_perps": "2000000.0"
+              "long_pos_limit_perps": "1600000.0",
+              "short_pos_limit_perps": "1600000.0"
             },
             {
               "instrument_name": "DRAM",
@@ -1187,11 +1214,11 @@
             },
             {
               "instrument_name": "DYDX",
-              "collateral_cap_notional": "15000.0",
+              "collateral_cap_notional": "24000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00080",
+              "unit_margin_rate": "0.00060",
               "max_short_sell_limit": "20000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -1206,31 +1233,36 @@
             {
               "instrument_name": "EDGE",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00070",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00050",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "1700000.0",
+              "short_pos_limit_perps": "1700000.0"
             },
             {
               "instrument_name": "EGLD",
-              "collateral_cap_notional": "48000.0",
+              "collateral_cap_notional": "34000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.003",
+              "unit_margin_rate": "0.0025",
               "max_short_sell_limit": "1000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "43000.0",
-              "short_pos_limit_perps": "43000.0"
+              "long_pos_limit_perps": "110000.0",
+              "short_pos_limit_perps": "110000.0"
             },
             {
               "instrument_name": "EIGEN",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.001",
+              "unit_margin_rate": "0.00050",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "3600000.0",
+              "short_pos_limit_perps": "3600000.0"
             },
             {
               "instrument_name": "ELA",
@@ -1259,7 +1291,7 @@
             },
             {
               "instrument_name": "ENA",
-              "collateral_cap_notional": "510000.0",
+              "collateral_cap_notional": "780000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.00040",
@@ -1267,8 +1299,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "6300000.0",
-              "short_pos_limit_perps": "6300000.0"
+              "long_pos_limit_perps": "6200000.0",
+              "short_pos_limit_perps": "6200000.0"
             },
             {
               "instrument_name": "ENJ",
@@ -1315,17 +1347,19 @@
             {
               "instrument_name": "ESP",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00030",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "6500000.0",
+              "short_pos_limit_perps": "6500000.0"
             },
             {
               "instrument_name": "ETC",
-              "collateral_cap_notional": "750000.0",
+              "collateral_cap_notional": "690000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.004",
+              "unit_margin_rate": "0.003",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -1336,7 +1370,7 @@
               "minimum_haircut": "0.1",
               "max_product_leverage_for_spot": "10.0",
               "max_product_leverage_for_perps": "40.0",
-              "unit_margin_rate": "0.0015",
+              "unit_margin_rate": "0.002",
               "max_short_sell_limit": "2000.0",
               "order_limit": "1000000.0",
               "max_order_notional_usd": "1000000.0",
@@ -1349,12 +1383,12 @@
             {
               "instrument_name": "ETHFI",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00070",
+              "unit_margin_rate": "0.00060",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "2000000.0",
-              "short_pos_limit_perps": "2000000.0"
+              "long_pos_limit_perps": "2800000.0",
+              "short_pos_limit_perps": "2800000.0"
             },
             {
               "instrument_name": "ETHW",
@@ -1364,8 +1398,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "410000.0",
-              "short_pos_limit_perps": "410000.0"
+              "long_pos_limit_perps": "620000.0",
+              "short_pos_limit_perps": "620000.0"
             },
             {
               "instrument_name": "EUR",
@@ -1414,8 +1448,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "6500000.0",
-              "short_pos_limit_perps": "6500000.0"
+              "long_pos_limit_perps": "14000000",
+              "short_pos_limit_perps": "14000000"
             },
             {
               "instrument_name": "FER",
@@ -1426,21 +1460,21 @@
             },
             {
               "instrument_name": "FET",
-              "collateral_cap_notional": "520000.0",
+              "collateral_cap_notional": "430000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00060",
-              "max_short_sell_limit": "40000.0",
+              "unit_margin_rate": "0.00050",
+              "max_short_sell_limit": "50000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
             },
             {
               "instrument_name": "FIL",
-              "collateral_cap_notional": "870000.0",
-              "minimum_haircut": "0.5",
-              "max_product_leverage_for_spot": "2.0",
-              "unit_margin_rate": "0.00090",
+              "collateral_cap_notional": "1000000.0",
+              "minimum_haircut": "0.33330000000000008",
+              "max_product_leverage_for_spot": "3.0",
+              "unit_margin_rate": "0.001",
               "max_short_sell_limit": "10000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
@@ -1490,7 +1524,7 @@
             {
               "instrument_name": "FOGO",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00025",
+              "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1498,7 +1532,7 @@
             {
               "instrument_name": "FRAX",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.001",
+              "unit_margin_rate": "0.00090",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1532,8 +1566,8 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "340000000",
-              "short_pos_limit_perps": "340000000"
+              "long_pos_limit_perps": "400000000",
+              "short_pos_limit_perps": "400000000"
             },
             {
               "instrument_name": "GAS",
@@ -1578,12 +1612,12 @@
               "instrument_name": "GMT",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00010",
+              "unit_margin_rate": "0.00015",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "43000000",
-              "short_pos_limit_perps": "43000000"
+              "long_pos_limit_perps": "44000000",
+              "short_pos_limit_perps": "44000000"
             },
             {
               "instrument_name": "GMX",
@@ -1666,14 +1700,16 @@
             },
             {
               "instrument_name": "GRT",
-              "collateral_cap_notional": "280000.0",
+              "collateral_cap_notional": "270000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00060",
+              "unit_margin_rate": "0.00030",
               "max_short_sell_limit": "400000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "9600000.0",
+              "short_pos_limit_perps": "9600000.0"
             },
             {
               "instrument_name": "GTC",
@@ -1685,32 +1721,29 @@
               "instrument_name": "GUN",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00015",
+              "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
             },
             {
               "instrument_name": "H",
-              "minimum_haircut": "0",
-              "max_product_leverage_for_perps": "5.0",
-              "unit_margin_rate": "0.00060",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
             },
             {
               "instrument_name": "HBAR",
-              "collateral_cap_notional": "4000000.0",
-              "minimum_haircut": "0.2",
-              "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.00020",
+              "collateral_cap_notional": "3300000.0",
+              "minimum_haircut": "0.33330000000000008",
+              "max_product_leverage_for_spot": "3.0",
+              "unit_margin_rate": "0.00025",
               "max_short_sell_limit": "5000000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "25000000",
-              "short_pos_limit_perps": "25000000"
+              "long_pos_limit_perps": "16000000",
+              "short_pos_limit_perps": "16000000"
             },
             {
               "instrument_name": "HEHE",
@@ -1729,7 +1762,7 @@
               "instrument_name": "HEMI",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00025",
+              "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1798,10 +1831,13 @@
             {
               "instrument_name": "HYPE",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.01",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00070",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "110000.0",
+              "short_pos_limit_perps": "110000.0"
             },
             {
               "instrument_name": "HYPER",
@@ -1821,8 +1857,16 @@
               "short_pos_limit_perps": "1581.0"
             },
             {
+              "instrument_name": "IBM",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.0073",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "2375.0",
+              "short_pos_limit_perps": "2375.0"
+            },
+            {
               "instrument_name": "ICP",
-              "collateral_cap_notional": "290000.0",
+              "collateral_cap_notional": "280000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.002",
@@ -1858,7 +1902,7 @@
               "instrument_name": "IMU",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00015",
+              "unit_margin_rate": "0.00030",
               "daily_notional_limit": "500000.0",
               "order_limit": "50000.0",
               "max_order_notional_usd": "50000.0",
@@ -1866,13 +1910,15 @@
             },
             {
               "instrument_name": "IMX",
-              "collateral_cap_notional": "84000.0",
+              "collateral_cap_notional": "88000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00080",
+              "unit_margin_rate": "0.00060",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "2200000.0",
+              "short_pos_limit_perps": "2200000.0"
             },
             {
               "instrument_name": "INIT",
@@ -1882,16 +1928,16 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "1700000.0",
-              "short_pos_limit_perps": "1700000.0"
+              "long_pos_limit_perps": "1200000.0",
+              "short_pos_limit_perps": "1200000.0"
             },
             {
               "instrument_name": "INJ",
-              "collateral_cap_notional": "390000.0",
-              "minimum_haircut": "0.33330000000000008",
-              "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.004",
-              "max_short_sell_limit": "2000.0",
+              "collateral_cap_notional": "780000.0",
+              "minimum_haircut": "0.2",
+              "max_product_leverage_for_spot": "5.0",
+              "unit_margin_rate": "0.0025",
+              "max_short_sell_limit": "4000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1909,7 +1955,7 @@
               "instrument_name": "IO",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1924,7 +1970,7 @@
               "instrument_name": "IOTX",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -1932,7 +1978,7 @@
             {
               "instrument_name": "IP",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.001"
+              "unit_margin_rate": "0.00090"
             },
             {
               "instrument_name": "IQ",
@@ -1969,7 +2015,7 @@
             {
               "instrument_name": "JTO",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00050",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -1978,10 +2024,10 @@
             },
             {
               "instrument_name": "JUP",
-              "collateral_cap_notional": "1400000.0",
+              "collateral_cap_notional": "1800000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00070",
+              "unit_margin_rate": "0.00060",
               "max_short_sell_limit": "50000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -1996,7 +2042,7 @@
             {
               "instrument_name": "KAITO",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00050",
+              "unit_margin_rate": "0.00060",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
@@ -2014,7 +2060,7 @@
               "instrument_name": "KAT",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2050,8 +2096,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "2900000.0",
-              "short_pos_limit_perps": "2900000.0"
+              "long_pos_limit_perps": "2500000.0",
+              "short_pos_limit_perps": "2500000.0"
             },
             {
               "instrument_name": "KMNO",
@@ -2111,7 +2157,7 @@
             {
               "instrument_name": "LAYER",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00080",
+              "unit_margin_rate": "0.00070",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2131,7 +2177,7 @@
             },
             {
               "instrument_name": "LDO",
-              "collateral_cap_notional": "90000.0",
+              "collateral_cap_notional": "18000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00090",
@@ -2143,7 +2189,7 @@
             {
               "instrument_name": "LIGHTER",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.002",
+              "unit_margin_rate": "0.001",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2161,7 +2207,7 @@
             },
             {
               "instrument_name": "LINK",
-              "collateral_cap_notional": "3700000.0",
+              "collateral_cap_notional": "2400000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.001",
@@ -2224,14 +2270,6 @@
               "min_order_notional_usd": "1.0"
             },
             {
-              "instrument_name": "LRC",
-              "minimum_haircut": "0",
-              "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
-              "long_pos_limit_perps": "5200000.0",
-              "short_pos_limit_perps": "5200000.0"
-            },
-            {
               "instrument_name": "LSK",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -2239,7 +2277,7 @@
             },
             {
               "instrument_name": "LTC",
-              "collateral_cap_notional": "1900000.0",
+              "collateral_cap_notional": "1000000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.003",
@@ -2258,7 +2296,7 @@
               "instrument_name": "LUNA2",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00025",
+              "unit_margin_rate": "0.00030",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2266,7 +2304,7 @@
             {
               "instrument_name": "LUNC",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.000020",
+              "unit_margin_rate": "0.000040",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -2292,8 +2330,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "6300000.0",
-              "short_pos_limit_perps": "6300000.0"
+              "long_pos_limit_perps": "6200000.0",
+              "short_pos_limit_perps": "6200000.0"
             },
             {
               "instrument_name": "MANA",
@@ -2314,7 +2352,8 @@
             {
               "instrument_name": "MANTRA",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00020",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00015",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2350,7 +2389,8 @@
             {
               "instrument_name": "ME",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00030",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -2463,17 +2503,17 @@
             {
               "instrument_name": "MON",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00015",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "24000000",
-              "short_pos_limit_perps": "24000000"
+              "long_pos_limit_perps": "44000000",
+              "short_pos_limit_perps": "44000000"
             },
             {
               "instrument_name": "MOODENG",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00050",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2500,11 +2540,8 @@
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00015",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "15000000",
-              "short_pos_limit_perps": "15000000"
+              "long_pos_limit_perps": "33000000",
+              "short_pos_limit_perps": "33000000"
             },
             {
               "instrument_name": "MOVR",
@@ -2587,7 +2624,7 @@
             },
             {
               "instrument_name": "NEAR",
-              "collateral_cap_notional": "2300000.0",
+              "collateral_cap_notional": "2700000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.00070",
@@ -2736,11 +2773,11 @@
             },
             {
               "instrument_name": "ONDO",
-              "collateral_cap_notional": "1300000.0",
+              "collateral_cap_notional": "1600000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.00070",
-              "max_short_sell_limit": "40000.0",
+              "unit_margin_rate": "0.00050",
+              "max_short_sell_limit": "30000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2753,8 +2790,8 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "29000000",
-              "short_pos_limit_perps": "29000000"
+              "long_pos_limit_perps": "40000000",
+              "short_pos_limit_perps": "40000000"
             },
             {
               "instrument_name": "ONG",
@@ -2770,10 +2807,10 @@
             },
             {
               "instrument_name": "OP",
-              "collateral_cap_notional": "330000.0",
+              "collateral_cap_notional": "300000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00060",
+              "unit_margin_rate": "0.00050",
               "max_short_sell_limit": "40000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
@@ -2820,13 +2857,13 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "2300000.0",
-              "short_pos_limit_perps": "2300000.0"
+              "long_pos_limit_perps": "4400000.0",
+              "short_pos_limit_perps": "4400000.0"
             },
             {
               "instrument_name": "ORDI",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.002",
+              "unit_margin_rate": "0.0025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2839,7 +2876,7 @@
             },
             {
               "instrument_name": "PAXG",
-              "collateral_cap_notional": "610000.0",
+              "collateral_cap_notional": "860000.0",
               "minimum_haircut": "0.1",
               "max_product_leverage_for_spot": "10.0",
               "max_product_leverage_for_perps": "50.0",
@@ -2848,8 +2885,17 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "1300.0",
-              "short_pos_limit_perps": "1300.0"
+              "long_pos_limit_perps": "1500.0",
+              "short_pos_limit_perps": "1500.0"
+            },
+            {
+              "instrument_name": "PAYP",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.0075",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "8953.0",
+              "short_pos_limit_perps": "8953.0"
             },
             {
               "instrument_name": "PDA",
@@ -2876,7 +2922,7 @@
             },
             {
               "instrument_name": "PENGU",
-              "collateral_cap_notional": "100000.0",
+              "collateral_cap_notional": "98000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.00010",
@@ -2886,7 +2932,7 @@
             },
             {
               "instrument_name": "PEPE",
-              "collateral_cap_notional": "660000.0",
+              "collateral_cap_notional": "460000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.0000025",
@@ -2898,7 +2944,7 @@
             {
               "instrument_name": "PIXEL",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00010",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2926,14 +2972,14 @@
             {
               "instrument_name": "PNUT",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00050",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
             },
             {
               "instrument_name": "POL",
-              "collateral_cap_notional": "510000.0",
+              "collateral_cap_notional": "420000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00030",
@@ -2954,7 +3000,7 @@
               "instrument_name": "POLYX",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -2976,8 +3022,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "6300000.0",
-              "short_pos_limit_perps": "6300000.0"
+              "long_pos_limit_perps": "6200000.0",
+              "short_pos_limit_perps": "6200000.0"
             },
             {
               "instrument_name": "POWR",
@@ -3014,13 +3060,13 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "6300000.0",
-              "short_pos_limit_perps": "6300000.0"
+              "long_pos_limit_perps": "6200000.0",
+              "short_pos_limit_perps": "6200000.0"
             },
             {
               "instrument_name": "PROVE",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00050",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -3037,8 +3083,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "1500000000",
-              "short_pos_limit_perps": "1500000000"
+              "long_pos_limit_perps": "2500000000",
+              "short_pos_limit_perps": "2500000000"
             },
             {
               "instrument_name": "PYR",
@@ -3049,7 +3095,7 @@
             {
               "instrument_name": "PYTH",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00025",
+              "unit_margin_rate": "0.00030",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
@@ -3083,7 +3129,7 @@
             },
             {
               "instrument_name": "QNT",
-              "collateral_cap_notional": "170000.0",
+              "collateral_cap_notional": "160000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.01",
@@ -3109,7 +3155,7 @@
             {
               "instrument_name": "QTUM",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00090",
+              "unit_margin_rate": "0.00080",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
@@ -3150,7 +3196,7 @@
             {
               "instrument_name": "RAY",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00090",
+              "unit_margin_rate": "0.00080",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -3175,7 +3221,7 @@
               "instrument_name": "RED",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00080",
+              "unit_margin_rate": "0.00070",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -3188,7 +3234,7 @@
             },
             {
               "instrument_name": "RENDER",
-              "collateral_cap_notional": "38000.0",
+              "collateral_cap_notional": "60000.0",
               "minimum_haircut": "0.7519",
               "max_product_leverage_for_spot": "1.33",
               "unit_margin_rate": "0.003",
@@ -3221,7 +3267,8 @@
             {
               "instrument_name": "RNBW",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00050",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00060",
               "daily_notional_limit": "100000.0",
               "order_limit": "10000.0",
               "max_order_notional_usd": "10000.0",
@@ -3230,16 +3277,18 @@
             {
               "instrument_name": "ROBO",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00015",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "44000000",
+              "short_pos_limit_perps": "44000000"
             },
             {
               "instrument_name": "RONIN",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00025",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -3259,6 +3308,7 @@
             {
               "instrument_name": "RUNE",
               "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00060",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -3275,7 +3325,7 @@
             },
             {
               "instrument_name": "S",
-              "collateral_cap_notional": "830000.0",
+              "collateral_cap_notional": "200000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00050",
@@ -3288,7 +3338,7 @@
               "instrument_name": "SAFE",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00050",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -3304,11 +3354,11 @@
             },
             {
               "instrument_name": "SAND",
-              "collateral_cap_notional": "880000.0",
+              "collateral_cap_notional": "550000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00050",
-              "max_short_sell_limit": "150000.0",
+              "max_short_sell_limit": "200000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -3350,20 +3400,22 @@
             {
               "instrument_name": "SEI",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00015",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "11000000",
-              "short_pos_limit_perps": "11000000"
+              "long_pos_limit_perps": "37000000",
+              "short_pos_limit_perps": "37000000"
             },
             {
               "instrument_name": "SENT",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00015",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "36000000",
+              "short_pos_limit_perps": "36000000"
             },
             {
               "instrument_name": "SHDW",
@@ -3373,7 +3425,7 @@
             },
             {
               "instrument_name": "SHIB",
-              "collateral_cap_notional": "1300000.0",
+              "collateral_cap_notional": "1000000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.0000025",
@@ -3393,18 +3445,13 @@
             },
             {
               "instrument_name": "SKHYNIX",
-              "minimum_haircut": "0",
-              "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.04",
-              "max_order_notional_usd": "500000.0",
-              "long_pos_limit_perps": "315.0",
-              "short_pos_limit_perps": "315.0"
+              "max_order_notional_usd": "500000.0"
             },
             {
               "instrument_name": "SKL",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00025",
+              "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -3460,7 +3507,7 @@
               "instrument_name": "SNX",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00080",
+              "unit_margin_rate": "0.00070",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -3472,19 +3519,19 @@
               "collateral_cap_notional": "15000000",
               "minimum_haircut": "0.1",
               "max_product_leverage_for_spot": "10.0",
-              "unit_margin_rate": "0.00090",
+              "unit_margin_rate": "0.001",
               "max_short_sell_limit": "10000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "910000.0",
-              "short_pos_limit_perps": "910000.0"
+              "long_pos_limit_perps": "970000.0",
+              "short_pos_limit_perps": "970000.0"
             },
             {
               "instrument_name": "SOPH",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00015",
+              "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -3505,14 +3552,6 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
-            },
-            {
-              "instrument_name": "SPACEXIPO",
-              "minimum_haircut": "0",
-              "max_product_leverage_for_perps": "3.0",
-              "unit_margin_rate": "0.11",
-              "long_pos_limit_perps": "60.0",
-              "short_pos_limit_perps": "60.0"
             },
             {
               "instrument_name": "SPCX",
@@ -3538,12 +3577,12 @@
             {
               "instrument_name": "SPK",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00040",
+              "unit_margin_rate": "0.00030",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "6300000.0",
-              "short_pos_limit_perps": "6300000.0"
+              "long_pos_limit_perps": "11000000",
+              "short_pos_limit_perps": "11000000"
             },
             {
               "instrument_name": "SPS",
@@ -3576,6 +3615,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "SQQQ",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.0063",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "12404.0",
+              "short_pos_limit_perps": "12404.0"
+            },
+            {
               "instrument_name": "SQT",
               "order_limit": "1000.0",
               "max_order_notional_usd": "1000.0",
@@ -3590,7 +3638,8 @@
             {
               "instrument_name": "STABLE",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00025",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.00030",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -3598,7 +3647,7 @@
             {
               "instrument_name": "STG",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00080",
+              "unit_margin_rate": "0.001",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -3622,7 +3671,7 @@
             },
             {
               "instrument_name": "STRK",
-              "collateral_cap_notional": "68000.0",
+              "collateral_cap_notional": "72000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.00040",
@@ -3633,10 +3682,10 @@
             },
             {
               "instrument_name": "STX",
-              "collateral_cap_notional": "360000.0",
-              "minimum_haircut": "0.5",
-              "max_product_leverage_for_spot": "2.0",
-              "unit_margin_rate": "0.001",
+              "collateral_cap_notional": "310000.0",
+              "minimum_haircut": "0.33330000000000008",
+              "max_product_leverage_for_spot": "3.0",
+              "unit_margin_rate": "0.00080",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -3650,7 +3699,7 @@
             },
             {
               "instrument_name": "SUI",
-              "collateral_cap_notional": "3400000.0",
+              "collateral_cap_notional": "2400000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
               "unit_margin_rate": "0.00040",
@@ -3658,8 +3707,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "6300000.0",
-              "short_pos_limit_perps": "6300000.0"
+              "long_pos_limit_perps": "6200000.0",
+              "short_pos_limit_perps": "6200000.0"
             },
             {
               "instrument_name": "SUPER",
@@ -3713,16 +3762,16 @@
             },
             {
               "instrument_name": "TAO",
-              "collateral_cap_notional": "1600000.0",
+              "collateral_cap_notional": "1400000.0",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.009",
+              "unit_margin_rate": "0.008",
               "max_short_sell_limit": "100.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "12000.0",
-              "short_pos_limit_perps": "12000.0"
+              "long_pos_limit_perps": "16000.0",
+              "short_pos_limit_perps": "16000.0"
             },
             {
               "instrument_name": "TEVA",
@@ -3739,35 +3788,37 @@
             },
             {
               "instrument_name": "THETA",
-              "collateral_cap_notional": "74000.0",
+              "collateral_cap_notional": "84000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00070",
+              "unit_margin_rate": "0.00060",
               "max_short_sell_limit": "50000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "1300000.0",
-              "short_pos_limit_perps": "1300000.0"
+              "long_pos_limit_perps": "2400000.0",
+              "short_pos_limit_perps": "2400000.0"
             },
             {
               "instrument_name": "TIA",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.001",
+              "unit_margin_rate": "0.00040",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "4600000.0",
+              "short_pos_limit_perps": "4600000.0"
             },
             {
               "instrument_name": "TNSR",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00050",
+              "unit_margin_rate": "0.00060",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "4000000.0",
-              "short_pos_limit_perps": "4000000.0"
+              "long_pos_limit_perps": "2800000.0",
+              "short_pos_limit_perps": "2800000.0"
             },
             {
               "instrument_name": "TONIC",
@@ -3788,10 +3839,20 @@
             {
               "instrument_name": "TOWNS",
               "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00020",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "TQQQ",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.0084",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "7006.0",
+              "short_pos_limit_perps": "7006.0"
             },
             {
               "instrument_name": "TRAC",
@@ -3823,10 +3884,10 @@
             },
             {
               "instrument_name": "TRUMP",
-              "collateral_cap_notional": "600000.0",
+              "collateral_cap_notional": "520000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
-              "unit_margin_rate": "0.003",
+              "unit_margin_rate": "0.0025",
               "max_short_sell_limit": "7000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -3876,7 +3937,7 @@
             },
             {
               "instrument_name": "UNI",
-              "collateral_cap_notional": "670000.0",
+              "collateral_cap_notional": "770000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.002",
@@ -3992,11 +4053,11 @@
             },
             {
               "instrument_name": "VET",
-              "collateral_cap_notional": "450000.0",
+              "collateral_cap_notional": "540000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00015",
-              "max_short_sell_limit": "12500000",
+              "max_short_sell_limit": "10000000",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -4004,6 +4065,7 @@
             {
               "instrument_name": "VINE",
               "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00070",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -4012,12 +4074,12 @@
             {
               "instrument_name": "VIRTUAL",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00050",
+              "unit_margin_rate": "0.00060",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "1700000.0",
-              "short_pos_limit_perps": "1700000.0"
+              "long_pos_limit_perps": "2700000.0",
+              "short_pos_limit_perps": "2700000.0"
             },
             {
               "instrument_name": "VNO",
@@ -4036,7 +4098,7 @@
               "instrument_name": "VRA",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00050",
+              "unit_margin_rate": "0.00070",
               "order_limit": "10000.0",
               "max_order_notional_usd": "10000.0",
               "min_order_notional_usd": "1.0"
@@ -4069,12 +4131,12 @@
             {
               "instrument_name": "W",
               "minimum_haircut": "0",
-              "unit_margin_rate": "0.00020",
+              "unit_margin_rate": "0.00015",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "25000000",
-              "short_pos_limit_perps": "25000000"
+              "long_pos_limit_perps": "44000000",
+              "short_pos_limit_perps": "44000000"
             },
             {
               "instrument_name": "WAL",
@@ -4083,8 +4145,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "1000000.0",
-              "short_pos_limit_perps": "1000000.0"
+              "long_pos_limit_perps": "1500000.0",
+              "short_pos_limit_perps": "1500000.0"
             },
             {
               "instrument_name": "WAXP",
@@ -4130,6 +4192,15 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "WENDYS",
+              "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
+              "unit_margin_rate": "0.0028",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "65531.0",
+              "short_pos_limit_perps": "65531.0"
+            },
+            {
               "instrument_name": "WET",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
@@ -4140,7 +4211,7 @@
             },
             {
               "instrument_name": "WIF",
-              "collateral_cap_notional": "96000.0",
+              "collateral_cap_notional": "95000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
               "unit_margin_rate": "0.00090",
@@ -4151,10 +4222,10 @@
             },
             {
               "instrument_name": "WLD",
-              "collateral_cap_notional": "170000.0",
+              "collateral_cap_notional": "250000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00070",
+              "unit_margin_rate": "0.00060",
               "max_short_sell_limit": "20000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -4162,7 +4233,7 @@
             },
             {
               "instrument_name": "WLFI",
-              "collateral_cap_notional": "49000.0",
+              "collateral_cap_notional": "53000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00030",
@@ -4197,12 +4268,6 @@
               "min_order_notional_usd": "1.0"
             },
             {
-              "instrument_name": "XAN",
-              "minimum_haircut": "0",
-              "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00025"
-            },
-            {
               "instrument_name": "XAU",
               "minimum_haircut": "0",
               "unit_margin_rate": "0.015",
@@ -4212,7 +4277,7 @@
             },
             {
               "instrument_name": "XAUT",
-              "collateral_cap_notional": "1800000.0",
+              "collateral_cap_notional": "2200000.0",
               "minimum_haircut": "0.1",
               "max_product_leverage_for_spot": "10.0",
               "max_product_leverage_for_perps": "50.0",
@@ -4221,8 +4286,8 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "1300.0",
-              "short_pos_limit_perps": "1300.0"
+              "long_pos_limit_perps": "1500.0",
+              "short_pos_limit_perps": "1500.0"
             },
             {
               "instrument_name": "XCH",
@@ -4249,7 +4314,7 @@
             },
             {
               "instrument_name": "XLM",
-              "collateral_cap_notional": "2000000.0",
+              "collateral_cap_notional": "1600000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
               "unit_margin_rate": "0.00040",
@@ -4300,24 +4365,26 @@
               "collateral_cap_notional": "15000000",
               "minimum_haircut": "0.2",
               "max_product_leverage_for_spot": "5.0",
-              "unit_margin_rate": "0.00015",
+              "unit_margin_rate": "0.00020",
               "max_short_sell_limit": "800000.0",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0",
-              "long_pos_limit_perps": "35000000",
-              "short_pos_limit_perps": "35000000"
+              "long_pos_limit_perps": "25000000",
+              "short_pos_limit_perps": "25000000"
             },
             {
               "instrument_name": "XTZ",
-              "collateral_cap_notional": "130000.0",
+              "collateral_cap_notional": "88000.0",
               "minimum_haircut": "0.33330000000000008",
               "max_product_leverage_for_spot": "3.0",
-              "unit_margin_rate": "0.00090",
+              "unit_margin_rate": "0.00080",
               "max_short_sell_limit": "40000.0",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
+              "min_order_notional_usd": "1.0",
+              "long_pos_limit_perps": "1300000.0",
+              "short_pos_limit_perps": "1300000.0"
             },
             {
               "instrument_name": "XYO",
@@ -4384,7 +4451,7 @@
               "collateral_cap_notional": "11000.0",
               "minimum_haircut": "0.5",
               "max_product_leverage_for_spot": "2.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00040",
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
@@ -4414,7 +4481,7 @@
               "instrument_name": "ZORA",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00025",
+              "unit_margin_rate": "0.00030",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
@@ -4439,7 +4506,7 @@
               "instrument_name": "ZRX",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
+              "unit_margin_rate": "0.00025",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0",
@@ -4729,6 +4796,10 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "BMNR",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "BMT",
               "max_order_notional_usd": "500000.0"
             },
@@ -4789,6 +4860,10 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "CASHCAT",
+              "max_order_notional_usd": "500000.0"
+            },
+            {
               "instrument_name": "CATI",
               "max_order_notional_usd": "500000.0"
             },
@@ -4823,6 +4898,10 @@
             {
               "instrument_name": "CETUS",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "CFG",
+              "max_order_notional_usd": "500000.0"
             },
             {
               "instrument_name": "CHILLGUY",
@@ -5309,6 +5388,10 @@
               "max_order_notional_usd": "100000.0"
             },
             {
+              "instrument_name": "IBM",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "ICP",
               "max_order_notional_usd": "500000.0"
             },
@@ -5629,10 +5712,6 @@
               "max_order_notional_usd": "500000.0"
             },
             {
-              "instrument_name": "MOVE",
-              "max_order_notional_usd": "500000.0"
-            },
-            {
               "instrument_name": "MOVR",
               "max_order_notional_usd": "2500000.0"
             },
@@ -5803,6 +5882,10 @@
             {
               "instrument_name": "PAXG",
               "max_order_notional_usd": "500000.0"
+            },
+            {
+              "instrument_name": "PAYP",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "PDA",
@@ -6149,6 +6232,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "SQQQ",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "SQT",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6251,6 +6338,10 @@
             {
               "instrument_name": "TOWNS",
               "max_order_notional_usd": "500000.0"
+            },
+            {
+              "instrument_name": "TQQQ",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "TRAC",
@@ -6415,6 +6506,10 @@
             {
               "instrument_name": "WEN",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "WENDYS",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "WET",
@@ -6839,6 +6934,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "BMNR",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "BMT",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6899,6 +6998,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "CASHCAT",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "CATI",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6932,6 +7035,10 @@
             },
             {
               "instrument_name": "CETUS",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "CFG",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7419,6 +7526,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "IBM",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "ICP",
               "max_order_notional_usd": "2500000.0"
             },
@@ -7739,10 +7850,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "MOVE",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "MOVR",
               "max_order_notional_usd": "2500000.0"
             },
@@ -7912,6 +8019,10 @@
             },
             {
               "instrument_name": "PAXG",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "PAYP",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -8259,6 +8370,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "SQQQ",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "SQT",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8360,6 +8475,10 @@
             },
             {
               "instrument_name": "TOWNS",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "TQQQ",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -8527,6 +8646,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "WENDYS",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "WET",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8668,8 +8791,8 @@
             }
           ]
         },
-        "exec_time": 0.3545713424682617,
-        "timestamp": 1784321021.3997688
+        "exec_time": 0.29374074935913086,
+        "timestamp": 1784923751.6669412
       }
     ]
   }

@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: private/bot/update-trading-bot (GRID)
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/bot/update-trading-bot:
+    post:
+      tags:
+        - Trading Bot API
+      x-apply-to:
+        - rest
+      summary: private/bot/update-trading-bot (GRID)
+      description: |
+        Updates settings for a running or paused GRID Trading Bot.
+
+        Updatable settings for GRID bots include stop_price, take_profit_price, and trailing_up_price_cap.
+      operationId: privateBotUpdateTradingBot_GRID
+      x-codeSamples:
+        - lang: JavaScript
+          label: JavaScript
+          x-discriminator-value: GRID
+          source: |
+            const ccxt = require('ccxt');
+            const exchange = new ccxt.cryptocom({
+              apiKey: 'YOUR_API_KEY',
+              secret: 'YOUR_SECRET',
+              enableRateLimit: true,
+            });
+            // GRID Bot: Update stop-loss and take-profit prices
+            const res = await exchange.v1PrivatePostPrivateBotUpdateTradingBot({
+              bot_id: 3,
+              bot_type: 'GRID',
+              notify_on_bot_change: true,
+              display_name: 'Updated Grid Bot',
+              settings: {
+                stop_price: '24000',
+                take_profit_price: '70000'
+              }
+            });
+            console.log(res);
+        - lang: Python
+          label: Python
+          x-discriminator-value: GRID
+          source: |
+            import ccxt
+            exchange = ccxt.cryptocom({
+                'apiKey': 'YOUR_API_KEY',
+                'secret': 'YOUR_SECRET',
+                'enableRateLimit': True,
+            })
+            # GRID Bot: Update stop-loss and take-profit prices
+            res = exchange.v1_private_post_private_bot_update_trading_bot({
+                'bot_id': 3,
+                'bot_type': 'GRID',
+                'notify_on_bot_change': True,
+                'display_name': 'Updated Grid Bot',
+                'settings': {
+                    'stop_price': '24000',
+                    'take_profit_price': '70000'
+                }
+            })
+            print(res)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateBotUpdateTradingBotRequest"
+            example:
+              id: 1
+              method: private/bot/update-trading-bot
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: 1610905028000
+              params:
+                bot_id: 3
+                bot_type: GRID
+                notify_on_bot_change: true
+                settings:
+                  stop_price: "24000"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+              example:
+                id: 1
+                method: private/bot/update-trading-bot
+                code: 0
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+              example:
+                id: 1
+                method: private/bot/update-trading-bot
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+              example:
+                id: 1
+                method: private/bot/update-trading-bot
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+              example:
+                id: 1
+                method: private/bot/update-trading-bot
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+              example:
+                id: 1
+                method: private/bot/update-trading-bot
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateBotUpdateTradingBotResponse"
+              example:
+                id: 1
+                method: private/bot/update-trading-bot
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateBotUpdateTradingBotRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/bot/update-trading-bot.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/bot/update-trading-bot"
+          example: private/bot/update-trading-bot
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1610905028000".
+        params:
+          type: object
+          required:
+            - bot_id
+            - bot_type
+            - notify_on_bot_change
+          properties:
+            bot_id:
+              type: integer
+              format: int64
+              description: Trading Bot ID
+              example: 1
+            bot_type:
+              $ref: "#/components/schemas/BotType"
+            notify_on_bot_change:
+              type: boolean
+              description: Whether to receive push notifications on bot state changes
+              example: true
+            display_name:
+              type: string
+              description: Updated display name for the bot. 4-15 characters; letters, numbers,
+              example: My Updated Bot
+            settings:
+              oneOf:
+                - $ref: "#/components/schemas/DcaBotUpdateSettings"
+                  x-discriminator-value: DCA
+                - $ref: "#/components/schemas/GridBotUpdateSettings"
+                  x-discriminator-value: GRID
+              x-sibling-discriminator:
+                propertyPath: params.bot_type
+              description: Bot-type-specific settings to update. TWAP and FUNDING_ARBITRAGE bots do not support updating settings.
+    BotType:
+      type: string
+      enum:
+        - DCA
+        - TWAP
+        - GRID
+        - FUNDING_ARBITRAGE
+      description: |
+        Trading bot type:
+        - DCA: Dollar Cost Averaging
+        - TWAP: Time-Weighted Average Price
+        - GRID: Grid trading
+        - FUNDING_ARBITRAGE: Funding arbitrage
+    DcaBotUpdateSettings:
+      type: object
+      description: Updatable settings for DCA bot
+      properties:
+        allocations:
+          type: array
+          description: Array of instrument allocations
+          items:
+            $ref: "#/components/schemas/DcaAllocation"
+        type:
+          type: string
+          enum:
+            - MARKET
+            - LIMIT
+          description: MARKET or LIMIT
+        price:
+          type: string
+          format: decimal
+          description: Limit price
+        max_order:
+          type: string
+          description: Maximum number of orders to place
+        stop_price:
+          type: string
+          format: decimal
+          description: Stop-loss price
+        take_profit_price:
+          type: string
+          format: decimal
+          description: Take-profit price
+        auto_stake:
+          type: boolean
+          description: Whether to automatically stake earned tokens
+        investment_duration:
+          type: integer
+          format: int64
+          description: Total duration. In number of months when `investment_frequency_mode` is `MONTHLY`; in milliseconds when `FIXED_DURATION`.
+        investment_frequency:
+          type: integer
+          format: int64
+          description: Interval between orders in milliseconds
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity per order
+    DcaAllocation:
+      type: object
+      description: Allocation for DCA basket bot
+      required:
+        - instrument_name
+        - allocated_percentage
+      properties:
+        instrument_name:
+          type: string
+          description: Instrument name
+          example: BTC_USDT
+        allocated_percentage:
+          type: string
+          format: decimal
+          description: Percentage allocated (must sum to 100 across all allocations)
+          example: "100"
+    GridBotUpdateSettings:
+      type: object
+      description: Updatable settings for Grid bot
+      properties:
+        stop_price:
+          type: string
+          format: decimal
+          description: Stop-loss price
+        take_profit_price:
+          type: string
+          format: decimal
+          description: Take-profit price
+        trailing_up_price_cap:
+          type: string
+          format: decimal
+          description: Maximum price cap for trailing-up
+    PrivateBotUpdateTradingBotResponse:
+      type: object
+      x-archetype: Response
+      description: Response for private/bot/update-trading-bot.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Original request identifier
+        method:
+          type: string
+          description: Method name
+          example: private/bot/update-trading-bot
+        code:
+          type: string
+          format: int32
+          description: 0 for success; error code otherwise
+        message:
+          type: string
+          description: Error message for non-zero codes
