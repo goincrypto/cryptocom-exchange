@@ -17,3 +17,4 @@ coverage.xml
 activate.sh
 candletest.py
 bot.py
+openapi_docs/
