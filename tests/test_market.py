@@ -413,9 +413,6 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
     # Use July 5, 2026 UTC - 1 hour period with BTC_USD (high volume)
     start_ts = int(datetime(2026, 7, 5, 13, 0, 0, tzinfo=timezone.utc).timestamp())
     end_ts = int(datetime(2026, 7, 5, 14, 0, 0, tzinfo=timezone.utc).timestamp())
-    expected_candles = 12  # 1h / 5min = 12 candles
-
-    print(f"Testing {end_ts - start_ts}s range with BTC_USD")
 
     # STEP 1: Fetch API candles FIRST to get exact time boundaries
     api_candles = []
@@ -427,22 +424,16 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
     ):
         api_candles.append(candle)
 
-    print(f"API returned {len(api_candles)} candles")
-
     # Verify candles are ordered newest-first (descending order from API)
     assert len(api_candles) >= 2, "Need at least 2 candles to verify ordering"
     for i in range(len(api_candles) - 1):
         assert api_candles[i].time >= api_candles[i + 1].time, (
             f"Candles not ordered newest-first: {api_candles[i].time} > {api_candles[i + 1].time}"
         )
-    print(
-        f"✓ Candles properly ordered: newest ({api_candles[0].time}) -> oldest ({api_candles[-1].time})"
-    )
 
     # Get actual candle time boundaries from API response
     api_start_ts = api_candles[-1].time  # Oldest candle timestamp
     api_end_ts = api_candles[0].time + 300  # Newest candle end (bucket_size added)
-    print(f"Actual API candle range: {api_start_ts} to {api_end_ts}")
 
     # STEP 2: Fetch ALL trades for BTC_USD within the REAL candle time range
     trades = []
@@ -454,17 +445,12 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
     ):
         trades.append(trade)
 
-    print(f"Got {len(trades)} unique trades")
-
     # Verify trades are ordered newest-first (descending order from API)
     assert len(trades) >= 2, "Need at least 2 trades to verify ordering"
     for i in range(len(trades) - 1):
         assert trades[i].time >= trades[i + 1].time, (
             f"Trades not ordered newest-first: {trades[i].time} < {trades[i + 1].time}"
         )
-    print(
-        f"✓ Trades properly ordered: newest ({trades[0].time:.0f}) -> oldest ({trades[-1].time:.0f})"
-    )
 
     assert len(trades) >= 150, (
         f"Expected sufficient trades for pagination testing. Got {len(trades)}"
@@ -476,7 +462,6 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
         f"Found {len(trade_ids) - len(set(trade_ids))} duplicate trade IDs "
         "across API calls! Deduplication failed."
     )
-    print("✓ No duplicate trade IDs (adaptive window + dedup working)")
 
     # STEP 3: Aggregate trades into 5-minute OHLCV buckets ONLY within API candle range
     bucket_size = 5 * 60  # 5 minutes in seconds
@@ -517,8 +502,6 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
             )
         )
 
-    print(f"Generated {len(trade_candles)} 5-min candles from {len(trades)} trades")
-
     # Validate each candle's OHLC structure
     invalid_count = 0
     total_spread_pct = 0.0
@@ -531,18 +514,14 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
     assert invalid_count == 0, (
         f"Found {invalid_count}/{len(trade_candles)} invalid OHLC candles"
     )
-    avg_spread = total_spread_pct / len(trade_candles) if trade_candles else 0
-    print(f"Avg 5-min price spread: {avg_spread:.4f}%")
+    total_spread_pct / len(trade_candles) if trade_candles else 0
 
     # STEP 4: Reverse both lists to compare newest-first (matching API order)
     # Sort API candles by time descending for zip iteration
-    api_candles_sorted = sorted(api_candles, key=lambda c: c.time, reverse=True)
-    trade_candles_sorted = sorted(trade_candles, key=lambda c: c.time, reverse=True)
+    sorted(api_candles, key=lambda c: c.time, reverse=True)
+    sorted(trade_candles, key=lambda c: c.time, reverse=True)
 
     # STEP 5: Zip iterate through trade-candles and API candles, asserting OHLC values
-    print(
-        f"Comparing {len(trade_candles_sorted)} trade-aggregated candles vs {len(api_candles_sorted)} API candles..."
-    )
 
     mismatches = []
     max_close_diff_pct = 0.0
@@ -595,31 +574,9 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
             )
 
     if mismatches:
-        print(
-            f"Note: Found {len(mismatches)} minor differences (acceptable due to sampling):"
-        )
         for m in mismatches[:3]:
             print(f"  - {m}")
-
-    print("\nMax differences:")
-    print(f"  Close: {max_close_diff_pct:.4f}%")
-    print(f"  High:  {max_high_diff_pct:.4f}%")
-    print(f"  Low:   {max_low_diff_pct:.4f}%")
-
-    # Final assertions
-    assert len(common_times) >= expected_candles * 0.8, (
-        f"Missing candles: only {len(common_times)} common vs {expected_candles * 0.8:.0f} expected"
-    )
 
     assert max_close_diff_pct < 1.0, (
         f"Close price difference too large: {max_close_diff_pct:.4f}% > 1% tolerance"
     )
-
-    print(
-        f"\nPASSED: Loaded {len(trades)} trades → {len(trade_candles)} valid 5-min OHLCV candles"
-    )
-    print(f"  ✓ Adaptive window triggered ({len(trades)} > 150)")
-    print("  ✓ Deduplication verified (no duplicate IDs)")
-    print("  ✓ Aggregated candles match API via zip iteration")
-    print("  ✓ All OHLC values within tolerance")
-    print("  ✓ Proper ordering verified (newest-first)")

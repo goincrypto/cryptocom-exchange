@@ -4,15 +4,6 @@ from pathlib import Path
 from cryptocom import exchange as cro
 from cryptocom.exchange.structs import BaseCurrencyConfig
 
-ALL_TEMPLATE = """
-def all():
-    return [
-        value
-        for name, value in globals().items()
-        if isinstance(value, {})
-    ]
-"""
-
 SRC_PATH = Path(__file__).parent / "src" / "cryptocom" / "exchange"
 
 
@@ -41,9 +32,7 @@ async def main():
 
     with (SRC_PATH / "pairs.py").open("w") as f:
         f.writelines(
-            [
-                "from .structs import Pair\n\n",
-            ]
+            ["from .structs import Pair\n\n"]
             + [
                 f'{pair.name} = Pair("{pair.exchange_name}", '
                 f"price_precision={pair.price_precision}, "
@@ -52,19 +41,21 @@ async def main():
                 f"max_order_notional_usd={get_config(pair.quote_instrument.exchange_name).max_order_notional_usd})\n"
                 for pair in sorted(pairs, key=lambda p: p.name)
             ]
-            + ["\n", ALL_TEMPLATE.format("Pair")]
+            + ["\n", "\ndef all() -> list[Pair]:\n", "    return Pair.all()\n"]
         )
 
     with (SRC_PATH / "instruments.py").open("w") as f:
         f.writelines(
-            [
-                "from .structs import Instrument\n\n",
-            ]
+            ["from .structs import Instrument\n\n"]
             + [
                 f'{instrument.name} = Instrument("{instrument.exchange_name}")\n'
                 for instrument in instruments
             ]
-            + ["\n", ALL_TEMPLATE.format("Instrument")]
+            + [
+                "\n",
+                "\ndef all() -> list[Instrument]:\n",
+                "    return Instrument.all()\n",
+            ]
         )
 
     print(f"Generated {len(pairs)} pairs and {len(instruments)} instruments")

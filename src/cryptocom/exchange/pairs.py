@@ -693,6 +693,13 @@ CAP_USD = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
+CASHCAT_USD = Pair(
+    "CASHCAT_USD",
+    price_precision=5,
+    quantity_precision=0,
+    min_order_notional_usd=1.0,
+    max_order_notional_usd=1000000.0,
+)
 CATI_USD = Pair(
     "CATI_USD",
     price_precision=6,
@@ -758,6 +765,13 @@ CELR_USDT = Pair(
 )
 CETUS_USD = Pair(
     "CETUS_USD",
+    price_precision=5,
+    quantity_precision=0,
+    min_order_notional_usd=1.0,
+    max_order_notional_usd=1000000.0,
+)
+CFG_USD = Pair(
+    "CFG_USD",
     price_precision=5,
     quantity_precision=0,
     min_order_notional_usd=1.0,
@@ -2359,13 +2373,6 @@ MORPHO_USD = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
-MOVE_USD = Pair(
-    "MOVE_USD",
-    price_precision=6,
-    quantity_precision=0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
 MOVR_USD = Pair(
     "MOVR_USD",
     price_precision=3,
@@ -2474,13 +2481,6 @@ NOT_USD = Pair(
 NOT_USDT = Pair(
     "NOT_USDT",
     price_precision=7,
-    quantity_precision=0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-NRN_USD = Pair(
-    "NRN_USD",
-    price_precision=6,
     quantity_precision=0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
@@ -4090,5 +4090,5 @@ ZRX_USD = Pair(
 )
 
 
-def all():
-    return [value for name, value in globals().items() if isinstance(value, Pair)]
+def all() -> list[Pair]:
+    return Pair.all()

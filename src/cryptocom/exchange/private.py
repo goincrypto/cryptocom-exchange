@@ -1,10 +1,10 @@
 import asyncio
-from typing import Dict, List
 
 from .api import ApiError, ApiProvider
 from .market import Exchange
 from .structs import (
     Balance,
+    DefaultPairDict,
     Deposit,
     DepositStatus,
     Instrument,
@@ -25,15 +25,19 @@ from .structs import (
 class Account:
     """Provides access to account actions and data. Balance, trades, orders."""
 
+    api: ApiProvider
+    exchange: Exchange
+    pairs: DefaultPairDict
+
     def __init__(
         self,
         *,
         api_key: str = "",
         api_secret: str = "",
         from_env: bool = False,
-        exchange: Exchange = None,
-        api: ApiProvider = None,
-    ):
+        exchange: Exchange | None = None,
+        api: ApiProvider | None = None,
+    ) -> None:
         if not api and not (api_key and api_secret) and not from_env:
             raise ValueError("Pass ApiProvider or api_key with api_secret or from_env")
         self.api = api or ApiProvider(
@@ -46,12 +50,12 @@ class Account:
         await self.exchange.sync_pairs()
         self.pairs = self.exchange.pairs
 
-    async def get_balance(self) -> Dict[Instrument, Balance]:
+    async def get_balance(self) -> dict[Instrument, Balance]:
         """Return balance."""
         data = (await self.api.post("private/user-balance"))[0]
         return Balance.from_api(data)
 
-    async def get_accounts(self) -> Dict:
+    async def get_accounts(self) -> dict:
         data = await self.api.post("private/get-accounts")
         return data
 
@@ -69,7 +73,7 @@ class Account:
         status: DepositStatus = None,
         page: int = 0,
         page_size: int = 20,
-    ) -> List[Deposit]:
+    ) -> list[Deposit]:
         """Return all history withdrawals."""
         params = {"page_size": page_size, "page": page}
         if instrument:
@@ -94,7 +98,7 @@ class Account:
         status: WithdrawalStatus = None,
         page: int = 0,
         page_size: int = 20,
-    ) -> List[Withdrawal]:
+    ) -> list[Withdrawal]:
         """Return all history for withdrawal transactions."""
         params = {"page_size": page_size, "page": page}
         if instrument:
@@ -121,7 +125,7 @@ class Account:
         end_ts: int = None,
         page: int = 0,
         page_size: int = 20,
-    ) -> List[Interest]:
+    ) -> list[Interest]:
         """Return all history interest."""
         params = {"page_size": page_size, "page": page}
         if instrument:
@@ -145,7 +149,7 @@ class Account:
         start_ts: int = None,
         end_ts: int = None,
         limit: int = 100,
-    ) -> List[Order]:
+    ) -> list[Order]:
         """Return all history orders."""
         params = {"limit": limit}
         if pair:
@@ -163,7 +167,7 @@ class Account:
 
     async def get_open_orders(
         self, pair: Pair = None, page: int = 0, page_size: int = 200
-    ) -> List[Order]:
+    ) -> list[Order]:
         """Return open orders."""
         params = {}
         if pair:
@@ -180,7 +184,7 @@ class Account:
         start_ts: int = None,
         end_ts: int = None,
         limit: int = 100,
-    ) -> List[PrivateTrade]:
+    ) -> list[PrivateTrade]:
         """Return trades."""
         params = {"limit": limit}
         if pair:

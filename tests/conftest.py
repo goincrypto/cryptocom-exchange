@@ -1,4 +1,3 @@
-import asyncio
 import os
 import pathlib
 
@@ -58,19 +57,3 @@ async def account(api: cro.RecordApiProvider) -> cro.Account:
                 await acc.sell_market(cro.pairs.CRO_USD, sell_qty)
     except Exception:
         pass  # Ignore cleanup errors
-
-
-@pytest.fixture
-def event_loop(request):
-    """Create an instance of the default event loop for each test case."""
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    yield loop
-    # Properly cancel and cleanup all pending tasks
-    pending = asyncio.all_tasks(loop)
-    for task in pending:
-        task.cancel()
-    if pending:
-        loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
-    loop.run_until_complete(loop.shutdown_asyncgens())
-    loop.close()

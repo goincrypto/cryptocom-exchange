@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import AsyncGenerator, Dict, List, Optional
+from collections.abc import AsyncGenerator
 
 from . import pairs
 from .api import ApiProvider
@@ -21,7 +21,10 @@ from .structs import (
 class Exchange:
     """Interface to base exchange methods."""
 
-    def __init__(self, api: ApiProvider = None):
+    api: ApiProvider
+    pairs: DefaultPairDict
+
+    def __init__(self, api: ApiProvider | None = None) -> None:
         self.api = api or ApiProvider(auth_required=False)
         self.pairs = DefaultPairDict(**{pair.name: pair for pair in pairs.all()})
 
@@ -32,7 +35,7 @@ class Exchange:
             **{pair.name: pair for pair in (await self.get_pairs())}
         )
 
-    async def get_pairs(self) -> List[Pair]:
+    async def get_pairs(self) -> list[Pair]:
         """List all available market pairs and store to provide pairs info."""
         data = await self.api.get("public/get-instruments")
         return [
@@ -65,9 +68,9 @@ class Exchange:
         self,
         pair: Pair,
         timeframe: Timeframe,
-        start_ts: Optional[int] = None,
-        end_ts: Optional[int] = None,
-        count: Optional[int] = None,
+        start_ts: int | None = None,
+        end_ts: int | None = None,
+        count: int | None = None,
         all_history: bool = False,
     ) -> AsyncGenerator[Candle, None]:
         """
@@ -183,9 +186,9 @@ class Exchange:
     async def get_trades(
         self,
         pair: Pair,
-        start_ts: Optional[int] = None,
-        end_ts: Optional[int] = None,
-        count: Optional[int] = None,
+        start_ts: int | None = None,
+        end_ts: int | None = None,
+        count: int | None = None,
         all_history: bool = False,
     ) -> AsyncGenerator[MarketTrade, None]:
         """
@@ -302,7 +305,7 @@ class Exchange:
         )
         return MarketTicker.from_api(pair, data[0])
 
-    async def get_tickers(self) -> Dict[Pair, MarketTicker]:
+    async def get_tickers(self) -> dict[Pair, MarketTicker]:
         """Get tickers in all available markets."""
         data = await self.api.get("public/get-tickers")
         return {
@@ -318,7 +321,7 @@ class Exchange:
         return (await self.get_ticker(pair)).trade_price
 
     async def listen_candles(
-        self, timeframe: Timeframe, *pairs: List[Pair]
+        self, timeframe: Timeframe, *pairs: list[Pair]
     ) -> AsyncGenerator[Candle, None]:
         if not isinstance(timeframe, Timeframe):
             raise ValueError(f"Provide Timeframe enum not {timeframe}")
@@ -333,7 +336,7 @@ class Exchange:
                 yield Candle.from_api(candle, pair)
 
     async def listen_trades(
-        self, *pairs: List[Pair]
+        self, *pairs: list[Pair]
     ) -> AsyncGenerator[MarketTrade, None]:
         channels = [f"trade.{pair.exchange_name}" for pair in pairs]
         async for data in self.api.listen("market", *channels):
@@ -342,7 +345,7 @@ class Exchange:
                 yield MarketTrade.from_api(pair, trade)
 
     async def listen_orderbook(
-        self, *pairs: List[Pair]
+        self, *pairs: list[Pair]
     ) -> AsyncGenerator[OrderBook, None]:
         channels = [f"book.{pair.exchange_name}.50" for pair in pairs]
         async for data in self.api.listen("market", *channels):

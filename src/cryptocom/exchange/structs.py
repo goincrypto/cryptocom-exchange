@@ -1,69 +1,86 @@
 import time
-import typing as TP
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum, IntEnum
-from typing import Dict, List, Optional
+from functools import cached_property
+from typing import Any, ClassVar
 
-from cached_property import cached_property
+from typing_extensions import override
 
 from .helpers import round_down
 
 
-@dataclass
+@dataclass(frozen=True)
 class Instrument:
     exchange_name: str
+    _registry: ClassVar[dict[str, "Instrument"] | None] = field(
+        default=None, init=False
+    )
+
+    def __post_init__(self):
+        if Instrument._registry is None:
+            Instrument._registry = {}
+        Instrument._registry[self.exchange_name] = self
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.exchange_name.replace("1", "ONE_").replace("2", "TWO_")
 
-    def __hash__(self):
-        return self.exchange_name.__hash__()
-
-    def __eq__(self, other):
-        return self.exchange_name == other.exchange_name
+    @classmethod
+    def all(cls) -> list["Instrument"]:
+        return list(Instrument._registry.values()) if Instrument._registry else []
 
 
-@dataclass
-class Pair(Instrument):
+@dataclass(frozen=True)
+class Pair:
+    exchange_name: str
     price_precision: int
     quantity_precision: int
     min_order_notional_usd: float = 1.0
     max_order_notional_usd: float = 1000000.0
+    _registry: ClassVar[dict[str, "Pair"] | None] = field(default=None, init=False)
 
-    @cached_property
-    def _split_instrument(self):
-        return self.exchange_name.split("_")
+    def __post_init__(self):
+        if Pair._registry is None:
+            Pair._registry = {}
+        Pair._registry[self.exchange_name] = self
+        parts = self.exchange_name.split("_")
+        if len(parts) < 2:
+            raise ValueError(
+                f"Invalid pair name: {self.exchange_name}, expected format BASE_QUOTE"
+            )
+
+    @property
+    def name(self) -> str:
+        return self.exchange_name.replace("1", "ONE_").replace("2", "TWO_")
+
+    @classmethod
+    def all(cls) -> list["Pair"]:
+        return list(Pair._registry.values()) if Pair._registry else []
 
     @cached_property
     def base_instrument(self) -> Instrument:
-        return Instrument(self._split_instrument[0])
+        return Instrument(self.exchange_name.split("_")[0])
 
     @cached_property
     def quote_instrument(self) -> Instrument:
-        return Instrument(self._split_instrument[1])
+        return Instrument(self.exchange_name.split("_")[1])
 
-    def round_price(self, price):
+    def round_price(self, price: float | str) -> float:
         return round_down(float(price), self.price_precision)
 
-    def round_quantity(self, quantity):
+    def round_quantity(self, quantity: float | str) -> float:
         return round_down(float(quantity), self.quantity_precision)
 
     def validate_order_notional(self, notional: float) -> bool:
         """Check if order notional value is within allowed limits."""
         return self.min_order_notional_usd <= notional <= self.max_order_notional_usd
 
-    def __hash__(self):
-        return self.exchange_name.__hash__()
 
-    def __eq__(self, other):
-        return self.exchange_name == other.exchange_name
-
-
-class DefaultPairDict(dict):
+class DefaultPairDict(dict[str, Pair]):
     """Use default precision for old missing pairs."""
 
+    @override
     def __getitem__(self, name: str) -> Pair:
         try:
             return super().__getitem__(name)
@@ -89,18 +106,18 @@ class BaseCurrencyConfig:
     unit_margin_rate: float = 0.0
 
     # Optional fields
-    collateral_cap_notional: Optional[float] = None
-    max_product_leverage_for_spot: Optional[float] = None
-    max_product_leverage_for_perps: Optional[float] = None
-    max_product_leverage_for_futures: Optional[float] = None
-    max_short_sell_limit: Optional[float] = None
-    long_pos_limit_perps: Optional[float] = None
-    short_pos_limit_perps: Optional[float] = None
-    long_pos_limit_futures: Optional[float] = None
-    short_pos_limit_futures: Optional[float] = None
+    collateral_cap_notional: float | None = None
+    max_product_leverage_for_spot: float | None = None
+    max_product_leverage_for_perps: float | None = None
+    max_product_leverage_for_futures: float | None = None
+    max_short_sell_limit: float | None = None
+    long_pos_limit_perps: float | None = None
+    short_pos_limit_perps: float | None = None
+    long_pos_limit_futures: float | None = None
+    short_pos_limit_futures: float | None = None
 
     @classmethod
-    def from_api(cls, data: Dict) -> "BaseCurrencyConfig":
+    def from_api(cls, data: dict[str, Any]) -> "BaseCurrencyConfig":
         return cls(
             instrument_name=data["instrument_name"],
             min_order_notional_usd=float(data.get("min_order_notional_usd", 1.0)),
@@ -157,12 +174,12 @@ class RiskParameters:
     default_unit_margin_rate: float
     default_collateral_cap: float
     update_timestamp_ms: int
-    base_currency_config: List[BaseCurrencyConfig]
-    perpetual_swap_config: Optional[Dict] = None
-    futures_config: Optional[Dict] = None
+    base_currency_config: list[BaseCurrencyConfig]
+    perpetual_swap_config: dict[str, Any] | None = None
+    futures_config: dict[str, Any] | None = None
 
     @classmethod
-    def from_api(cls, data: Dict) -> "RiskParameters":
+    def from_api(cls, data: dict[str, Any]) -> "RiskParameters":
         return cls(
             default_max_product_leverage_for_spot=float(
                 data.get("default_max_product_leverage_for_spot", 1.0)
@@ -209,8 +226,8 @@ class RiskParameters:
 @dataclass
 class MarketTicker:
     pair: Pair
-    buy_price: TP.Union[float, None]
-    sell_price: TP.Union[float, None]
+    buy_price: float | None
+    sell_price: float | None
     trade_price: float
     time: int
     volume: float
@@ -248,7 +265,7 @@ class MarketTrade:
     pair: Pair
 
     @classmethod
-    def from_api(cls, pair: Pair, data: Dict):
+    def from_api(cls, pair: Pair, data: dict[str, Any]):
         time_ns = data.get("tn") or data.get("t") * 1e6
         return cls(
             id=data["d"],
@@ -286,7 +303,7 @@ class Candle:
     pair: Pair = None
 
     @classmethod
-    def from_api(cls, data: Dict, pair: Pair = None):
+    def from_api(cls, data: dict[str, Any], pair: Pair | None = None):
         return cls(
             time=int(data["t"] / 1000),
             open=float(data["o"]),
@@ -319,8 +336,8 @@ class OrderInBook:
 
 @dataclass
 class OrderBook:
-    buys: List[OrderInBook]
-    sells: List[OrderInBook]
+    buys: list[OrderInBook]
+    sells: list[OrderInBook]
     pair: Pair
 
     @property
@@ -328,7 +345,7 @@ class OrderBook:
         return round_down(self.sells[-1].price / self.buys[0].price - 1, 6)
 
 
-@dataclass
+@dataclass(frozen=True)
 class InstrumentBalance(Instrument):
     total: float
     reserved: float
@@ -455,7 +472,7 @@ class PrivateTrade:
         return self.side == OrderSide.SELL
 
     @classmethod
-    def create_from_api(cls, pair: Pair, data: Dict) -> "PrivateTrade":
+    def create_from_api(cls, pair: Pair, data: dict[str, Any]) -> "PrivateTrade":
         return cls(
             id=data["trade_id"],
             client_oid=data["client_oid"],
@@ -483,7 +500,7 @@ class Order:
     status: OrderStatus
     side: OrderSide
     exec_type: OrderExecType
-    limit_price: TP.Union[float, None]
+    limit_price: float | None
     value: float
     quantity: float
     maker_fee_rate: float
@@ -552,7 +569,10 @@ class Order:
 
     @classmethod
     def create_from_api(
-        cls, pair: Pair, data: Dict, trades: List[Dict] = None
+        cls,
+        pair: Pair,
+        data: dict[str, Any],
+        trades: list[dict[str, Any]] | None = None,
     ) -> "Order":
         return cls(
             id=data["order_id"],
@@ -593,7 +613,7 @@ class Interest:
     interest_rate: float
 
     @classmethod
-    def create_from_api(cls, data: Dict) -> "Interest":
+    def create_from_api(cls, data: dict[str, Any]) -> "Interest":
         return cls(
             loan_id=int(data["loan_id"]),
             instrument=Instrument(data["currency"]),
@@ -653,7 +673,7 @@ class Deposit(Transaction):
     status: DepositStatus
 
     @classmethod
-    def create_from_api(cls, data: Dict) -> "Deposit":
+    def create_from_api(cls, data: dict[str, Any]) -> "Deposit":
         params = cls._prepare(data)
         params["status"] = DepositStatus(data["status"])
         return cls(**params)
@@ -666,7 +686,7 @@ class Withdrawal(Transaction):
     txid: str
 
     @classmethod
-    def create_from_api(cls, data: Dict) -> "Withdrawal":
+    def create_from_api(cls, data: dict[str, Any]) -> "Withdrawal":
         params = cls._prepare(data)
         params["client_wid"] = data.get("client_wid", "")
         params["status"] = WithdrawalStatus(data["status"])
