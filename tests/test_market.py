@@ -6,9 +6,9 @@ from cryptocom.exchange.structs import BaseCurrencyConfig
 
 
 @pytest.mark.asyncio
-async def test_get_pairs(exchange: cro.Exchange):
-    pairs = await exchange.get_pairs()
-    assert sorted(exchange.pairs.keys()) == sorted(p.name for p in pairs)
+async def test_get_pairs(market: cro.Market):
+    pairs = await market.get_pairs()
+    assert sorted(market.pairs.keys()) == sorted(p.name for p in pairs)
     local_pairs = sorted(cro.pairs.all(), key=lambda p: p.name)
     server_pairs = sorted(pairs, key=lambda p: p.name)
     for local_pair, server_pair in zip(local_pairs, server_pairs):
@@ -17,8 +17,8 @@ async def test_get_pairs(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_tickers(exchange: cro.Exchange):
-    tickers = await exchange.get_tickers()
+async def test_get_tickers(market: cro.Market):
+    tickers = await market.get_tickers()
     for pair, ticker in tickers.items():
         assert ticker.high >= ticker.low
         assert ticker.pair == pair
@@ -26,14 +26,14 @@ async def test_get_tickers(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_trades(exchange: cro.Exchange):
+async def test_get_trades(market: cro.Market):
     """Test basic trade loading functionality."""
     # Use captured timestamp range (July 4, 2026 13:29-14:29 UTC)
     start_ts = int(datetime(2026, 7, 4, 13, 29, 29, tzinfo=timezone.utc).timestamp())
     end_ts = int(datetime(2026, 7, 4, 14, 29, 29, tzinfo=timezone.utc).timestamp())
 
     trades = []
-    async for trade in exchange.get_trades(
+    async for trade in market.get_trades(
         cro.pairs.CRO_USDT,
         start_ts=start_ts,
         end_ts=end_ts,
@@ -54,15 +54,15 @@ async def test_get_trades(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_price(exchange: cro.Exchange):
-    price = await exchange.get_price(cro.pairs.CRO_USDT)
+async def test_get_price(market: cro.Market):
+    price = await market.get_price(cro.pairs.CRO_USDT)
     assert price > 0.01
 
 
 @pytest.mark.asyncio
-async def test_get_orderbook(exchange: cro.Exchange):
+async def test_get_orderbook(market: cro.Market):
     depth = 50
-    book = await exchange.get_orderbook(cro.pairs.CRO_USDT, depth=depth)
+    book = await market.get_orderbook(cro.pairs.CRO_USDT, depth=depth)
     assert book.buys and book.sells
     assert book.sells[0].price > book.buys[0].price
     assert book.spread > 0
@@ -86,10 +86,10 @@ async def test_get_orderbook(exchange: cro.Exchange):
     ],
 )
 async def test_get_candles(
-    exchange: cro.Exchange, timeframe, start_ts, end_ts, candles_len, count
+    market: cro.Market, timeframe, start_ts, end_ts, candles_len, count
 ):
     candles = []
-    async for candle in exchange.get_candles(
+    async for candle in market.get_candles(
         cro.pairs.CLOUD_USD,
         timeframe,
         start_ts=start_ts,
@@ -148,7 +148,7 @@ async def test_get_candles(
     ],
 )
 async def test_get_candles_with_time_boundaries(
-    exchange: cro.Exchange,
+    market: cro.Market,
     timeframe,
     start_ts,
     end_ts,
@@ -156,7 +156,7 @@ async def test_get_candles_with_time_boundaries(
 ):
     """Test that candles respect time boundaries."""
     candles = []
-    async for candle in exchange.get_candles(
+    async for candle in market.get_candles(
         cro.pairs.CLOUD_USD,
         timeframe,
         start_ts=start_ts,
@@ -184,12 +184,12 @@ async def test_get_candles_with_time_boundaries(
 
 @pytest.mark.asyncio
 async def test_get_candles_all_history_invalid_with_boundaries(
-    exchange: cro.Exchange,
+    market: cro.Market,
 ):
     """Test that all_history cannot be used with start_ts or end_ts."""
     # Test without any boundaries - should work (fetches all)
     candles = []
-    async for candle in exchange.get_candles(
+    async for candle in market.get_candles(
         cro.pairs.CLOUD_USD,
         cro.Timeframe.DAY,
         all_history=True,
@@ -199,7 +199,7 @@ async def test_get_candles_all_history_invalid_with_boundaries(
 
     # Test with only start_ts - should raise
     with pytest.raises(ValueError, match="'all_history' cannot be used"):
-        async for _ in exchange.get_candles(
+        async for _ in market.get_candles(
             cro.pairs.CLOUD_USD,
             cro.Timeframe.DAY,
             start_ts=1000000000,
@@ -209,13 +209,13 @@ async def test_get_candles_all_history_invalid_with_boundaries(
 
 
 @pytest.mark.asyncio
-async def test_get_candles_count(exchange: cro.Exchange):
+async def test_get_candles_count(market: cro.Market):
     """Test that count=650 fetches up to 650 candles via pagination."""
     start_ts = int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp())
     end_ts = int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp())
 
     candles = []
-    async for candle in exchange.get_candles(
+    async for candle in market.get_candles(
         cro.pairs.CLOUD_USD,
         cro.Timeframe.MIN_15,
         start_ts=start_ts,
@@ -229,14 +229,14 @@ async def test_get_candles_count(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_candles_no_duplicates(exchange: cro.Exchange):
+async def test_get_candles_no_duplicates(market: cro.Market):
     """Test that get_candles prevents duplicates across API requests."""
     # Use same params as test_get_candles_with_time_boundaries[1D-1782854400-1782883199-1]
     start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
     end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
 
     candles = []
-    async for candle in exchange.get_candles(
+    async for candle in market.get_candles(
         cro.pairs.CLOUD_USD,
         cro.Timeframe.DAY,
         start_ts=start_ts,
@@ -252,14 +252,14 @@ async def test_get_candles_no_duplicates(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_trades_no_duplicates(exchange: cro.Exchange):
+async def test_get_trades_no_duplicates(market: cro.Market):
     """Test that get_trades prevents duplicates across API requests."""
     # Use 1-day range in June 2026
     start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
     end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
 
     trades = []
-    async for trade in exchange.get_trades(
+    async for trade in market.get_trades(
         cro.pairs.CRO_USDT,
         start_ts=start_ts,
         end_ts=end_ts,
@@ -275,14 +275,14 @@ async def test_get_trades_no_duplicates(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_candles_start_end_verification(exchange: cro.Exchange):
+async def test_get_candles_start_end_verification(market: cro.Market):
     """Test that start_ts and end_ts are properly enforced."""
     # Use same params as test_get_candles_with_time_boundaries[1D-1782854400-1782883199-1]
     start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
     end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
 
     candles = []
-    async for candle in exchange.get_candles(
+    async for candle in market.get_candles(
         cro.pairs.CLOUD_USD,
         cro.Timeframe.DAY,
         start_ts=start_ts,
@@ -309,7 +309,7 @@ async def test_get_candles_start_end_verification(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_listen_candles(exchange: cro.Exchange):
+async def test_listen_candles(market: cro.Market):
     candles = {}
     pairs = (
         cro.pairs.BTC_USD,
@@ -319,7 +319,7 @@ async def test_listen_candles(exchange: cro.Exchange):
     )
     default_count = 1
 
-    async for candle in exchange.listen_candles(cro.Timeframe.MIN, *pairs):
+    async for candle in market.listen_candles(cro.Timeframe.MIN, *pairs):
         candles.setdefault(candle.pair, 0)
         candles[candle.pair] += 1
         if all(v >= default_count for v in candles.values()) and len(candles) == len(
@@ -332,11 +332,11 @@ async def test_listen_candles(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_listen_trades(exchange: cro.Exchange):
+async def test_listen_trades(market: cro.Market):
     trades = []
     pairs = [cro.pairs.BTC_USD, cro.pairs.BTC_USDT]
     pairs_seen = set()
-    async for trade in exchange.listen_trades(*pairs):
+    async for trade in market.listen_trades(*pairs):
         trades.append(trade)
         pairs_seen.add(trade.pair)
         if len(pairs_seen) == len(pairs) and len(trades) > 30:
@@ -344,12 +344,12 @@ async def test_listen_trades(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_listen_orderbook(exchange: cro.Exchange):
+async def test_listen_orderbook(market: cro.Market):
     pairs = [cro.pairs.CRO_USDT, cro.pairs.CRO_USD]
     orderbooks = []
     depth = 50
 
-    async for orderbook in exchange.listen_orderbook(*pairs):
+    async for orderbook in market.listen_orderbook(*pairs):
         orderbooks.append(orderbook)
         if set(pairs) == set(o.pair for o in orderbooks):
             break
@@ -362,9 +362,9 @@ async def test_listen_orderbook(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_get_risk_parameters(exchange: cro.Exchange):
+async def test_get_risk_parameters(market: cro.Market):
     """Test that risk parameters are returned as proper dataclasses."""
-    risk = await exchange.get_risk_parameters()
+    risk = await market.get_risk_parameters()
 
     # Check top-level fields
     assert risk.default_max_product_leverage_for_spot > 0
@@ -400,7 +400,7 @@ async def test_get_risk_parameters(exchange: cro.Exchange):
 
 
 @pytest.mark.asyncio
-async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
+async def test_trades_match_candles_ohlcv_from_trades(market: cro.Market):
     """Test that trades can be aggregated into 5-minute OHLCV candles matching API output.
 
     This verifies:
@@ -416,7 +416,7 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
 
     # STEP 1: Fetch API candles FIRST to get exact time boundaries
     api_candles = []
-    async for candle in exchange.get_candles(
+    async for candle in market.get_candles(
         cro.pairs.BTC_USD,
         cro.Timeframe.MIN_5,
         start_ts=start_ts,
@@ -437,7 +437,7 @@ async def test_trades_match_candles_ohlcv_from_trades(exchange: cro.Exchange):
 
     # STEP 2: Fetch ALL trades for BTC_USD within the REAL candle time range
     trades = []
-    async for trade in exchange.get_trades(
+    async for trade in market.get_trades(
         cro.pairs.BTC_USD,
         start_ts=api_start_ts,
         end_ts=api_end_ts,

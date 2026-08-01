@@ -3,7 +3,7 @@ import logging
 from typing import Any
 
 from .api import ApiError, ApiProvider
-from .market import Exchange
+from .market import Market
 from .structs import (
     Balance,
     DefaultPairDict,
@@ -28,7 +28,7 @@ class Account:
     """Provides access to account actions and data. Balance, trades, orders."""
 
     api: ApiProvider
-    exchange: Exchange
+    market: Market
     pairs: DefaultPairDict
     logger: logging.Logger
 
@@ -38,7 +38,7 @@ class Account:
         api_key: str = "",
         api_secret: str = "",
         from_env: bool = False,
-        exchange: Exchange | None = None,
+        market: Market | None = None,
         api: ApiProvider | None = None,
         logger: logging.Logger | None = None,
     ) -> None:
@@ -48,12 +48,12 @@ class Account:
             api_key=api_key, api_secret=api_secret, from_env=from_env
         )
         self.logger = logger or logging.getLogger(__name__)
-        self.exchange = exchange or Exchange(api)
-        self.pairs = self.exchange.pairs
+        self.market = market or Market(api)
+        self.pairs = self.market.pairs
 
     async def sync_pairs(self):
-        await self.exchange.sync_pairs()
-        self.pairs = self.exchange.pairs
+        await self.market.sync_pairs()
+        self.pairs = self.market.pairs
 
     async def get_balance(self) -> dict[Instrument, Balance]:
         """Return balance."""
@@ -260,7 +260,7 @@ class Account:
             data["quantity"] = quantity
             if type_ == OrderType.MARKET:
                 # Fetch price for market sell orders (for notional validation only)
-                market_price = await self.exchange.get_price(pair)
+                market_price = await self.market.get_price(pair)
                 notional_value = float(quantity) * market_price
             else:
                 notional_value = float(quantity) * price

@@ -29,9 +29,9 @@ def api(request):
 
 
 @pytest_asyncio.fixture
-async def exchange(api: cro.RecordApiProvider) -> cro.Exchange:
-    ex = cro.Exchange(api=api)
-    return ex
+async def market(api: cro.RecordApiProvider) -> cro.Market:
+    mkt = cro.Market(api=api)
+    return mkt
 
 
 @pytest_asyncio.fixture
@@ -50,9 +50,8 @@ async def account(api: cro.RecordApiProvider) -> cro.Account:
             elif instrument.exchange_name == "USD":
                 usd_bal = instrument.available
 
-        # If we have more than 50 CRO and less than $5 USD, sell CRO
         if cro_bal > 50 and usd_bal < 5:
-            sell_qty = int(cro_bal - 30)  # Keep 30 CRO
+            sell_qty = int(cro_bal - 50)  # Keep 30 CRO
             if sell_qty > 0:
                 await acc.sell_market(cro.pairs.CRO_USD, sell_qty)
     except Exception:

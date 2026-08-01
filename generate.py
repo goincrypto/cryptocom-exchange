@@ -8,8 +8,8 @@ SRC_PATH = Path(__file__).parent / "src" / "cryptocom" / "exchange"
 
 
 async def main():
-    exchange = cro.Exchange()
-    await exchange.sync_pairs()
+    market = cro.Market()
+    await market.sync_pairs()
 
     # Clear old generated files to avoid stale data
     pairs_file = SRC_PATH / "pairs.py"
@@ -20,7 +20,7 @@ async def main():
         instruments_file.unlink()
 
     # Fetch risk parameters to get min/max order notional per instrument
-    risk_params = await exchange.get_risk_parameters()
+    risk_params = await market.get_risk_parameters()
     order_limits = {
         config.instrument_name: config for config in risk_params.base_currency_config
     }
@@ -31,7 +31,7 @@ async def main():
         )
 
     instruments = set()
-    pairs = await exchange.get_pairs()
+    pairs = await market.get_pairs()
     for pair in pairs:
         instruments.add(pair.base_instrument)
         instruments.add(pair.quote_instrument)

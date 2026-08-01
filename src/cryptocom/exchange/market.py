@@ -18,8 +18,8 @@ from .structs import (
 )
 
 
-class Exchange:
-    """Interface to base exchange methods."""
+class Market:
+    """Interface to base market data methods."""
 
     api: ApiProvider
     pairs: DefaultPairDict

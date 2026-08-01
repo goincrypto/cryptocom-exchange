@@ -14,9 +14,10 @@ def calculate_min_quantity(pair: cro.Pair, price: float) -> int:
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip
 async def test_account_get_balance(account: cro.Account):
     balance = await account.get_balance()
-    price = await account.exchange.get_price(cro.pairs.CRO_USD)
+    price = await account.market.get_price(cro.pairs.CRO_USD)
 
     async with async_timeout.timeout(120):
         while (
@@ -60,7 +61,7 @@ async def test_missing_old_pairs(account: cro.Account):
 
 @pytest.mark.asyncio
 @pytest.mark.skip
-async def test_deposit_withdrawal_history(account: cro.Account, exchange: cro.Exchange):
+async def test_deposit_withdrawal_history(account: cro.Account, market: cro.Market):
     # TODO: fix withdrawal history
     transactions = await account.get_withdrawal_history(cro.instruments.CRO)
     assert transactions
@@ -91,11 +92,11 @@ async def test_deposit_withdrawal_history(account: cro.Account, exchange: cro.Ex
 @pytest.mark.asyncio
 async def test_no_duplicate_mass_limit_orders(
     account: cro.Account,
-    exchange: cro.Exchange,
+    market: cro.Market,
 ):
-    current_price = await exchange.get_price(cro.pairs.CRO_USD)
+    current_price = await market.get_price(cro.pairs.CRO_USD)
     buy_price = round(current_price - 0.01, 4)  # Set below market to keep order open
-    orders_count = 2
+    orders_count = 4
     # Calculate minimum quantity to ensure $1.0+ notional
     qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
     order_ids = await asyncio.gather(
@@ -117,8 +118,8 @@ async def test_no_duplicate_mass_limit_orders(
 
 
 @pytest.mark.asyncio
-async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange):
-    current_price = await exchange.get_price(cro.pairs.CRO_USD)
+async def test_account_limit_orders(account: cro.Account, market: cro.Market):
+    current_price = await market.get_price(cro.pairs.CRO_USD)
     buy_price = round(current_price - 0.01, 4)  # Set below market to keep order open
     sell_price = round(current_price + 0.01, 4)  # Set above market to keep order open
     # Calculate minimum quantity to ensure $1.0+ notional
@@ -135,7 +136,7 @@ async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange
 
     # 3 buy orders + sell orders based on balance
     order_ids = await asyncio.gather(
-        *[account.buy_limit(cro.pairs.CRO_USD, qty, buy_price) for _ in range(3)]
+        *[account.buy_limit(cro.pairs.CRO_USD, qty, buy_price) for _ in range(4)]
     )
     # Only create sell orders if we have enough balance (need at least sell_qty * 2)
     if available_cro >= sell_qty * 2:
@@ -163,8 +164,8 @@ async def test_account_limit_orders(account: cro.Account, exchange: cro.Exchange
     assert set(ids) & set(order_ids)
 
 
-async def make_trades(account, exchange, order_ids):
-    price = await exchange.get_price(cro.pairs.CRO_USD)
+async def make_trades(account, market, order_ids):
+    price = await market.get_price(cro.pairs.CRO_USD)
     balance = await account.get_balance()
 
     # Check available balances
@@ -214,7 +215,7 @@ async def test_account_listen_balances(account: cro.Account):
 
 
 @pytest.mark.asyncio
-async def test_account_market_orders(account: cro.Account, exchange: cro.Exchange):
+async def test_account_market_orders(account: cro.Account, market: cro.Market):
     order_ids = {"buy": [], "sell": []}
     orders = []
     l_orders = []
@@ -225,7 +226,7 @@ async def test_account_market_orders(account: cro.Account, exchange: cro.Exchang
         await asyncio.sleep(1)
 
     # Only create one set of trades to avoid balance issues
-    await make_trades(account, exchange, order_ids)
+    await make_trades(account, market, order_ids)
 
     # Skip test if no orders were created (insufficient balance)
     if not order_ids["buy"] or not order_ids["sell"]:

@@ -1,10 +1,8 @@
-import asyncio
-import platform
-
 from . import instruments, pairs
 from .api import ApiError, ApiProvider, RecordApiProvider
-from .market import Exchange
-from .private import Account
+from .market import Market
+from .account import Account
+from .exceptions import ApiErrorCode
 from .structs import (
     Candle,
     Deposit,
@@ -24,8 +22,6 @@ from .structs import (
     WithdrawalStatus,
 )
 
-if platform.system() == "Windows":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 __all__ = [
     "Order",
@@ -46,9 +42,10 @@ __all__ = [
     "Withdrawal",
     "DepositStatus",
     "WithdrawalStatus",
-    "Exchange",
+    "Market",
     "Account",
     "ApiError",
     "ApiProvider",
     "RecordApiProvider",
+    "ApiErrorCode",
 ]

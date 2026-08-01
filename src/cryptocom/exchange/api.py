@@ -16,16 +16,35 @@ import httpx
 import websockets
 
 RATE_LIMITS = {
-    # order methods
+    # =====================================================================
+    # Crypto.com Exchange API Rate Limits
+    # Source: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/introduction
+    #
+    # REST API (Authenticated/Private):
+    #   - Specific endpoints listed below have custom limits
+    #   - All other private endpoints: 3 requests per 100ms
+    #   - Staking endpoints: 50 requests per second
+    #
+    # REST API (Public/Market Data):
+    #   - All public endpoints: 100 requests per second (per IP)
+    #
+    # WebSocket:
+    #   - User API: 150 requests per second
+    #   - Market Data: 100 requests per second
+    # =====================================================================
+    # Order management methods (15 req/100ms)
     (
         "private/create-order",
         "private/cancel-order",
         "private/cancel-all-orders",
-    ): (14, 0.1),
-    # order detail methods
-    ("private/get-order-detail",): (29, 0.1),
-    # general trade methods
+    ): (15, 0.1),
+    # Order detail methods (30 req/100ms)
+    ("private/get-order-detail",): (30, 0.1),
+    # General trade methods (1 req/s)
     ("private/get-trades", "private/get-order-history"): (1, 1),
+    # Note: All other private endpoints use general_private_limit (3 req/100ms)
+    # Note: All staking endpoints use general_staking_limit (50 req/s)
+    # Note: All public endpoints use general_public_limit (100 req/s)
 }
 
 
@@ -37,13 +56,13 @@ class ApiAuthError(ApiError):
     pass
 
 
-def params_to_str(obj, level):
+def params_to_str(obj, level) -> str:
     if level >= 3:
         return str(obj)
 
     return_str = ""
     for key in sorted(obj):
-        return_str += key
+        return_str += str(key)
         if obj[key] is None:
             return_str += "null"
         elif isinstance(obj[key], list):
@@ -156,8 +175,15 @@ class ApiProvider:
                 self.rate_limiters[url] = aiolimiter.AsyncLimiter(*RATE_LIMITS[urls])
 
         # limits for not matched methods
+        # Private APIs: 3 requests per 100ms (REST API - authenticated)
+        # Source: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/introduction
         self.general_private_limit = aiolimiter.AsyncLimiter(3, 0.1)
+        # Public APIs: 100 requests per second (Market APIs - per IP)
+        # Source: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/introduction
         self.general_public_limit = aiolimiter.AsyncLimiter(100, 1)
+        # Staking APIs: 50 requests per second
+        # Source: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/introduction
+        self.general_staking_limit = aiolimiter.AsyncLimiter(50, 1)
 
         if not auth_required:
             return
@@ -198,7 +224,9 @@ class ApiProvider:
         if path in self.rate_limiters:
             return self.rate_limiters[path]
         else:
-            if path.startswith("private"):
+            if path.startswith("private/staking"):
+                return self.general_staking_limit
+            elif path.startswith("private"):
                 return self.general_private_limit
             elif path.startswith("public"):
                 return self.general_public_limit
@@ -311,23 +339,16 @@ class RecordApiProvider(ApiProvider):
         self.divide_delay = divide_delay
         self.fake_account_id = fake_account_id
 
-        # Set records based on capture mode
         if self.capture:
-            # Capture mode: read keys from env but don't validate in parent
-            os.environ.setdefault("CRYPTOCOM_API_KEY", "")
-            os.environ.setdefault("CRYPTOCOM_API_SECRET", "")
             self.cache_file.parent.mkdir(exist_ok=True, parents=True)
             if self.cache_file.exists():
                 self.cache_file.unlink()
             self.records = {}
-            # Call parent with empty keys - they won't be validated since auth_required=False for public calls
-            super().__init__(api_key="", api_secret="", auth_required=False)
+            super().__init__(from_env=True)
         else:
-            # Replay mode: use dummy keys
             self.records = {}
             if self.cache_file.exists():
                 self.records = json.loads(self.cache_file.read_text())
-            # Pass dummy keys
             super().__init__(api_key="dummy", api_secret="dummy", auth_required=False)
 
     async def request(self, method, path, params=None, data=None, sign=False):
