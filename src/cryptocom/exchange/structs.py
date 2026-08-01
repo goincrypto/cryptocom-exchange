@@ -63,12 +63,16 @@ class Pair:
     taker_fee_rate: float | None = None  # Taker fee rate
     min_order_notional_usd: float = 1.0
     max_order_notional_usd: float = 1000000.0
-    _registry: ClassVar[dict[str, "Pair"] | None] = field(default=None, init=False)
+    deleted: bool = field(default=False, init=True, repr=False)
+    _registry: ClassVar[dict[str, "Pair"] | None] = field(
+        default=None, init=False, repr=False
+    )
 
     def __post_init__(self):
-        if Pair._registry is None:
-            Pair._registry = {}
-        Pair._registry[self.exchange_name] = self
+        if not self.deleted:
+            if Pair._registry is None:
+                Pair._registry = {}
+            Pair._registry[self.exchange_name] = self
         parts = self.exchange_name.split("_")
         if len(parts) < 2:
             raise ValueError(
@@ -160,6 +164,7 @@ class DefaultPairDict(dict[str, Pair]):
         try:
             return super().__getitem__(name)
         except KeyError:
+            # Create deleted pair that skips registry
             return Pair(
                 name,
                 8,
@@ -167,6 +172,7 @@ class DefaultPairDict(dict[str, Pair]):
                 inst_type=InstrumentType.SPOT,
                 min_order_notional_usd=1.0,
                 max_order_notional_usd=1000000.0,
+                deleted=True,
             )
 
 
