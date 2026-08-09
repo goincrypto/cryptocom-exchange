@@ -37,22 +37,46 @@ async def market(api: cro.RecordApiProvider) -> cro.Market:
 @pytest_asyncio.fixture
 async def account(api: cro.RecordApiProvider) -> cro.Account:
     acc = cro.Account(from_env=True, api=api)
-    yield acc
-    await acc.cancel_open_orders(cro.pairs.CRO_USD)
-    # Restore balance: sell excess CRO to get USD back
-    try:
-        balance = await acc.get_balance()
-        cro_bal = 0
-        usd_bal = 0
-        for instrument in balance:
-            if instrument.exchange_name == "CRO":
-                cro_bal = instrument.available
-            elif instrument.exchange_name == "USD":
-                usd_bal = instrument.available
 
-        if cro_bal > 50 and usd_bal < 5:
-            sell_qty = int(cro_bal - 50)  # Keep 30 CRO
-            if sell_qty > 0:
-                await acc.sell_market(cro.pairs.CRO_USD, sell_qty)
-    except Exception:
-        pass  # Ignore cleanup errors
+    # Get initial balance
+    balance = await acc.get_balance()
+    cro_bal = balance.get(cro.instruments.CRO)
+    usd_bal = balance.get(cro.instruments.USD)
+    available_cro = cro_bal.available if cro_bal else 0
+    available_usd = usd_bal.available if usd_bal else 0
+
+    # Get current price
+    market = cro.Market(api=api)
+    price = await market.get_price(cro.pairs.CRO_USD)
+
+    print(f"\nInitial: CRO={available_cro}, USD={available_usd}, Price={price}")
+
+    # Rebalance to ~50/50 if we have enough total value
+    total_value = available_usd + (available_cro * price)
+    if total_value > 10:  # Only rebalance if we have significant balance
+        target_cro_qty = (total_value * 0.5) / price if price > 0 else 0
+        cro_diff = available_cro - target_cro_qty
+
+        if abs(cro_diff) > 5:  # Only trade if difference is significant
+            if cro_diff > 0:
+                # Sell excess CRO
+                sell_qty = int(cro_diff)
+                print(f"Rebalancing: Selling {sell_qty} CRO")
+                try:
+                    await acc.sell_market(cro.pairs.CRO_USD, sell_qty)
+                except Exception as e:
+                    print(f"Sell failed: {e}")
+            elif cro_diff < 0:
+                # Buy more CRO
+                buy_spend = abs(cro_diff) * price
+                if buy_spend > cro.pairs.CRO_USD.min_order_notional_usd:
+                    print(f"Rebalancing: Buying CRO with {buy_spend} USD")
+                    try:
+                        await acc.buy_market(cro.pairs.CRO_USD, buy_spend)
+                    except Exception as e:
+                        print(f"Buy failed: {e}")
+
+    yield acc
+
+    # Cleanup: cancel open orders
+    await acc.cancel_open_orders(cro.pairs.CRO_USD)

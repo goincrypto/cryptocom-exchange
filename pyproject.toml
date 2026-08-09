@@ -20,6 +20,7 @@ aiolimiter = "^1.2.1"
 async-timeout = "^5.0.1"
 httpx = "^0.28.1"
 python = "^3.11"
+typing-extensions = "^4.0.0"
 websockets = "^15.0.1"
 
 [tool.ruff]

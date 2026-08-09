@@ -10,6 +10,7 @@ from .structs import (
     Deposit,
     DepositStatus,
     Instrument,
+    InstrumentBalance,
     Interest,
     Order,
     OrderExecFlag,
@@ -55,14 +56,15 @@ class Account:
         await self.market.sync_pairs()
         self.pairs = self.market.pairs
 
-    async def get_balance(self) -> dict[Instrument, Balance]:
+    async def get_balance(self) -> dict[Instrument, InstrumentBalance]:
         """Return balance."""
         data = (await self.api.post("private/user-balance")) or []
         if not data:
             return {}
         balance = Balance.from_api(data[0])
-        # Return dict mapping instrument to balance info
-        return {inst: inst for inst in balance.instruments}
+        # Return dict mapping instrument to its balance
+        # InstrumentBalance inherits from Instrument, so we can use it directly as key
+        return {inst: inst for inst in balance}
 
     async def get_accounts(self) -> dict[str, Any]:
         data = await self.api.post("private/get-accounts")
@@ -219,7 +221,7 @@ class Account:
         price: float = 0,
         force_type: OrderForceType | None = None,
         exec_flags: list[OrderExecFlag] | None = None,
-        client_id: int | None = None,
+        client_id: str | None = None,
         fee_instrument: Instrument | None = None,
     ) -> str:
         """Create raw order with buy or sell side."""
@@ -274,7 +276,7 @@ class Account:
             )
 
         if client_id:
-            data["client_oid"] = str(client_id)
+            data["client_oid"] = client_id
 
         if price:
             if type_ == OrderType.MARKET:
@@ -291,7 +293,7 @@ class Account:
         price: float,
         force_type: OrderForceType | None = None,
         exec_flags: list[OrderExecFlag] | None = None,
-        client_id: int | None = None,
+        client_id: str | None = None,
         fee_instrument: Instrument | None = None,
     ) -> str:
         """Buy limit order with optional fee instrument."""
@@ -314,7 +316,7 @@ class Account:
         price: float,
         force_type: OrderForceType | None = None,
         exec_flags: list[OrderExecFlag] | None = None,
-        client_id: int | None = None,
+        client_id: str | None = None,
         fee_instrument: Instrument | None = None,
     ) -> str:
         """Sell limit order with optional fee instrument."""
@@ -399,11 +401,31 @@ class Account:
 
         return order_id
 
-    async def get_order(self, order_id: str) -> Order:
-        """Get order info."""
+    async def get_order(
+        self, order_id: str | None = None, client_order_id: str | None = None
+    ) -> Order:
+        """Get order info by order_id or client_order_id.
+
+        Args:
+            order_id: Exchange order ID
+            client_order_id: Client order ID (client_oid)
+
+        Raises:
+            ValueError: If neither order_id nor client_order_id is provided
+            ApiError: If order not found
+        """
+        if not order_id and not client_order_id:
+            raise ValueError("Must provide either order_id or client_order_id")
+
+        params = {}
+        if order_id:
+            params["order_id"] = str(order_id)
+        if client_order_id:
+            params["client_oid"] = client_order_id
+
         data = await self.api.post(
             "private/get-order-detail",
-            {"params": {"order_id": str(order_id)}},
+            {"params": params},
         )
         if not data:
             raise ApiError("No order data")

@@ -15,7 +15,7 @@
           "default_short_pos_limit_futures": "-1.0",
           "default_unit_margin_rate": "0.05",
           "default_collateral_cap": "0.0",
-          "update_timestamp_ms": 1785488176446,
+          "update_timestamp_ms": 1786112956470,
           "base_currency_config": [
             {
               "instrument_name": "1INCH",
@@ -118,6 +118,14 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "ADBE",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.0079",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "1997.0",
+              "short_pos_limit_perps": "1997.0"
+            },
+            {
               "instrument_name": "ADI",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -212,6 +220,14 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "AMAT",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.011",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "985.0",
+              "short_pos_limit_perps": "985.0"
             },
             {
               "instrument_name": "AMD",
@@ -368,6 +384,14 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "ASML",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.02",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "307.0",
+              "short_pos_limit_perps": "307.0"
+            },
+            {
               "instrument_name": "ASTR",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
@@ -375,6 +399,14 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "ASTS",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.0038",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "8477.0",
+              "short_pos_limit_perps": "8477.0"
             },
             {
               "instrument_name": "ATH",
@@ -770,6 +802,7 @@
             {
               "instrument_name": "CASHCAT",
               "minimum_haircut": "0",
+              "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00060",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -1426,12 +1459,28 @@
               "short_pos_limit_perps": "7000.0"
             },
             {
+              "instrument_name": "EWT",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.0049",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "5179.0",
+              "short_pos_limit_perps": "5179.0"
+            },
+            {
               "instrument_name": "EWY",
               "minimum_haircut": "0",
               "unit_margin_rate": "0.014",
               "max_order_notional_usd": "500000.0",
               "long_pos_limit_perps": "5100.0",
               "short_pos_limit_perps": "5100.0"
+            },
+            {
+              "instrument_name": "EWZ",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.003",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "13643.0",
+              "short_pos_limit_perps": "13643.0"
             },
             {
               "instrument_name": "FARM",
@@ -1605,6 +1654,14 @@
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "GLW",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.0059",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "3617.0",
+              "short_pos_limit_perps": "3617.0"
             },
             {
               "instrument_name": "GME",
@@ -1791,10 +1848,7 @@
               "instrument_name": "HFT",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
-              "unit_margin_rate": "0.00030",
-              "order_limit": "500000.0",
-              "max_order_notional_usd": "500000.0",
-              "min_order_notional_usd": "1.0"
+              "unit_margin_rate": "0.00030"
             },
             {
               "instrument_name": "HIMS",
@@ -1817,6 +1871,15 @@
               "instrument_name": "HNT",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
+              "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "HOME",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.00010",
+              "daily_notional_limit": "500000.0",
+              "order_limit": "50000.0",
+              "max_order_notional_usd": "50000.0",
               "min_order_notional_usd": "1.0"
             },
             {
@@ -2514,13 +2577,6 @@
               "daily_notional_limit": "500000.0",
               "order_limit": "50000.0",
               "max_order_notional_usd": "50000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
-              "instrument_name": "MOBILE",
-              "daily_notional_limit": "100000.0",
-              "order_limit": "10000.0",
-              "max_order_notional_usd": "10000.0",
               "min_order_notional_usd": "1.0"
             },
             {
@@ -3269,6 +3325,14 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "RIVN",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.002",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "32852.0",
+              "short_pos_limit_perps": "32852.0"
+            },
+            {
               "instrument_name": "RKLB",
               "minimum_haircut": "0",
               "unit_margin_rate": "0.02",
@@ -3500,6 +3564,14 @@
               "order_limit": "500000.0",
               "max_order_notional_usd": "500000.0",
               "min_order_notional_usd": "1.0"
+            },
+            {
+              "instrument_name": "SMH",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.012",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "925.0",
+              "short_pos_limit_perps": "925.0"
             },
             {
               "instrument_name": "SNDK",
@@ -4523,6 +4595,14 @@
               "min_order_notional_usd": "1.0"
             },
             {
+              "instrument_name": "ZM",
+              "minimum_haircut": "0",
+              "unit_margin_rate": "0.0049",
+              "max_order_notional_usd": "500000.0",
+              "long_pos_limit_perps": "5205.0",
+              "short_pos_limit_perps": "5205.0"
+            },
+            {
               "instrument_name": "ZORA",
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
@@ -4605,6 +4685,10 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "ADBE",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "ADI",
               "max_order_notional_usd": "2500000.0"
             },
@@ -4655,6 +4739,10 @@
             {
               "instrument_name": "ALT",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "AMAT",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "AMD",
@@ -4721,8 +4809,16 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "ASML",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "ASTR",
               "max_order_notional_usd": "500000.0"
+            },
+            {
+              "instrument_name": "ASTS",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "ATH",
@@ -5221,7 +5317,15 @@
               "max_order_notional_usd": "100000.0"
             },
             {
+              "instrument_name": "EWT",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "EWY",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
+              "instrument_name": "EWZ",
               "max_order_notional_usd": "100000.0"
             },
             {
@@ -5317,6 +5421,10 @@
               "max_order_notional_usd": "500000.0"
             },
             {
+              "instrument_name": "GLW",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "GME",
               "max_order_notional_usd": "100000.0"
             },
@@ -5409,10 +5517,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "HFT",
-              "max_order_notional_usd": "500000.0"
-            },
-            {
               "instrument_name": "HIMS",
               "max_order_notional_usd": "100000.0"
             },
@@ -5423,6 +5527,10 @@
             {
               "instrument_name": "HNT",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "HOME",
+              "max_order_notional_usd": "500000.0"
             },
             {
               "instrument_name": "HOOD",
@@ -5758,10 +5866,6 @@
             },
             {
               "instrument_name": "MNDE",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "MOBILE",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -6129,6 +6233,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "RIVN",
+              "max_order_notional_usd": "100000.0"
+            },
+            {
               "instrument_name": "RKLB",
               "max_order_notional_usd": "100000.0"
             },
@@ -6243,6 +6351,10 @@
             {
               "instrument_name": "SLP",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "SMH",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "SNDK",
@@ -6723,6 +6835,10 @@
             {
               "instrument_name": "ZKJ",
               "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "ZM",
+              "max_order_notional_usd": "100000.0"
             },
             {
               "instrument_name": "ZORA",
@@ -6787,6 +6903,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "ADBE",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "ADI",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6836,6 +6956,10 @@
             },
             {
               "instrument_name": "ALT",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "AMAT",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -6903,7 +7027,15 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "ASML",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "ASTR",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "ASTS",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7403,7 +7535,15 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "EWT",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "EWY",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "EWZ",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7499,6 +7639,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "GLW",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "GME",
               "max_order_notional_usd": "2500000.0"
             },
@@ -7591,10 +7735,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "HFT",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "HIMS",
               "max_order_notional_usd": "2500000.0"
             },
@@ -7604,6 +7744,10 @@
             },
             {
               "instrument_name": "HNT",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "HOME",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -7940,10 +8084,6 @@
             },
             {
               "instrument_name": "MNDE",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "MOBILE",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -8311,6 +8451,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "RIVN",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "RKLB",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8424,6 +8568,10 @@
             },
             {
               "instrument_name": "SLP",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
+              "instrument_name": "SMH",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -8907,6 +9055,10 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
+              "instrument_name": "ZM",
+              "max_order_notional_usd": "2500000.0"
+            },
+            {
               "instrument_name": "ZORA",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8924,8 +9076,8 @@
             }
           ]
         },
-        "exec_time": 0.373734712600708,
-        "timestamp": 1785589989.040316
+        "exec_time": 0.3569169044494629,
+        "timestamp": 1786279304.8223138
       }
     ]
   }

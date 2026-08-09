@@ -1,7 +1,7 @@
 from .structs import Pair, InstrumentType, Instrument
 
 AAVE_USD = Pair(
-    "AAVE_USD",
+    exchange_name="AAVE_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -12,13 +12,11 @@ AAVE_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AAVE_USDT = Pair(
-    "AAVE_USDT",
+    exchange_name="AAVE_USDT",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -29,13 +27,11 @@ AAVE_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ACH_USD = Pair(
-    "ACH_USD",
+    exchange_name="ACH_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -46,13 +42,11 @@ ACH_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ACH_USDT = Pair(
-    "ACH_USDT",
+    exchange_name="ACH_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -63,13 +57,11 @@ ACH_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ACS_USD = Pair(
-    "ACS_USD",
+    exchange_name="ACS_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -80,13 +72,11 @@ ACS_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ACT_USD = Pair(
-    "ACT_USD",
+    exchange_name="ACT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -97,13 +87,11 @@ ACT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ADA_BTC = Pair(
-    "ADA_BTC",
+    exchange_name="ADA_BTC",
     price_precision=9,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -114,13 +102,11 @@ ADA_BTC = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ADA_EUR = Pair(
-    "ADA_EUR",
+    exchange_name="ADA_EUR",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -131,13 +117,11 @@ ADA_EUR = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ADA_USD = Pair(
-    "ADA_USD",
+    exchange_name="ADA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -148,13 +132,11 @@ ADA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ADA_USDT = Pair(
-    "ADA_USDT",
+    exchange_name="ADA_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -165,13 +147,11 @@ ADA_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ADI_USD = Pair(
-    "ADI_USD",
+    exchange_name="ADI_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -182,13 +162,11 @@ ADI_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AERO_USD = Pair(
-    "AERO_USD",
+    exchange_name="AERO_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -199,13 +177,11 @@ AERO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AEVO_USD = Pair(
-    "AEVO_USD",
+    exchange_name="AEVO_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -216,13 +192,11 @@ AEVO_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AGENTFUN_USD = Pair(
-    "AGENTFUN_USD",
+    exchange_name="AGENTFUN_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -233,13 +207,11 @@ AGENTFUN_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AGLD_USD = Pair(
-    "AGLD_USD",
+    exchange_name="AGLD_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -250,13 +222,11 @@ AGLD_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AIGENSYN_USD = Pair(
-    "AIGENSYN_USD",
+    exchange_name="AIGENSYN_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -267,13 +237,11 @@ AIGENSYN_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AIOZ_USD = Pair(
-    "AIOZ_USD",
+    exchange_name="AIOZ_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -284,13 +252,11 @@ AIOZ_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AIOZ_USDT = Pair(
-    "AIOZ_USDT",
+    exchange_name="AIOZ_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -301,13 +267,11 @@ AIOZ_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AIXBT_USD = Pair(
-    "AIXBT_USD",
+    exchange_name="AIXBT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -318,13 +282,11 @@ AIXBT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AKT_USD = Pair(
-    "AKT_USD",
+    exchange_name="AKT_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -335,13 +297,11 @@ AKT_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AKT_USDT = Pair(
-    "AKT_USDT",
+    exchange_name="AKT_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -352,13 +312,11 @@ AKT_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ALGO_BTC = Pair(
-    "ALGO_BTC",
+    exchange_name="ALGO_BTC",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -369,13 +327,11 @@ ALGO_BTC = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ALGO_USD = Pair(
-    "ALGO_USD",
+    exchange_name="ALGO_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -386,13 +342,11 @@ ALGO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ALGO_USDT = Pair(
-    "ALGO_USDT",
+    exchange_name="ALGO_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -403,13 +357,11 @@ ALGO_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ALICE_USD = Pair(
-    "ALICE_USD",
+    exchange_name="ALICE_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -420,13 +372,11 @@ ALICE_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ALI_USD = Pair(
-    "ALI_USD",
+    exchange_name="ALI_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -437,13 +387,11 @@ ALI_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ALT_USD = Pair(
-    "ALT_USD",
+    exchange_name="ALT_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -454,13 +402,11 @@ ALT_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AMP_USD = Pair(
-    "AMP_USD",
+    exchange_name="AMP_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -471,13 +417,11 @@ AMP_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AMP_USDT = Pair(
-    "AMP_USDT",
+    exchange_name="AMP_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -488,13 +432,11 @@ AMP_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ANIME_USD = Pair(
-    "ANIME_USD",
+    exchange_name="ANIME_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -505,13 +447,11 @@ ANIME_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ANKR_USD = Pair(
-    "ANKR_USD",
+    exchange_name="ANKR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -522,13 +462,11 @@ ANKR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 APE_USD = Pair(
-    "APE_USD",
+    exchange_name="APE_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -539,13 +477,11 @@ APE_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 APE_USDT = Pair(
-    "APE_USDT",
+    exchange_name="APE_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -556,13 +492,11 @@ APE_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 API3_USD = Pair(
-    "API3_USD",
+    exchange_name="API3_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -573,13 +507,11 @@ API3_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 APT_USD = Pair(
-    "APT_USD",
+    exchange_name="APT_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -590,13 +522,11 @@ APT_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 APT_USDT = Pair(
-    "APT_USDT",
+    exchange_name="APT_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -607,13 +537,11 @@ APT_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ARB_USD = Pair(
-    "ARB_USD",
+    exchange_name="ARB_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -624,13 +552,11 @@ ARB_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ARB_USDT = Pair(
-    "ARB_USDT",
+    exchange_name="ARB_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -641,13 +567,11 @@ ARB_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ARC_USD = Pair(
-    "ARC_USD",
+    exchange_name="ARC_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -658,13 +582,11 @@ ARC_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ARKM_USD = Pair(
-    "ARKM_USD",
+    exchange_name="ARKM_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -675,13 +597,11 @@ ARKM_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ARK_USD = Pair(
-    "ARK_USD",
+    exchange_name="ARK_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -692,13 +612,11 @@ ARK_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ARPA_USD = Pair(
-    "ARPA_USD",
+    exchange_name="ARPA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -709,13 +627,11 @@ ARPA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AR_USD = Pair(
-    "AR_USD",
+    exchange_name="AR_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -726,13 +642,11 @@ AR_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AR_USDT = Pair(
-    "AR_USDT",
+    exchange_name="AR_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -743,13 +657,11 @@ AR_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ASTR_USD = Pair(
-    "ASTR_USD",
+    exchange_name="ASTR_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -760,13 +672,11 @@ ASTR_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ASTR_USDT = Pair(
-    "ASTR_USDT",
+    exchange_name="ASTR_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -777,13 +687,11 @@ ASTR_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ATH_USD = Pair(
-    "ATH_USD",
+    exchange_name="ATH_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -794,13 +702,11 @@ ATH_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ATOM_BTC = Pair(
-    "ATOM_BTC",
+    exchange_name="ATOM_BTC",
     price_precision=8,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -811,13 +717,11 @@ ATOM_BTC = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ATOM_CRO = Pair(
-    "ATOM_CRO",
+    exchange_name="ATOM_CRO",
     price_precision=2,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -828,13 +732,11 @@ ATOM_CRO = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ATOM_USD = Pair(
-    "ATOM_USD",
+    exchange_name="ATOM_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -845,13 +747,11 @@ ATOM_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ATOM_USDT = Pair(
-    "ATOM_USDT",
+    exchange_name="ATOM_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -862,13 +762,11 @@ ATOM_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ATWO_Z_USD = Pair(
-    "A2Z_USD",
+    exchange_name="A2Z_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -879,13 +777,11 @@ ATWO_Z_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AUDIO_USD = Pair(
-    "AUDIO_USD",
+    exchange_name="AUDIO_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -896,13 +792,11 @@ AUDIO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AURORA_USD = Pair(
-    "AURORA_USD",
+    exchange_name="AURORA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -913,13 +807,11 @@ AURORA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AVAX_BTC = Pair(
-    "AVAX_BTC",
+    exchange_name="AVAX_BTC",
     price_precision=8,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -930,13 +822,11 @@ AVAX_BTC = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AVAX_USD = Pair(
-    "AVAX_USD",
+    exchange_name="AVAX_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -947,13 +837,11 @@ AVAX_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AVAX_USDT = Pair(
-    "AVAX_USDT",
+    exchange_name="AVAX_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -964,13 +852,11 @@ AVAX_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AVNT_USD = Pair(
-    "AVNT_USD",
+    exchange_name="AVNT_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -981,13 +867,11 @@ AVNT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AVNT_USDT = Pair(
-    "AVNT_USDT",
+    exchange_name="AVNT_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -998,13 +882,11 @@ AVNT_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AXL_USD = Pair(
-    "AXL_USD",
+    exchange_name="AXL_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -1015,13 +897,11 @@ AXL_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AXL_USDT = Pair(
-    "AXL_USDT",
+    exchange_name="AXL_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -1032,13 +912,11 @@ AXL_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AXS_USD = Pair(
-    "AXS_USD",
+    exchange_name="AXS_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -1049,13 +927,11 @@ AXS_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 AXS_USDT = Pair(
-    "AXS_USDT",
+    exchange_name="AXS_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -1066,13 +942,11 @@ AXS_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 A_USD = Pair(
-    "A_USD",
+    exchange_name="A_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -1083,13 +957,11 @@ A_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BANANA_USD = Pair(
-    "BANANA_USD",
+    exchange_name="BANANA_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -1100,13 +972,11 @@ BANANA_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BAND_USD = Pair(
-    "BAND_USD",
+    exchange_name="BAND_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -1117,13 +987,11 @@ BAND_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BARA_USD = Pair(
-    "BARA_USD",
+    exchange_name="BARA_USD",
     price_precision=11,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1134,13 +1002,11 @@ BARA_USD = Pair(
     price_tick_size=1e-11,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BASED_USD = Pair(
-    "BASED_USD",
+    exchange_name="BASED_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1151,13 +1017,11 @@ BASED_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BAT_USD = Pair(
-    "BAT_USD",
+    exchange_name="BAT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1168,13 +1032,11 @@ BAT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BAT_USDT = Pair(
-    "BAT_USDT",
+    exchange_name="BAT_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1185,13 +1047,11 @@ BAT_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BCH_BTC = Pair(
-    "BCH_BTC",
+    exchange_name="BCH_BTC",
     price_precision=7,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -1202,13 +1062,11 @@ BCH_BTC = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BCH_USD = Pair(
-    "BCH_USD",
+    exchange_name="BCH_USD",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -1219,13 +1077,11 @@ BCH_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BCH_USDT = Pair(
-    "BCH_USDT",
+    exchange_name="BCH_USDT",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -1236,13 +1092,11 @@ BCH_USDT = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BEAMX_USD = Pair(
-    "BEAMX_USD",
+    exchange_name="BEAMX_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1253,13 +1107,11 @@ BEAMX_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BERA_USD = Pair(
-    "BERA_USD",
+    exchange_name="BERA_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -1270,13 +1122,11 @@ BERA_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BICO_USD = Pair(
-    "BICO_USD",
+    exchange_name="BICO_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -1287,13 +1137,11 @@ BICO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BIGTIME_USD = Pair(
-    "BIGTIME_USD",
+    exchange_name="BIGTIME_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1304,13 +1152,11 @@ BIGTIME_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BINK_USD = Pair(
-    "BINK_USD",
+    exchange_name="BINK_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1321,13 +1167,11 @@ BINK_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BIRB_USD = Pair(
-    "BIRB_USD",
+    exchange_name="BIRB_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1338,13 +1182,11 @@ BIRB_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BLAST_USD = Pair(
-    "BLAST_USD",
+    exchange_name="BLAST_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1355,13 +1197,11 @@ BLAST_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BLEND_USD = Pair(
-    "BLEND_USD",
+    exchange_name="BLEND_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1372,13 +1212,11 @@ BLEND_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BLUR_USD = Pair(
-    "BLUR_USD",
+    exchange_name="BLUR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1389,13 +1227,11 @@ BLUR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BMT_USD = Pair(
-    "BMT_USD",
+    exchange_name="BMT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1406,13 +1242,11 @@ BMT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BNT_USD = Pair(
-    "BNT_USD",
+    exchange_name="BNT_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -1423,13 +1257,11 @@ BNT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BOBA_USD = Pair(
-    "BOBA_USD",
+    exchange_name="BOBA_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1440,13 +1272,11 @@ BOBA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BOME_USD = Pair(
-    "BOME_USD",
+    exchange_name="BOME_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1457,13 +1287,11 @@ BOME_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BOME_USDT = Pair(
-    "BOME_USDT",
+    exchange_name="BOME_USDT",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1474,13 +1302,11 @@ BOME_USDT = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BONE_USD = Pair(
-    "BONE_USD",
+    exchange_name="BONE_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1491,13 +1317,11 @@ BONE_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BONK_USD = Pair(
-    "BONK_USD",
+    exchange_name="BONK_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1508,13 +1332,11 @@ BONK_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BONK_USDT = Pair(
-    "BONK_USDT",
+    exchange_name="BONK_USDT",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1525,13 +1347,11 @@ BONK_USDT = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BOSON_USD = Pair(
-    "BOSON_USD",
+    exchange_name="BOSON_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1542,13 +1362,11 @@ BOSON_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BREV_USD = Pair(
-    "BREV_USD",
+    exchange_name="BREV_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1559,13 +1377,11 @@ BREV_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BTC_EUR = Pair(
-    "BTC_EUR",
+    exchange_name="BTC_EUR",
     price_precision=2,
     quantity_precision=5,
     inst_type=InstrumentType.SPOT,
@@ -1576,13 +1392,11 @@ BTC_EUR = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BTC_PYUSD = Pair(
-    "BTC_PYUSD",
+    exchange_name="BTC_PYUSD",
     price_precision=2,
     quantity_precision=5,
     inst_type=InstrumentType.SPOT,
@@ -1593,13 +1407,11 @@ BTC_PYUSD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BTC_USD = Pair(
-    "BTC_USD",
+    exchange_name="BTC_USD",
     price_precision=2,
     quantity_precision=5,
     inst_type=InstrumentType.SPOT,
@@ -1610,13 +1422,11 @@ BTC_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 BTC_USDT = Pair(
-    "BTC_USDT",
+    exchange_name="BTC_USDT",
     price_precision=2,
     quantity_precision=5,
     inst_type=InstrumentType.SPOT,
@@ -1627,13 +1437,11 @@ BTC_USDT = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 C98_USD = Pair(
-    "C98_USD",
+    exchange_name="C98_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1644,13 +1452,11 @@ C98_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CAP_USD = Pair(
-    "CAP_USD",
+    exchange_name="CAP_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1661,13 +1467,11 @@ CAP_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CASHCAT_USD = Pair(
-    "CASHCAT_USD",
+    exchange_name="CASHCAT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1678,13 +1482,11 @@ CASHCAT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CATI_USD = Pair(
-    "CATI_USD",
+    exchange_name="CATI_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1695,13 +1497,11 @@ CATI_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CAW_USD = Pair(
-    "CAW_USD",
+    exchange_name="CAW_USD",
     price_precision=11,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1712,13 +1512,11 @@ CAW_USD = Pair(
     price_tick_size=1e-11,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CC_USD = Pair(
-    "CC_USD",
+    exchange_name="CC_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1729,13 +1527,11 @@ CC_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CDCETH_ETH = Pair(
-    "CDCETH_ETH",
+    exchange_name="CDCETH_ETH",
     price_precision=4,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -1746,13 +1542,11 @@ CDCETH_ETH = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CDCETH_USD = Pair(
-    "CDCETH_USD",
+    exchange_name="CDCETH_USD",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -1763,13 +1557,11 @@ CDCETH_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CDCSOL_USD = Pair(
-    "CDCSOL_USD",
+    exchange_name="CDCSOL_USD",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -1780,13 +1572,11 @@ CDCSOL_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CELR_USD = Pair(
-    "CELR_USD",
+    exchange_name="CELR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1797,13 +1587,11 @@ CELR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CELR_USDT = Pair(
-    "CELR_USDT",
+    exchange_name="CELR_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1814,13 +1602,11 @@ CELR_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CETUS_USD = Pair(
-    "CETUS_USD",
+    exchange_name="CETUS_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1831,13 +1617,11 @@ CETUS_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CFG_USD = Pair(
-    "CFG_USD",
+    exchange_name="CFG_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1848,13 +1632,11 @@ CFG_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CHILLGUY_USD = Pair(
-    "CHILLGUY_USD",
+    exchange_name="CHILLGUY_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1865,13 +1647,11 @@ CHILLGUY_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CHR_USD = Pair(
-    "CHR_USD",
+    exchange_name="CHR_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1882,13 +1662,11 @@ CHR_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CHZ_USD = Pair(
-    "CHZ_USD",
+    exchange_name="CHZ_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1899,13 +1677,11 @@ CHZ_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CHZ_USDT = Pair(
-    "CHZ_USDT",
+    exchange_name="CHZ_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1916,13 +1692,11 @@ CHZ_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CKB_USD = Pair(
-    "CKB_USD",
+    exchange_name="CKB_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1933,13 +1707,11 @@ CKB_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CLANKER_USD = Pair(
-    "CLANKER_USD",
+    exchange_name="CLANKER_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -1950,13 +1722,11 @@ CLANKER_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CLOUD_USD = Pair(
-    "CLOUD_USD",
+    exchange_name="CLOUD_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -1967,13 +1737,11 @@ CLOUD_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 COMP_USD = Pair(
-    "COMP_USD",
+    exchange_name="COMP_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -1984,13 +1752,11 @@ COMP_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 COMP_USDT = Pair(
-    "COMP_USDT",
+    exchange_name="COMP_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2001,13 +1767,11 @@ COMP_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 COQ_USD = Pair(
-    "COQ_USD",
+    exchange_name="COQ_USD",
     price_precision=10,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2018,13 +1782,11 @@ COQ_USD = Pair(
     price_tick_size=1e-10,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CORGIAI_USD = Pair(
-    "CORGIAI_USD",
+    exchange_name="CORGIAI_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2035,13 +1797,11 @@ CORGIAI_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 COTI_USD = Pair(
-    "COTI_USD",
+    exchange_name="COTI_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2052,13 +1812,11 @@ COTI_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 COTI_USDT = Pair(
-    "COTI_USDT",
+    exchange_name="COTI_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2069,13 +1827,11 @@ COTI_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 COW_USD = Pair(
-    "COW_USD",
+    exchange_name="COW_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2086,13 +1842,11 @@ COW_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CROB_USD = Pair(
-    "CROB_USD",
+    exchange_name="CROB_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2103,13 +1857,11 @@ CROB_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CROID_USD = Pair(
-    "CROID_USD",
+    exchange_name="CROID_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2120,13 +1872,11 @@ CROID_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CRO_BTC = Pair(
-    "CRO_BTC",
+    exchange_name="CRO_BTC",
     price_precision=10,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2137,13 +1887,11 @@ CRO_BTC = Pair(
     price_tick_size=1e-10,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CRO_PYUSD = Pair(
-    "CRO_PYUSD",
+    exchange_name="CRO_PYUSD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2154,13 +1902,11 @@ CRO_PYUSD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CRO_USD = Pair(
-    "CRO_USD",
+    exchange_name="CRO_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2171,13 +1917,11 @@ CRO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CRO_USDT = Pair(
-    "CRO_USDT",
+    exchange_name="CRO_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2188,13 +1932,11 @@ CRO_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CRV_USD = Pair(
-    "CRV_USD",
+    exchange_name="CRV_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2205,13 +1947,11 @@ CRV_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CRV_USDT = Pair(
-    "CRV_USDT",
+    exchange_name="CRV_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2222,13 +1962,11 @@ CRV_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CSPR_USD = Pair(
-    "CSPR_USD",
+    exchange_name="CSPR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2239,13 +1977,11 @@ CSPR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CSPR_USDT = Pair(
-    "CSPR_USDT",
+    exchange_name="CSPR_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2256,13 +1992,11 @@ CSPR_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CTC_USD = Pair(
-    "CTC_USD",
+    exchange_name="CTC_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2273,13 +2007,11 @@ CTC_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CTSI_USD = Pair(
-    "CTSI_USD",
+    exchange_name="CTSI_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2290,13 +2022,11 @@ CTSI_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CTSI_USDT = Pair(
-    "CTSI_USDT",
+    exchange_name="CTSI_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2307,13 +2037,11 @@ CTSI_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CVX_USD = Pair(
-    "CVX_USD",
+    exchange_name="CVX_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2324,13 +2052,11 @@ CVX_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 CXT_USD = Pair(
-    "CXT_USD",
+    exchange_name="CXT_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2341,13 +2067,11 @@ CXT_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DATAIP_USD = Pair(
-    "DATAIP_USD",
+    exchange_name="DATAIP_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2358,13 +2082,11 @@ DATAIP_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DBR_USD = Pair(
-    "DBR_USD",
+    exchange_name="DBR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2375,13 +2097,11 @@ DBR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DEEP_USD = Pair(
-    "DEEP_USD",
+    exchange_name="DEEP_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2392,13 +2112,11 @@ DEEP_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DEGEN_USD = Pair(
-    "DEGEN_USD",
+    exchange_name="DEGEN_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2409,13 +2127,11 @@ DEGEN_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DGB_USD = Pair(
-    "DGB_USD",
+    exchange_name="DGB_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2426,13 +2142,11 @@ DGB_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DIA_USD = Pair(
-    "DIA_USD",
+    exchange_name="DIA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2443,13 +2157,11 @@ DIA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DIP_USD = Pair(
-    "DIP_USD",
+    exchange_name="DIP_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2460,13 +2172,11 @@ DIP_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOGE_BTC = Pair(
-    "DOGE_BTC",
+    exchange_name="DOGE_BTC",
     price_precision=10,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2477,13 +2187,11 @@ DOGE_BTC = Pair(
     price_tick_size=1e-10,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOGE_EUR = Pair(
-    "DOGE_EUR",
+    exchange_name="DOGE_EUR",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2494,13 +2202,11 @@ DOGE_EUR = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOGE_USD = Pair(
-    "DOGE_USD",
+    exchange_name="DOGE_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2511,13 +2217,11 @@ DOGE_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOGE_USDT = Pair(
-    "DOGE_USDT",
+    exchange_name="DOGE_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2528,13 +2232,11 @@ DOGE_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOGS_USD = Pair(
-    "DOGS_USD",
+    exchange_name="DOGS_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2545,13 +2247,11 @@ DOGS_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOOD_USD = Pair(
-    "DOOD_USD",
+    exchange_name="DOOD_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2562,13 +2262,11 @@ DOOD_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOT_USD = Pair(
-    "DOT_USD",
+    exchange_name="DOT_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2579,13 +2277,11 @@ DOT_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DOT_USDT = Pair(
-    "DOT_USDT",
+    exchange_name="DOT_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2596,13 +2292,11 @@ DOT_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DRIFT_USD = Pair(
-    "DRIFT_USD",
+    exchange_name="DRIFT_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2613,13 +2307,11 @@ DRIFT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DYDX_USD = Pair(
-    "DYDX_USD",
+    exchange_name="DYDX_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2630,13 +2322,11 @@ DYDX_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DYDX_USDT = Pair(
-    "DYDX_USDT",
+    exchange_name="DYDX_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2647,13 +2337,11 @@ DYDX_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 DYM_USD = Pair(
-    "DYM_USD",
+    exchange_name="DYM_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2664,13 +2352,11 @@ DYM_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EDGE_USD = Pair(
-    "EDGE_USD",
+    exchange_name="EDGE_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2681,13 +2367,11 @@ EDGE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EGLD_USD = Pair(
-    "EGLD_USD",
+    exchange_name="EGLD_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -2698,13 +2382,11 @@ EGLD_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EGLD_USDT = Pair(
-    "EGLD_USDT",
+    exchange_name="EGLD_USDT",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -2715,13 +2397,11 @@ EGLD_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EIGEN_USD = Pair(
-    "EIGEN_USD",
+    exchange_name="EIGEN_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2732,13 +2412,11 @@ EIGEN_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ELA_USD = Pair(
-    "ELA_USD",
+    exchange_name="ELA_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2749,13 +2427,11 @@ ELA_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ELIZAOS_USD = Pair(
-    "ELIZAOS_USD",
+    exchange_name="ELIZAOS_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2766,13 +2442,11 @@ ELIZAOS_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ELON_USD = Pair(
-    "ELON_USD",
+    exchange_name="ELON_USD",
     price_precision=11,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2783,13 +2457,11 @@ ELON_USD = Pair(
     price_tick_size=1e-11,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ENA_USD = Pair(
-    "ENA_USD",
+    exchange_name="ENA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2800,13 +2472,11 @@ ENA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ENA_USDT = Pair(
-    "ENA_USDT",
+    exchange_name="ENA_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2817,13 +2487,11 @@ ENA_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ENJ_USD = Pair(
-    "ENJ_USD",
+    exchange_name="ENJ_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2834,13 +2502,11 @@ ENJ_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ENJ_USDT = Pair(
-    "ENJ_USDT",
+    exchange_name="ENJ_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2851,13 +2517,11 @@ ENJ_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ENS_USD = Pair(
-    "ENS_USD",
+    exchange_name="ENS_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2868,13 +2532,11 @@ ENS_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ENS_USDT = Pair(
-    "ENS_USDT",
+    exchange_name="ENS_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2885,13 +2547,11 @@ ENS_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EPIC_USD = Pair(
-    "EPIC_USD",
+    exchange_name="EPIC_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2902,13 +2562,11 @@ EPIC_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ERA_USD = Pair(
-    "ERA_USD",
+    exchange_name="ERA_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2919,13 +2577,11 @@ ERA_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ESP_USD = Pair(
-    "ESP_USD",
+    exchange_name="ESP_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -2936,13 +2592,11 @@ ESP_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ES_USD = Pair(
-    "ES_USD",
+    exchange_name="ES_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -2953,13 +2607,11 @@ ES_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETC_USD = Pair(
-    "ETC_USD",
+    exchange_name="ETC_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2970,13 +2622,11 @@ ETC_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETC_USDT = Pair(
-    "ETC_USDT",
+    exchange_name="ETC_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -2987,13 +2637,11 @@ ETC_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETHFI_USD = Pair(
-    "ETHFI_USD",
+    exchange_name="ETHFI_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -3004,13 +2652,11 @@ ETHFI_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETHW_USD = Pair(
-    "ETHW_USD",
+    exchange_name="ETHW_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -3021,13 +2667,11 @@ ETHW_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETH_BTC = Pair(
-    "ETH_BTC",
+    exchange_name="ETH_BTC",
     price_precision=6,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -3038,13 +2682,11 @@ ETH_BTC = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETH_CRO = Pair(
-    "ETH_CRO",
+    exchange_name="ETH_CRO",
     price_precision=0,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -3055,13 +2697,11 @@ ETH_CRO = Pair(
     price_tick_size=1.0,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETH_EUR = Pair(
-    "ETH_EUR",
+    exchange_name="ETH_EUR",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -3072,13 +2712,11 @@ ETH_EUR = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETH_PYUSD = Pair(
-    "ETH_PYUSD",
+    exchange_name="ETH_PYUSD",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -3089,13 +2727,11 @@ ETH_PYUSD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETH_USD = Pair(
-    "ETH_USD",
+    exchange_name="ETH_USD",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -3106,13 +2742,11 @@ ETH_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ETH_USDT = Pair(
-    "ETH_USDT",
+    exchange_name="ETH_USDT",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -3123,13 +2757,11 @@ ETH_USDT = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EUL_USD = Pair(
-    "EUL_USD",
+    exchange_name="EUL_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3140,13 +2772,11 @@ EUL_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EURC_USD = Pair(
-    "EURC_USD",
+    exchange_name="EURC_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3157,13 +2787,11 @@ EURC_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 EUR_USDT = Pair(
-    "EUR_USDT",
+    exchange_name="EUR_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3174,13 +2802,11 @@ EUR_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FARM_USD = Pair(
-    "FARM_USD",
+    exchange_name="FARM_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -3191,13 +2817,11 @@ FARM_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FARTCOIN_USD = Pair(
-    "FARTCOIN_USD",
+    exchange_name="FARTCOIN_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3208,13 +2832,11 @@ FARTCOIN_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FER_USD = Pair(
-    "FER_USD",
+    exchange_name="FER_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3225,13 +2847,11 @@ FER_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FET_USD = Pair(
-    "FET_USD",
+    exchange_name="FET_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3242,13 +2862,11 @@ FET_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FET_USDT = Pair(
-    "FET_USDT",
+    exchange_name="FET_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3259,13 +2877,11 @@ FET_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FIL_USD = Pair(
-    "FIL_USD",
+    exchange_name="FIL_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -3276,13 +2892,11 @@ FIL_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FIL_USDT = Pair(
-    "FIL_USDT",
+    exchange_name="FIL_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -3293,13 +2907,11 @@ FIL_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLIP_USD = Pair(
-    "FLIP_USD",
+    exchange_name="FLIP_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3310,13 +2922,11 @@ FLIP_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLIP_USDT = Pair(
-    "FLIP_USDT",
+    exchange_name="FLIP_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3327,13 +2937,11 @@ FLIP_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLOKI_USD = Pair(
-    "FLOKI_USD",
+    exchange_name="FLOKI_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3344,13 +2952,11 @@ FLOKI_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLOKI_USDT = Pair(
-    "FLOKI_USDT",
+    exchange_name="FLOKI_USDT",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3361,13 +2967,11 @@ FLOKI_USDT = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLOW_USD = Pair(
-    "FLOW_USD",
+    exchange_name="FLOW_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3378,13 +2982,11 @@ FLOW_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLOW_USDT = Pair(
-    "FLOW_USDT",
+    exchange_name="FLOW_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3395,13 +2997,11 @@ FLOW_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLR_USD = Pair(
-    "FLR_USD",
+    exchange_name="FLR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3412,13 +3012,11 @@ FLR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLUX_USD = Pair(
-    "FLUX_USD",
+    exchange_name="FLUX_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3429,13 +3027,11 @@ FLUX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FLUX_USDT = Pair(
-    "FLUX_USDT",
+    exchange_name="FLUX_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3446,13 +3042,11 @@ FLUX_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FM_USD = Pair(
-    "FM_USD",
+    exchange_name="FM_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3463,13 +3057,11 @@ FM_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FOGO_USD = Pair(
-    "FOGO_USD",
+    exchange_name="FOGO_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3480,13 +3072,11 @@ FOGO_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FRAX_USD = Pair(
-    "FRAX_USD",
+    exchange_name="FRAX_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3497,13 +3087,11 @@ FRAX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FUL_USD = Pair(
-    "FUL_USD",
+    exchange_name="FUL_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3514,13 +3102,11 @@ FUL_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 FWOG_USD = Pair(
-    "FWOG_USD",
+    exchange_name="FWOG_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3531,13 +3117,11 @@ FWOG_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GALA_USD = Pair(
-    "GALA_USD",
+    exchange_name="GALA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3548,13 +3132,11 @@ GALA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GALA_USDT = Pair(
-    "GALA_USDT",
+    exchange_name="GALA_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3565,13 +3147,11 @@ GALA_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GAS_USD = Pair(
-    "GAS_USD",
+    exchange_name="GAS_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3582,13 +3162,11 @@ GAS_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GEKKO_USD = Pair(
-    "GEKKO_USD",
+    exchange_name="GEKKO_USD",
     price_precision=10,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3599,13 +3177,11 @@ GEKKO_USD = Pair(
     price_tick_size=1e-10,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GEOD_USD = Pair(
-    "GEOD_USD",
+    exchange_name="GEOD_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3616,13 +3192,11 @@ GEOD_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GHST_USD = Pair(
-    "GHST_USD",
+    exchange_name="GHST_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3633,13 +3207,11 @@ GHST_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GLMR_USD = Pair(
-    "GLMR_USD",
+    exchange_name="GLMR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3650,13 +3222,11 @@ GLMR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GLM_USD = Pair(
-    "GLM_USD",
+    exchange_name="GLM_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3667,13 +3237,11 @@ GLM_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GMT_USD = Pair(
-    "GMT_USD",
+    exchange_name="GMT_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3684,13 +3252,11 @@ GMT_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GMX_USD = Pair(
-    "GMX_USD",
+    exchange_name="GMX_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -3701,13 +3267,11 @@ GMX_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GNO_USD = Pair(
-    "GNO_USD",
+    exchange_name="GNO_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -3718,13 +3282,11 @@ GNO_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GNS_USD = Pair(
-    "GNS_USD",
+    exchange_name="GNS_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -3735,13 +3297,11 @@ GNS_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GOATED_USD = Pair(
-    "GOATED_USD",
+    exchange_name="GOATED_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3752,13 +3312,11 @@ GOATED_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GOAT_USD = Pair(
-    "GOAT_USD",
+    exchange_name="GOAT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3769,13 +3327,11 @@ GOAT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GOAT_USDT = Pair(
-    "GOAT_USDT",
+    exchange_name="GOAT_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3786,13 +3342,11 @@ GOAT_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GODS_USD = Pair(
-    "GODS_USD",
+    exchange_name="GODS_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3803,13 +3357,11 @@ GODS_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GODS_USDT = Pair(
-    "GODS_USDT",
+    exchange_name="GODS_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3820,13 +3372,11 @@ GODS_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GRAM_USD = Pair(
-    "GRAM_USD",
+    exchange_name="GRAM_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3837,13 +3387,11 @@ GRAM_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GRAM_USDT = Pair(
-    "GRAM_USDT",
+    exchange_name="GRAM_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3854,13 +3402,11 @@ GRAM_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GRASS_USD = Pair(
-    "GRASS_USD",
+    exchange_name="GRASS_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -3871,13 +3417,11 @@ GRASS_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GROVE_USD = Pair(
-    "GROVE_USD",
+    exchange_name="GROVE_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3888,13 +3432,11 @@ GROVE_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GRT_USD = Pair(
-    "GRT_USD",
+    exchange_name="GRT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3905,13 +3447,11 @@ GRT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GRT_USDT = Pair(
-    "GRT_USDT",
+    exchange_name="GRT_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3922,13 +3462,11 @@ GRT_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GRVT_USD = Pair(
-    "GRVT_USD",
+    exchange_name="GRVT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3939,13 +3477,11 @@ GRVT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GTC_USD = Pair(
-    "GTC_USD",
+    exchange_name="GTC_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3956,13 +3492,11 @@ GTC_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 GUN_USD = Pair(
-    "GUN_USD",
+    exchange_name="GUN_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3973,13 +3507,11 @@ GUN_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 G_USD = Pair(
-    "G_USD",
+    exchange_name="G_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -3990,13 +3522,11 @@ G_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HBAR_USD = Pair(
-    "HBAR_USD",
+    exchange_name="HBAR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4007,13 +3537,11 @@ HBAR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HBAR_USDT = Pair(
-    "HBAR_USDT",
+    exchange_name="HBAR_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4024,13 +3552,11 @@ HBAR_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HEHE_USD = Pair(
-    "HEHE_USD",
+    exchange_name="HEHE_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4041,13 +3567,11 @@ HEHE_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HEI_USD = Pair(
-    "HEI_USD",
+    exchange_name="HEI_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4058,13 +3582,11 @@ HEI_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HEMI_USD = Pair(
-    "HEMI_USD",
+    exchange_name="HEMI_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4075,30 +3597,11 @@ HEMI_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
-HFT_USD = Pair(
-    "HFT_USD",
-    price_precision=6,
-    quantity_precision=0,
-    inst_type=InstrumentType.SPOT,
-    display_name="HFT/USD",
-    base_currency=Instrument("HFT"),
-    quote_currency=Instrument("USD"),
-    quantity_tick_size=1.0,
-    price_tick_size=1e-06,
-    min_order_quantity=0.0,
-    max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HMSTR_USD = Pair(
-    "HMSTR_USD",
+    exchange_name="HMSTR_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4109,13 +3612,11 @@ HMSTR_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HNT_USD = Pair(
-    "HNT_USD",
+    exchange_name="HNT_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4126,13 +3627,11 @@ HNT_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HNT_USDT = Pair(
-    "HNT_USDT",
+    exchange_name="HNT_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4143,13 +3642,26 @@ HNT_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
+    min_order_notional_usd=1.0,
+    max_order_notional_usd=1000000.0,
+)
+HOME_USD = Pair(
+    exchange_name="HOME_USD",
+    price_precision=7,
+    quantity_precision=0,
+    inst_type=InstrumentType.SPOT,
+    display_name="HOME/USD",
+    base_currency=Instrument("HOME"),
+    quote_currency=Instrument("USD"),
+    quantity_tick_size=10.0,
+    price_tick_size=1e-07,
+    min_order_quantity=0.0,
+    max_order_quantity=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HOT_USD = Pair(
-    "HOT_USD",
+    exchange_name="HOT_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4160,13 +3672,11 @@ HOT_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HPP_USD = Pair(
-    "HPP_USD",
+    exchange_name="HPP_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4177,13 +3687,11 @@ HPP_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HYPER_USD = Pair(
-    "HYPER_USD",
+    exchange_name="HYPER_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4194,13 +3702,11 @@ HYPER_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 HYPE_USD = Pair(
-    "HYPE_USD",
+    exchange_name="HYPE_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -4211,13 +3717,11 @@ HYPE_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 H_USD = Pair(
-    "H_USD",
+    exchange_name="H_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4228,13 +3732,11 @@ H_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ICP_USD = Pair(
-    "ICP_USD",
+    exchange_name="ICP_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -4245,13 +3747,11 @@ ICP_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ICP_USDT = Pair(
-    "ICP_USDT",
+    exchange_name="ICP_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -4262,13 +3762,11 @@ ICP_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ICX_USD = Pair(
-    "ICX_USD",
+    exchange_name="ICX_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4279,13 +3777,11 @@ ICX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IKA_USD = Pair(
-    "IKA_USD",
+    exchange_name="IKA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4296,13 +3792,11 @@ IKA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ILV_USD = Pair(
-    "ILV_USD",
+    exchange_name="ILV_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -4313,13 +3807,11 @@ ILV_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ILV_USDT = Pair(
-    "ILV_USDT",
+    exchange_name="ILV_USDT",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -4330,13 +3822,11 @@ ILV_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IMU_USD = Pair(
-    "IMU_USD",
+    exchange_name="IMU_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4347,13 +3837,11 @@ IMU_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IMX_USD = Pair(
-    "IMX_USD",
+    exchange_name="IMX_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4364,13 +3852,11 @@ IMX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IMX_USDT = Pair(
-    "IMX_USDT",
+    exchange_name="IMX_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4381,13 +3867,11 @@ IMX_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 INIT_USD = Pair(
-    "INIT_USD",
+    exchange_name="INIT_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4398,13 +3882,11 @@ INIT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 INJ_USD = Pair(
-    "INJ_USD",
+    exchange_name="INJ_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -4415,13 +3897,11 @@ INJ_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 INJ_USDT = Pair(
-    "INJ_USDT",
+    exchange_name="INJ_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -4432,13 +3912,11 @@ INJ_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IOST_USD = Pair(
-    "IOST_USD",
+    exchange_name="IOST_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4449,13 +3927,11 @@ IOST_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IOTX_USD = Pair(
-    "IOTX_USD",
+    exchange_name="IOTX_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4466,13 +3942,11 @@ IOTX_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IO_USD = Pair(
-    "IO_USD",
+    exchange_name="IO_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4483,13 +3957,11 @@ IO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 IQ_USD = Pair(
-    "IQ_USD",
+    exchange_name="IQ_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4500,13 +3972,11 @@ IQ_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 JASMY_USD = Pair(
-    "JASMY_USD",
+    exchange_name="JASMY_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4517,13 +3987,11 @@ JASMY_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 JASMY_USDT = Pair(
-    "JASMY_USDT",
+    exchange_name="JASMY_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4534,13 +4002,11 @@ JASMY_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 JOE_USD = Pair(
-    "JOE_USD",
+    exchange_name="JOE_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4551,13 +4017,11 @@ JOE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 JTO_USD = Pair(
-    "JTO_USD",
+    exchange_name="JTO_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4568,13 +4032,11 @@ JTO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 JUP_USD = Pair(
-    "JUP_USD",
+    exchange_name="JUP_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4585,13 +4047,11 @@ JUP_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 JUP_USDT = Pair(
-    "JUP_USDT",
+    exchange_name="JUP_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4602,13 +4062,11 @@ JUP_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KAIA_USD = Pair(
-    "KAIA_USD",
+    exchange_name="KAIA_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4619,13 +4077,11 @@ KAIA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KAITO_USD = Pair(
-    "KAITO_USD",
+    exchange_name="KAITO_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4636,13 +4092,11 @@ KAITO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KARRAT_USD = Pair(
-    "KARRAT_USD",
+    exchange_name="KARRAT_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4653,13 +4107,11 @@ KARRAT_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KAT_USD = Pair(
-    "KAT_USD",
+    exchange_name="KAT_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4670,13 +4122,11 @@ KAT_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KAVA_USD = Pair(
-    "KAVA_USD",
+    exchange_name="KAVA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4687,13 +4137,11 @@ KAVA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KAVA_USDT = Pair(
-    "KAVA_USDT",
+    exchange_name="KAVA_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4704,13 +4152,11 @@ KAVA_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KERNEL_USD = Pair(
-    "KERNEL_USD",
+    exchange_name="KERNEL_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4721,13 +4167,11 @@ KERNEL_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KITE_USD = Pair(
-    "KITE_USD",
+    exchange_name="KITE_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4738,13 +4182,11 @@ KITE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KMNO_USD = Pair(
-    "KMNO_USD",
+    exchange_name="KMNO_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4755,13 +4197,11 @@ KMNO_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KNC_USD = Pair(
-    "KNC_USD",
+    exchange_name="KNC_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4772,13 +4212,11 @@ KNC_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KSM_USD = Pair(
-    "KSM_USD",
+    exchange_name="KSM_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -4789,13 +4227,11 @@ KSM_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KSM_USDT = Pair(
-    "KSM_USDT",
+    exchange_name="KSM_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -4806,13 +4242,11 @@ KSM_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 KYVE_USD = Pair(
-    "KYVE_USD",
+    exchange_name="KYVE_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4823,13 +4257,11 @@ KYVE_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 L3_USD = Pair(
-    "L3_USD",
+    exchange_name="L3_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4840,13 +4272,11 @@ L3_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LADYS_USD = Pair(
-    "LADYS_USD",
+    exchange_name="LADYS_USD",
     price_precision=11,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4857,13 +4287,11 @@ LADYS_USD = Pair(
     price_tick_size=1e-11,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LAYER_USD = Pair(
-    "LAYER_USD",
+    exchange_name="LAYER_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4874,13 +4302,11 @@ LAYER_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LA_USD = Pair(
-    "LA_USD",
+    exchange_name="LA_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4891,13 +4317,11 @@ LA_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LCRO_CRO = Pair(
-    "LCRO_CRO",
+    exchange_name="LCRO_CRO",
     price_precision=4,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4908,13 +4332,11 @@ LCRO_CRO = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LCRO_USD = Pair(
-    "LCRO_USD",
+    exchange_name="LCRO_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4925,13 +4347,11 @@ LCRO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LDO_USD = Pair(
-    "LDO_USD",
+    exchange_name="LDO_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4942,13 +4362,11 @@ LDO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LDO_USDT = Pair(
-    "LDO_USDT",
+    exchange_name="LDO_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4959,13 +4377,11 @@ LDO_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LIGHTER_USD = Pair(
-    "LIGHTER_USD",
+    exchange_name="LIGHTER_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -4976,13 +4392,11 @@ LIGHTER_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LINEA_USD = Pair(
-    "LINEA_USD",
+    exchange_name="LINEA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -4993,13 +4407,11 @@ LINEA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LINK_USD = Pair(
-    "LINK_USD",
+    exchange_name="LINK_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5010,13 +4422,11 @@ LINK_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LINK_USDT = Pair(
-    "LINK_USDT",
+    exchange_name="LINK_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5027,13 +4437,11 @@ LINK_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LION_CRO = Pair(
-    "LION_CRO",
+    exchange_name="LION_CRO",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5044,13 +4452,11 @@ LION_CRO = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LION_USD = Pair(
-    "LION_USD",
+    exchange_name="LION_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5061,13 +4467,11 @@ LION_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LMWR_USD = Pair(
-    "LMWR_USD",
+    exchange_name="LMWR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5078,13 +4482,11 @@ LMWR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LMWR_USDT = Pair(
-    "LMWR_USDT",
+    exchange_name="LMWR_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5095,13 +4497,11 @@ LMWR_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LOAF_USD = Pair(
-    "LOAF_USD",
+    exchange_name="LOAF_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5112,13 +4512,11 @@ LOAF_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LPT_USD = Pair(
-    "LPT_USD",
+    exchange_name="LPT_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5129,13 +4527,11 @@ LPT_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LPT_USDT = Pair(
-    "LPT_USDT",
+    exchange_name="LPT_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5146,13 +4542,11 @@ LPT_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LQTY_USD = Pair(
-    "LQTY_USD",
+    exchange_name="LQTY_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5163,13 +4557,11 @@ LQTY_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LSK_USD = Pair(
-    "LSK_USD",
+    exchange_name="LSK_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5180,13 +4572,11 @@ LSK_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LTC_BTC = Pair(
-    "LTC_BTC",
+    exchange_name="LTC_BTC",
     price_precision=7,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -5197,13 +4587,11 @@ LTC_BTC = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LTC_USD = Pair(
-    "LTC_USD",
+    exchange_name="LTC_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -5214,13 +4602,11 @@ LTC_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LTC_USDT = Pair(
-    "LTC_USDT",
+    exchange_name="LTC_USDT",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -5231,13 +4617,11 @@ LTC_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LUMIA_USD = Pair(
-    "LUMIA_USD",
+    exchange_name="LUMIA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5248,13 +4632,11 @@ LUMIA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LUNATWO__USD = Pair(
-    "LUNA2_USD",
+    exchange_name="LUNA2_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5265,13 +4647,11 @@ LUNATWO__USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LUNATWO__USDT = Pair(
-    "LUNA2_USDT",
+    exchange_name="LUNA2_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5282,13 +4662,11 @@ LUNATWO__USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LUNC_USD = Pair(
-    "LUNC_USD",
+    exchange_name="LUNC_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5299,13 +4677,11 @@ LUNC_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LVVA_USD = Pair(
-    "LVVA_USD",
+    exchange_name="LVVA_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5316,13 +4692,11 @@ LVVA_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 LYX_USD = Pair(
-    "LYX_USD",
+    exchange_name="LYX_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5333,13 +4707,11 @@ LYX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MAGIC_USD = Pair(
-    "MAGIC_USD",
+    exchange_name="MAGIC_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5350,13 +4722,11 @@ MAGIC_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MANA_USD = Pair(
-    "MANA_USD",
+    exchange_name="MANA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5367,13 +4737,11 @@ MANA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MANEKI_USD = Pair(
-    "MANEKI_USD",
+    exchange_name="MANEKI_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5384,13 +4752,11 @@ MANEKI_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MANTRA_USD = Pair(
-    "MANTRA_USD",
+    exchange_name="MANTRA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5401,13 +4767,11 @@ MANTRA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MASK_USD = Pair(
-    "MASK_USD",
+    exchange_name="MASK_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5418,13 +4782,11 @@ MASK_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MASK_USDT = Pair(
-    "MASK_USDT",
+    exchange_name="MASK_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5435,13 +4797,11 @@ MASK_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MAVIA_USD = Pair(
-    "MAVIA_USD",
+    exchange_name="MAVIA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5452,13 +4812,11 @@ MAVIA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MBL_USD = Pair(
-    "MBL_USD",
+    exchange_name="MBL_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5469,13 +4827,11 @@ MBL_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MEGA_USD = Pair(
-    "MEGA_USD",
+    exchange_name="MEGA_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5486,13 +4842,11 @@ MEGA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MELANIA_USD = Pair(
-    "MELANIA_USD",
+    exchange_name="MELANIA_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5503,13 +4857,11 @@ MELANIA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MERY_USD = Pair(
-    "MERY_USD",
+    exchange_name="MERY_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5520,13 +4872,11 @@ MERY_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 METIS_USD = Pair(
-    "METIS_USD",
+    exchange_name="METIS_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5537,13 +4887,11 @@ METIS_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 METIS_USDT = Pair(
-    "METIS_USDT",
+    exchange_name="METIS_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5554,13 +4902,11 @@ METIS_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MET_USD = Pair(
-    "MET_USD",
+    exchange_name="MET_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5571,13 +4917,11 @@ MET_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ME_USD = Pair(
-    "ME_USD",
+    exchange_name="ME_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5588,13 +4932,11 @@ ME_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MINA_USD = Pair(
-    "MINA_USD",
+    exchange_name="MINA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5605,13 +4947,11 @@ MINA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MLK_USD = Pair(
-    "MLK_USD",
+    exchange_name="MLK_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5622,13 +4962,11 @@ MLK_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MNDE_USD = Pair(
-    "MNDE_USD",
+    exchange_name="MNDE_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5639,13 +4977,11 @@ MNDE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MOG_USD = Pair(
-    "MOG_USD",
+    exchange_name="MOG_USD",
     price_precision=11,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5656,13 +4992,11 @@ MOG_USD = Pair(
     price_tick_size=1e-11,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MOG_USDT = Pair(
-    "MOG_USDT",
+    exchange_name="MOG_USDT",
     price_precision=11,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5673,13 +5007,11 @@ MOG_USDT = Pair(
     price_tick_size=1e-11,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MON_USD = Pair(
-    "MON_USD",
+    exchange_name="MON_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5690,13 +5022,11 @@ MON_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MOODENG_USD = Pair(
-    "MOODENG_USD",
+    exchange_name="MOODENG_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5707,13 +5037,11 @@ MOODENG_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MORPHO_USD = Pair(
-    "MORPHO_USD",
+    exchange_name="MORPHO_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5724,13 +5052,11 @@ MORPHO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MOVR_USD = Pair(
-    "MOVR_USD",
+    exchange_name="MOVR_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5741,13 +5067,11 @@ MOVR_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MTD_USD = Pair(
-    "MTD_USD",
+    exchange_name="MTD_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5758,13 +5082,11 @@ MTD_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 MYRO_USD = Pair(
-    "MYRO_USD",
+    exchange_name="MYRO_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5775,13 +5097,11 @@ MYRO_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NEAR_USD = Pair(
-    "NEAR_USD",
+    exchange_name="NEAR_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5792,13 +5112,11 @@ NEAR_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NEAR_USDT = Pair(
-    "NEAR_USDT",
+    exchange_name="NEAR_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5809,13 +5127,11 @@ NEAR_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NEON_USD = Pair(
-    "NEON_USD",
+    exchange_name="NEON_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5826,13 +5142,11 @@ NEON_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NEON_USDT = Pair(
-    "NEON_USDT",
+    exchange_name="NEON_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5843,13 +5157,11 @@ NEON_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NEO_USD = Pair(
-    "NEO_USD",
+    exchange_name="NEO_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5860,13 +5172,11 @@ NEO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NEO_USDT = Pair(
-    "NEO_USDT",
+    exchange_name="NEO_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5877,13 +5187,11 @@ NEO_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NEWT_USD = Pair(
-    "NEWT_USD",
+    exchange_name="NEWT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5894,13 +5202,11 @@ NEWT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NMR_USD = Pair(
-    "NMR_USD",
+    exchange_name="NMR_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5911,13 +5217,11 @@ NMR_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NMR_USDT = Pair(
-    "NMR_USDT",
+    exchange_name="NMR_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -5928,13 +5232,11 @@ NMR_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NOM_USD = Pair(
-    "NOM_USD",
+    exchange_name="NOM_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5945,13 +5247,11 @@ NOM_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NOS_USD = Pair(
-    "NOS_USD",
+    exchange_name="NOS_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -5962,13 +5262,11 @@ NOS_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NOT_USD = Pair(
-    "NOT_USD",
+    exchange_name="NOT_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5979,13 +5277,11 @@ NOT_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NOT_USDT = Pair(
-    "NOT_USDT",
+    exchange_name="NOT_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -5996,13 +5292,11 @@ NOT_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NUM_USD = Pair(
-    "NUM_USD",
+    exchange_name="NUM_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6013,13 +5307,11 @@ NUM_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 NXPC_USD = Pair(
-    "NXPC_USD",
+    exchange_name="NXPC_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6030,13 +5322,11 @@ NXPC_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 OAS_USD = Pair(
-    "OAS_USD",
+    exchange_name="OAS_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6047,13 +5337,11 @@ OAS_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 OGN_USD = Pair(
-    "OGN_USD",
+    exchange_name="OGN_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6064,13 +5352,11 @@ OGN_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONDO_USD = Pair(
-    "ONDO_USD",
+    exchange_name="ONDO_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6081,13 +5367,11 @@ ONDO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONDO_USDT = Pair(
-    "ONDO_USDT",
+    exchange_name="ONDO_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6098,13 +5382,11 @@ ONDO_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONE_INCH_USD = Pair(
-    "1INCH_USD",
+    exchange_name="1INCH_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6115,13 +5397,11 @@ ONE_INCH_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONE_INCH_USDT = Pair(
-    "1INCH_USDT",
+    exchange_name="1INCH_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6132,13 +5412,11 @@ ONE_INCH_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONE_USD = Pair(
-    "ONE_USD",
+    exchange_name="ONE_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6149,13 +5427,11 @@ ONE_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONE_USDT = Pair(
-    "ONE_USDT",
+    exchange_name="ONE_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6166,13 +5442,11 @@ ONE_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONG_USD = Pair(
-    "ONG_USD",
+    exchange_name="ONG_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6183,13 +5457,11 @@ ONG_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ONT_USD = Pair(
-    "ONT_USD",
+    exchange_name="ONT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6200,13 +5472,11 @@ ONT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 OP_USD = Pair(
-    "OP_USD",
+    exchange_name="OP_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6217,13 +5487,11 @@ OP_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 OP_USDT = Pair(
-    "OP_USDT",
+    exchange_name="OP_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6234,13 +5502,11 @@ OP_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ORAI_USD = Pair(
-    "ORAI_USD",
+    exchange_name="ORAI_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6251,13 +5517,11 @@ ORAI_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ORCA_USD = Pair(
-    "ORCA_USD",
+    exchange_name="ORCA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6268,13 +5532,11 @@ ORCA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ORDER_USD = Pair(
-    "ORDER_USD",
+    exchange_name="ORDER_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6285,13 +5547,11 @@ ORDER_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ORDI_USD = Pair(
-    "ORDI_USD",
+    exchange_name="ORDI_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -6302,13 +5562,11 @@ ORDI_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 OSMO_USD = Pair(
-    "OSMO_USD",
+    exchange_name="OSMO_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6319,13 +5577,11 @@ OSMO_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PAXG_EUR = Pair(
-    "PAXG_EUR",
+    exchange_name="PAXG_EUR",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -6336,13 +5592,11 @@ PAXG_EUR = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PAXG_USD = Pair(
-    "PAXG_USD",
+    exchange_name="PAXG_USD",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -6353,13 +5607,11 @@ PAXG_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PAXG_USDT = Pair(
-    "PAXG_USDT",
+    exchange_name="PAXG_USDT",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -6370,13 +5622,11 @@ PAXG_USDT = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PEAQ_USD = Pair(
-    "PEAQ_USD",
+    exchange_name="PEAQ_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6387,13 +5637,11 @@ PEAQ_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PENDLE_USD = Pair(
-    "PENDLE_USD",
+    exchange_name="PENDLE_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6404,13 +5652,11 @@ PENDLE_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PENDLE_USDT = Pair(
-    "PENDLE_USDT",
+    exchange_name="PENDLE_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6421,13 +5667,11 @@ PENDLE_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PENGU_USD = Pair(
-    "PENGU_USD",
+    exchange_name="PENGU_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6438,13 +5682,11 @@ PENGU_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PENGU_USDT = Pair(
-    "PENGU_USDT",
+    exchange_name="PENGU_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6455,13 +5697,11 @@ PENGU_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PEPE_USD = Pair(
-    "PEPE_USD",
+    exchange_name="PEPE_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6472,13 +5712,11 @@ PEPE_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PEPE_USDT = Pair(
-    "PEPE_USDT",
+    exchange_name="PEPE_USDT",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6489,13 +5727,11 @@ PEPE_USDT = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PIXEL_USD = Pair(
-    "PIXEL_USD",
+    exchange_name="PIXEL_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6506,13 +5742,11 @@ PIXEL_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PLUME_USD = Pair(
-    "PLUME_USD",
+    exchange_name="PLUME_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6523,13 +5757,11 @@ PLUME_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PNUT_USD = Pair(
-    "PNUT_USD",
+    exchange_name="PNUT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6540,13 +5772,11 @@ PNUT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PNUT_USDT = Pair(
-    "PNUT_USDT",
+    exchange_name="PNUT_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6557,13 +5787,11 @@ PNUT_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 POLYX_USD = Pair(
-    "POLYX_USD",
+    exchange_name="POLYX_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6574,13 +5802,11 @@ POLYX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 POL_USD = Pair(
-    "POL_USD",
+    exchange_name="POL_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6591,13 +5817,11 @@ POL_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 POL_USDT = Pair(
-    "POL_USDT",
+    exchange_name="POL_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6608,13 +5832,11 @@ POL_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PONKE_USD = Pair(
-    "PONKE_USD",
+    exchange_name="PONKE_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6625,13 +5847,11 @@ PONKE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 POPCAT_USD = Pair(
-    "POPCAT_USD",
+    exchange_name="POPCAT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6642,13 +5862,11 @@ POPCAT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 POWR_USD = Pair(
-    "POWR_USD",
+    exchange_name="POWR_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6659,13 +5877,11 @@ POWR_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PRCL_USD = Pair(
-    "PRCL_USD",
+    exchange_name="PRCL_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6676,13 +5892,11 @@ PRCL_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PRIME_USD = Pair(
-    "PRIME_USD",
+    exchange_name="PRIME_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6693,13 +5907,11 @@ PRIME_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PRL_USD = Pair(
-    "PRL_USD",
+    exchange_name="PRL_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6710,13 +5922,11 @@ PRL_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PROMPT_USD = Pair(
-    "PROMPT_USD",
+    exchange_name="PROMPT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6727,13 +5937,11 @@ PROMPT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PROVE_USD = Pair(
-    "PROVE_USD",
+    exchange_name="PROVE_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6744,13 +5952,11 @@ PROVE_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PUMP_USD = Pair(
-    "PUMP_USD",
+    exchange_name="PUMP_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6761,13 +5967,11 @@ PUMP_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PUMP_USDT = Pair(
-    "PUMP_USDT",
+    exchange_name="PUMP_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6778,13 +5982,11 @@ PUMP_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PYR_USD = Pair(
-    "PYR_USD",
+    exchange_name="PYR_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6795,13 +5997,11 @@ PYR_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PYR_USDT = Pair(
-    "PYR_USDT",
+    exchange_name="PYR_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6812,13 +6012,11 @@ PYR_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PYTH_USD = Pair(
-    "PYTH_USD",
+    exchange_name="PYTH_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6829,13 +6027,11 @@ PYTH_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PYTH_USDT = Pair(
-    "PYTH_USDT",
+    exchange_name="PYTH_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6846,13 +6042,11 @@ PYTH_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PYUSD_USD = Pair(
-    "PYUSD_USD",
+    exchange_name="PYUSD_USD",
     price_precision=6,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6863,13 +6057,11 @@ PYUSD_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 PYUSD_USDT = Pair(
-    "PYUSD_USDT",
+    exchange_name="PYUSD_USDT",
     price_precision=6,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6880,13 +6072,11 @@ PYUSD_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 QI_USD = Pair(
-    "QI_USD",
+    exchange_name="QI_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6897,13 +6087,11 @@ QI_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 QNT_USD = Pair(
-    "QNT_USD",
+    exchange_name="QNT_USD",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -6914,13 +6102,11 @@ QNT_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 QNT_USDT = Pair(
-    "QNT_USDT",
+    exchange_name="QNT_USDT",
     price_precision=3,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -6931,13 +6117,11 @@ QNT_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 QTUM_USD = Pair(
-    "QTUM_USD",
+    exchange_name="QTUM_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6948,13 +6132,11 @@ QTUM_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 QUICK_USD = Pair(
-    "QUICK_USD",
+    exchange_name="QUICK_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6965,13 +6147,11 @@ QUICK_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RAD_USD = Pair(
-    "RAD_USD",
+    exchange_name="RAD_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -6982,13 +6162,11 @@ RAD_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RARE_USD = Pair(
-    "RARE_USD",
+    exchange_name="RARE_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -6999,13 +6177,11 @@ RARE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RARI_USD = Pair(
-    "RARI_USD",
+    exchange_name="RARI_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7016,13 +6192,11 @@ RARI_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RARI_USDT = Pair(
-    "RARI_USDT",
+    exchange_name="RARI_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7033,13 +6207,11 @@ RARI_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RAY_USD = Pair(
-    "RAY_USD",
+    exchange_name="RAY_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7050,13 +6222,11 @@ RAY_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 REACT_USD = Pair(
-    "REACT_USD",
+    exchange_name="REACT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7067,13 +6237,11 @@ REACT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RED_USD = Pair(
-    "RED_USD",
+    exchange_name="RED_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7084,13 +6252,11 @@ RED_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RENDER_USD = Pair(
-    "RENDER_USD",
+    exchange_name="RENDER_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -7101,13 +6267,11 @@ RENDER_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RENDER_USDT = Pair(
-    "RENDER_USDT",
+    exchange_name="RENDER_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -7118,13 +6282,11 @@ RENDER_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 REQ_USD = Pair(
-    "REQ_USD",
+    exchange_name="REQ_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7135,13 +6297,11 @@ REQ_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RE_USD = Pair(
-    "RE_USD",
+    exchange_name="RE_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7152,13 +6312,11 @@ RE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RLC_USD = Pair(
-    "RLC_USD",
+    exchange_name="RLC_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7169,13 +6327,11 @@ RLC_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RNBW_USD = Pair(
-    "RNBW_USD",
+    exchange_name="RNBW_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7186,13 +6342,11 @@ RNBW_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ROBO_USD = Pair(
-    "ROBO_USD",
+    exchange_name="ROBO_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7203,13 +6357,11 @@ ROBO_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RONIN_USD = Pair(
-    "RONIN_USD",
+    exchange_name="RONIN_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7220,13 +6372,11 @@ RONIN_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RPL_USD = Pair(
-    "RPL_USD",
+    exchange_name="RPL_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -7237,13 +6387,11 @@ RPL_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RSR_USD = Pair(
-    "RSR_USD",
+    exchange_name="RSR_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7254,13 +6402,11 @@ RSR_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RSR_USDT = Pair(
-    "RSR_USDT",
+    exchange_name="RSR_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7271,13 +6417,11 @@ RSR_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RUNE_USD = Pair(
-    "RUNE_USD",
+    exchange_name="RUNE_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7288,13 +6432,11 @@ RUNE_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RUNE_USDT = Pair(
-    "RUNE_USDT",
+    exchange_name="RUNE_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7305,13 +6447,11 @@ RUNE_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 RVN_USD = Pair(
-    "RVN_USD",
+    exchange_name="RVN_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7322,13 +6462,11 @@ RVN_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SAFE_USD = Pair(
-    "SAFE_USD",
+    exchange_name="SAFE_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7339,13 +6477,11 @@ SAFE_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SAND_USD = Pair(
-    "SAND_USD",
+    exchange_name="SAND_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7356,13 +6492,11 @@ SAND_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SAND_USDT = Pair(
-    "SAND_USDT",
+    exchange_name="SAND_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7373,13 +6507,11 @@ SAND_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SAPIEN_USD = Pair(
-    "SAPIEN_USD",
+    exchange_name="SAPIEN_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7390,13 +6522,11 @@ SAPIEN_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SCROLL_USD = Pair(
-    "SCROLL_USD",
+    exchange_name="SCROLL_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7407,13 +6537,11 @@ SCROLL_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SC_USD = Pair(
-    "SC_USD",
+    exchange_name="SC_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7424,13 +6552,11 @@ SC_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SD_USD = Pair(
-    "SD_USD",
+    exchange_name="SD_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7441,13 +6567,11 @@ SD_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SEI_USD = Pair(
-    "SEI_USD",
+    exchange_name="SEI_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7458,13 +6582,11 @@ SEI_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SEI_USDT = Pair(
-    "SEI_USDT",
+    exchange_name="SEI_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7475,13 +6597,11 @@ SEI_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SENT_USD = Pair(
-    "SENT_USD",
+    exchange_name="SENT_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7492,13 +6612,11 @@ SENT_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SHDW_USD = Pair(
-    "SHDW_USD",
+    exchange_name="SHDW_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7509,13 +6627,11 @@ SHDW_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SHIB_USD = Pair(
-    "SHIB_USD",
+    exchange_name="SHIB_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7526,13 +6642,11 @@ SHIB_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SHIB_USDT = Pair(
-    "SHIB_USDT",
+    exchange_name="SHIB_USDT",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7543,13 +6657,11 @@ SHIB_USDT = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SKL_USD = Pair(
-    "SKL_USD",
+    exchange_name="SKL_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7560,13 +6672,11 @@ SKL_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SKL_USDT = Pair(
-    "SKL_USDT",
+    exchange_name="SKL_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7577,13 +6687,11 @@ SKL_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SKR_USD = Pair(
-    "SKR_USD",
+    exchange_name="SKR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7594,13 +6702,11 @@ SKR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SKY_USD = Pair(
-    "SKY_USD",
+    exchange_name="SKY_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7611,13 +6717,11 @@ SKY_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SLP_USD = Pair(
-    "SLP_USD",
+    exchange_name="SLP_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7628,13 +6732,11 @@ SLP_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SNEK_USD = Pair(
-    "SNEK_USD",
+    exchange_name="SNEK_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7645,13 +6747,11 @@ SNEK_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SNX_USD = Pair(
-    "SNX_USD",
+    exchange_name="SNX_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7662,13 +6762,11 @@ SNX_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SNX_USDT = Pair(
-    "SNX_USDT",
+    exchange_name="SNX_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7679,13 +6777,11 @@ SNX_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SOL_BTC = Pair(
-    "SOL_BTC",
+    exchange_name="SOL_BTC",
     price_precision=7,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -7696,13 +6792,11 @@ SOL_BTC = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SOL_ETH = Pair(
-    "SOL_ETH",
+    exchange_name="SOL_ETH",
     price_precision=6,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -7713,13 +6807,11 @@ SOL_ETH = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SOL_EUR = Pair(
-    "SOL_EUR",
+    exchange_name="SOL_EUR",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -7730,13 +6822,11 @@ SOL_EUR = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SOL_PYUSD = Pair(
-    "SOL_PYUSD",
+    exchange_name="SOL_PYUSD",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -7747,13 +6837,11 @@ SOL_PYUSD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SOL_USD = Pair(
-    "SOL_USD",
+    exchange_name="SOL_USD",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -7764,13 +6852,11 @@ SOL_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SOL_USDT = Pair(
-    "SOL_USDT",
+    exchange_name="SOL_USDT",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -7781,13 +6867,11 @@ SOL_USDT = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SOPH_USD = Pair(
-    "SOPH_USD",
+    exchange_name="SOPH_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7798,13 +6882,11 @@ SOPH_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SPA_USD = Pair(
-    "SPA_USD",
+    exchange_name="SPA_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7815,13 +6897,11 @@ SPA_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SPEC_USD = Pair(
-    "SPEC_USD",
+    exchange_name="SPEC_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7832,13 +6912,11 @@ SPEC_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SPELL_USD = Pair(
-    "SPELL_USD",
+    exchange_name="SPELL_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7849,13 +6927,11 @@ SPELL_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SPK_USD = Pair(
-    "SPK_USD",
+    exchange_name="SPK_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7866,13 +6942,11 @@ SPK_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SPS_USD = Pair(
-    "SPS_USD",
+    exchange_name="SPS_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7883,13 +6957,11 @@ SPS_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SPX_USD = Pair(
-    "SPX_USD",
+    exchange_name="SPX_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7900,13 +6972,11 @@ SPX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SQD_USD = Pair(
-    "SQD_USD",
+    exchange_name="SQD_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7917,13 +6987,11 @@ SQD_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SQT_USD = Pair(
-    "SQT_USD",
+    exchange_name="SQT_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7934,13 +7002,11 @@ SQT_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STABLE_USD = Pair(
-    "STABLE_USD",
+    exchange_name="STABLE_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7951,13 +7017,11 @@ STABLE_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STG_USD = Pair(
-    "STG_USD",
+    exchange_name="STG_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -7968,13 +7032,11 @@ STG_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STORJ_USD = Pair(
-    "STORJ_USD",
+    exchange_name="STORJ_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -7985,13 +7047,11 @@ STORJ_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STRAX_USD = Pair(
-    "STRAX_USD",
+    exchange_name="STRAX_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8002,13 +7062,11 @@ STRAX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STRK_USD = Pair(
-    "STRK_USD",
+    exchange_name="STRK_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8019,13 +7077,11 @@ STRK_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STRK_USDT = Pair(
-    "STRK_USDT",
+    exchange_name="STRK_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8036,13 +7092,11 @@ STRK_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STX_USD = Pair(
-    "STX_USD",
+    exchange_name="STX_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8053,13 +7107,11 @@ STX_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 STX_USDT = Pair(
-    "STX_USDT",
+    exchange_name="STX_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8070,13 +7122,11 @@ STX_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SUI_BTC = Pair(
-    "SUI_BTC",
+    exchange_name="SUI_BTC",
     price_precision=9,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8087,13 +7137,11 @@ SUI_BTC = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SUI_USD = Pair(
-    "SUI_USD",
+    exchange_name="SUI_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8104,13 +7152,11 @@ SUI_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SUI_USDT = Pair(
-    "SUI_USDT",
+    exchange_name="SUI_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8121,13 +7167,11 @@ SUI_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SUPER_USD = Pair(
-    "SUPER_USD",
+    exchange_name="SUPER_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8138,13 +7182,11 @@ SUPER_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SUPER_USDT = Pair(
-    "SUPER_USDT",
+    exchange_name="SUPER_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8155,13 +7197,11 @@ SUPER_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SUSHI_USD = Pair(
-    "SUSHI_USD",
+    exchange_name="SUSHI_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8172,13 +7212,11 @@ SUSHI_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SUSHI_USDT = Pair(
-    "SUSHI_USDT",
+    exchange_name="SUSHI_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8189,13 +7227,11 @@ SUSHI_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SXT_USD = Pair(
-    "SXT_USD",
+    exchange_name="SXT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8206,13 +7242,11 @@ SXT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SYN_USD = Pair(
-    "SYN_USD",
+    exchange_name="SYN_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8223,13 +7257,11 @@ SYN_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 SYRUP_USD = Pair(
-    "SYRUP_USD",
+    exchange_name="SYRUP_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8240,13 +7272,11 @@ SYRUP_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 S_USD = Pair(
-    "S_USD",
+    exchange_name="S_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8257,13 +7287,11 @@ S_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TAO_USD = Pair(
-    "TAO_USD",
+    exchange_name="TAO_USD",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -8274,13 +7302,11 @@ TAO_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TEVA_USD = Pair(
-    "TEVA_USD",
+    exchange_name="TEVA_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8291,13 +7317,11 @@ TEVA_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TFUEL_USD = Pair(
-    "TFUEL_USD",
+    exchange_name="TFUEL_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8308,13 +7332,11 @@ TFUEL_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TFUEL_USDT = Pair(
-    "TFUEL_USDT",
+    exchange_name="TFUEL_USDT",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8325,13 +7347,11 @@ TFUEL_USDT = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 THETA_USD = Pair(
-    "THETA_USD",
+    exchange_name="THETA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8342,13 +7362,11 @@ THETA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 THETA_USDT = Pair(
-    "THETA_USDT",
+    exchange_name="THETA_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8359,13 +7377,11 @@ THETA_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TIA_USD = Pair(
-    "TIA_USD",
+    exchange_name="TIA_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8376,13 +7392,11 @@ TIA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TIA_USDT = Pair(
-    "TIA_USDT",
+    exchange_name="TIA_USDT",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8393,13 +7407,11 @@ TIA_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TNSR_USD = Pair(
-    "TNSR_USD",
+    exchange_name="TNSR_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8410,13 +7422,11 @@ TNSR_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TONIC_USD = Pair(
-    "TONIC_USD",
+    exchange_name="TONIC_USD",
     price_precision=11,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8427,13 +7437,11 @@ TONIC_USD = Pair(
     price_tick_size=1e-11,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TOSHI_USD = Pair(
-    "TOSHI_USD",
+    exchange_name="TOSHI_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8444,13 +7452,11 @@ TOSHI_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TOWNS_USD = Pair(
-    "TOWNS_USD",
+    exchange_name="TOWNS_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8461,13 +7467,11 @@ TOWNS_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TRAC_USD = Pair(
-    "TRAC_USD",
+    exchange_name="TRAC_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8478,13 +7482,11 @@ TRAC_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TRB_USD = Pair(
-    "TRB_USD",
+    exchange_name="TRB_USD",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -8495,13 +7497,11 @@ TRB_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TRB_USDT = Pair(
-    "TRB_USDT",
+    exchange_name="TRB_USDT",
     price_precision=2,
     quantity_precision=3,
     inst_type=InstrumentType.SPOT,
@@ -8512,13 +7512,11 @@ TRB_USDT = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TROLL_USD = Pair(
-    "TROLL_USD",
+    exchange_name="TROLL_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8529,13 +7527,11 @@ TROLL_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TRUMP_USD = Pair(
-    "TRUMP_USD",
+    exchange_name="TRUMP_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -8546,13 +7542,11 @@ TRUMP_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TRUMP_USDT = Pair(
-    "TRUMP_USDT",
+    exchange_name="TRUMP_USDT",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -8563,13 +7557,11 @@ TRUMP_USDT = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TRUST_USD = Pair(
-    "TRUST_USD",
+    exchange_name="TRUST_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8580,13 +7572,11 @@ TRUST_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TURBO_USD = Pair(
-    "TURBO_USD",
+    exchange_name="TURBO_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8597,13 +7587,11 @@ TURBO_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 TWO_Z_USD = Pair(
-    "2Z_USD",
+    exchange_name="2Z_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8614,13 +7602,11 @@ TWO_Z_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 T_USD = Pair(
-    "T_USD",
+    exchange_name="T_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8631,13 +7617,11 @@ T_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 UMA_USD = Pair(
-    "UMA_USD",
+    exchange_name="UMA_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8648,13 +7632,11 @@ UMA_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 UNI_USD = Pair(
-    "UNI_USD",
+    exchange_name="UNI_USD",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -8665,13 +7647,11 @@ UNI_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 UNI_USDT = Pair(
-    "UNI_USDT",
+    exchange_name="UNI_USDT",
     price_precision=4,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -8682,13 +7662,11 @@ UNI_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 USAT_USD = Pair(
-    "USAT_USD",
+    exchange_name="USAT_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8699,13 +7677,11 @@ USAT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 USDONE__USD = Pair(
-    "USD1_USD",
+    exchange_name="USD1_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8716,13 +7692,11 @@ USDONE__USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 USDS_USD = Pair(
-    "USDS_USD",
+    exchange_name="USDS_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8733,13 +7707,11 @@ USDS_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 USDT_USD = Pair(
-    "USDT_USD",
+    exchange_name="USDT_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8750,13 +7722,11 @@ USDT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 USDU_USD = Pair(
-    "USDU_USD",
+    exchange_name="USDU_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8767,13 +7737,11 @@ USDU_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 USELESS_USD = Pair(
-    "USELESS_USD",
+    exchange_name="USELESS_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8784,13 +7752,11 @@ USELESS_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VANRY_USD = Pair(
-    "VANRY_USD",
+    exchange_name="VANRY_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8801,13 +7767,11 @@ VANRY_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VARA_USD = Pair(
-    "VARA_USD",
+    exchange_name="VARA_USD",
     price_precision=8,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8818,13 +7782,11 @@ VARA_USD = Pair(
     price_tick_size=1e-08,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VELODROME_USD = Pair(
-    "VELODROME_USD",
+    exchange_name="VELODROME_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8835,13 +7797,11 @@ VELODROME_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VELO_USD = Pair(
-    "VELO_USD",
+    exchange_name="VELO_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8852,13 +7812,11 @@ VELO_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VET_USD = Pair(
-    "VET_USD",
+    exchange_name="VET_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8869,13 +7827,11 @@ VET_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VET_USDT = Pair(
-    "VET_USDT",
+    exchange_name="VET_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8886,13 +7842,11 @@ VET_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VINE_USD = Pair(
-    "VINE_USD",
+    exchange_name="VINE_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8903,13 +7857,11 @@ VINE_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VIRTUAL_USD = Pair(
-    "VIRTUAL_USD",
+    exchange_name="VIRTUAL_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8920,13 +7872,11 @@ VIRTUAL_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VIRTUAL_USDT = Pair(
-    "VIRTUAL_USDT",
+    exchange_name="VIRTUAL_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -8937,13 +7887,11 @@ VIRTUAL_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VNO_USD = Pair(
-    "VNO_USD",
+    exchange_name="VNO_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8954,13 +7902,11 @@ VNO_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VOXEL_USD = Pair(
-    "VOXEL_USD",
+    exchange_name="VOXEL_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8971,13 +7917,11 @@ VOXEL_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VOXEL_USDT = Pair(
-    "VOXEL_USDT",
+    exchange_name="VOXEL_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -8988,13 +7932,11 @@ VOXEL_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VRA_USD = Pair(
-    "VRA_USD",
+    exchange_name="VRA_USD",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9005,13 +7947,11 @@ VRA_USD = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VRA_USDT = Pair(
-    "VRA_USDT",
+    exchange_name="VRA_USDT",
     price_precision=9,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9022,13 +7962,11 @@ VRA_USDT = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VTHO_USD = Pair(
-    "VTHO_USD",
+    exchange_name="VTHO_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9039,13 +7977,11 @@ VTHO_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VVS_USD = Pair(
-    "VVS_USD",
+    exchange_name="VVS_USD",
     price_precision=10,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9056,13 +7992,11 @@ VVS_USD = Pair(
     price_tick_size=1e-10,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 VVV_USD = Pair(
-    "VVV_USD",
+    exchange_name="VVV_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -9073,13 +8007,11 @@ VVV_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WAL_USD = Pair(
-    "WAL_USD",
+    exchange_name="WAL_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9090,13 +8022,11 @@ WAL_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WAXP_USD = Pair(
-    "WAXP_USD",
+    exchange_name="WAXP_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9107,13 +8037,11 @@ WAXP_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WBTC_USD = Pair(
-    "WBTC_USD",
+    exchange_name="WBTC_USD",
     price_precision=2,
     quantity_precision=6,
     inst_type=InstrumentType.SPOT,
@@ -9124,13 +8052,11 @@ WBTC_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WCT_USD = Pair(
-    "WCT_USD",
+    exchange_name="WCT_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9141,13 +8067,11 @@ WCT_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WEN_USD = Pair(
-    "WEN_USD",
+    exchange_name="WEN_USD",
     price_precision=10,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9158,13 +8082,11 @@ WEN_USD = Pair(
     price_tick_size=1e-10,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WET_USD = Pair(
-    "WET_USD",
+    exchange_name="WET_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9175,13 +8097,11 @@ WET_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WIF_USD = Pair(
-    "WIF_USD",
+    exchange_name="WIF_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9192,13 +8112,11 @@ WIF_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WIF_USDT = Pair(
-    "WIF_USDT",
+    exchange_name="WIF_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9209,13 +8127,11 @@ WIF_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WLD_USD = Pair(
-    "WLD_USD",
+    exchange_name="WLD_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9226,13 +8142,11 @@ WLD_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WLD_USDT = Pair(
-    "WLD_USDT",
+    exchange_name="WLD_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9243,13 +8157,11 @@ WLD_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WLFI_USD = Pair(
-    "WLFI_USD",
+    exchange_name="WLFI_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9260,13 +8172,11 @@ WLFI_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WLFI_USDT = Pair(
-    "WLFI_USDT",
+    exchange_name="WLFI_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9277,13 +8187,11 @@ WLFI_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 WOO_USD = Pair(
-    "WOO_USD",
+    exchange_name="WOO_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9294,13 +8202,11 @@ WOO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 W_USD = Pair(
-    "W_USD",
+    exchange_name="W_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9311,13 +8217,11 @@ W_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XAI_USD = Pair(
-    "XAI_USD",
+    exchange_name="XAI_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9328,13 +8232,11 @@ XAI_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XAUT_BTC = Pair(
-    "XAUT_BTC",
+    exchange_name="XAUT_BTC",
     price_precision=6,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -9345,13 +8247,11 @@ XAUT_BTC = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XAUT_USD = Pair(
-    "XAUT_USD",
+    exchange_name="XAUT_USD",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -9362,13 +8262,11 @@ XAUT_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XAUT_USDT = Pair(
-    "XAUT_USDT",
+    exchange_name="XAUT_USDT",
     price_precision=2,
     quantity_precision=4,
     inst_type=InstrumentType.SPOT,
@@ -9379,13 +8277,11 @@ XAUT_USDT = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XCH_USD = Pair(
-    "XCH_USD",
+    exchange_name="XCH_USD",
     price_precision=3,
     quantity_precision=2,
     inst_type=InstrumentType.SPOT,
@@ -9396,13 +8292,11 @@ XCH_USD = Pair(
     price_tick_size=0.001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XLM_USD = Pair(
-    "XLM_USD",
+    exchange_name="XLM_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9413,13 +8307,11 @@ XLM_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XLM_USDT = Pair(
-    "XLM_USDT",
+    exchange_name="XLM_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9430,13 +8322,11 @@ XLM_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XNO_USD = Pair(
-    "XNO_USD",
+    exchange_name="XNO_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9447,13 +8337,11 @@ XNO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XPLA_USD = Pair(
-    "XPLA_USD",
+    exchange_name="XPLA_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9464,13 +8352,11 @@ XPLA_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XPL_USD = Pair(
-    "XPL_USD",
+    exchange_name="XPL_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9481,13 +8367,11 @@ XPL_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XRP_BTC = Pair(
-    "XRP_BTC",
+    exchange_name="XRP_BTC",
     price_precision=9,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9498,13 +8382,11 @@ XRP_BTC = Pair(
     price_tick_size=1e-09,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XRP_EUR = Pair(
-    "XRP_EUR",
+    exchange_name="XRP_EUR",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9515,13 +8397,11 @@ XRP_EUR = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XRP_PYUSD = Pair(
-    "XRP_PYUSD",
+    exchange_name="XRP_PYUSD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9532,13 +8412,11 @@ XRP_PYUSD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XRP_USD = Pair(
-    "XRP_USD",
+    exchange_name="XRP_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9549,13 +8427,11 @@ XRP_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XRP_USDT = Pair(
-    "XRP_USDT",
+    exchange_name="XRP_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9566,13 +8442,11 @@ XRP_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XTZ_USD = Pair(
-    "XTZ_USD",
+    exchange_name="XTZ_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9583,13 +8457,11 @@ XTZ_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XTZ_USDT = Pair(
-    "XTZ_USDT",
+    exchange_name="XTZ_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9600,13 +8472,11 @@ XTZ_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XYO_USD = Pair(
-    "XYO_USD",
+    exchange_name="XYO_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9617,13 +8487,11 @@ XYO_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 XYO_USDT = Pair(
-    "XYO_USDT",
+    exchange_name="XYO_USDT",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9634,13 +8502,11 @@ XYO_USDT = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 YFI_USD = Pair(
-    "YFI_USD",
+    exchange_name="YFI_USD",
     price_precision=2,
     quantity_precision=5,
     inst_type=InstrumentType.SPOT,
@@ -9651,13 +8517,11 @@ YFI_USD = Pair(
     price_tick_size=0.01,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZBCN_USD = Pair(
-    "ZBCN_USD",
+    exchange_name="ZBCN_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9668,13 +8532,11 @@ ZBCN_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZETA_USD = Pair(
-    "ZETA_USD",
+    exchange_name="ZETA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9685,13 +8547,11 @@ ZETA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZIL_USD = Pair(
-    "ZIL_USD",
+    exchange_name="ZIL_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9702,13 +8562,11 @@ ZIL_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZKCRO_USD = Pair(
-    "ZKCRO_USD",
+    exchange_name="ZKCRO_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9719,13 +8577,11 @@ ZKCRO_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZKC_USD = Pair(
-    "ZKC_USD",
+    exchange_name="ZKC_USD",
     price_precision=5,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9736,13 +8592,11 @@ ZKC_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZKJ_USD = Pair(
-    "ZKJ_USD",
+    exchange_name="ZKJ_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9753,13 +8607,11 @@ ZKJ_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZK_USD = Pair(
-    "ZK_USD",
+    exchange_name="ZK_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9770,13 +8622,11 @@ ZK_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZK_USDT = Pair(
-    "ZK_USDT",
+    exchange_name="ZK_USDT",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9787,13 +8637,11 @@ ZK_USDT = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZORA_USD = Pair(
-    "ZORA_USD",
+    exchange_name="ZORA_USD",
     price_precision=6,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9804,13 +8652,11 @@ ZORA_USD = Pair(
     price_tick_size=1e-06,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZRC_USD = Pair(
-    "ZRC_USD",
+    exchange_name="ZRC_USD",
     price_precision=7,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9821,13 +8667,11 @@ ZRC_USD = Pair(
     price_tick_size=1e-07,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZRO_USD = Pair(
-    "ZRO_USD",
+    exchange_name="ZRO_USD",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9838,13 +8682,11 @@ ZRO_USD = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZRO_USDT = Pair(
-    "ZRO_USDT",
+    exchange_name="ZRO_USDT",
     price_precision=4,
     quantity_precision=1,
     inst_type=InstrumentType.SPOT,
@@ -9855,13 +8697,11 @@ ZRO_USDT = Pair(
     price_tick_size=0.0001,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
 ZRX_USD = Pair(
-    "ZRX_USD",
+    exchange_name="ZRX_USD",
     price_precision=5,
     quantity_precision=0,
     inst_type=InstrumentType.SPOT,
@@ -9872,8 +8712,6 @@ ZRX_USD = Pair(
     price_tick_size=1e-05,
     min_order_quantity=0.0,
     max_order_quantity=0.0,
-    maker_fee_rate=0.0,
-    taker_fee_rate=0.0,
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )

@@ -7,7 +7,7 @@ from typing import Any, ClassVar
 
 from typing_extensions import override
 
-from .helpers import round_down
+from .helpers import round_down, round_up
 
 
 @dataclass(frozen=True)
@@ -50,19 +50,17 @@ class Pair:
     exchange_name: str
     price_precision: int
     quantity_precision: int
-    # Additional instrument metadata from public/get-instruments
-    inst_type: InstrumentType  # Required - will raise if API returns unknown type
+    inst_type: InstrumentType
     display_name: str | None = None
     base_currency: Instrument | None = None
     quote_currency: Instrument | None = None
-    quantity_tick_size: float | None = None  # Min quantity increment
-    price_tick_size: float | None = None  # Min price increment
-    min_order_quantity: float | None = None  # Min order quantity
-    max_order_quantity: float | None = None  # Max order quantity
-    maker_fee_rate: float | None = None  # Maker fee rate
-    taker_fee_rate: float | None = None  # Taker fee rate
+    quantity_tick_size: float = 0.0
+    price_tick_size: float = 0.0
+    min_order_quantity: float = 0.0
+    max_order_quantity: float = 0.0
     min_order_notional_usd: float = 1.0
     max_order_notional_usd: float = 1000000.0
+
     deleted: bool = field(default=False, init=True, repr=False)
     _registry: ClassVar[dict[str, "Pair"] | None] = field(
         default=None, init=False, repr=False
@@ -101,24 +99,23 @@ class Pair:
         Raises:
             ValueError: If symbol contains '-' or '@' when filter_derivatives=True
         """
-        symbol = data.get("symbol", "")
+        symbol = data["symbol"]
 
         # Skip derivatives if filtering
         if filter_derivatives and ("-" in symbol or "@" in symbol):
             raise ValueError(f"Skipping derivative symbol: {symbol}")
 
         # Parse instrument type - will raise error if unknown
-        inst_type_str = data.get("inst_type", "")
-        inst_type = InstrumentType(inst_type_str)
+        inst_type = InstrumentType(data["inst_type"])
 
         return cls(
             exchange_name=symbol,
-            price_precision=data.get("quote_decimals", 8),
-            quantity_precision=data.get("quantity_decimals", 8),
-            min_order_notional_usd=float(data.get("min_order_qty", 1.0)) * 100
+            price_precision=data["quote_decimals"],
+            quantity_precision=data["quantity_decimals"],
+            min_order_notional_usd=float(data["min_order_qty"]) * 100
             if data.get("min_order_qty")
             else 1.0,
-            max_order_notional_usd=float(data.get("max_order_qty", 1000000.0)) * 100
+            max_order_notional_usd=float(data["max_order_qty"]) * 100
             if data.get("max_order_qty")
             else 1000000.0,
             inst_type=inst_type,
@@ -133,8 +130,6 @@ class Pair:
             price_tick_size=float(data.get("price_tick_size", 0)),
             min_order_quantity=float(data.get("min_order_qty", 0)),
             max_order_quantity=float(data.get("max_order_qty", 0)),
-            maker_fee_rate=float(data.get("maker_fee_rate", 0)),
-            taker_fee_rate=float(data.get("taker_fee_rate", 0)),
         )
 
     @cached_property
@@ -146,14 +141,37 @@ class Pair:
         return Instrument(self.exchange_name.split("_")[1])
 
     def round_price(self, price: float | str) -> float:
+        """Round price down to pair's price precision."""
+        return round_down(float(price), self.price_precision)
+
+    def round_price_up(self, price: float | str) -> float:
+        """Round price up to pair's price precision."""
+        return round_up(float(price), self.price_precision)
+
+    def round_price_down(self, price: float | str) -> float:
+        """Round price down to pair's price precision."""
         return round_down(float(price), self.price_precision)
 
     def round_quantity(self, quantity: float | str) -> float:
+        """Round quantity down to pair's quantity precision."""
+        return round_down(float(quantity), self.quantity_precision)
+
+    def round_quantity_up(self, quantity: float | str) -> float:
+        """Round quantity up to pair's quantity precision."""
+        return round_up(float(quantity), self.quantity_precision)
+
+    def round_quantity_down(self, quantity: float | str) -> float:
+        """Round quantity down to pair's quantity precision."""
         return round_down(float(quantity), self.quantity_precision)
 
     def validate_order_notional(self, notional: float) -> bool:
-        """Check if order notional value is within allowed limits."""
-        return self.min_order_notional_usd <= notional <= self.max_order_notional_usd
+        """Check if order notional value is within allowed limits.
+        Uses round_down for min check to handle floating point precision issues.
+        Example: round_down(1.0, 0) = 1.0, so $1.00 >= $1.0 passes.
+        """
+        min_check = round_down(notional, 0) >= self.min_order_notional_usd
+        max_check = notional <= self.max_order_notional_usd
+        return min_check and max_check
 
 
 class DefaultPairDict(dict[str, Pair]):
@@ -164,12 +182,19 @@ class DefaultPairDict(dict[str, Pair]):
         try:
             return super().__getitem__(name)
         except KeyError:
-            # Create deleted pair that skips registry
+            # Create deleted pair that skips registry with default values
             return Pair(
                 name,
                 8,
                 8,
                 inst_type=InstrumentType.SPOT,
+                display_name=None,
+                base_currency=None,
+                quote_currency=None,
+                quantity_tick_size=0.0,
+                price_tick_size=0.0,
+                min_order_quantity=0.0,
+                max_order_quantity=0.0,
                 min_order_notional_usd=1.0,
                 max_order_notional_usd=1000000.0,
                 deleted=True,
