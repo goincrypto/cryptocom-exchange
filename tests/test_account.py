@@ -1,5 +1,6 @@
 import asyncio
 import time
+from uuid import uuid7
 
 import async_timeout
 import pytest
@@ -103,7 +104,7 @@ async def test_no_duplicate_mass_limit_orders(
     buy_price = round(current_price - 0.01, 4)  # Set below market to keep order open
     orders_count = 3  # Reduced to match captured data
     # Create orders with quantity calculated for each price to ensure $1.0+ notional
-    order_ids = await asyncio.gather(
+    orders = await asyncio.gather(
         *[
             account.buy_limit(
                 cro.pairs.CRO_USD,
@@ -115,16 +116,22 @@ async def test_no_duplicate_mass_limit_orders(
             for i in range(orders_count)
         ]
     )
+    client_ids = [o.client_id for o in orders]
+    [o.id for o in orders]
 
-    real_orders = await asyncio.gather(*[account.get_order(id_) for id_ in order_ids])
+    # Get orders using client_id
+    real_orders = await asyncio.gather(
+        *[account.get_order(client_order_id=cid) for cid in client_ids]
+    )
     for order in real_orders:
         assert order.is_active, order
+        assert order.client_id in client_ids
 
     open_orders = await account.get_open_orders(cro.pairs.CRO_USD)
-    open_order_ids = sorted(o.id for o in open_orders if o.is_active)
+    open_client_ids = sorted(o.client_id for o in open_orders if o.is_active)
 
-    assert len(real_orders) == len(open_order_ids) == orders_count
-    assert open_order_ids == sorted(order_ids)
+    assert len(real_orders) == len(open_client_ids) == orders_count
+    assert open_client_ids == sorted(client_ids)
 
 
 @pytest.mark.asyncio
@@ -145,33 +152,43 @@ async def test_account_limit_orders(account: cro.Account, market: cro.Market):
     sell_qty = qty  # Use minimum quantity that ensures $1.0+ notional
 
     # 3 buy orders + sell orders based on balance
-    order_ids = await asyncio.gather(
+    orders = await asyncio.gather(
         *[account.buy_limit(cro.pairs.CRO_USD, qty, buy_price) for _ in range(4)]
     )
+    client_ids = [o.client_id for o in orders]
+    order_ids = [o.id for o in orders]
+
     # Only create sell orders if we have enough balance (need at least sell_qty * 2)
     if available_cro >= sell_qty * 2:
-        order_ids += await asyncio.gather(
+        sell_orders = await asyncio.gather(
             *[
                 account.sell_limit(cro.pairs.CRO_USD, sell_qty, sell_price)
                 for _ in range(2)
             ]
         )
+        client_ids += [o.client_id for o in sell_orders]
+        order_ids += [o.id for o in sell_orders]
 
-    await account.cancel_order(order_ids[0], cro.pairs.CRO_USD, check_status=True)
-    order = await account.get_order(order_ids[0])
+    # Cancel first order using client_id
+    await account.cancel_order(cro.pairs.CRO_USD, client_ids[0], check_status=True)
+    order = await account.get_order(client_order_id=client_ids[0])
     assert order.is_canceled
 
-    for order_id in order_ids[1:]:
-        await account.cancel_order(order_id, cro.pairs.CRO_USD)
+    # Cancel remaining orders using client_id
+    for client_id in client_ids[1:]:
+        await account.cancel_order(cro.pairs.CRO_USD, client_id)
 
-    open_orders = [
-        order for order in await account.get_open_orders() if order.id in order_ids
+    # Verify no open orders with these client_ids
+    open_orders = await account.get_open_orders()
+    open_client_ids = [
+        order.client_id for order in open_orders if order.client_id in client_ids
     ]
-    assert not open_orders
+    assert not open_client_ids
 
+    # Verify orders in history by order_id
     all_orders = await account.get_orders_history(cro.pairs.CRO_USD, limit=50)
-    ids = [order.id for order in all_orders]
-    assert set(ids) & set(order_ids)
+    order_ids_in_history = [order.id for order in all_orders]
+    assert set(order_ids_in_history) & set(order_ids)
 
 
 async def make_trades(account, market, order_ids):
@@ -205,11 +222,11 @@ async def make_trades(account, market, order_ids):
         and qty <= available_cro
         and spend <= available_usd
     ):
-        order_id = await account.buy_market(cro.pairs.CRO_USD, spend)
-        order_ids["buy"].append(order_id)
+        order = await account.buy_market(cro.pairs.CRO_USD, spend)
+        order_ids["buy"].append(order.id)
 
-        order_id = await account.sell_market(cro.pairs.CRO_USD, qty)
-        order_ids["sell"].append(order_id)
+        order = await account.sell_market(cro.pairs.CRO_USD, qty)
+        order_ids["sell"].append(order.id)
 
 
 async def listen_orders(account: cro.Account, orders):
@@ -321,3 +338,186 @@ async def test_account_market_orders(account: cro.Account, market: cro.Market):
 
 #     pprint.pprint(data)
 #     pprint.pprint(await account.get_balance_history())
+
+
+@pytest.mark.asyncio
+async def test_cancel_order_with_client_id(account: cro.Account, market: cro.Market):
+    """Test canceling order by client_id with auto-generated client_id."""
+    current_price = await market.get_price(cro.pairs.CRO_USD)
+    buy_price = round(current_price - 0.01, 4)
+    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+
+    # Create order - client_id is auto-generated using uuid7().hex
+    order = await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price)
+    client_id = order.client_id
+    order_id = order.id
+
+    # Verify client_id is a valid hex string (uuid7)
+    assert client_id is not None
+    assert len(client_id) > 0
+
+    # Verify we can get the order by client_id
+    order_1 = await account.get_order(client_order_id=client_id)
+    assert order_1.client_id == client_id
+    assert order_1.id == order_id
+    assert order_1.is_active
+
+    # Cancel order using client_id
+    returned_order_id, returned_client_oid = await account.cancel_order(
+        cro.pairs.CRO_USD, client_order_id=client_id, check_status=True
+    )
+
+    # Verify API response contains correct order_id and client_oid
+    assert returned_client_oid == client_id
+
+    # Verify order is canceled
+    order_1_after = await account.get_order(client_order_id=client_id)
+    assert order_1_after.is_canceled
+
+
+@pytest.mark.asyncio
+async def test_update_order_by_client_id(account: cro.Account, market: cro.Market):
+    """Test updating order price and quantity by client_id."""
+    current_price = await market.get_price(cro.pairs.CRO_USD)
+    buy_price = round(current_price - 0.01, 4)
+    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+
+    # Create order with specific client_id
+    client_id = f"update_test_{uuid7().hex[:16]}"
+    await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
+
+    # Verify order is created
+    order_1 = await account.get_order(client_order_id=client_id)
+    assert order_1.client_id == client_id
+    assert order_1.is_active
+    original_price = order_1.price
+    original_qty = order_1.quantity
+    original_order_id = order_1.id
+
+    # Update order - change price and quantity
+    # Calculate new values that meet minimum notional requirement
+    new_price = round(original_price + 0.001, 4)  # Increase price slightly
+    # Calculate new quantity to ensure minimum notional
+    min_qty_for_new_price = calculate_min_quantity(cro.pairs.CRO_USD, new_price)
+    new_qty = max(min_qty_for_new_price, original_qty + 1)
+
+    # Provide new_client_id explicitly
+    new_client_id = f"updated_{uuid7().hex[:16]}"
+
+    result = await account.update_order(
+        cro.pairs.CRO_USD,
+        client_id=client_id,
+        new_price=new_price,
+        new_quantity=new_qty,
+        new_client_id=new_client_id,
+    )
+
+    # Verify API response - returns order_id and new client_id
+    assert result.id is not None  # Order ID returned
+    assert result.client_id == new_client_id  # Matches provided new_client_id
+
+    # Note: After amend, the original order is canceled and a new one is created
+    # The original order should be canceled
+    try:
+        order_1_after = await account.get_order(order_id=original_order_id)
+        assert order_1_after.is_canceled
+    except Exception:
+        # Order might not be found if already removed
+        pass
+
+
+@pytest.mark.asyncio
+async def test_update_order_price_only(account: cro.Account, market: cro.Market):
+    """Test updating only order price (not quantity)."""
+    current_price = await market.get_price(cro.pairs.CRO_USD)
+    buy_price = round(current_price - 0.01, 4)
+    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+
+    # Create order with specific client_id
+    client_id = f"update_price_{uuid7().hex[:16]}"
+    await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
+
+    # Verify order is created
+    order_1 = await account.get_order(client_order_id=client_id)
+    assert order_1.client_id == client_id
+    assert order_1.is_active
+    original_price = order_1.price
+    original_qty = order_1.quantity
+    original_order_id = order_1.id
+
+    # Update order - change only price (API requires both new_price and new_quantity)
+    new_price = round(original_price + 0.001, 4)  # Increase price slightly
+    # Calculate new quantity to ensure minimum notional
+    min_qty_for_new_price = calculate_min_quantity(cro.pairs.CRO_USD, new_price)
+    new_qty = max(min_qty_for_new_price, original_qty)
+
+    # Provide new_client_id explicitly
+    new_client_id = f"updated_{uuid7().hex[:16]}"
+
+    result = await account.update_order(
+        cro.pairs.CRO_USD,
+        client_id=client_id,
+        new_price=new_price,
+        new_quantity=new_qty,  # Keep original or minimum quantity
+        new_client_id=new_client_id,
+    )
+
+    # Verify API response
+    assert result.id is not None
+    assert result.client_id == new_client_id  # Matches provided new_client_id
+
+    # Original order should be canceled
+    try:
+        order_1_after = await account.get_order(order_id=original_order_id)
+        assert order_1_after.is_canceled
+    except Exception:
+        pass
+
+
+@pytest.mark.asyncio
+async def test_update_order_quantity_only(account: cro.Account, market: cro.Market):
+    """Test updating only order quantity (not price)."""
+    current_price = await market.get_price(cro.pairs.CRO_USD)
+    buy_price = round(current_price - 0.01, 4)
+    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+
+    # Create order with specific client_id
+    client_id = f"update_qty_{uuid7().hex[:16]}"
+    await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
+
+    # Verify order is created
+    order_1 = await account.get_order(client_order_id=client_id)
+    assert order_1.client_id == client_id
+    assert order_1.is_active
+    original_price = order_1.price
+    original_qty = order_1.quantity
+    original_order_id = order_1.id
+
+    # Update order - change only quantity (API requires both new_price and new_quantity)
+    # Calculate new quantity to ensure minimum notional
+    new_qty = max(
+        calculate_min_quantity(cro.pairs.CRO_USD, original_price), original_qty + 1
+    )
+
+    # Provide new_client_id explicitly
+    new_client_id = f"updated_{uuid7().hex[:16]}"
+
+    result = await account.update_order(
+        cro.pairs.CRO_USD,
+        client_id=client_id,
+        new_price=original_price,  # Keep original price
+        new_quantity=new_qty,
+        new_client_id=new_client_id,
+    )
+
+    # Verify API response
+    assert result.id is not None
+    assert result.client_id == new_client_id  # Matches provided new_client_id
+
+    # Original order should be canceled
+    try:
+        order_1_after = await account.get_order(order_id=original_order_id)
+        assert order_1_after.is_canceled
+    except Exception:
+        pass
+

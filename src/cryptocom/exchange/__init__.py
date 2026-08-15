@@ -1,7 +1,7 @@
 from . import instruments, pairs
 from .api import ApiError, ApiProvider, RecordApiProvider
 from .market import Market
-from .account import Account
+from .account import Account, OrderKeys
 from .exceptions import ApiErrorCode
 from .structs import (
     Candle,
@@ -32,6 +32,7 @@ __all__ = [
     "OrderType",
     "OrderForceType",
     "OrderExecFlag",
+    "OrderKeys",
     "pairs",
     "Pair",
     "instruments",

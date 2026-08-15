@@ -1,5 +1,7 @@
 import asyncio
 import logging
+from dataclasses import dataclass
+from uuid import uuid7
 from typing import Any
 
 from .api import ApiError, ApiProvider
@@ -25,6 +27,14 @@ from .structs import (
 )
 
 
+@dataclass
+class OrderKeys:
+    """Order identifiers returned from order operations."""
+
+    id: str  # Exchange order ID
+    client_id: str  # Client order ID
+
+
 class Account:
     """Provides access to account actions and data. Balance, trades, orders."""
 
@@ -32,6 +42,27 @@ class Account:
     market: Market
     pairs: DefaultPairDict
     logger: logging.Logger
+
+    def _validate_client_id(self, client_id: str | None, param_name: str = "client_id") -> None:
+        """Validate client ID against API constraints.
+        
+        Args:
+            client_id: The client ID to validate
+            param_name: Name of the parameter for error messages
+            
+        Raises:
+            TypeError: If client_id is not a string
+            ValueError: If client_id is empty or exceeds 36 characters
+        """
+        if client_id is None:
+            return
+            
+        if not isinstance(client_id, str):
+            raise TypeError(f"{param_name} must be a string")
+        if len(client_id) == 0:
+            raise ValueError(f"{param_name} cannot be empty")
+        if len(client_id) > 36:
+            raise ValueError(f"{param_name} must be <= 36 characters, got {len(client_id)}")
 
     def __init__(
         self,
@@ -223,12 +254,34 @@ class Account:
         exec_flags: list[OrderExecFlag] | None = None,
         client_id: str | None = None,
         fee_instrument: Instrument | None = None,
-    ) -> str:
-        """Create raw order with buy or sell side."""
+    ) -> OrderKeys:
+        """Create raw order with buy or sell side.
+
+        Args:
+            pair: Trading pair
+            side: Order side (BUY/SELL)
+            type_: Order type
+            quantity: Order quantity
+            price: Order price (for limit orders)
+            force_type: Time in force
+            exec_flags: Execution flags
+            client_id: Client order ID (auto-generated if not provided)
+            fee_instrument: Fee instrument (defaults to quote currency)
+
+        Returns:
+            OrderKeys with order_id and client_id
+        """
+        # Auto-generate client_id if not provided
+        if client_id is None:
+            client_id = uuid7().hex
+        else:
+            self._validate_client_id(client_id, "client_id")
+
         data = {
             "instrument_name": pair.exchange_name,
             "side": side.value,
             "type": type_.value,
+            "client_oid": client_id,
         }
 
         if force_type:
@@ -284,7 +337,7 @@ class Account:
             data["price"] = "{:.{}f}".format(price, pair.price_precision)
 
         resp = await self.api.post("private/create-order", {"params": data})
-        return resp["order_id"]
+        return OrderKeys(id=resp["order_id"], client_id=client_id)
 
     async def buy_limit(
         self,
@@ -295,8 +348,12 @@ class Account:
         exec_flags: list[OrderExecFlag] | None = None,
         client_id: str | None = None,
         fee_instrument: Instrument | None = None,
-    ) -> str:
-        """Buy limit order with optional fee instrument."""
+    ) -> OrderKeys:
+        """Buy limit order with optional fee instrument.
+
+        Returns:
+            OrderKeys with order_id and client_id
+        """
         return await self.create_order(
             pair,
             OrderSide.BUY,
@@ -318,8 +375,12 @@ class Account:
         exec_flags: list[OrderExecFlag] | None = None,
         client_id: str | None = None,
         fee_instrument: Instrument | None = None,
-    ) -> str:
-        """Sell limit order with optional fee instrument."""
+    ) -> OrderKeys:
+        """Sell limit order with optional fee instrument.
+
+        Returns:
+            OrderKeys with order_id and client_id
+        """
         return await self.create_order(
             pair,
             OrderSide.SELL,
@@ -354,14 +415,19 @@ class Account:
         spend: float,
         wait_for_fill: bool = False,
         fee_instrument: Instrument | None = None,
-    ) -> str:
-        """Buy market order with optional fee instrument."""
-        order_id = await self.create_order(
+    ) -> OrderKeys:
+        """Buy market order with optional fee instrument.
+
+        Returns:
+            OrderKeys with order_id and client_id
+        """
+        result = await self.create_order(
             pair, OrderSide.BUY, OrderType.MARKET, spend, fee_instrument=fee_instrument
         )
+
         if wait_for_fill:
             await self.wait_for_status(
-                order_id,
+                result.id,
                 (
                     OrderStatus.FILLED,
                     OrderStatus.CANCELED,
@@ -370,7 +436,7 @@ class Account:
                 ),
             )
 
-        return order_id
+        return result
 
     async def sell_market(
         self,
@@ -378,9 +444,13 @@ class Account:
         quantity: float,
         wait_for_fill: bool = False,
         fee_instrument: Instrument | None = None,
-    ) -> str:
-        """Sell market order with optional fee instrument."""
-        order_id = await self.create_order(
+    ) -> OrderKeys:
+        """Sell market order with optional fee instrument.
+
+        Returns:
+            OrderKeys with order_id and client_id
+        """
+        result = await self.create_order(
             pair,
             OrderSide.SELL,
             OrderType.MARKET,
@@ -390,7 +460,7 @@ class Account:
 
         if wait_for_fill:
             await self.wait_for_status(
-                order_id,
+                result.id,
                 (
                     OrderStatus.FILLED,
                     OrderStatus.CANCELED,
@@ -399,7 +469,7 @@ class Account:
                 ),
             )
 
-        return order_id
+        return result
 
     async def get_order(
         self, order_id: str | None = None, client_order_id: str | None = None
@@ -438,26 +508,138 @@ class Account:
         )
 
     async def cancel_order(
-        self, order_id: int, pair: Pair, check_status: bool = False
-    ) -> None:
-        """Cancel order."""
-        await self.api.post(
+        self,
+        pair: Pair,
+        client_order_id: str | None = None,
+        check_status: bool = False,
+    ) -> tuple[str, str | None]:
+        """Cancel order by client_order_id.
+
+        Args:
+            pair: Trading pair
+            client_order_id: Client order ID (client_oid) - auto-generated if not provided
+            check_status: If True, wait for order to be canceled
+
+        Returns:
+            Tuple of (order_id, client_oid) from API response
+
+        Raises:
+            ValueError: If client_order_id is not provided
+        """
+        if not client_order_id:
+            raise ValueError("Must provide client_order_id")
+
+        params = {
+            "instrument_name": pair.exchange_name,
+            "client_oid": client_order_id,
+        }
+
+        resp = await self.api.post(
             "private/cancel-order",
-            {
-                "params": {
-                    "order_id": order_id,
-                    "instrument_name": pair.exchange_name,
-                }
-            },
+            {"params": params},
+        )
+
+        # API response has order_id and client_oid at top level in result
+        returned_order_id = resp.get("result", {}).get(
+            "order_id", resp.get("order_id", client_order_id or "")
+        )
+        returned_client_oid = resp.get("result", {}).get(
+            "client_oid", resp.get("client_oid")
         )
 
         if not check_status:
-            return
+            return returned_order_id, returned_client_oid
 
         await self.wait_for_status(
-            order_id,
+            returned_order_id,
             (OrderStatus.CANCELED, OrderStatus.EXPIRED, OrderStatus.REJECTED),
         )
+        return returned_order_id, returned_client_oid
+
+    async def update_order(
+        self,
+        pair: Pair,
+        order_id: str | None = None,
+        client_id: str | None = None,
+        new_price: float | None = None,
+        new_quantity: float | None = None,
+        new_client_id: str | None = None,
+    ) -> OrderKeys:
+        """Amend/update an existing order.
+
+        Note: Amend order performs cancel and then create behind the scene.
+        The new order will lose queue priority, except if the amend is only
+        to amend down order quantity.
+
+        API requires BOTH new_price and new_quantity to be provided.
+        Both values must meet the pair's minimum order notional requirement.
+
+        Args:
+            pair: Trading pair
+            order_id: Exchange order ID to update
+            client_id: Client order ID to find the order (orig_client_oid)
+            new_price: New price for the order (required)
+            new_quantity: New quantity for the order (required)
+            new_client_id: New client order ID for the amended order (optional, auto-generated if not provided)
+
+        Returns:
+            OrderKeys with order_id and client_oid from API response
+
+        Raises:
+            ValueError: If neither order_id nor client_id is provided
+            ValueError: If new_price or new_quantity is not provided
+            ValueError: If new_price or new_quantity doesn't meet pair minimums
+        """
+        if not order_id and not client_id:
+            raise ValueError("Must provide either order_id or client_id")
+        if new_price is None or new_quantity is None:
+            raise ValueError("Must provide both new_price and new_quantity")
+
+        # Validate that new values meet pair minimums
+        new_notional = new_price * new_quantity
+        if new_notional < pair.min_order_notional_usd:
+            raise ValueError(
+                f"New order notional ${new_notional:.2f} below minimum "
+                f"${pair.min_order_notional_usd:.2f} for pair {pair.name}"
+            )
+
+        # Auto-generate new_client_id if not provided
+        if new_client_id is None:
+            new_client_id = uuid7().hex
+        else:
+            self._validate_client_id(new_client_id, "new_client_id")
+
+        params = {
+            "instrument_name": pair.exchange_name,
+            "client_oid": new_client_id,  # New client OID for the amended order
+        }
+
+        if order_id:
+            params["order_id"] = str(order_id)
+        elif client_id:
+            params["orig_client_oid"] = client_id
+
+        if new_price is not None:
+            params["new_price"] = "{:.{}f}".format(new_price, pair.price_precision)
+        if new_quantity is not None:
+            params["new_quantity"] = "{:.{}f}".format(
+                new_quantity, pair.quantity_precision
+            )
+
+        resp = await self.api.post(
+            "private/amend-order",
+            {"params": params},
+        )
+
+        # API response has order_id and client_oid in result
+        returned_order_id = resp.get("result", {}).get(
+            "order_id", resp.get("order_id", "")
+        )
+        returned_client_oid = resp.get("result", {}).get(
+            "client_oid", resp.get("client_oid", "")
+        )
+
+        return OrderKeys(id=returned_order_id, client_id=returned_client_oid)
 
     async def cancel_open_orders(self, pair: Pair = None) -> None:
         """Cancel all open orders."""

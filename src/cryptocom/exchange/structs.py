@@ -140,29 +140,21 @@ class Pair:
     def quote_instrument(self) -> Instrument:
         return Instrument(self.exchange_name.split("_")[1])
 
-    def round_price(self, price: float | str) -> float:
-        """Round price down to pair's price precision."""
+    def round_price_down(self, price: float | str) -> float:
+        """Round price down to pair's price precision (conservative)."""
         return round_down(float(price), self.price_precision)
 
     def round_price_up(self, price: float | str) -> float:
         """Round price up to pair's price precision."""
         return round_up(float(price), self.price_precision)
 
-    def round_price_down(self, price: float | str) -> float:
-        """Round price down to pair's price precision."""
-        return round_down(float(price), self.price_precision)
-
-    def round_quantity(self, quantity: float | str) -> float:
-        """Round quantity down to pair's quantity precision."""
+    def round_quantity_down(self, quantity: float | str) -> float:
+        """Round quantity down to pair's quantity precision (conservative)."""
         return round_down(float(quantity), self.quantity_precision)
 
     def round_quantity_up(self, quantity: float | str) -> float:
         """Round quantity up to pair's quantity precision."""
         return round_up(float(quantity), self.quantity_precision)
-
-    def round_quantity_down(self, quantity: float | str) -> float:
-        """Round quantity down to pair's quantity precision."""
-        return round_down(float(quantity), self.quantity_precision)
 
     def validate_order_notional(self, notional: float) -> bool:
         """Check if order notional value is within allowed limits.
@@ -493,7 +485,8 @@ class OrderInBook:
 
     @property
     def volume(self) -> float:
-        return self.pair.round_price(self.price * self.quantity)
+        """Orderbook level volume (conservative: round down)."""
+        return round_down(self.price * self.quantity, self.pair.price_precision)
 
     @classmethod
     def from_api(cls, order, pair, side):
@@ -596,12 +589,13 @@ class OrderType(str, Enum):
 
 
 class OrderStatus(str, Enum):
+    PENDING = "PENDING"
+    NEW = "NEW"
     ACTIVE = "ACTIVE"
     FILLED = "FILLED"
     CANCELED = "CANCELED"
     REJECTED = "REJECTED"
     EXPIRED = "EXPIRED"
-    PENDING = "PENDING"
 
 
 class OrderExecFlag(str, Enum):
@@ -682,13 +676,13 @@ class Order:
     side: OrderSide
     exec_flags: list[OrderExecFlag]
     limit_price: float | None
-    value: float
+    volume: float
     quantity: float
     maker_fee_rate: float
     taker_fee_rate: float
     filled_price: float
     filled_quantity: float
-    filled_value: float
+    filled_volume: float
     filled_fee: float
     update_user_id: str
     order_date: str
@@ -732,27 +726,21 @@ class Order:
         return self.status == OrderStatus.PENDING
 
     @cached_property
+    def is_new(self):
+        return self.status == OrderStatus.NEW
+
+    @cached_property
     def price(self):
         """Order price (filled price preferred, otherwise limit price)."""
         # For filled orders, use filled_price; otherwise use limit_price
         return self.filled_price if self.filled_price else self.limit_price
 
     @cached_property
-    def volume(self):
-        return self.pair.round_price(self.price * self.quantity)
-
-    @cached_property
-    def filled_volume(self):
-        return self.pair.round_price(self.filled_price * self.filled_quantity)
-
-    @cached_property
-    def remain_volume(self):
-        return self.pair.round_price(self.filled_volume - self.volume)
-
-    @cached_property
     def remain_quantity(self):
-        # TODO: fix bug with round quantity
-        return self.pair.round_quantity(self.quantity - self.filled_quantity)
+        """Remaining quantity to be filled (conservative: round down)."""
+        # Calculate remaining and round down to never overstate
+        remain = self.quantity - self.filled_quantity
+        return round_down(remain, self.pair.quantity_precision)
 
     @classmethod
     def create_from_api(
@@ -778,12 +766,12 @@ class Order:
             exec_flags=exec_flags,
             quantity=float(data["quantity"]),
             limit_price=float(data["limit_price"]) if "limit_price" in data else None,
-            value=float(data["order_value"]),
+            volume=round_down(float(data["order_value"]), pair.price_precision),
             maker_fee_rate=float(data.get("maker_fee_rate", 0)),
             taker_fee_rate=float(data.get("taker_fee_rate", 0)),
             filled_price=float(data["avg_price"]),
             filled_quantity=float(data["cumulative_quantity"]),
-            filled_value=float(data["cumulative_value"]),
+            filled_volume=round_down(float(data["cumulative_value"]), pair.price_precision),
             filled_fee=float(data["cumulative_fee"]),
             status=OrderStatus(data["status"]),
             update_user_id=data["update_user_id"],
