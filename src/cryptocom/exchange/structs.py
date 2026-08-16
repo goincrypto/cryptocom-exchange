@@ -765,13 +765,19 @@ class Order:
             side=OrderSide(data["side"]),
             exec_flags=exec_flags,
             quantity=round_down(float(data["quantity"]), pair.quantity_precision),
-            limit_price=round_down(float(data["limit_price"]), pair.price_precision) if "limit_price" in data else None,
+            limit_price=round_down(float(data["limit_price"]), pair.price_precision)
+            if "limit_price" in data
+            else None,
             volume=round_down(float(data["order_value"]), pair.price_precision),
             maker_fee_rate=float(data.get("maker_fee_rate", 0)),
             taker_fee_rate=float(data.get("taker_fee_rate", 0)),
             filled_price=round_down(float(data["avg_price"]), pair.price_precision),
-            filled_quantity=round_down(float(data["cumulative_quantity"]), pair.quantity_precision),
-            filled_volume=round_down(float(data["cumulative_value"]), pair.price_precision),
+            filled_quantity=round_down(
+                float(data["cumulative_quantity"]), pair.quantity_precision
+            ),
+            filled_volume=round_down(
+                float(data["cumulative_value"]), pair.price_precision
+            ),
             filled_fee=round_down(float(data["cumulative_fee"]), 8),
             status=OrderStatus(data["status"]),
             update_user_id=data["update_user_id"],

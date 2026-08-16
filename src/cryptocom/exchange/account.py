@@ -5,13 +5,6 @@ from uuid import uuid7
 from typing import Any
 
 from .api import ApiError, ApiProvider
-
-# Order limits (from Crypto.com Exchange official documentation)
-# Per Trading Pair: Maximum 200 open orders for a single trading pair (e.g., BTC/USDT)
-# Overall Account: Maximum 1,000 open orders across all trading pairs combined
-MAX_OPEN_ORDERS_PER_PAIR = 200
-MAX_OPEN_ORDERS_PER_ACCOUNT = 1000
-
 from .market import Market
 from .structs import (
     Balance,
@@ -33,6 +26,12 @@ from .structs import (
     WithdrawalStatus,
 )
 
+# Order limits (from Crypto.com Exchange official documentation)
+# Per Trading Pair: Maximum 200 open orders for a single trading pair (e.g., BTC/USDT)
+# Overall Account: Maximum 1,000 open orders across all trading pairs combined
+MAX_OPEN_ORDERS_PER_PAIR = 200
+MAX_OPEN_ORDERS_PER_ACCOUNT = 1000
+
 
 @dataclass
 class OrderKeys:
@@ -50,26 +49,30 @@ class Account:
     pairs: DefaultPairDict
     logger: logging.Logger
 
-    def _validate_client_id(self, client_id: str | None, param_name: str = "client_id") -> None:
+    def _validate_client_id(
+        self, client_id: str | None, param_name: str = "client_id"
+    ) -> None:
         """Validate client ID against API constraints.
-        
+
         Args:
             client_id: The client ID to validate
             param_name: Name of the parameter for error messages
-            
+
         Raises:
             TypeError: If client_id is not a string
             ValueError: If client_id is empty or exceeds 36 characters
         """
         if client_id is None:
             return
-            
+
         if not isinstance(client_id, str):
             raise TypeError(f"{param_name} must be a string")
         if len(client_id) == 0:
             raise ValueError(f"{param_name} cannot be empty")
         if len(client_id) > 36:
-            raise ValueError(f"{param_name} must be <= 36 characters, got {len(client_id)}")
+            raise ValueError(
+                f"{param_name} must be <= 36 characters, got {len(client_id)}"
+            )
 
     def __init__(
         self,
@@ -668,4 +671,7 @@ class Account:
             "user", f"user.order.{pair.exchange_name}", sign=True
         ):
             for order in data.get("data", []):
-                yield Order.create_from_api(self.pairs[data["instrument_name"]], order)
+                yield Order.create_from_api(
+                    self.pairs[order["instrument_name"]],
+                    order,
+                )

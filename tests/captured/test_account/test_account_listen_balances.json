@@ -1,0 +1,332 @@
+{
+  "post_private/user-balance": {
+    "": [
+      {
+        "response": [
+          {
+            "total_risk_exposure": "9.44653",
+            "total_available_balance": "14.40041161",
+            "total_margin_balance": "19.12367661",
+            "total_initial_margin": "4.723265",
+            "total_haircut": "4.72326500",
+            "total_position_im": "0",
+            "total_maintenance_margin": "2.3616325",
+            "total_position_cost": "0",
+            "total_cash_balance": "19.12367661",
+            "total_collateral_value": "14.40041161",
+            "total_session_unrealized_pnl": "0",
+            "instrument_name": "USD",
+            "total_session_realized_pnl": "0",
+            "position_balances": [
+              {
+                "quantity": "199",
+                "reserved_qty": "0",
+                "collateral_amount": "4.723265",
+                "haircut": "0.5",
+                "collateral_eligible": true,
+                "market_value": "9.44653",
+                "max_withdrawal_balance": "199",
+                "instrument_name": "CRO",
+                "hourly_interest_rate": "0"
+              },
+              {
+                "quantity": "9.677146618",
+                "reserved_qty": "0",
+                "collateral_amount": "9.67714661",
+                "haircut": "0",
+                "collateral_eligible": true,
+                "market_value": "9.67714661",
+                "max_withdrawal_balance": "9.67714661",
+                "instrument_name": "USD",
+                "hourly_interest_rate": "0"
+              }
+            ],
+            "credit_limits": [],
+            "total_isolated_cash_balance": "0",
+            "isolated_positions": [],
+            "total_effective_leverage": "0.49397",
+            "position_limit": "382.47353235",
+            "used_position_limit": "9.44653",
+            "total_borrow": "0",
+            "is_liquidating": false,
+            "has_risk": false,
+            "terminatable": true
+          }
+        ],
+        "exec_time": 0.39525365829467773,
+        "timestamp": 1786915073.5418742
+      }
+    ]
+  },
+  "get_public/get-tickers": {
+    "instrument_name=CRO_USD": [
+      {
+        "response": [
+          {
+            "i": "CRO_USD",
+            "h": "0.04786",
+            "l": "0.04734",
+            "a": "0.04749",
+            "v": "6109224",
+            "vv": "290969.24",
+            "c": "-0.0027",
+            "b": "0.04748",
+            "k": "0.04749",
+            "oi": "0",
+            "t": 1786915072705
+          }
+        ],
+        "exec_time": 0.30934929847717285,
+        "timestamp": 1786915073.9374268
+      }
+    ]
+  },
+  "ws": {
+    "user.balance": [
+      {
+        "response": {
+          "subscription": "user.balance",
+          "channel": "user.balance",
+          "data": [
+            {
+              "instrument_name": "USD",
+              "total_available_balance": "14.40041161",
+              "total_cash_balance": "19.12367661",
+              "total_initial_margin": "4.723265",
+              "total_position_im": "0",
+              "total_haircut": "4.723265",
+              "has_risk": false,
+              "total_maintenance_margin": "2.3616325",
+              "total_position_cost": "0",
+              "total_session_unrealized_pnl": "0",
+              "total_margin_balance": "19.12367661",
+              "total_session_realized_pnl": "0",
+              "total_effective_leverage": "0.49397",
+              "position_limit": "382.47353235",
+              "used_position_limit": "9.44653",
+              "is_liquidating": false,
+              "total_borrow": "0",
+              "total_risk_exposure": "9.44653",
+              "position_balances": [
+                {
+                  "instrument_name": "USD",
+                  "quantity": "9.677146618",
+                  "reserved_qty": "0",
+                  "market_value": "9.67714661",
+                  "collateral_eligible": true,
+                  "collateral_amount": "9.67714661",
+                  "haircut": "0",
+                  "max_withdrawal_balance": "9.67714661",
+                  "hourly_interest_rate": "0"
+                },
+                {
+                  "instrument_name": "CRO",
+                  "quantity": "199",
+                  "reserved_qty": "0",
+                  "market_value": "9.44653",
+                  "collateral_eligible": true,
+                  "collateral_amount": "4.723265",
+                  "haircut": "0.5",
+                  "max_withdrawal_balance": "199",
+                  "hourly_interest_rate": "0"
+                }
+              ],
+              "credit_limits": [],
+              "isolated_positions": [],
+              "total_collateral_value": "14.40041161",
+              "total_isolated_cash_balance": "0"
+            }
+          ]
+        },
+        "exec_time": 1.63350248336792,
+        "timestamp": 1786915074.2477849
+      },
+      {
+        "response": {
+          "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+          "subscription": "user.balance",
+          "channel": "user.balance",
+          "data": [
+            {
+              "instrument_name": "USD",
+              "total_available_balance": "14.40041161",
+              "total_cash_balance": "19.12367661",
+              "total_initial_margin": "4.723265",
+              "total_position_im": "0",
+              "total_haircut": "4.723265",
+              "has_risk": false,
+              "total_maintenance_margin": "2.3616325",
+              "total_position_cost": "0",
+              "total_session_unrealized_pnl": "0",
+              "total_margin_balance": "19.12367661",
+              "total_session_realized_pnl": "0",
+              "total_effective_leverage": "0.49397",
+              "position_limit": "382.47353235",
+              "used_position_limit": "9.44653",
+              "is_liquidating": false,
+              "total_borrow": "0",
+              "total_risk_exposure": "9.44653",
+              "position_balances": [
+                {
+                  "instrument_name": "USD",
+                  "quantity": "9.677146618",
+                  "reserved_qty": "0",
+                  "market_value": "9.67714661",
+                  "collateral_eligible": true,
+                  "collateral_amount": "9.67714661",
+                  "haircut": "0",
+                  "max_withdrawal_balance": "9.67714661",
+                  "hourly_interest_rate": "0"
+                },
+                {
+                  "instrument_name": "CRO",
+                  "quantity": "199",
+                  "reserved_qty": "0",
+                  "market_value": "9.44653",
+                  "collateral_eligible": true,
+                  "collateral_amount": "4.723265",
+                  "haircut": "0.5",
+                  "max_withdrawal_balance": "199",
+                  "hourly_interest_rate": "0"
+                }
+              ],
+              "credit_limits": [],
+              "isolated_positions": [],
+              "total_collateral_value": "14.40041161",
+              "total_isolated_cash_balance": "0"
+            }
+          ]
+        },
+        "exec_time": 1.5368969440460205,
+        "timestamp": 1786915075.8812933
+      },
+      {
+        "response": {
+          "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+          "subscription": "user.balance",
+          "channel": "user.balance",
+          "data": [
+            {
+              "instrument_name": "USD",
+              "total_available_balance": "14.40041161",
+              "total_cash_balance": "19.12367661",
+              "total_initial_margin": "4.723265",
+              "total_position_im": "0",
+              "total_haircut": "4.723265",
+              "has_risk": false,
+              "total_maintenance_margin": "2.3616325",
+              "total_position_cost": "0",
+              "total_session_unrealized_pnl": "0",
+              "total_margin_balance": "19.12367661",
+              "total_session_realized_pnl": "0",
+              "total_effective_leverage": "0.49397",
+              "position_limit": "382.47353235",
+              "used_position_limit": "9.44653",
+              "is_liquidating": false,
+              "total_borrow": "0",
+              "total_risk_exposure": "9.44653",
+              "position_balances": [
+                {
+                  "instrument_name": "USD",
+                  "quantity": "9.677146618",
+                  "reserved_qty": "0",
+                  "market_value": "9.67714661",
+                  "collateral_eligible": true,
+                  "collateral_amount": "9.67714661",
+                  "haircut": "0",
+                  "max_withdrawal_balance": "9.67714661",
+                  "hourly_interest_rate": "0"
+                },
+                {
+                  "instrument_name": "CRO",
+                  "quantity": "199",
+                  "reserved_qty": "0",
+                  "market_value": "9.44653",
+                  "collateral_eligible": true,
+                  "collateral_amount": "4.723265",
+                  "haircut": "0.5",
+                  "max_withdrawal_balance": "199",
+                  "hourly_interest_rate": "0"
+                }
+              ],
+              "credit_limits": [],
+              "isolated_positions": [],
+              "total_collateral_value": "14.40041161",
+              "total_isolated_cash_balance": "0"
+            }
+          ]
+        },
+        "exec_time": 2.149202585220337,
+        "timestamp": 1786915077.41823
+      },
+      {
+        "response": {
+          "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+          "subscription": "user.balance",
+          "channel": "user.balance",
+          "data": [
+            {
+              "instrument_name": "USD",
+              "total_available_balance": "14.40041161",
+              "total_cash_balance": "19.12367661",
+              "total_initial_margin": "4.723265",
+              "total_position_im": "0",
+              "total_haircut": "4.723265",
+              "has_risk": false,
+              "total_maintenance_margin": "2.3616325",
+              "total_position_cost": "0",
+              "total_session_unrealized_pnl": "0",
+              "total_margin_balance": "19.12367661",
+              "total_session_realized_pnl": "0",
+              "total_effective_leverage": "0.49397",
+              "position_limit": "382.47353235",
+              "used_position_limit": "9.44653",
+              "is_liquidating": false,
+              "total_borrow": "0",
+              "total_risk_exposure": "9.44653",
+              "position_balances": [
+                {
+                  "instrument_name": "USD",
+                  "quantity": "9.677146618",
+                  "reserved_qty": "0",
+                  "market_value": "9.67714661",
+                  "collateral_eligible": true,
+                  "collateral_amount": "9.67714661",
+                  "haircut": "0",
+                  "max_withdrawal_balance": "9.67714661",
+                  "hourly_interest_rate": "0"
+                },
+                {
+                  "instrument_name": "CRO",
+                  "quantity": "199",
+                  "reserved_qty": "0",
+                  "market_value": "9.44653",
+                  "collateral_eligible": true,
+                  "collateral_amount": "4.723265",
+                  "haircut": "0.5",
+                  "max_withdrawal_balance": "199",
+                  "hourly_interest_rate": "0"
+                }
+              ],
+              "credit_limits": [],
+              "isolated_positions": [],
+              "total_collateral_value": "14.40041161",
+              "total_isolated_cash_balance": "0"
+            }
+          ]
+        },
+        "exec_time": 1.9447178840637207,
+        "timestamp": 1786915079.5674355
+      }
+    ]
+  },
+  "post_private/cancel-all-orders": {
+    "params={'instrument_name': 'CRO_USD'}": [
+      {
+        "response": {},
+        "exec_time": 0.3412601947784424,
+        "timestamp": 1786915081.5135615
+      }
+    ]
+  }
+}

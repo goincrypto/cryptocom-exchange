@@ -15,7 +15,7 @@
           "default_short_pos_limit_futures": "-1.0",
           "default_unit_margin_rate": "0.05",
           "default_collateral_cap": "0.0",
-          "update_timestamp_ms": 1786330103889,
+          "update_timestamp_ms": 1786634091201,
           "base_currency_config": [
             {
               "instrument_name": "1INCH",
@@ -1704,9 +1704,6 @@
               "minimum_haircut": "0",
               "max_product_leverage_for_perps": "10.0",
               "unit_margin_rate": "0.00015",
-              "order_limit": "500000.0",
-              "max_order_notional_usd": "500000.0",
-              "min_order_notional_usd": "1.0",
               "long_pos_limit_perps": "44000000",
               "short_pos_limit_perps": "44000000"
             },
@@ -3207,12 +3204,6 @@
               "short_pos_limit_perps": "2500000000"
             },
             {
-              "instrument_name": "PYR",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
               "instrument_name": "PYTH",
               "minimum_haircut": "0",
               "unit_margin_rate": "0.00030",
@@ -3788,12 +3779,6 @@
               "short_pos_limit_perps": "12404.0"
             },
             {
-              "instrument_name": "SQT",
-              "order_limit": "1000.0",
-              "max_order_notional_usd": "1000.0",
-              "min_order_notional_usd": "1.0"
-            },
-            {
               "instrument_name": "SRM",
               "order_limit": "100000.0",
               "max_order_notional_usd": "100000.0",
@@ -4219,12 +4204,6 @@
               "max_order_notional_usd": "500000.0",
               "long_pos_limit_perps": "20186.0",
               "short_pos_limit_perps": "20186.0"
-            },
-            {
-              "instrument_name": "VANRY",
-              "order_limit": "100000.0",
-              "max_order_notional_usd": "100000.0",
-              "min_order_notional_usd": "1.0"
             },
             {
               "instrument_name": "VARA",
@@ -5529,10 +5508,6 @@
               "max_order_notional_usd": "100000.0"
             },
             {
-              "instrument_name": "GMT",
-              "max_order_notional_usd": "500000.0"
-            },
-            {
               "instrument_name": "GMX",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6257,10 +6232,6 @@
               "max_order_notional_usd": "500000.0"
             },
             {
-              "instrument_name": "PYR",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "PYTH",
               "max_order_notional_usd": "500000.0"
             },
@@ -6545,10 +6516,6 @@
               "max_order_notional_usd": "100000.0"
             },
             {
-              "instrument_name": "SQT",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "SRM",
               "max_order_notional_usd": "2500000.0"
             },
@@ -6747,10 +6714,6 @@
             {
               "instrument_name": "UVXY",
               "max_order_notional_usd": "100000.0"
-            },
-            {
-              "instrument_name": "VANRY",
-              "max_order_notional_usd": "2500000.0"
             },
             {
               "instrument_name": "VARA",
@@ -7791,10 +7754,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "GMT",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "GMX",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8519,10 +8478,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "PYR",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "PYTH",
               "max_order_notional_usd": "2500000.0"
             },
@@ -8807,10 +8762,6 @@
               "max_order_notional_usd": "2500000.0"
             },
             {
-              "instrument_name": "SQT",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
               "instrument_name": "SRM",
               "max_order_notional_usd": "2500000.0"
             },
@@ -9008,10 +8959,6 @@
             },
             {
               "instrument_name": "UVXY",
-              "max_order_notional_usd": "2500000.0"
-            },
-            {
-              "instrument_name": "VANRY",
               "max_order_notional_usd": "2500000.0"
             },
             {
@@ -9248,8 +9195,8 @@
             }
           ]
         },
-        "exec_time": 0.5944063663482666,
-        "timestamp": 1786472006.0665886
+        "exec_time": 0.9206056594848633,
+        "timestamp": 1786915158.8401418
       }
     ]
   }

@@ -49,9 +49,9 @@ def test_validate_client_id_none():
 def test_validate_client_id_custom_param_name():
     """Test that custom param name appears in error messages."""
     account = Account(api_key="test", api_secret="test")
-    
+
     with pytest.raises(ValueError, match="new_client_id cannot be empty"):
         account._validate_client_id("", "new_client_id")
-    
+
     with pytest.raises(ValueError, match="orig_client_oid must be <= 36 characters"):
         account._validate_client_id("a" * 37, "orig_client_oid")

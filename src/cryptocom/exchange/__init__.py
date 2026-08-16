@@ -1,7 +1,12 @@
 from . import instruments, pairs
 from .api import ApiError, ApiProvider, RecordApiProvider
 from .market import Market
-from .account import Account, OrderKeys, MAX_OPEN_ORDERS_PER_ACCOUNT, MAX_OPEN_ORDERS_PER_PAIR
+from .account import (
+    Account,
+    OrderKeys,
+    MAX_OPEN_ORDERS_PER_ACCOUNT,
+    MAX_OPEN_ORDERS_PER_PAIR,
+)
 from .exceptions import ApiErrorCode
 from .structs import (
     Candle,

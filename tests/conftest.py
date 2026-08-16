@@ -49,8 +49,6 @@ async def account(api: cro.RecordApiProvider) -> cro.Account:
     market = cro.Market(api=api)
     price = await market.get_price(cro.pairs.CRO_USD)
 
-    print(f"\nInitial: CRO={available_cro}, USD={available_usd}, Price={price}")
-
     # Rebalance to ~50/50 if we have enough total value
     total_value = available_usd + (available_cro * price)
     if total_value > 10:  # Only rebalance if we have significant balance

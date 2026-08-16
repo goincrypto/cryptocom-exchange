@@ -520,4 +520,3 @@ async def test_update_order_quantity_only(account: cro.Account, market: cro.Mark
         assert order_1_after.is_canceled
     except Exception:
         pass
-
