@@ -43,11 +43,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./.venv/
-          key: py-${{ matrix.python-version }}-poetry-install-${{ hashFiles('poetry.lock') }}
-          restore-keys: poetry-install
+          key: py-${{ matrix.python-version }}-poetry-install-v2-${{ hashFiles('poetry.lock') }}
+          restore-keys: poetry-install-v2
       - name: Install packages
-        if: steps.poetry-install.outputs.cache-hit != 'true'
-        run: rm -rf ./.venv/ && poetry install
+        run: poetry install
+      - name: Verify pytest installation
+        run: poetry run pytest --version
       - name: Download cache for pre-commit
         if: matrix.python-version == '3.14'
         id: pre-commit-install
