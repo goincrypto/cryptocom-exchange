@@ -1,6 +1,6 @@
 import asyncio
 import time
-from uuid import uuid7
+from uuid import uuid4
 
 import async_timeout
 import pytest
@@ -383,7 +383,7 @@ async def test_update_order_by_client_id(account: cro.Account, market: cro.Marke
     qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
 
     # Create order with specific client_id
-    client_id = f"update_test_{uuid7().hex[:16]}"
+    client_id = f"update_test_{uuid4().hex[:16]}"
     await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
 
     # Verify order is created
@@ -402,7 +402,7 @@ async def test_update_order_by_client_id(account: cro.Account, market: cro.Marke
     new_qty = max(min_qty_for_new_price, original_qty + 1)
 
     # Provide new_client_id explicitly
-    new_client_id = f"updated_{uuid7().hex[:16]}"
+    new_client_id = f"updated_{uuid4().hex[:16]}"
 
     result = await account.update_order(
         cro.pairs.CRO_USD,
@@ -434,7 +434,7 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
     qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
 
     # Create order with specific client_id
-    client_id = f"update_price_{uuid7().hex[:16]}"
+    client_id = f"update_price_{uuid4().hex[:16]}"
     await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
 
     # Verify order is created
@@ -452,7 +452,7 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
     new_qty = max(min_qty_for_new_price, original_qty)
 
     # Provide new_client_id explicitly
-    new_client_id = f"updated_{uuid7().hex[:16]}"
+    new_client_id = f"updated_{uuid4().hex[:16]}"
 
     result = await account.update_order(
         cro.pairs.CRO_USD,
@@ -482,7 +482,7 @@ async def test_update_order_quantity_only(account: cro.Account, market: cro.Mark
     qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
 
     # Create order with specific client_id
-    client_id = f"update_qty_{uuid7().hex[:16]}"
+    client_id = f"update_qty_{uuid4().hex[:16]}"
     await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
 
     # Verify order is created
@@ -500,7 +500,7 @@ async def test_update_order_quantity_only(account: cro.Account, market: cro.Mark
     )
 
     # Provide new_client_id explicitly
-    new_client_id = f"updated_{uuid7().hex[:16]}"
+    new_client_id = f"updated_{uuid4().hex[:16]}"
 
     result = await account.update_order(
         cro.pairs.CRO_USD,
