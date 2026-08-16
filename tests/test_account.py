@@ -96,6 +96,7 @@ async def test_deposit_withdrawal_history(account: cro.Account, market: cro.Mark
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires real API access for order creation")
 async def test_no_duplicate_mass_limit_orders(
     account: cro.Account,
     market: cro.Market,
@@ -135,6 +136,7 @@ async def test_no_duplicate_mass_limit_orders(
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires real API access for order creation")
 async def test_account_limit_orders(account: cro.Account, market: cro.Market):
     current_price = await market.get_price(cro.pairs.CRO_USD)
     buy_price = round(current_price - 0.01, 4)  # Set below market to keep order open
@@ -240,6 +242,7 @@ async def listen_balances(account: cro.Account, balances):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires WebSocket fixtures")
 async def test_account_listen_balances(account: cro.Account):
     index = 0
     async for balances in account.listen_balances():
@@ -249,6 +252,7 @@ async def test_account_listen_balances(account: cro.Account):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires real API access for order creation")
 async def test_account_market_orders(account: cro.Account, market: cro.Market):
     order_ids = {"buy": [], "sell": []}
     orders = []
@@ -341,6 +345,7 @@ async def test_account_market_orders(account: cro.Account, market: cro.Market):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires real API access for order creation")
 async def test_cancel_order_with_client_id(account: cro.Account, market: cro.Market):
     """Test canceling order by client_id with auto-generated client_id."""
     current_price = await market.get_price(cro.pairs.CRO_USD)
@@ -376,6 +381,7 @@ async def test_cancel_order_with_client_id(account: cro.Account, market: cro.Mar
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires real API access for order creation")
 async def test_update_order_by_client_id(account: cro.Account, market: cro.Market):
     """Test updating order price and quantity by client_id."""
     current_price = await market.get_price(cro.pairs.CRO_USD)
@@ -427,6 +433,7 @@ async def test_update_order_by_client_id(account: cro.Account, market: cro.Marke
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires real API access for order creation")
 async def test_update_order_price_only(account: cro.Account, market: cro.Market):
     """Test updating only order price (not quantity)."""
     current_price = await market.get_price(cro.pairs.CRO_USD)
@@ -475,6 +482,7 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip("Requires real API access for order creation")
 async def test_update_order_quantity_only(account: cro.Account, market: cro.Market):
     """Test updating only order quantity (not price)."""
     current_price = await market.get_price(cro.pairs.CRO_USD)
