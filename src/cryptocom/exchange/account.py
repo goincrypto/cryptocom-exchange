@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from dataclasses import dataclass
-from uuid import uuid7
+from uuid import uuid4
 from typing import Any
 
 from .api import ApiError, ApiProvider
@@ -283,7 +283,7 @@ class Account:
         """
         # Auto-generate client_id if not provided
         if client_id is None:
-            client_id = uuid7().hex
+            client_id = uuid4().hex
         else:
             self._validate_client_id(client_id, "client_id")
 
@@ -615,7 +615,7 @@ class Account:
 
         # Auto-generate new_client_id if not provided
         if new_client_id is None:
-            new_client_id = uuid7().hex
+            new_client_id = uuid4().hex
         else:
             self._validate_client_id(new_client_id, "new_client_id")
 
