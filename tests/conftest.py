@@ -1,10 +1,65 @@
 import os
 import pathlib
+from unittest.mock import patch
 
 import pytest
 import pytest_asyncio
+import uuid
 
 import cryptocom.exchange as cro
+
+# Fixed UUIDs for testing (extracted from captured fixtures)
+FIXED_UUIDS = [
+    "01a00c67b723703b9889b98434128471",
+    "01a00c67b72571b7a1d2c2e3eebba429",
+    "01a00c67b726759e8b4539a2eef5df2f",
+    "01a00c67c3267525ae17b132ed9fd73f",
+    "01a00c67c328701c82c70874d4472fd4",
+    "01a00c67c3297335883fb3dec47a378e",
+    "01a00c67c32a7098b7bd07f8cdf9ce19",
+    "01a00c6806bf707c9275e84084f43f0a",
+    "01a00c6a190774a9b51076922629761e",
+    "01a00c6a190977ecbe3d16a461988ec4",
+    "01a00c6a190a769f9296815a9126b847",
+    "01a00c700d2b74548f3d72a32191707c",
+    "01a00c700d2c7654808024100fb77ca2",
+    "01a00c700d2d75dabe3bd3066ddad476",
+    "01a00c701e5e758ba84164074f42e363",
+    "01a00c701e5f73bcb70d9be11e589619",
+    "01a00c701e6076c8afdab6b57c04da84",
+    "01a00c701e6173d9a7dc38d5abc1242c",
+    "01a00c70612c766da571b79fed43afc5",
+    "0d9d4e8eb4a044da8aa91605b2c99579",
+    "221446e45bfa4d4ba208a933e9c24f1f",
+    "363d2420bb874305a8c87a9610ecf97a",
+    "42803a788dc042f599cf8ee13976d246",
+    "8c291611f3c8422a8ca2049fb13acf4d",
+    "9c62558c81a04922bf1078fe867d3133",
+    "a929d11adcb7420897d8ebf945e3cf76",
+    "eefa5d232cd6472b82dae48ed2fa9bed",
+]
+
+
+@pytest.fixture(autouse=True)
+def mock_uuid4():
+    """Mock uuid4 to return fixed UUIDs for consistent test results."""
+    uuid_iter = iter(FIXED_UUIDS)
+
+    def mock_uuid4():
+        class MockUUID:
+            def __init__(self, hex):
+                self.hex = hex
+
+        try:
+            return MockUUID(next(uuid_iter))
+        except StopIteration:
+            # Fallback to real uuid4 if we run out
+            import uuid as real_uuid
+
+            return MockUUID(real_uuid.uuid4().hex)
+
+    with patch.object(uuid, "uuid4", mock_uuid4):
+        yield
 
 
 @pytest.fixture
