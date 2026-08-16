@@ -5,6 +5,13 @@ from uuid import uuid7
 from typing import Any
 
 from .api import ApiError, ApiProvider
+
+# Order limits (from Crypto.com Exchange official documentation)
+# Per Trading Pair: Maximum 200 open orders for a single trading pair (e.g., BTC/USDT)
+# Overall Account: Maximum 1,000 open orders across all trading pairs combined
+MAX_OPEN_ORDERS_PER_PAIR = 200
+MAX_OPEN_ORDERS_PER_ACCOUNT = 1000
+
 from .market import Market
 from .structs import (
     Balance,
