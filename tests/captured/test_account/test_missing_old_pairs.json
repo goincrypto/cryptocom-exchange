@@ -4,16 +4,16 @@
       {
         "response": [
           {
-            "total_risk_exposure": "9.44653",
-            "total_available_balance": "14.40041161",
-            "total_margin_balance": "19.12367661",
-            "total_initial_margin": "4.723265",
-            "total_haircut": "4.72326500",
+            "total_risk_exposure": "9.37290001",
+            "total_available_balance": "14.36359661",
+            "total_margin_balance": "19.05004661",
+            "total_initial_margin": "4.68645001",
+            "total_haircut": "4.68645001",
             "total_position_im": "0",
-            "total_maintenance_margin": "2.3616325",
+            "total_maintenance_margin": "2.34322501",
             "total_position_cost": "0",
-            "total_cash_balance": "19.12367661",
-            "total_collateral_value": "14.40041161",
+            "total_cash_balance": "19.05004661",
+            "total_collateral_value": "14.36359661",
             "total_session_unrealized_pnl": "0",
             "instrument_name": "USD",
             "total_session_realized_pnl": "0",
@@ -21,10 +21,10 @@
               {
                 "quantity": "199",
                 "reserved_qty": "0",
-                "collateral_amount": "4.723265",
+                "collateral_amount": "4.68645",
                 "haircut": "0.5",
                 "collateral_eligible": true,
-                "market_value": "9.44653",
+                "market_value": "9.3729",
                 "max_withdrawal_balance": "199",
                 "instrument_name": "CRO",
                 "hourly_interest_rate": "0"
@@ -44,17 +44,17 @@
             "credit_limits": [],
             "total_isolated_cash_balance": "0",
             "isolated_positions": [],
-            "total_effective_leverage": "0.49397",
-            "position_limit": "382.47353235",
-            "used_position_limit": "9.44653",
+            "total_effective_leverage": "0.492015",
+            "position_limit": "381.00093236",
+            "used_position_limit": "9.37290001",
             "total_borrow": "0",
             "is_liquidating": false,
             "has_risk": false,
             "terminatable": true
           }
         ],
-        "exec_time": 0.3493177890777588,
-        "timestamp": 1786915063.0351436
+        "exec_time": 0.3728961944580078,
+        "timestamp": 1786916742.8053312
       }
     ]
   },
@@ -65,19 +65,19 @@
           {
             "i": "CRO_USD",
             "h": "0.04786",
-            "l": "0.04734",
-            "a": "0.04749",
-            "v": "6109224",
-            "vv": "290969.24",
-            "c": "-0.0027",
-            "b": "0.04748",
-            "k": "0.04749",
+            "l": "0.04707",
+            "a": "0.04710",
+            "v": "6395959",
+            "vv": "304490.72",
+            "c": "-0.0107",
+            "b": "0.04708",
+            "k": "0.04709",
             "oi": "0",
-            "t": 1786915063373
+            "t": 1786916742797
           }
         ],
-        "exec_time": 0.31293439865112305,
-        "timestamp": 1786915063.384786
+        "exec_time": 0.4095423221588135,
+        "timestamp": 1786916743.178538
       }
     ]
   },
@@ -85,8 +85,8 @@
     "params={'instrument_name': 'CRO_USD'}": [
       {
         "response": {},
-        "exec_time": 0.41022205352783203,
-        "timestamp": 1786915063.6991868
+        "exec_time": 0.4050025939941406,
+        "timestamp": 1786916743.5900433
       }
     ]
   }
