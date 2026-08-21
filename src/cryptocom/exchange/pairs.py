@@ -4080,21 +4080,6 @@ KAITO_USD = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
-KARRAT_USD = Pair(
-    exchange_name="KARRAT_USD",
-    price_precision=6,
-    quantity_precision=0,
-    inst_type=InstrumentType.SPOT,
-    display_name="KARRAT/USD",
-    base_currency=Instrument("KARRAT"),
-    quote_currency=Instrument("USD"),
-    quantity_tick_size=1.0,
-    price_tick_size=1e-06,
-    min_order_quantity=0.0,
-    max_order_quantity=0.0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
 KAT_USD = Pair(
     exchange_name="KAT_USD",
     price_precision=6,
