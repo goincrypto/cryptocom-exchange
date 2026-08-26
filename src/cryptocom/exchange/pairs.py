@@ -3495,6 +3495,21 @@ GUN_USD = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
+GWEI_USD = Pair(
+    exchange_name="GWEI_USD",
+    price_precision=6,
+    quantity_precision=0,
+    inst_type=InstrumentType.SPOT,
+    display_name="GWEI/USD",
+    base_currency=Instrument("GWEI"),
+    quote_currency=Instrument("USD"),
+    quantity_tick_size=10.0,
+    price_tick_size=1e-06,
+    min_order_quantity=0.0,
+    max_order_quantity=0.0,
+    min_order_notional_usd=1.0,
+    max_order_notional_usd=1000000.0,
+)
 G_USD = Pair(
     exchange_name="G_USD",
     price_precision=6,
