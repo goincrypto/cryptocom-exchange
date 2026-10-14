@@ -1,6 +1,55 @@
 # CHANGELOG
 
 
+## v2.2.0 (2026-10-14)
+
+### BREAKING CHANGE
+
+* feat: [account] get_balance returns a dict keyed by plain Instrument; identity of Instrument and InstrumentBalance is now exchange_name, so both classes work as dict keys and Balance.get accepts an Instrument, an InstrumentBalance or a bare name
+
+* feat: [tests] RecordApiProvider replay is strict: a missed capture raises ApiError and lists the captured arguments, the silent live fallback is removed, so a capture that no longer matches the code fails the run instead of quietly going stale
+
+* feat: [account] wait_for_status is deprecated in favor of wait_for_order: explicit timeout, absent-tolerant polling, and WaitNotConfirmedError on timeout instead of a silent None
+
+### Continuous Integration
+
+* ci: Coverage gate at 90 percent (--cov-fail-under=90)
+
+* ci: Scheduled pair and instrument sync commits are authored by pair-bot
+
+### Features
+
+* feat: [exceptions] Typed error taxonomy: named subclasses for each documented error code family, built by api_error_from_response, with is_indeterminate on ApiError as the orchestration contract (code None means the outcome is unknown and must be reconciled); RequestTimeoutError and InternalError stay indeterminate despite known codes; RETRYABLE_ERROR_CODES and is_retryable_error_code mark transient codes
+
+* feat: [api] HTTP status routing: 401/403 raise ApiAuthError, a body carrying an API code goes through the taxonomy, 5xx without a code raises an indeterminate ApiError, other 4xx raise a deterministic ExchangeError carrying the status
+
+* feat: [api] Retry backoff sleep between attempts via the retry_backoff parameter
+
+* feat: [account] Order state cache keyed by client_oid: terminal orders are cached permanently, live orders expire after orders_ttl (default 5 seconds, 0 disables), updates merges an external websocket snapshot ahead of cache and API, ignore_cache bypasses lookups, and a just-created client_oid that reads back absent is reported unknown instead of absent
+
+* feat: [account] cancel_order_and_wait cancels and polls to a terminal status, treating absent and already-terminal orders as confirmed, and raising CancelNotConfirmedError on timeout; wait_for_order polls to a required status with an explicit deadline
+
+* feat: [structs] TERMINAL_ORDER_STATUSES frozenset and Order.is_terminal
+
+* feat: [structs] OrderBook re-sorts buys descending and sells ascending in __post_init__, so both sides are best first whatever order the input arrives in, and adds best_bid, best_ask, mid and spread properties with ValueError on an empty book
+
+* feat: [tests] ApiProvider._http_request transport seam drives retry and error classification tests without a network, uuid4 client ids are sequenced through the capture under "__uuids__", and 13-digit timestamps are normalized in capture keys
+
+### Fixes
+
+* fix: [api] One retry budget covers every failure kind: transport exceptions consume retries instead of retrying forever, and retries counts retries after the first attempt
+
+* fix: [api] Websocket frames are dispatched by a single if/elif chain, so a heartbeat is answered without falling through to an auth error, and the subscribe payload is never sent twice
+
+### Performance
+
+* perf: [account] Cached and pushed order reads skip private/get-order-detail, keeping terminal orders out of the polling loop
+
+### Testing
+
+* test: Offline suites for the exception taxonomy, retry accounting, order cache, cancel and wait primitives, order book normalization, instrument identity, websocket framing and argument validation; live order lifecycle recorded through the cache; CRO_USD serves as the feeless pair for fee-sensitive scenarios
+
+
 ## v0.15.0 (2024-10-13)
 
 ### Features

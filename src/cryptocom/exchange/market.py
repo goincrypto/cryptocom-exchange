@@ -76,7 +76,7 @@ class Market:
         ]
         sells = [
             OrderInBook.from_api(order, pair, OrderSide.SELL)
-            for order in reversed(data[0]["asks"])
+            for order in data[0]["asks"]
         ]
         return OrderBook(buys, sells, pair)
 
@@ -369,7 +369,7 @@ class Market:
             ]
             sells = [
                 OrderInBook.from_api(order, pair, OrderSide.SELL)
-                for order in reversed(data["data"][0]["asks"])
+                for order in data["data"][0]["asks"]
             ]
             yield OrderBook(buys, sells, pair)
 

@@ -17,3 +17,7 @@ coverage.xml
 activate.sh
 candletest.py
 bot.py
+
+# local API credentials - never commit
+.env
+secrets.env

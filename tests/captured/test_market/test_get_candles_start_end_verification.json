@@ -1,6 +1,6 @@
 {
   "get_public/get-candlestick": {
-    "count=300,end_ts=1782691199000,instrument_name=CLOUD_USD,timeframe=1D": [
+    "count=300,end_ts=<ts>,instrument_name=CLOUD_USD,timeframe=1D": [
       {
         "response": [
           {
@@ -2404,8 +2404,8 @@
             "t": 1782604800000
           }
         ],
-        "exec_time": 1.2966783046722412,
-        "timestamp": 1786916819.5029137
+        "exec_time": 1.4247031211853027,
+        "timestamp": 1791997743.287413
       }
     ]
   }

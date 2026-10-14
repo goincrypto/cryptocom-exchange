@@ -1,6 +1,6 @@
 {
   "get_public/get-candlestick": {
-    "count=300,end_ts=1783123199000,instrument_name=CLOUD_USD,timeframe=15m": [
+    "count=300,end_ts=<ts>,instrument_name=CLOUD_USD,timeframe=15m": [
       {
         "response": [
           {
@@ -2404,11 +2404,9 @@
             "t": 1783122300000
           }
         ],
-        "exec_time": 0.31777095794677734,
-        "timestamp": 1786916803.615171
-      }
-    ],
-    "count=300,end_ts=1782853200000,instrument_name=CLOUD_USD,timeframe=15m": [
+        "exec_time": 0.39160776138305664,
+        "timestamp": 1791997727.1101847
+      },
       {
         "response": [
           {
@@ -4812,11 +4810,9 @@
             "t": 1782852300000
           }
         ],
-        "exec_time": 0.5887594223022461,
-        "timestamp": 1786916803.9343655
-      }
-    ],
-    "count=300,end_ts=1782583200000,instrument_name=CLOUD_USD,timeframe=15m": [
+        "exec_time": 0.4894392490386963,
+        "timestamp": 1791997727.5040681
+      },
       {
         "response": [
           {
@@ -7220,11 +7216,9 @@
             "t": 1782582300000
           }
         ],
-        "exec_time": 0.35144901275634766,
-        "timestamp": 1786916804.5244217
-      }
-    ],
-    "count=300,end_ts=1782313200000,instrument_name=CLOUD_USD,timeframe=15m": [
+        "exec_time": 0.5541274547576904,
+        "timestamp": 1791997727.9949596
+      },
       {
         "response": [
           {
@@ -9628,8 +9622,8 @@
             "t": 1782312300000
           }
         ],
-        "exec_time": 0.3540809154510498,
-        "timestamp": 1786916804.8774674
+        "exec_time": 0.39382147789001465,
+        "timestamp": 1791997728.5503447
       }
     ]
   }

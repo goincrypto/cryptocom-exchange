@@ -1,0 +1,158 @@
+{
+ "post_private/user-balance": {
+  "": [
+   {
+    "response": [
+     {
+      "total_risk_exposure": "11.566",
+      "total_available_balance": "15.40106205",
+      "total_margin_balance": "21.18406205",
+      "total_initial_margin": "5.783",
+      "total_haircut": "5.78300000",
+      "total_position_im": "0",
+      "total_maintenance_margin": "2.8915",
+      "total_position_cost": "0",
+      "total_cash_balance": "21.18406205",
+      "total_collateral_value": "15.40106205",
+      "total_session_unrealized_pnl": "0",
+      "instrument_name": "USD",
+      "total_session_realized_pnl": "0",
+      "position_balances": [
+       {
+        "quantity": "200",
+        "reserved_qty": "0",
+        "collateral_amount": "5.783",
+        "haircut": "0.5",
+        "collateral_eligible": true,
+        "market_value": "11.566",
+        "max_withdrawal_balance": "200",
+        "instrument_name": "CRO",
+        "hourly_interest_rate": "0"
+       },
+       {
+        "quantity": "9.61806205",
+        "reserved_qty": "0",
+        "collateral_amount": "9.61806205",
+        "haircut": "0",
+        "collateral_eligible": true,
+        "market_value": "9.61806205",
+        "max_withdrawal_balance": "9.61806205",
+        "instrument_name": "USD",
+        "hourly_interest_rate": "0"
+       }
+      ],
+      "credit_limits": [],
+      "total_isolated_cash_balance": "0",
+      "isolated_positions": [],
+      "total_effective_leverage": "0.545976",
+      "position_limit": "423.681241",
+      "used_position_limit": "11.566",
+      "total_borrow": "0",
+      "is_liquidating": false,
+      "has_risk": false,
+      "terminatable": true
+     }
+    ],
+    "exec_time": 0.3488283157348633,
+    "timestamp": 1791999426.4782825
+   }
+  ]
+ },
+ "get_public/get-tickers": {
+  "instrument_name=CRO_USD": [
+   {
+    "response": [
+     {
+      "i": "CRO_USD",
+      "h": "0.06020",
+      "l": "0.05731",
+      "a": "0.05785",
+      "v": "27112203",
+      "vv": "1595160.74",
+      "c": "-0.0218",
+      "b": "0.05782",
+      "k": "0.05784",
+      "oi": "0",
+      "t": 1791999426044
+     }
+    ],
+    "exec_time": 0.3406713008880615,
+    "timestamp": 1791999426.827228
+   }
+  ]
+ },
+ "post_private/get-accounts": {
+  "": [
+   {
+    "response": {
+     "master_account": {
+      "uuid": "test-uuid",
+      "user_uuid": "test-uuid",
+      "enabled": true,
+      "tradable": true,
+      "name": "TEST USER",
+      "country_code": "UKR",
+      "phone_country_code": "NLD",
+      "incorp_country_code": "",
+      "margin_access": "DEFAULT",
+      "derivatives_access": "DEFAULT",
+      "create_time": 1783184522991,
+      "update_time": 1787420478352,
+      "two_fa_enabled": true,
+      "kyc_level": "ADVANCED",
+      "suspended": false,
+      "terminated": false,
+      "spot_enabled": false,
+      "margin_enabled": false,
+      "derivatives_enabled": false,
+      "account_locked": 0,
+      "onboarding_entity": "CYM"
+     },
+     "sub_account_list": [
+      {
+       "uuid": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+       "user_uuid": "test-uuid",
+       "master_account_uuid": "test-uuid",
+       "label": "API Python Package Tests",
+       "enabled": true,
+       "tradable": true,
+       "name": "TEST USER",
+       "country_code": "UKR",
+       "phone_country_code": "NLD",
+       "incorp_country_code": "",
+       "margin_access": "DEFAULT",
+       "derivatives_access": "DEFAULT",
+       "create_time": 1784307026761,
+       "update_time": 1784307026761,
+       "two_fa_enabled": true,
+       "kyc_level": "ADVANCED",
+       "suspended": false,
+       "terminated": false,
+       "spot_enabled": false,
+       "margin_enabled": false,
+       "derivatives_enabled": false,
+       "system_label": "ONEEX_SUBACCOUNT",
+       "account_locked": 0,
+       "onboarding_entity": "CYM"
+      }
+     ],
+     "this_account": {
+      "uuid": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+      "hierarchy": "SUB_ACCOUNT"
+     }
+    },
+    "exec_time": 1.1281962394714355,
+    "timestamp": 1791999427.168444
+   }
+  ]
+ },
+ "post_private/cancel-all-orders": {
+  "params={'instrument_name': 'CRO_USD'}": [
+   {
+    "response": {},
+    "exec_time": 0.31768250465393066,
+    "timestamp": 1791999428.2974465
+   }
+  ]
+ }
+}

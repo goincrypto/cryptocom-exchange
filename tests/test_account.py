@@ -1,6 +1,5 @@
 import asyncio
 import time
-from uuid import uuid4
 
 import async_timeout
 import pytest
@@ -8,15 +7,7 @@ import pytest
 import cryptocom.exchange as cro
 from cryptocom.exchange.structs import OrderStatus
 
-
-def calculate_min_quantity(pair: cro.Pair, price: float) -> int:
-    """Calculate minimum quantity to ensure $1.0+ notional.
-
-    Uses math.ceil to ensure we always round up and meet the minimum notional.
-    """
-    import math
-
-    return max(1, math.ceil(pair.min_order_notional_usd / price))
+import helpers
 
 
 @pytest.mark.asyncio
@@ -65,6 +56,48 @@ async def test_missing_old_pairs(account: cro.Account):
     assert missing_pair.quantity_precision == 8
 
 
+# ============================================================================
+# Account/history endpoints - shape tests, tolerant of empty history
+# (the account is a test account; absence of e.g. withdrawals is valid).
+# ============================================================================
+
+
+@pytest.mark.asyncio
+async def test_get_accounts_shape(account: cro.Account):
+    accounts = await account.get_accounts()
+    assert isinstance(accounts, dict)
+    master = accounts["master_account"]
+    assert master["enabled"] is True
+    assert master["tradable"] is True
+    assert "uuid" in master
+
+
+# NOTE: private/get-deposit-history and private/get-withdrawal-history
+# return HTTP 401 USER_NOT_FOUND for trade-API key scope (wallet-side
+# surface). Deposit/Withdrawal parsing stays covered offline
+# (test_structs_edges.py); no live shape tests for those endpoints.
+
+
+@pytest.mark.asyncio
+async def test_orders_history_shape(account: cro.Account):
+    orders = await account.get_orders_history(cro.pairs.CRO_USD, limit=10)
+    assert isinstance(orders, list)
+    for order in orders:
+        # History is strictly terminal orders.
+        assert order.is_terminal, order
+
+
+@pytest.mark.asyncio
+async def test_balance_history_shape(account: cro.Account):
+    history = await account.get_balance_history()
+    # Shape: [{"t": ts_ms, "c": balance_str, "i": type}] - newest first.
+    assert isinstance(history, list)
+    assert history, "account with activity must have balance history"
+    point = history[0]
+    assert {"t", "c", "i"} <= set(point)
+    assert float(point["c"]) > 0
+
+
 @pytest.mark.asyncio
 @pytest.mark.skip
 async def test_deposit_withdrawal_history(account: cro.Account, market: cro.Market):
@@ -96,25 +129,25 @@ async def test_deposit_withdrawal_history(account: cro.Account, market: cro.Mark
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip("Requires real API access for order creation")
 async def test_no_duplicate_mass_limit_orders(
     account: cro.Account,
     market: cro.Market,
 ):
-    current_price = await market.get_price(cro.pairs.CRO_USD)
-    buy_price = round(current_price - 0.01, 4)  # Set below market to keep order open
-    orders_count = 3  # Reduced to match captured data
-    # Create orders with quantity calculated for each price to ensure $1.0+ notional
+    pair = cro.pairs.CRO_USD
+    current_price = await market.get_price(pair)
+    orders_count = 3
+    # Stagger maker prices safely below market; tick-legal quantity per level.
+    prices = [
+        pair.round_price_down(
+            helpers.resting_buy_price(pair, current_price)
+            - i * pair.price_tick_size
+        )
+        for i in range(orders_count)
+    ]
     orders = await asyncio.gather(
         *[
-            account.buy_limit(
-                cro.pairs.CRO_USD,
-                calculate_min_quantity(
-                    cro.pairs.CRO_USD, round(buy_price - i * 0.0001, 4)
-                ),
-                round(buy_price - i * 0.0001, 4),
-            )
-            for i in range(orders_count)
+            account.buy_limit(pair, helpers.min_order_quantity(pair, p), p)
+            for p in prices
         ]
     )
     client_ids = [o.client_id for o in orders]
@@ -136,13 +169,12 @@ async def test_no_duplicate_mass_limit_orders(
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip("Requires real API access for order creation")
 async def test_account_limit_orders(account: cro.Account, market: cro.Market):
-    current_price = await market.get_price(cro.pairs.CRO_USD)
-    buy_price = round(current_price - 0.01, 4)  # Set below market to keep order open
-    sell_price = round(current_price + 0.01, 4)  # Set above market to keep order open
-    # Calculate minimum quantity to ensure $1.0+ notional
-    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+    pair = cro.pairs.CRO_USD
+    current_price = await market.get_price(pair)
+    buy_price = helpers.resting_buy_price(pair, current_price)
+    sell_price = helpers.resting_sell_price(pair, current_price)
+    qty = helpers.min_order_quantity(pair, buy_price)
 
     # Check available CRO balance for sell orders
     balance = await account.get_balance()
@@ -194,40 +226,24 @@ async def test_account_limit_orders(account: cro.Account, market: cro.Market):
 
 
 async def make_trades(account, market, order_ids):
-    price = await market.get_price(cro.pairs.CRO_USD)
+    pair = cro.pairs.CRO_USD
+    price = await market.get_price(pair)
     balance = await account.get_balance()
 
-    # Check available balances
     cro_bal = balance.get(cro.instruments.CRO)
     usd_bal = balance.get(cro.instruments.USD)
     available_cro = cro_bal.available if cro_bal else 0
     available_usd = usd_bal.available if usd_bal else 0
 
-    # Calculate minimum quantity based on pair's min notional requirement
-    # Add 50% safety margin to ensure we meet minimum notional even if price fluctuates
-    min_qty = int((cro.pairs.CRO_USD.min_order_notional_usd / price) * 1.5) + 1
+    # Pair-legal minimum size, plus notional headroom for market movement.
+    qty = helpers.min_order_quantity(pair, price)
+    spend = pair.round_price_up(qty * price * 1.1)
 
-    # Use 20% of available balance to leave room for other operations
-    # But ensure we have enough for minimum notional
-    target_qty = int(available_cro * 0.2)
-    qty = min(max(min_qty, target_qty), available_cro)  # Cap at available balance
-
-    spend = max(
-        cro.pairs.CRO_USD.min_order_notional_usd,
-        min(available_usd * 0.2, qty * price * 1.1),
-    )
-
-    # Only create orders if we have sufficient balance
-    if (
-        spend >= cro.pairs.CRO_USD.min_order_notional_usd
-        and qty >= min_qty
-        and qty <= available_cro
-        and spend <= available_usd
-    ):
-        order = await account.buy_market(cro.pairs.CRO_USD, spend)
+    if available_cro >= qty and available_usd >= spend:
+        order = await account.buy_market(pair, spend)
         order_ids["buy"].append(order.id)
 
-        order = await account.sell_market(cro.pairs.CRO_USD, qty)
+        order = await account.sell_market(pair, qty)
         order_ids["sell"].append(order.id)
 
 
@@ -252,7 +268,6 @@ async def test_account_listen_balances(account: cro.Account):
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip("Requires real API access for order creation")
 async def test_account_market_orders(account: cro.Account, market: cro.Market):
     order_ids = {"buy": [], "sell": []}
     orders = []
@@ -345,15 +360,16 @@ async def test_account_market_orders(account: cro.Account, market: cro.Market):
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip("Requires real API access for order creation")
 async def test_cancel_order_with_client_id(account: cro.Account, market: cro.Market):
-    """Test canceling order by client_id with auto-generated client_id."""
-    current_price = await market.get_price(cro.pairs.CRO_USD)
-    buy_price = round(current_price - 0.01, 4)
-    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+    """Cancel by auto-generated client_id (exercises the uuid capture log)."""
+    pair = cro.pairs.CRO_USD
+    current_price = await market.get_price(pair)
+    buy_price = helpers.resting_buy_price(pair, current_price)
+    qty = helpers.min_order_quantity(pair, buy_price)
 
-    # Create order - client_id is auto-generated using uuid7().hex
-    order = await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price)
+    # client_id auto-generated via uuid4 - recorded in the capture's
+    # __uuids__ log so replay reproduces the exact same request args.
+    order = await account.buy_limit(pair, qty, buy_price)
     client_id = order.client_id
     order_id = order.id
 
@@ -381,16 +397,16 @@ async def test_cancel_order_with_client_id(account: cro.Account, market: cro.Mar
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip("Requires real API access for order creation")
 async def test_update_order_by_client_id(account: cro.Account, market: cro.Market):
     """Test updating order price and quantity by client_id."""
-    current_price = await market.get_price(cro.pairs.CRO_USD)
-    buy_price = round(current_price - 0.01, 4)
-    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+    pair = cro.pairs.CRO_USD
+    current_price = await market.get_price(pair)
+    buy_price = helpers.resting_buy_price(pair, current_price)
+    qty = helpers.min_order_quantity(pair, buy_price)
 
-    # Create order with specific client_id
-    client_id = f"update_test_{uuid4().hex[:16]}"
-    await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
+    # Deterministic ids (the test's own uuids are outside the provider's log)
+    client_id = "test-amend-a-orig"
+    await account.buy_limit(pair, qty, buy_price, client_id=client_id)
 
     # Verify order is created
     order_1 = await account.get_order(client_order_id=client_id)
@@ -400,15 +416,17 @@ async def test_update_order_by_client_id(account: cro.Account, market: cro.Marke
     original_qty = order_1.quantity
     original_order_id = order_1.id
 
-    # Update order - change price and quantity
-    # Calculate new values that meet minimum notional requirement
-    new_price = round(original_price + 0.001, 4)  # Increase price slightly
-    # Calculate new quantity to ensure minimum notional
-    min_qty_for_new_price = calculate_min_quantity(cro.pairs.CRO_USD, new_price)
-    new_qty = max(min_qty_for_new_price, original_qty + 1)
+    # Update order - amend both price and quantity to tick-legal new values
+    new_price = pair.round_price_up(
+        original_price + 10 * pair.price_tick_size
+    )
+    min_qty_for_new_price = helpers.min_order_quantity(pair, new_price)
+    new_qty = max(
+        min_qty_for_new_price,
+        pair.round_quantity_up(original_qty + pair.quantity_tick_size),
+    )
 
-    # Provide new_client_id explicitly
-    new_client_id = f"updated_{uuid4().hex[:16]}"
+    new_client_id = "test-amend-a-new"
 
     result = await account.update_order(
         cro.pairs.CRO_USD,
@@ -433,16 +451,15 @@ async def test_update_order_by_client_id(account: cro.Account, market: cro.Marke
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip("Requires real API access for order creation")
 async def test_update_order_price_only(account: cro.Account, market: cro.Market):
-    """Test updating only order price (not quantity)."""
-    current_price = await market.get_price(cro.pairs.CRO_USD)
-    buy_price = round(current_price - 0.01, 4)
-    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+    """Test updating only order price (API requires both price and quantity)."""
+    pair = cro.pairs.CRO_USD
+    current_price = await market.get_price(pair)
+    buy_price = helpers.resting_buy_price(pair, current_price)
+    qty = helpers.min_order_quantity(pair, buy_price)
 
-    # Create order with specific client_id
-    client_id = f"update_price_{uuid4().hex[:16]}"
-    await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
+    client_id = "test-amend-b-orig"
+    await account.buy_limit(pair, qty, buy_price, client_id=client_id)
 
     # Verify order is created
     order_1 = await account.get_order(client_order_id=client_id)
@@ -452,14 +469,15 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
     original_qty = order_1.quantity
     original_order_id = order_1.id
 
-    # Update order - change only price (API requires both new_price and new_quantity)
-    new_price = round(original_price + 0.001, 4)  # Increase price slightly
-    # Calculate new quantity to ensure minimum notional
-    min_qty_for_new_price = calculate_min_quantity(cro.pairs.CRO_USD, new_price)
+    # Change price only; quantity stays at a tick-legal minimum for the
+    # new price (API requires both values on amend).
+    new_price = pair.round_price_up(
+        original_price + 10 * pair.price_tick_size
+    )
+    min_qty_for_new_price = helpers.min_order_quantity(pair, new_price)
     new_qty = max(min_qty_for_new_price, original_qty)
 
-    # Provide new_client_id explicitly
-    new_client_id = f"updated_{uuid4().hex[:16]}"
+    new_client_id = "test-amend-b-new"
 
     result = await account.update_order(
         cro.pairs.CRO_USD,
@@ -482,16 +500,17 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip("Requires real API access for order creation")
-async def test_update_order_quantity_only(account: cro.Account, market: cro.Market):
-    """Test updating only order quantity (not price)."""
-    current_price = await market.get_price(cro.pairs.CRO_USD)
-    buy_price = round(current_price - 0.01, 4)
-    qty = calculate_min_quantity(cro.pairs.CRO_USD, buy_price)
+async def test_update_order_quantity_only(
+    account: cro.Account, market: cro.Market
+):
+    """Test updating only order quantity (API requires both values)."""
+    pair = cro.pairs.CRO_USD
+    current_price = await market.get_price(pair)
+    buy_price = helpers.resting_buy_price(pair, current_price)
+    qty = helpers.min_order_quantity(pair, buy_price)
 
-    # Create order with specific client_id
-    client_id = f"update_qty_{uuid4().hex[:16]}"
-    await account.buy_limit(cro.pairs.CRO_USD, qty, buy_price, client_id=client_id)
+    client_id = "test-amend-c-orig"
+    await account.buy_limit(pair, qty, buy_price, client_id=client_id)
 
     # Verify order is created
     order_1 = await account.get_order(client_order_id=client_id)
@@ -501,14 +520,13 @@ async def test_update_order_quantity_only(account: cro.Account, market: cro.Mark
     original_qty = order_1.quantity
     original_order_id = order_1.id
 
-    # Update order - change only quantity (API requires both new_price and new_quantity)
-    # Calculate new quantity to ensure minimum notional
+    # Change quantity only; price stays original.
     new_qty = max(
-        calculate_min_quantity(cro.pairs.CRO_USD, original_price), original_qty + 1
+        helpers.min_order_quantity(pair, original_price),
+        pair.round_quantity_up(original_qty + pair.quantity_tick_size),
     )
 
-    # Provide new_client_id explicitly
-    new_client_id = f"updated_{uuid4().hex[:16]}"
+    new_client_id = "test-amend-c-new"
 
     result = await account.update_order(
         cro.pairs.CRO_USD,

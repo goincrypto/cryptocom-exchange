@@ -1,6 +1,6 @@
 {
   "get_public/get-trades": {
-    "count=150,end_ts=1783175369000000000,instrument_name=CRO_USDT": [
+    "count=150,end_ts=<ts>000000,instrument_name=CRO_USDT": [
       {
         "response": [
           {
@@ -1504,11 +1504,9 @@
             "m": "4611686018464102471"
           }
         ],
-        "exec_time": 0.2963857650756836,
-        "timestamp": 1786916798.8927505
-      }
-    ],
-    "count=150,end_ts=1783173980000000000,instrument_name=CRO_USDT": [
+        "exec_time": 0.3844156265258789,
+        "timestamp": 1791997721.4914215
+      },
       {
         "response": [
           {
@@ -3012,11 +3010,9 @@
             "m": "4611686018464102354"
           }
         ],
-        "exec_time": 0.4109690189361572,
-        "timestamp": 1786916799.1899369
-      }
-    ],
-    "count=150,end_ts=1783171969000000000,instrument_name=CRO_USDT": [
+        "exec_time": 0.40973353385925293,
+        "timestamp": 1791997721.8766668
+      },
       {
         "response": [
           {
@@ -4520,11 +4516,9 @@
             "m": "4611686018464102205"
           }
         ],
-        "exec_time": 0.3048820495605469,
-        "timestamp": 1786916799.6014442
-      }
-    ],
-    "count=150,end_ts=1783171813000000000,instrument_name=CRO_USDT": [
+        "exec_time": 0.33951735496520996,
+        "timestamp": 1791997722.2871566
+      },
       {
         "response": [
           {
@@ -6028,8 +6022,8 @@
             "m": "4611686018464102171"
           }
         ],
-        "exec_time": 0.30738115310668945,
-        "timestamp": 1786916799.9069977
+        "exec_time": 0.3754251003265381,
+        "timestamp": 1791997722.6275072
       }
     ]
   }

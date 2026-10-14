@@ -40,9 +40,9 @@ Useful examples
     import cryptocom.exchange as cro
 
     async def main():
-        exchange = cro.Exchange()
+        market = cro.Market()
         # ensure pairs fresh from exchange
-        await exchange.sync_pairs()
+        await market.sync_pairs()
 
         # or if you use account
         account = cro.Account(api_key='test', api_secret='test')
@@ -59,8 +59,8 @@ Useful examples
     import cryptocom.exchange as cro
 
     async def main():
-        exchange = cro.Exchange()
-        price = await exchange.get_price(cro.pairs.CRO_USDT)
+        market = cro.Market()
+        price = await market.get_price(cro.pairs.CRO_USDT)
         print(f'CRO price {price}')
 
     asyncio.run(main())

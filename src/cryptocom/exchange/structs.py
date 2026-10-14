@@ -22,6 +22,19 @@ class Instrument:
             Instrument._registry = {}
         Instrument._registry[self.exchange_name] = self
 
+    # Identity of an instrument IS its exchange_name. Explicit eq/hash (not
+    # dataclass-generated) so Instrument and its subclasses (e.g.
+    # InstrumentBalance) interoperate in dicts/sets - the dataclass default
+    # requires IDENTICAL classes and tuple-based hashing, which silently
+    # broke dict lookups between Instrument keys and InstrumentBalance keys.
+    def __eq__(self, other):
+        if isinstance(other, Instrument):
+            return self.exchange_name == other.exchange_name
+        return NotImplemented
+
+    def __hash__(self):
+        return self.exchange_name.__hash__()
+
     @property
     def name(self) -> str:
         return self.exchange_name.replace("1", "ONE_").replace("2", "TWO_")
@@ -504,13 +517,49 @@ class OrderInBook:
 
 @dataclass
 class OrderBook:
+    """Order book snapshot.
+
+    Both sides are normalized to BEST-FIRST in ``__post_init__``, regardless
+    of the order the caller (or API) provides:
+
+    - ``buys``  sorted by price DESC (``buys[0]``  = best bid)
+    - ``sells`` sorted by price ASC  (``sells[0]`` = best ask)
+
+    Prefer the ``best_bid`` / ``best_ask`` / ``mid`` / ``spread`` properties
+    over positional indexing.
+    """
+
     buys: list[OrderInBook]
     sells: list[OrderInBook]
     pair: Pair
 
+    def __post_init__(self):
+        self.buys.sort(key=lambda level: level.price, reverse=True)
+        self.sells.sort(key=lambda level: level.price)
+
+    @property
+    def best_bid(self) -> OrderInBook:
+        """Top buy level. Raises ValueError on an empty book."""
+        if not self.buys:
+            raise ValueError("Order book has no bids")
+        return self.buys[0]
+
+    @property
+    def best_ask(self) -> OrderInBook:
+        """Top sell level. Raises ValueError on an empty book."""
+        if not self.sells:
+            raise ValueError("Order book has no asks")
+        return self.sells[0]
+
+    @property
+    def mid(self) -> float:
+        """Mid price between best bid and best ask."""
+        return (self.best_bid.price + self.best_ask.price) / 2
+
     @property
     def spread(self) -> float:
-        return round_down(self.sells[-1].price / self.buys[0].price - 1, 6)
+        """Relative spread (best_ask / best_bid - 1)."""
+        return round_down(self.best_ask.price / self.best_bid.price - 1, 6)
 
 
 @dataclass(frozen=True)
@@ -544,7 +593,9 @@ class InstrumentBalance(Instrument):
         return self.exchange_name.__hash__()
 
     def __eq__(self, other):
-        return self.exchange_name == other.exchange_name
+        if isinstance(other, Instrument):
+            return self.exchange_name == other.exchange_name
+        return NotImplemented
 
 
 @dataclass
@@ -553,15 +604,27 @@ class Balance:
     total_available_instrument: Instrument
     instruments: list[InstrumentBalance]
 
+    @staticmethod
+    def _key(instrument) -> str:
+        """Accept an Instrument, an InstrumentBalance, or a plain name string.
+
+        Dataclass equality never matches (InstrumentBalance is a SUBCLASS of
+        Instrument and dataclass __eq__ requires identical classes), so lookups
+        must compare exchange_name explicitly.
+        """
+        return instrument if isinstance(instrument, str) else instrument.exchange_name
+
     def __contains__(self, instrument):
-        return instrument in [inst for inst in self.instruments]
+        key = self._key(instrument)
+        return any(inst.exchange_name == key for inst in self.instruments)
 
     def __getitem__(self, instrument):
-        return next(inst for inst in self.instruments if inst == instrument)
+        key = self._key(instrument)
+        return next(inst for inst in self.instruments if inst.exchange_name == key)
 
     def get(self, instrument, default=None):
         try:
-            return next(inst for inst in self.instruments if inst == instrument)
+            return self[instrument]
         except StopIteration:
             return default
 
@@ -596,6 +659,16 @@ class OrderStatus(str, Enum):
     CANCELED = "CANCELED"
     REJECTED = "REJECTED"
     EXPIRED = "EXPIRED"
+
+
+TERMINAL_ORDER_STATUSES: frozenset[OrderStatus] = frozenset(
+    {
+        OrderStatus.FILLED,
+        OrderStatus.CANCELED,
+        OrderStatus.REJECTED,
+        OrderStatus.EXPIRED,
+    }
+)
 
 
 class OrderExecFlag(str, Enum):
@@ -741,6 +814,11 @@ class Order:
         # Calculate remaining and round down to never overstate
         remain = self.quantity - self.filled_quantity
         return round_down(remain, self.pair.quantity_precision)
+
+    @cached_property
+    def is_terminal(self) -> bool:
+        """True when the order can no longer change status."""
+        return self.status in TERMINAL_ORDER_STATUSES
 
     @classmethod
     def create_from_api(

@@ -71,14 +71,14 @@ jobs:
         if: matrix.python-version == '3.14' && github.ref == 'refs/heads/main'
         uses: actions-js/push@v1.3
         with:
-          author_email: "morty.space@gmail.com"
-          author_name: "Morty Space"
+          author_email: "pair-bot@users.noreply.github.com"
+          author_name: "pair-bot"
           directory: './src'
           message: "sync: updated API pairs and instruments"
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Test code
         timeout-minutes: 6
-        run: poetry run pytest -v --cov . --cov-report xml:coverage.xml
+        run: poetry run pytest -v --cov . --cov-report xml:coverage.xml --cov-fail-under=90
   release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -98,13 +98,27 @@ jobs:
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.REPOSITORY_PASSWORD }}
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.REPOSITORY_PASSWORD }}
         run: |
-          git fetch --all
+          git fetch --tags --force
           git reset --hard origin/main
-          pip install python-semantic-release poetry
+          pip install python-semantic-release poetry twine
           git config user.name github-actions
           git config user.email github-actions@github.com
+          before=$(git describe --tags --abbrev=0)
           semantic-release version
-          poetry publish --build
-          semantic-release publish
+          after=$(git describe --tags --abbrev=0)
+          if [ "$after" = "$before" ]; then
+            echo "No new version computed - nothing to release"
+            exit 0
+          fi
+          # Push the version commit + tag BEFORE publishing: the tags on
+          # origin are the single source of truth, so a retried or crashed
+          # run can never recompute a version PyPI already has.
+          # Header auth keeps the token out of .git/config and remote URLs.
+          git -c http.extraHeader="Authorization: Bearer ${GH_TOKEN}" push origin HEAD:main --follow-tags
+          # --skip-existing makes republish retries idempotent.
+          poetry build
+          twine upload --skip-existing dist/*
+          gh release view "$after" >/dev/null 2>&1 || gh release create "$after" --generate-notes

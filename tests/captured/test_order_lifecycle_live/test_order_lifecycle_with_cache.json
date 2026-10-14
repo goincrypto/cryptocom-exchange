@@ -1,0 +1,315 @@
+{
+ "post_private/user-balance": {
+  "": [
+   {
+    "response": [
+     {
+      "total_risk_exposure": "11.67964001",
+      "total_available_balance": "14.15187101",
+      "total_margin_balance": "19.99169101",
+      "total_initial_margin": "5.83982001",
+      "total_haircut": "5.83982001",
+      "total_position_im": "0",
+      "total_maintenance_margin": "2.91991001",
+      "total_position_cost": "0",
+      "total_cash_balance": "21.18113101",
+      "total_collateral_value": "14.15187101",
+      "total_session_unrealized_pnl": "0",
+      "instrument_name": "USD",
+      "total_session_realized_pnl": "0",
+      "position_balances": [
+       {
+        "quantity": "202",
+        "reserved_qty": "0",
+        "collateral_amount": "5.83982",
+        "haircut": "0.5",
+        "collateral_eligible": true,
+        "market_value": "11.67964",
+        "max_withdrawal_balance": "202",
+        "instrument_name": "CRO",
+        "hourly_interest_rate": "0"
+       },
+       {
+        "quantity": "9.50149101",
+        "reserved_qty": "0",
+        "collateral_amount": "8.31205101",
+        "haircut": "0",
+        "collateral_eligible": true,
+        "market_value": "8.31205101",
+        "max_withdrawal_balance": "8.31205101",
+        "instrument_name": "USD",
+        "hourly_interest_rate": "0"
+       }
+      ],
+      "credit_limits": [],
+      "total_isolated_cash_balance": "0",
+      "isolated_positions": [],
+      "total_effective_leverage": "0.584225",
+      "position_limit": "399.8338202",
+      "used_position_limit": "11.67964001",
+      "total_borrow": "0",
+      "is_liquidating": false,
+      "has_risk": false,
+      "terminatable": false
+     }
+    ],
+    "exec_time": 0.3125467300415039,
+    "timestamp": 1791999459.9415603
+   }
+  ]
+ },
+ "get_public/get-tickers": {
+  "instrument_name=CRO_USD": [
+   {
+    "response": [
+     {
+      "i": "CRO_USD",
+      "h": "0.06020",
+      "l": "0.05731",
+      "a": "0.05780",
+      "v": "27112468",
+      "vv": "1595176.05",
+      "c": "-0.0227",
+      "b": "0.05780",
+      "k": "0.05782",
+      "oi": "0",
+      "t": 1791999460366
+     }
+    ],
+    "exec_time": 0.30251407623291016,
+    "timestamp": 1791999460.2541616
+   },
+   {
+    "response": [
+     {
+      "i": "CRO_USD",
+      "h": "0.06020",
+      "l": "0.05731",
+      "a": "0.05780",
+      "v": "27112468",
+      "vv": "1595176.05",
+      "c": "-0.0227",
+      "b": "0.05780",
+      "k": "0.05782",
+      "oi": "0",
+      "t": 1791999460170
+     }
+    ],
+    "exec_time": 0.29156947135925293,
+    "timestamp": 1791999460.5577571
+   }
+  ]
+ },
+ "post_private/create-order": {
+  "params={'instrument_name': 'CRO_USD', 'side': 'BUY', 'type': 'LIMIT', 'client_oid': 'cachelive-a1', 'fee_instrument_name': 'USD', 'quantity': '44', 'price': '0.04624'}": [
+   {
+    "response": {
+     "client_oid": "cachelive-a1",
+     "order_id": "4989988588692304137"
+    },
+    "exec_time": 0.31843090057373047,
+    "timestamp": 1791999460.8494542
+   }
+  ]
+ },
+ "post_private/get-order-detail": {
+  "params={'client_oid': 'cachelive-a1'}": [
+   {
+    "response": {
+     "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+     "order_id": "4989988588692304137",
+     "client_oid": "cachelive-a1",
+     "order_type": "LIMIT",
+     "time_in_force": "GOOD_TILL_CANCEL",
+     "side": "BUY",
+     "exec_inst": [],
+     "quantity": "44",
+     "limit_price": "0.04624",
+     "order_value": "2.03456",
+     "avg_price": "0",
+     "ref_price": "0",
+     "cumulative_quantity": "0",
+     "cumulative_value": "0",
+     "cumulative_fee": "0",
+     "status": "ACTIVE",
+     "update_user_id": "test-uuid",
+     "order_date": "2026-10-14",
+     "instrument_name": "CRO_USD",
+     "fee_instrument_name": "USD",
+     "reason": 0,
+     "create_time": 1791999461023,
+     "create_time_ns": "1791999461023759507",
+     "update_time": 1791999461023
+    },
+    "exec_time": 0.3112781047821045,
+    "timestamp": 1791999461.1679401
+   },
+   {
+    "response": {},
+    "exec_time": 0.31789350509643555,
+    "timestamp": 1791999463.5257654
+   }
+  ],
+  "params={'client_oid': 'cachelive-a2'}": [
+   {
+    "response": {
+     "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+     "order_id": "4989988588692304137",
+     "client_oid": "cachelive-a2",
+     "order_type": "LIMIT",
+     "time_in_force": "GOOD_TILL_CANCEL",
+     "side": "BUY",
+     "exec_inst": [],
+     "quantity": "44",
+     "limit_price": "0.04577",
+     "order_value": "2.01388",
+     "avg_price": "0",
+     "ref_price": "0",
+     "cumulative_quantity": "0",
+     "cumulative_value": "0",
+     "cumulative_fee": "0",
+     "status": "ACTIVE",
+     "update_user_id": "test-uuid",
+     "order_date": "2026-10-14",
+     "instrument_name": "CRO_USD",
+     "fee_instrument_name": "USD",
+     "reason": 0,
+     "create_time": 1791999461023,
+     "create_time_ns": "1791999461023759507",
+     "update_time": 1791999461674
+    },
+    "exec_time": 0.3689699172973633,
+    "timestamp": 1791999461.8831947
+   },
+   {
+    "response": {
+     "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+     "order_id": "4989988588692304137",
+     "client_oid": "cachelive-a2",
+     "order_type": "LIMIT",
+     "time_in_force": "GOOD_TILL_CANCEL",
+     "side": "BUY",
+     "exec_inst": [],
+     "quantity": "44",
+     "limit_price": "0.04577",
+     "order_value": "2.01388",
+     "avg_price": "0",
+     "ref_price": "0",
+     "cumulative_quantity": "0",
+     "cumulative_value": "0",
+     "cumulative_fee": "0",
+     "status": "ACTIVE",
+     "update_user_id": "test-uuid",
+     "order_date": "2026-10-14",
+     "instrument_name": "CRO_USD",
+     "fee_instrument_name": "USD",
+     "reason": 0,
+     "create_time": 1791999461023,
+     "create_time_ns": "1791999461023759507",
+     "update_time": 1791999461674
+    },
+    "exec_time": 0.6398191452026367,
+    "timestamp": 1791999462.2522926
+   },
+   {
+    "response": {
+     "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+     "order_id": "4989988588692304137",
+     "client_oid": "cachelive-a2",
+     "order_type": "LIMIT",
+     "time_in_force": "GOOD_TILL_CANCEL",
+     "side": "BUY",
+     "exec_inst": [],
+     "quantity": "44",
+     "limit_price": "0.04577",
+     "order_value": "2.01388",
+     "maker_fee_rate": "0",
+     "taker_fee_rate": "0",
+     "avg_price": "0",
+     "ref_price": "0",
+     "ref_price_type": "NULL_VAL",
+     "cumulative_quantity": "0",
+     "cumulative_value": "0",
+     "cumulative_fee": "0",
+     "status": "CANCELED",
+     "update_user_id": "test-uuid",
+     "order_date": "2026-10-14",
+     "instrument_name": "CRO_USD",
+     "fee_instrument_name": "USD",
+     "reason": 0,
+     "create_time": 1791999461023,
+     "create_time_ns": "1791999461023759507",
+     "update_time": 1791999463069
+    },
+    "exec_time": 0.32221293449401855,
+    "timestamp": 1791999463.2034063
+   },
+   {
+    "response": {
+     "account_id": "a568bd0e-8060-3a00-8308-3fef726f5bd0",
+     "order_id": "4989988588692304137",
+     "client_oid": "cachelive-a2",
+     "order_type": "LIMIT",
+     "time_in_force": "GOOD_TILL_CANCEL",
+     "side": "BUY",
+     "exec_inst": [],
+     "quantity": "44",
+     "limit_price": "0.04577",
+     "order_value": "2.01388",
+     "maker_fee_rate": "0",
+     "taker_fee_rate": "0",
+     "avg_price": "0",
+     "ref_price": "0",
+     "ref_price_type": "NULL_VAL",
+     "cumulative_quantity": "0",
+     "cumulative_value": "0",
+     "cumulative_fee": "0",
+     "status": "CANCELED",
+     "update_user_id": "test-uuid",
+     "order_date": "2026-10-14",
+     "instrument_name": "CRO_USD",
+     "fee_instrument_name": "USD",
+     "reason": 0,
+     "create_time": 1791999461023,
+     "create_time_ns": "1791999461023759507",
+     "update_time": 1791999463069
+    },
+    "exec_time": 0.3952677249908447,
+    "timestamp": 1791999463.8436987
+   }
+  ]
+ },
+ "post_private/amend-order": {
+  "params={'instrument_name': 'CRO_USD', 'client_oid': 'cachelive-a2', 'orig_client_oid': 'cachelive-a1', 'new_price': '0.04577', 'new_quantity': '44'}": [
+   {
+    "response": {
+     "client_oid": "cachelive-a2",
+     "order_id": "4989988588692304137"
+    },
+    "exec_time": 0.40375852584838867,
+    "timestamp": 1791999461.4793818
+   }
+  ]
+ },
+ "post_private/cancel-order": {
+  "params={'instrument_name': 'CRO_USD', 'client_oid': 'cachelive-a2'}": [
+   {
+    "response": {
+     "client_oid": "cachelive-a2",
+     "order_id": "4989988588692304137"
+    },
+    "exec_time": 0.31107521057128906,
+    "timestamp": 1791999462.892275
+   }
+  ]
+ },
+ "post_private/cancel-all-orders": {
+  "params={'instrument_name': 'CRO_USD'}": [
+   {
+    "response": {},
+    "exec_time": 0.35662078857421875,
+    "timestamp": 1791999464.2397442
+   }
+  ]
+ }
+}

@@ -1,4 +1,4 @@
-from . import instruments, pairs
+from . import exceptions, instruments, pairs
 from .api import ApiError, ApiProvider, RecordApiProvider
 from .market import Market
 from .account import (
@@ -7,7 +7,7 @@ from .account import (
     MAX_OPEN_ORDERS_PER_ACCOUNT,
     MAX_OPEN_ORDERS_PER_PAIR,
 )
-from .exceptions import ApiErrorCode
+from .exceptions import ApiAuthError, ApiErrorCode, ExchangeError
 from .structs import (
     Candle,
     Deposit,
@@ -38,6 +38,7 @@ __all__ = [
     "OrderForceType",
     "OrderExecFlag",
     "OrderKeys",
+    "exceptions",
     "pairs",
     "Pair",
     "instruments",
@@ -57,7 +58,9 @@ __all__ = [
     "ApiError",
     "ApiProvider",
     "RecordApiProvider",
+    "ApiAuthError",
     "ApiErrorCode",
+    "ExchangeError",
     "MAX_OPEN_ORDERS_PER_PAIR",
     "MAX_OPEN_ORDERS_PER_ACCOUNT",
 ]

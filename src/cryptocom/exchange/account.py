@@ -1,10 +1,18 @@
 import asyncio
 import logging
+import time
+import warnings
 from dataclasses import dataclass
 from uuid import uuid4
 from typing import Any
 
 from .api import ApiError, ApiProvider
+from .exceptions import (
+    CancelNotConfirmedError,
+    OrderNotActiveError,
+    OrderNotFoundError,
+    WaitNotConfirmedError,
+)
 from .market import Market
 from .structs import (
     Balance,
@@ -83,6 +91,7 @@ class Account:
         market: Market | None = None,
         api: ApiProvider | None = None,
         logger: logging.Logger | None = None,
+        orders_ttl: float = 5.0,
     ) -> None:
         if not api and not (api_key and api_secret) and not from_env:
             raise ValueError("Pass ApiProvider or api_key with api_secret or from_env")
@@ -92,20 +101,33 @@ class Account:
         self.logger = logger or logging.getLogger(__name__)
         self.market = market or Market(api)
         self.pairs = self.market.pairs
+        # Order state cache, keyed by client_oid. Terminal orders are kept
+        # forever (they can never change); live orders expire after orders_ttl
+        # seconds. Set orders_ttl=0 to disable caching (tests).
+        self.order_cache: dict[str, Order] = {}
+        self.orders_ttl: float = orders_ttl
+        self._orders_seen: dict[str, float] = {}
+        # Recently created client_oids: a just-created order that momentarily
+        # reads back as absent is a create race, NOT proof of absence.
+        self._recently_created: dict[str, float] = {}
+        self.create_race_guard: float = 2.0
 
     async def sync_pairs(self):
         await self.market.sync_pairs()
         self.pairs = self.market.pairs
 
     async def get_balance(self) -> dict[Instrument, InstrumentBalance]:
-        """Return balance."""
+        """Return balance keyed by Instrument.
+
+        Keys are plain Instrument objects: dataclass __eq__/__hash__ require
+        identical classes, so InstrumentBalance keys would never match a
+        lookup by Instrument("USD").
+        """
         data = (await self.api.post("private/user-balance")) or []
         if not data:
             return {}
         balance = Balance.from_api(data[0])
-        # Return dict mapping instrument to its balance
-        # InstrumentBalance inherits from Instrument, so we can use it directly as key
-        return {inst: inst for inst in balance}
+        return {Instrument(inst.exchange_name): inst for inst in balance}
 
     async def get_accounts(self) -> dict[str, Any]:
         data = await self.api.post("private/get-accounts")
@@ -347,6 +369,7 @@ class Account:
             data["price"] = "{:.{}f}".format(price, pair.price_precision)
 
         resp = await self.api.post("private/create-order", {"params": data})
+        self._recently_created[client_id] = time.monotonic()
         return OrderKeys(id=resp["order_id"], client_id=client_id)
 
     async def buy_limit(
@@ -403,21 +426,79 @@ class Account:
             fee_instrument,
         )
 
+    async def wait_for_order(
+        self,
+        statuses: tuple[OrderStatus, ...],
+        *,
+        order_id: str | None = None,
+        client_order_id: str | None = None,
+        timeout: float = 30.0,
+        poll_interval: float = 0.5,
+    ) -> Order:
+        """Poll an order until it reaches one of the required statuses.
+
+        Confirmed-absent answers keep the wait going (a just-created order
+        may briefly be unreadable); only the deadline ends it.
+
+        Args:
+            statuses: Accepted terminal (or other) statuses
+            order_id: Exchange order ID (one of the ids is required)
+            client_order_id: Client order ID
+            timeout: Max seconds to wait
+            poll_interval: Seconds between polls
+
+        Returns:
+            The order once its status is in `statuses`.
+
+        Raises:
+            WaitNotConfirmedError: Timeout - INDETERMINATE, reconcile later.
+        """
+        if not order_id and not client_order_id:
+            raise ValueError("Must provide either order_id or client_order_id")
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + timeout
+        last = "unknown"
+        while True:
+            try:
+                order = await self.get_order(
+                    order_id=order_id,
+                    client_order_id=client_order_id,
+                    ignore_cache=True,
+                )
+            except OrderNotFoundError:
+                order = None
+                last = "absent"
+            if order is not None:
+                last = str(order.status)
+                if order.status in statuses:
+                    return order
+            if loop.time() >= deadline:
+                raise WaitNotConfirmedError(
+                    f"Order {client_order_id or order_id!r} not in "
+                    f"{[s.name for s in statuses]} within {timeout}s "
+                    f"(last: {last})"
+                )
+            await asyncio.sleep(poll_interval)
+
     async def wait_for_status(
         self, order_id: str, statuses: tuple[OrderStatus, ...], delay: int = 0.1
     ) -> None:
-        """Wait for order status."""
-        order = await self.get_order(order_id)
+        """Wait for order status.
 
-        for _ in range(self.api.retries):
-            if order.status in statuses:
-                break
-
-            await asyncio.sleep(delay)
-            order = await self.get_order(order_id)
-
-        if order.status not in statuses:
-            raise ApiError(f"Status not changed for: {order}, must be in: {statuses}")
+        Deprecated: use ``wait_for_order`` (explicit timeout, typed
+        indeterminate error, absent-tolerant polling).
+        """
+        warnings.warn(
+            "wait_for_status is deprecated; use wait_for_order()",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        await self.wait_for_order(
+            statuses,
+            order_id=order_id,
+            timeout=30.0,
+            poll_interval=delay,
+        )
 
     async def buy_market(
         self,
@@ -436,14 +517,14 @@ class Account:
         )
 
         if wait_for_fill:
-            await self.wait_for_status(
-                result.id,
+            await self.wait_for_order(
                 (
                     OrderStatus.FILLED,
                     OrderStatus.CANCELED,
                     OrderStatus.EXPIRED,
                     OrderStatus.REJECTED,
                 ),
+                order_id=result.id,
             )
 
         return result
@@ -469,33 +550,82 @@ class Account:
         )
 
         if wait_for_fill:
-            await self.wait_for_status(
-                result.id,
+            await self.wait_for_order(
                 (
                     OrderStatus.FILLED,
                     OrderStatus.CANCELED,
                     OrderStatus.EXPIRED,
                     OrderStatus.REJECTED,
                 ),
+                order_id=result.id,
             )
 
         return result
 
+    def _cache_order(self, order: Order) -> None:
+        """Upsert an observed order. Terminal entries are final and immortal."""
+        existing = self.order_cache.get(order.client_id)
+        if existing is not None and existing.is_terminal and not order.is_terminal:
+            return  # a live snapshot never overwrites a terminal truth
+        self.order_cache[order.client_id] = order
+        if order.is_terminal:
+            self._orders_seen.pop(order.client_id, None)
+        else:
+            self._orders_seen[order.client_id] = time.monotonic()
+
+    def _cached_order(self, client_order_id: str) -> Order | None:
+        """Fresh cached order, or None (expired entries are dropped)."""
+        order = self.order_cache.get(client_order_id)
+        if order is None:
+            return None
+        seen = self._orders_seen.get(client_order_id)
+        if seen is None:  # terminal: immortal
+            return order
+        if time.monotonic() - seen <= self.orders_ttl:
+            return order
+        del self.order_cache[client_order_id]
+        self._orders_seen.pop(client_order_id, None)
+        return None
+
     async def get_order(
-        self, order_id: str | None = None, client_order_id: str | None = None
+        self,
+        order_id: str | None = None,
+        client_order_id: str | None = None,
+        updates: dict[str, Order] | None = None,
+        ignore_cache: bool = False,
     ) -> Order:
         """Get order info by order_id or client_order_id.
+
+        Cache-backed for client_order_id lookups. Resolution priority:
+        caller-provided ``updates`` (e.g. from a websocket feed) > fresh
+        cache > API. Terminal orders are cached forever; live orders for
+        ``orders_ttl`` seconds (0 disables caching).
 
         Args:
             order_id: Exchange order ID
             client_order_id: Client order ID (client_oid)
+            updates: Live order snapshot keyed by client_oid (highest priority,
+                populates the cache)
+            ignore_cache: If True, query the exchange directly
 
         Raises:
             ValueError: If neither order_id nor client_order_id is provided
-            ApiError: If order not found
+            OrderNotFoundError: The order is confirmed absent (deterministic)
+            ApiError: Just-created order unreadable, or lookup failed -
+                outcome UNKNOWN, must be reconciled later (indeterminate)
         """
         if not order_id and not client_order_id:
             raise ValueError("Must provide either order_id or client_order_id")
+
+        if updates and client_order_id and client_order_id in updates:
+            order = updates[client_order_id]
+            self._cache_order(order)
+            return order
+
+        if client_order_id and not ignore_cache:
+            cached = self._cached_order(client_order_id)
+            if cached is not None:
+                return cached
 
         params = {}
         if order_id:
@@ -508,14 +638,34 @@ class Account:
             {"params": params},
         )
         if not data:
-            raise ApiError("No order data")
+            # Structured success with empty result - normally "not there".
+            # Exception: an order created moments ago may not be readable
+            # yet. Treating that race as absence would orphan a live order.
+            if client_order_id:
+                self.order_cache.pop(client_order_id, None)
+                self._orders_seen.pop(client_order_id, None)
+                created = self._recently_created.get(client_order_id)
+                if (
+                    created is not None
+                    and time.monotonic() - created < self.create_race_guard
+                ):
+                    raise ApiError(
+                        f"Order {client_order_id!r} unreadable right after "
+                        "creation - state unknown, reconcile later",
+                        method="private/get-order-detail",
+                    )
+            raise OrderNotFoundError(
+                "No order data", code=40401, method="private/get-order-detail"
+            )
 
-        return Order.create_from_api(
+        order = Order.create_from_api(
             self.pairs[data["instrument_name"]],
             data,
             # data["trade_list"],
             [],
         )
+        self._cache_order(order)
+        return order
 
     async def cancel_order(
         self,
@@ -548,6 +698,13 @@ class Account:
             "private/cancel-order",
             {"params": params},
         )
+        # Invalidate only - cancel confirms the request, not the final
+        # status. The terminal transition must be observed, never assumed.
+        self.order_cache.pop(client_order_id, None)
+        self._orders_seen.pop(client_order_id, None)
+        # A cancel proves the order existed - later absence is expected truth,
+        # not a create race. Release the guard.
+        self._recently_created.pop(client_order_id, None)
 
         # API response has order_id and client_oid at top level in result
         returned_order_id = resp.get("result", {}).get(
@@ -560,11 +717,83 @@ class Account:
         if not check_status:
             return returned_order_id, returned_client_oid
 
-        await self.wait_for_status(
-            returned_order_id,
+        await self.wait_for_order(
             (OrderStatus.CANCELED, OrderStatus.EXPIRED, OrderStatus.REJECTED),
+            order_id=returned_order_id,
         )
         return returned_order_id, returned_client_oid
+
+    async def cancel_order_and_wait(
+        self,
+        pair: Pair,
+        client_order_id: str,
+        timeout: float = 30.0,
+        poll_interval: float = 0.5,
+    ) -> Order | None:
+        """Cancel an order and poll until it reaches a terminal status.
+
+        Absent and already-terminal orders are treated as confirmed success
+        (nothing to cancel). A cancel rejected as not-active re-queries once:
+        a race with FILLED/CANCELED is a valid terminal outcome, not an error.
+
+        Args:
+            pair: Trading pair
+            client_order_id: Client order ID (client_oid) of the order
+            timeout: Max seconds to wait for a terminal status
+            poll_interval: Seconds between status polls
+
+        Returns:
+            The order in terminal status, or None if the order is confirmed
+            absent from the exchange.
+
+        Raises:
+            CancelNotConfirmedError: Terminal status not confirmed in time -
+                the cancel may have landed after the last poll.
+            ApiError: Cancel or lookup failed with an indeterminate error -
+                outcome unknown, the caller must reconcile later.
+        """
+        try:
+            order = await self.get_order(
+                client_order_id=client_order_id, ignore_cache=True
+            )
+        except OrderNotFoundError:
+            return None
+        if order.is_terminal:
+            return order
+
+        try:
+            await self.cancel_order(pair, client_order_id=client_order_id)
+        except OrderNotActiveError:
+            # Cancel raced a status change - re-query to learn the outcome.
+            try:
+                order = await self.get_order(
+                    client_order_id=client_order_id, ignore_cache=True
+                )
+            except OrderNotFoundError:
+                return None
+            if order.is_terminal:
+                return order
+            raise
+        except OrderNotFoundError:
+            return None
+
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + timeout
+        while loop.time() < deadline:
+            try:
+                order = await self.get_order(
+                    client_order_id=client_order_id, ignore_cache=True
+                )
+            except OrderNotFoundError:
+                return None
+            if order.is_terminal:
+                return order
+            await asyncio.sleep(poll_interval)
+
+        raise CancelNotConfirmedError(
+            f"Order {client_order_id!r} not terminal within {timeout}s "
+            f"(last status: {order.status})"
+        )
 
     async def update_order(
         self,
@@ -640,6 +869,15 @@ class Account:
             "private/amend-order",
             {"params": params},
         )
+        # Amend = cancel + create: the old order goes terminal and the
+        # successor exists in an unknown state. Invalidate both, guess neither.
+        if client_id:
+            self.order_cache.pop(client_id, None)
+            self._orders_seen.pop(client_id, None)
+            # Amend resolves the predecessor: it existed and is now replaced.
+            self._recently_created.pop(client_id, None)
+        self.order_cache.pop(new_client_id, None)
+        self._orders_seen.pop(new_client_id, None)
 
         # API response has order_id and client_oid in result
         returned_order_id = resp.get("result", {}).get(

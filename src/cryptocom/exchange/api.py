@@ -6,14 +6,36 @@ import logging
 import os
 import pathlib
 import random
+import re
 import ssl
 import time
+import uuid
 from urllib.parse import urljoin
 
 import aiolimiter
 import async_timeout
 import httpx
 import websockets
+
+from .exceptions import (
+    ApiAuthError,
+    ApiError,
+    ExchangeError,
+    api_error_from_response,
+    is_retryable_error_code,
+)
+
+__all__ = [
+    "ApiAuthError",
+    "ApiError",
+    "ApiProvider",
+    "ExchangeError",
+    "RecordApiProvider",
+]
+
+# HTTP statuses that are transient BY NATURE (outcome may still be unknown
+# for writes - errors built from them carry the indeterminate contract).
+RETRYABLE_HTTP_STATUSES = frozenset({408, 429, 500, 502, 503, 504})
 
 RATE_LIMITS = {
     # =====================================================================
@@ -46,14 +68,6 @@ RATE_LIMITS = {
     # Note: All staking endpoints use general_staking_limit (50 req/s)
     # Note: All public endpoints use general_public_limit (100 req/s)
 }
-
-
-class ApiError(Exception):
-    pass
-
-
-class ApiAuthError(ApiError):
-    pass
 
 
 def params_to_str(obj, level) -> str:
@@ -115,6 +129,9 @@ class ApiListenAsyncIterable:
             data = json.loads(data)
             result = data.get("result")
 
+            # One chain, evaluated per received frame (each __anext__
+            # consumes exactly one frame; non-data frames return None and
+            # are skipped by the listen() wrapper).
             # [1] send heartbeat to keep connection alive
             if data["method"] == "public/heartbeat":
                 await self.ws.send(
@@ -125,6 +142,14 @@ class ApiListenAsyncIterable:
                         }
                     )
                 )
+            # [2] subscribe to channels (after auth ack)
+            elif (
+                data["method"] == "public/auth"
+                and data.get("code") == 0
+                and not self.sub_data_sent
+            ):
+                await self.ws.send(json.dumps(sub_data))
+                self.sub_data_sent = True
             # [3] consume data
             elif self.sub_data_sent and result:
                 if result["subscription"] not in self.channels:
@@ -133,11 +158,6 @@ class ApiListenAsyncIterable:
                         f"not in {self.channels}"
                     )
                 return result
-
-            # [2] subscribe to channels
-            if data["method"] == "public/auth" and data["code"] == 0:
-                await self.ws.send(json.dumps(sub_data))
-                self.sub_data_sent = True
             elif "code" not in data or data["code"] != 0:
                 raise ApiAuthError(f"{data}")
 
@@ -156,6 +176,7 @@ class ApiProvider:
         retries=5,
         root_url="https://api.crypto.com/exchange/v1/",
         ws_root_url="wss://stream.crypto.com/exchange/v1/",
+        retry_backoff: float = 0.0,
         logger: logging.Logger | None = None,
     ):
         self.logger = logger or logging.getLogger(__name__)
@@ -166,6 +187,8 @@ class ApiProvider:
         self.ws_root_url = ws_root_url
         self.timeout = timeout
         self.retries = retries
+        # Sleep between retries of transient failures (0 = tight loop).
+        self.retry_backoff = retry_backoff
         self.last_request_path = ""
 
         self.rate_limiters = {}
@@ -233,13 +256,57 @@ class ApiProvider:
             else:
                 raise ApiError(f"Wrong path: {path}")
 
+    async def _http_request(self, client, method, url, *, params, json_body, headers):
+        """Transport seam: the single outbound HTTP call.
+
+        Override point for offline tests (retry/error classification can be
+        driven without a network).
+        """
+        return await client.request(
+            method,
+            url,
+            params=params,
+            json=json_body,
+            headers=headers,
+        )
+
+    @staticmethod
+    def _classify_http_status(status: int, resp_json, method_path: str):
+        """Typed error for a non-200 HTTP response (taxonomy-aware)."""
+        body = resp_json if isinstance(resp_json, dict) else {}
+        code = body.get("code")
+        message = body.get("message") or str(resp_json)
+        if status in (401, 403):
+            return ApiAuthError(
+                f"HTTP {status}: {message}", code=code or status, method=method_path
+            )
+        if isinstance(code, int) and code:
+            # Body still carries the structured API code - trust the taxonomy.
+            return api_error_from_response(
+                code, body.get("message"), method=method_path
+            )
+        if status >= 500:
+            # Server-side failure without a structured answer: the request
+            # may have been processed. INDETERMINATE.
+            return ApiError(f"HTTP {status}: {message}", method=method_path)
+        # Other 4xx without a code: the request was rejected, definitely.
+        return ExchangeError(
+            f"HTTP {status}: {message}", code=status, method=method_path
+        )
+
     async def request(self, method, path, params=None, data=None, sign=False):
         original_data = data
         self.logger.debug(f"{method.upper()} {path} params={params} data={data}")
         limiter = self.get_limiter(path)
-        count = 0
+        # One budget for ALL failure kinds (transport, HTTP, transient API
+        # code, null result): `retries` RETRIES after the first attempt.
+        # (The old counter only advanced on parsed responses, so repeated
+        # transport errors retried FOREVER.)
+        attempt = 0
         start_time = time.time()
-        while count <= self.retries:
+        while True:
+            attempt += 1
+            exhausted = attempt > self.retries
             client = httpx.AsyncClient(
                 timeout=httpx.Timeout(timeout=self.timeout),
                 verify=self.ssl_context,
@@ -248,38 +315,44 @@ class ApiProvider:
                 data = self.sign(path, original_data)
             try:
                 async with limiter:
-                    resp = await client.request(
+                    resp = await self._http_request(
+                        client,
                         method,
                         urljoin(self.root_url, path),
                         params=params,
-                        json=data,
+                        json_body=data,
                         headers={"content-type": "application/json"},
                     )
                     resp_json = resp.json()
-                    count += 1
-                    if resp.status_code in [401, 400]:
-                        raise ApiAuthError(resp_json)
-                    elif resp.status_code != 200:
-                        if count != self.retries:
-                            continue
-                        raise ApiError(
-                            f"Error: {resp_json}. "
-                            f"Status: {resp.status_code}. Json params: {data}"
+                    if resp.status_code != 200:
+                        error = self._classify_http_status(
+                            resp.status_code, resp_json, path
                         )
+                        retryable = resp.status_code in RETRYABLE_HTTP_STATUSES or (
+                            isinstance(resp_json, dict)
+                            and is_retryable_error_code(resp_json.get("code", 0))
+                        )
+                        if retryable and not exhausted:
+                            if self.retry_backoff:
+                                await asyncio.sleep(self.retry_backoff)
+                            continue
+                        raise error
             except (
-                asyncio.TimeoutError,
+                TimeoutError,
                 httpx.HTTPError,
                 ssl.SSLError,
                 json.JSONDecodeError,
             ) as exc:
-                if count == self.retries:
+                if exhausted:
                     raise ApiError(
                         f"Timeout or read error, retries: {self.retries}. "
                         f"Path: {path}. Data: {data}. Exc: {exc}"
                     ) from exc
                 self.logger.warning(
-                    f"Retry {count}/{self.retries}: {method} {path} - {exc}"
+                    f"Retry {attempt}/{self.retries}: {method} {path} - {exc}"
                 )
+                if self.retry_backoff:
+                    await asyncio.sleep(self.retry_backoff)
                 continue
             finally:
                 await client.aclose()
@@ -289,20 +362,29 @@ class ApiProvider:
                 if "data" in result:
                     result = result["data"]
                 if result is None:
+                    if exhausted:
+                        raise ApiError(
+                            f"Null result after {self.retries} retries. "
+                            f"Path: {path}. Data: {data}"
+                        )
+                    if self.retry_backoff:
+                        await asyncio.sleep(self.retry_backoff)
                     continue
-                if data:
-                    if data["id"] != resp_json["id"]:
-                        raise ApiError(f"Not matched req = resp {resp_json}")
+                if data and data["id"] != resp_json["id"]:
+                    raise ApiError(f"Not matched req = resp {resp_json}")
                 elapsed = time.time() - start_time
                 self.logger.debug(f"{method.upper()} {path} received in {elapsed:.3f}s")
                 return result
 
-            if count == self.retries:
-                raise ApiError(
-                    f"System error, retries: {self.retries}. "
-                    f"Code: {resp.status_code}. Json: {resp_json}. "
-                    f"Data: {data}"
-                )
+            # Non-zero API error code -> typed exception. Deterministic
+            # rejections raise immediately; only transient codes retry.
+            error = api_error_from_response(
+                resp_json["code"], resp_json.get("message"), method=path
+            )
+            if not is_retryable_error_code(resp_json["code"]) or exhausted:
+                raise error
+            if self.retry_backoff:
+                await asyncio.sleep(self.retry_backoff)
 
     async def get(self, path, params=None, sign=False):
         return await self.request("get", path, params=params, sign=sign)
@@ -318,7 +400,7 @@ class ApiProvider:
                 async for data in dataiterator:
                     if data:
                         yield data
-            except (websockets.ConnectionClosed, asyncio.TimeoutError):
+            except (TimeoutError, websockets.ConnectionClosed):
                 continue
 
 
@@ -338,6 +420,11 @@ class RecordApiProvider(ApiProvider):
         self.cache_file = cache_file
         self.divide_delay = divide_delay
         self.fake_account_id = fake_account_id
+        # client_oids auto-generated via uuid4 must be identical between
+        # capture and replay, otherwise request args never match. Capture
+        # mode logs the issued ids; replay mode serves them back in order.
+        self.uuid_log: list[str] = []
+        self._uuid_replay: list[str] = []
 
         if self.capture:
             self.cache_file.parent.mkdir(exist_ok=True, parents=True)
@@ -349,13 +436,36 @@ class RecordApiProvider(ApiProvider):
             self.records = {}
             if self.cache_file.exists():
                 self.records = json.loads(self.cache_file.read_text())
+            self._uuid_replay = list(reversed(self.records.pop("__uuids__", [])))
             super().__init__(api_key="dummy", api_secret="dummy", auth_required=False)
+
+    def next_uuid(self):
+        """uuid4 replacement keeping client_oids capture/replay consistent.
+
+        Capture: real random ids, logged into the cache file.
+        Replay: the exact recorded ids, in order.
+        """
+        if self.capture:
+            value = uuid.uuid4()
+            self.uuid_log.append(value.hex)
+            return value
+        if not self._uuid_replay:
+            raise ApiError(
+                "uuid replay exhausted: code generated more client ids "
+                "than were captured - re-record with API_CAPTURE=true"
+            )
+        return uuid.UUID(hex=self._uuid_replay.pop())
 
     async def request(self, method, path, params=None, data=None, sign=False):
         key = f"{method}_{path}"
         args_data = data or params or {}
         args_data = sorted(args_data.items(), key=lambda v: v[0])
         args = ",".join(f"{key}={value}" for key, value in args_data)
+        # Volatile values: 13-digit epoch-millis (time windows, ids that
+        # embed time) differ every run. Normalize in BOTH modes so capture
+        # keys and replay lookups match. Call sequence is still strictly
+        # enforced by the per-args queues.
+        args = re.sub(r"\d{13}", "<ts>", args)
 
         if self.capture:
             timestamp = time.time()
@@ -372,15 +482,16 @@ class RecordApiProvider(ApiProvider):
         else:
             try:
                 record = self.records[key][args].pop(0)
-            except KeyError:
+            except (KeyError, IndexError):
+                # Strict: never borrow a mismatched response. A miss here
+                # means the code drifted from the capture (different args,
+                # different call sequence, or exhausted uuids).
                 available_args = list(self.records.get(key, {}).keys())
-                if available_args:
-                    self.logger.debug(
-                        f"No exact match for {key}, using first available: {available_args[0]}"
-                    )
-                    record = self.records[key][available_args[0]].pop(0)
-                else:
-                    raise ApiError(f"No path found: {key}, {args}")
+                raise ApiError(
+                    f"Replay miss for {key} args=[{args}]; "
+                    f"captured args: {available_args}. Code no longer "
+                    "matches the capture - re-record with API_CAPTURE=true."
+                ) from None
             await asyncio.sleep(record["exec_time"] / self.divide_delay)
             response = record["response"]
 
@@ -408,7 +519,10 @@ class RecordApiProvider(ApiProvider):
 
     def save(self):
         if self.capture:
-            for key, args in self.records.items():
+            for args in self.records.values():
                 for arg, data in args.items():
                     args[arg] = sorted(data, key=lambda v: v["timestamp"])
-            self.cache_file.write_text(json.dumps(self.records, indent=2))
+            payload = dict(self.records)
+            if self.uuid_log:
+                payload["__uuids__"] = self.uuid_log
+            self.cache_file.write_text(json.dumps(payload, indent=2))

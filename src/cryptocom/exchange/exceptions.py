@@ -1,10 +1,22 @@
 """
-Crypto.com Exchange API Exception Codes
+Crypto.com Exchange API Exception Codes and Typed Exceptions
 
 Official documentation:
 https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/introduction
 
 All error codes from the Common API Reference.
+
+Exception design
+----------------
+- ``ApiError`` is the base for everything. ``code is None`` means the
+  outcome is INDETERMINATE (transport error, timeout, malformed reply):
+  the caller must NOT assume the operation did or did not happen and
+  should reconcile against persisted state + a fresh query.
+- ``ExchangeError`` and subclasses are DETERMINISTIC business errors:
+  the API explicitly rejected the request with a known code, so the
+  outcome is known (order was not found, balance insufficient, ...).
+- Each class maps one-to-one to a documented ``ApiErrorCode`` family.
+  Unknown codes raise the generic ``ExchangeError`` with the code set.
 """
 
 from enum import Enum
@@ -66,6 +78,9 @@ class ApiErrorCode(Enum):
         50002  # If create-withdrawal call breaches credit line check
     )
     REDUCE_ONLY_REJECTED = 1110  # Rejected REDUCE_ONLY create-order request
+    MAINTENANCE = 9010001  # Crypto.com Exchange is under maintenance
+    INSUFFICIENT_FUNDS = 20002  # Insufficient funds (fiat/withdraw flows)
+    EXCEED_DAILY_VOL_LIMIT = 325  # Exceeds daily volume limit
 
     # === 401 Unauthorized ===
     UNAUTHORIZED = 40101  # Not authenticated, or key/signature incorrect
@@ -167,3 +182,262 @@ WS_TERMINATION_CODES = {
     1006: "Abnormal disconnection",
     1013: "Server restarting -- try again later",
 }
+
+
+# =============================================================================
+# Typed exceptions
+# =============================================================================
+
+
+class ApiError(Exception):
+    """Base API error.
+
+    ``code`` is the Crypto.com API error code when the exchange responded
+    with a structured error. ``code is None`` marks an INDETERMINATE
+    outcome (transport failure, timeout, protocol error): the caller must
+    re-query to learn whether the operation actually happened.
+
+    ``method`` is the API method (e.g. ``private/create-order``) when known.
+    """
+
+    code: int | None = None
+
+    def __init__(self, *args, code: int | None = None, method: str | None = None):
+        super().__init__(*args)
+        if code is not None:
+            self.code = code
+        self.method = method
+
+    @property
+    def is_indeterminate(self) -> bool:
+        """True when the outcome of the operation is unknown."""
+        return self.code is None
+
+
+class ApiAuthError(ApiError):
+    """Authentication/authorization failure (HTTP 401/400, codes 401xx)."""
+
+
+class ExchangeError(ApiError):
+    """Deterministic business error returned by the API (known code)."""
+
+
+class BadRequestError(ExchangeError):
+    """Malformed or invalid request (40001-40007 and friends)."""
+
+
+class PermissionDeniedError(ExchangeError):
+    """Operation not allowed for this account/tier/IP."""
+
+
+class InvalidNonceError(ApiAuthError):
+    """Nonce too old or reused (codes 40102, 10007)."""
+
+
+class OrderNotFoundError(ExchangeError):
+    """The referenced order does not exist (code 40401 / invalid order id).
+
+    CONFIRMED absence - safe to treat the order as gone (as opposed to an
+    indeterminate ApiError, which only means the answer is unknown).
+    """
+
+
+class NotEnoughBalanceError(ExchangeError):
+    """Insufficient available balance for the requested operation."""
+
+
+class InvalidOrderError(ExchangeError):
+    """Order rejected for a parameter/limit reason (size, price, side, ...)."""
+
+
+class FillOrKillRejectedError(InvalidOrderError):
+    """FOK order did not fill completely and was cancelled (code 43003)."""
+
+
+class ImmediateOrCancelRejectedError(InvalidOrderError):
+    """IOC order residual was cancelled (code 43004)."""
+
+
+class PostOnlyRejectedError(InvalidOrderError):
+    """POST_ONLY order would have crossed (code 43005)."""
+
+
+class OrderNotActiveError(ExchangeError):
+    """Target order is not active (already filled/canceled/expired), code 316.
+
+    Typical when amending/cancelling based on a stale cached status - the
+    caller must re-query the order to learn its real terminal status.
+    """
+
+
+class DuplicateClientIdError(ExchangeError):
+    """client_oid already used (code 204) - an order with that id EXISTS."""
+
+
+class DuplicateOrderIdError(ExchangeError):
+    """order_id already exists (code 205)."""
+
+
+class InvalidInstrumentError(ExchangeError):
+    """Instrument unknown, expired, or not tradable."""
+
+
+class OrderLimitExceededError(ExchangeError):
+    """Too many open orders / position size limits (codes 318, 319)."""
+
+
+class AccountSuspendedError(ExchangeError):
+    """Account is suspended or not active (codes 202, 406)."""
+
+
+class SelfTradePreventionError(ExchangeError):
+    """Order cancelled by self-trade prevention (code 43012)."""
+
+
+class RateLimitExceededError(ExchangeError):
+    """Rate limit hit (codes 42901, 10006). Transient."""
+
+
+class RequestTimeoutError(ExchangeError):
+    """API reported request timeout (code 40801). Transient.
+
+    INDETERMINATE despite the known code: a timeout means the exchange
+    may have processed the request - the caller must reconcile, never
+    assume "did not happen".
+    """
+
+    @property
+    def is_indeterminate(self) -> bool:
+        return True
+
+
+class InternalError(ExchangeError):
+    """Exchange-side internal/system error (codes 50001, 120009). Transient.
+
+    INDETERMINATE: the backend may have partially processed the request.
+    """
+
+    @property
+    def is_indeterminate(self) -> bool:
+        return True
+
+
+class MaintenanceError(ExchangeError):
+    """Exchange under maintenance (code 9010001). Transient."""
+
+
+class CancelNotConfirmedError(ApiError):
+    """Cancel was not confirmed terminal before the timeout.
+
+    Indeterminate (code is None): the cancel may still have landed after
+    the last poll - the caller must reconcile the order later.
+    """
+
+
+class WaitNotConfirmedError(ApiError):
+    """An order did not reach a required status before the timeout.
+
+    Indeterminate (code is None): the transition may happen after the
+    last poll - reconcile later, never assume the negative.
+    """
+
+
+# Code -> exception class. Deterministic codes not listed here fall back to
+# the generic ExchangeError (still NOT retried - unknown code != transient).
+_ERROR_CODE_CLASSES: dict[int, type[ExchangeError]] = {
+    40401: OrderNotFoundError,
+    212: OrderNotFoundError,
+    306: NotEnoughBalanceError,
+    321: NotEnoughBalanceError,
+    20002: NotEnoughBalanceError,
+    316: OrderNotActiveError,
+    204: DuplicateClientIdError,
+    205: DuplicateOrderIdError,
+    206: InvalidInstrumentError,
+    208: InvalidInstrumentError,
+    209: InvalidInstrumentError,
+    30003: InvalidInstrumentError,
+    318: OrderLimitExceededError,
+    319: OrderLimitExceededError,
+    202: AccountSuspendedError,
+    406: AccountSuspendedError,
+    43003: FillOrKillRejectedError,
+    43004: ImmediateOrCancelRejectedError,
+    43005: PostOnlyRejectedError,
+    43012: SelfTradePreventionError,
+    42901: RateLimitExceededError,
+    10006: RateLimitExceededError,
+    40801: RequestTimeoutError,
+    50001: InternalError,
+    120009: InternalError,
+    9010001: MaintenanceError,
+    40102: InvalidNonceError,
+    10007: InvalidNonceError,
+    10002: PermissionDeniedError,
+    10003: PermissionDeniedError,
+    10005: PermissionDeniedError,
+    40104: PermissionDeniedError,
+    40001: BadRequestError,
+    40002: BadRequestError,
+    40003: BadRequestError,
+    40004: BadRequestError,
+    40005: BadRequestError,
+    40006: BadRequestError,
+    40007: BadRequestError,
+    10004: BadRequestError,
+    213: InvalidOrderError,
+    217: InvalidOrderError,
+    218: InvalidOrderError,
+    219: InvalidOrderError,
+    220: InvalidOrderError,
+    221: InvalidOrderError,
+    223: InvalidOrderError,
+    224: InvalidOrderError,
+    308: InvalidOrderError,
+    310: InvalidOrderError,
+    312: InvalidOrderError,
+    313: InvalidOrderError,
+    314: InvalidOrderError,
+    315: InvalidOrderError,
+    325: InvalidOrderError,
+    415: InvalidOrderError,
+    1110: InvalidOrderError,
+    30006: InvalidOrderError,
+    30007: InvalidOrderError,
+    30008: InvalidOrderError,
+    30009: InvalidOrderError,
+    30013: InvalidOrderError,
+    30014: InvalidOrderError,
+    30016: InvalidOrderError,
+    30017: InvalidOrderError,
+    30023: InvalidOrderError,
+    30024: InvalidOrderError,
+    30025: InvalidOrderError,
+}
+
+# Codes worth retrying (transient by nature). Everything else raises at once
+# - retrying a deterministic rejection wastes rate-limit and hides bugs.
+RETRYABLE_ERROR_CODES = frozenset(
+    {
+        40801,  # request timeout
+        42901,  # rate limit
+        10006,  # ddos protection
+        50001,  # internal error
+        120009,  # rejected by upstream service
+        9010001,  # maintenance
+    }
+)
+
+
+def is_retryable_error_code(code: int) -> bool:
+    """Whether an API error code is transient and worth retrying."""
+    return code in RETRYABLE_ERROR_CODES
+
+
+def api_error_from_response(
+    code: int, message: str | None = None, method: str | None = None
+) -> ApiError:
+    """Build the typed exception for an API error code + message."""
+    message = str(message or f"API error {code}")
+    cls = _ERROR_CODE_CLASSES.get(code, ExchangeError)
+    return cls(message, code=code, method=method)

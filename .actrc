@@ -1,0 +1,4 @@
+-P ubuntu-latest=localhost/act-runner:local
+--pull=false
+--container-architecture linux/amd64
+--network host
