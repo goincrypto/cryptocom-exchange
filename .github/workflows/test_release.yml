@@ -38,13 +38,9 @@ jobs:
           restore-keys: poetry-pip
       - name: Install poetry
         run: pip install poetry==2.4.1
-      - name: Download cache for poetry
-        id: poetry-install
-        uses: actions/cache@v3
-        with:
-          path: ./.venv/
-          key: py-${{ matrix.python-version }}-poetry-install-v2-${{ hashFiles('poetry.lock') }}
-          restore-keys: poetry-install-v2
+      # NOTE: do not cache ./.venv - a bare restore-keys prefix used to
+      # resurrect a stale python-3.11 venv under the 3.14 matrix leg
+      # (coverage/behavior silently diverged from the declared runtime).
       - name: Install packages
         run: poetry install
       - name: Verify pytest installation
