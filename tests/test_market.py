@@ -1,5 +1,6 @@
+from datetime import UTC, datetime
+
 import pytest
-from datetime import datetime, timezone
 
 import cryptocom.exchange as cro
 from cryptocom.exchange.structs import BaseCurrencyConfig
@@ -29,8 +30,8 @@ async def test_get_tickers(market: cro.Market):
 async def test_get_trades(market: cro.Market):
     """Test basic trade loading functionality."""
     # Use captured timestamp range (July 4, 2026 13:29-14:29 UTC)
-    start_ts = int(datetime(2026, 7, 4, 13, 29, 29, tzinfo=timezone.utc).timestamp())
-    end_ts = int(datetime(2026, 7, 4, 14, 29, 29, tzinfo=timezone.utc).timestamp())
+    start_ts = int(datetime(2026, 7, 4, 13, 29, 29, tzinfo=UTC).timestamp())
+    end_ts = int(datetime(2026, 7, 4, 14, 29, 29, tzinfo=UTC).timestamp())
 
     trades = []
     async for trade in market.get_trades(
@@ -78,8 +79,8 @@ async def test_get_orderbook(market: cro.Market):
         # 1D candles: 1 month range (June 1 - July 1, 2026)
         (
             cro.Timeframe.DAY,
-            int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
-            int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
+            int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=UTC).timestamp()),
+            int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=UTC).timestamp()),
             30,
             None,  # No limit when using time boundaries
         ),
@@ -134,15 +135,15 @@ async def test_get_candles(
         # Test with 1-day window (June 28, 2026), should get at least 1 daily candle
         (
             cro.Timeframe.DAY,
-            int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
-            int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp()),
+            int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=UTC).timestamp()),
+            int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=UTC).timestamp()),
             1,
         ),
         # Test with 10-day window for 15m, should get at least 5 candles (sparse data)
         (
             cro.Timeframe.MIN_15,
-            int(datetime(2026, 6, 24, 0, 0, 0, tzinfo=timezone.utc).timestamp()),
-            int(datetime(2026, 7, 3, 23, 59, 59, tzinfo=timezone.utc).timestamp()),
+            int(datetime(2026, 6, 24, 0, 0, 0, tzinfo=UTC).timestamp()),
+            int(datetime(2026, 7, 3, 23, 59, 59, tzinfo=UTC).timestamp()),
             5,
         ),
     ],
@@ -211,8 +212,8 @@ async def test_get_candles_all_history_invalid_with_boundaries(
 @pytest.mark.asyncio
 async def test_get_candles_count(market: cro.Market):
     """Test that count=650 fetches up to 650 candles via pagination."""
-    start_ts = int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp())
-    end_ts = int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=timezone.utc).timestamp())
+    start_ts = int(datetime(2026, 6, 1, 0, 0, 0, tzinfo=UTC).timestamp())
+    end_ts = int(datetime(2026, 7, 1, 0, 0, 0, tzinfo=UTC).timestamp())
 
     candles = []
     async for candle in market.get_candles(
@@ -232,8 +233,8 @@ async def test_get_candles_count(market: cro.Market):
 async def test_get_candles_no_duplicates(market: cro.Market):
     """Test that get_candles prevents duplicates across API requests."""
     # Use same params as test_get_candles_with_time_boundaries[1D-1782854400-1782883199-1]
-    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
-    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
+    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=UTC).timestamp())
+    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=UTC).timestamp())
 
     candles = []
     async for candle in market.get_candles(
@@ -255,8 +256,8 @@ async def test_get_candles_no_duplicates(market: cro.Market):
 async def test_get_trades_no_duplicates(market: cro.Market):
     """Test that get_trades prevents duplicates across API requests."""
     # Use 1-day range in June 2026
-    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
-    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
+    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=UTC).timestamp())
+    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=UTC).timestamp())
 
     trades = []
     async for trade in market.get_trades(
@@ -278,8 +279,8 @@ async def test_get_trades_no_duplicates(market: cro.Market):
 async def test_get_candles_start_end_verification(market: cro.Market):
     """Test that start_ts and end_ts are properly enforced."""
     # Use same params as test_get_candles_with_time_boundaries[1D-1782854400-1782883199-1]
-    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=timezone.utc).timestamp())
-    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=timezone.utc).timestamp())
+    start_ts = int(datetime(2026, 6, 28, 0, 0, 0, tzinfo=UTC).timestamp())
+    end_ts = int(datetime(2026, 6, 28, 23, 59, 59, tzinfo=UTC).timestamp())
 
     candles = []
     async for candle in market.get_candles(
@@ -351,7 +352,7 @@ async def test_listen_orderbook(market: cro.Market):
 
     async for orderbook in market.listen_orderbook(*pairs):
         orderbooks.append(orderbook)
-        if set(pairs) == set(o.pair for o in orderbooks):
+        if set(pairs) == {o.pair for o in orderbooks}:
             break
 
     for book in orderbooks:
@@ -411,8 +412,8 @@ async def test_trades_match_candles_ohlcv_from_trades(market: cro.Market):
     - Proper ordering: both trades and candles yielded newest-first from API
     """
     # Use July 5, 2026 UTC - 1 hour period with BTC_USD (high volume)
-    start_ts = int(datetime(2026, 7, 5, 13, 0, 0, tzinfo=timezone.utc).timestamp())
-    end_ts = int(datetime(2026, 7, 5, 14, 0, 0, tzinfo=timezone.utc).timestamp())
+    start_ts = int(datetime(2026, 7, 5, 13, 0, 0, tzinfo=UTC).timestamp())
+    end_ts = int(datetime(2026, 7, 5, 14, 0, 0, tzinfo=UTC).timestamp())
 
     # STEP 1: Fetch API candles FIRST to get exact time boundaries
     api_candles = []

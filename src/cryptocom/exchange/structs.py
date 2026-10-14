@@ -921,15 +921,15 @@ class Transaction:
 
     @staticmethod
     def _prepare(data):
-        return dict(
-            id=data["id"],
-            instrument=Instrument(data["currency"]),
-            fee=float(data["fee"]),
-            create_time=datetime.fromtimestamp(int(data["create_time"]) / 1000),
-            update_time=datetime.fromtimestamp(int(data["update_time"]) / 1000),
-            amount=float(data["amount"]),
-            address=data["address"],
-        )
+        return {
+            "id": data["id"],
+            "instrument": Instrument(data["currency"]),
+            "fee": float(data["fee"]),
+            "create_time": datetime.fromtimestamp(int(data["create_time"]) / 1000),
+            "update_time": datetime.fromtimestamp(int(data["update_time"]) / 1000),
+            "amount": float(data["amount"]),
+            "address": data["address"],
+        }
 
 
 @dataclass

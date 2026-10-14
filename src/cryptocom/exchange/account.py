@@ -3,12 +3,11 @@ import logging
 import time
 import warnings
 from dataclasses import dataclass
-from uuid import uuid4
 from typing import Any
+from uuid import uuid4
 
 from .api import ApiError, ApiProvider
 from .exceptions import (
-    CancelNotConfirmedError,
     OrderNotActiveError,
     OrderNotFoundError,
     WaitNotConfirmedError,
@@ -459,16 +458,14 @@ class Account:
         deadline = loop.time() + timeout
         last = "unknown"
         while True:
-            try:
-                order = await self.get_order(
-                    order_id=order_id,
-                    client_order_id=client_order_id,
-                    ignore_cache=True,
-                )
-            except OrderNotFoundError:
-                order = None
+            order = await self.get_order(
+                order_id=order_id,
+                client_order_id=client_order_id,
+                ignore_cache=True,
+            )
+            if order is None:
                 last = "absent"
-            if order is not None:
+            else:
                 last = str(order.status)
                 if order.status in statuses:
                     return order
@@ -593,7 +590,7 @@ class Account:
         client_order_id: str | None = None,
         updates: dict[str, Order] | None = None,
         ignore_cache: bool = False,
-    ) -> Order:
+    ) -> Order | None:
         """Get order info by order_id or client_order_id.
 
         Cache-backed for client_order_id lookups. Resolution priority:
@@ -601,16 +598,14 @@ class Account:
         cache > API. Terminal orders are cached forever; live orders for
         ``orders_ttl`` seconds (0 disables caching).
 
-        Args:
-            order_id: Exchange order ID
-            client_order_id: Client order ID (client_oid)
-            updates: Live order snapshot keyed by client_oid (highest priority,
-                populates the cache)
-            ignore_cache: If True, query the exchange directly
+        Returns:
+            The Order, or None if the exchange CONFIRMS the order is absent
+            (empty result / code 40401). None is a definite answer; unknown
+            outcomes raise. Endpoints where "not found" is an error reply
+            (cancel, amend) still raise OrderNotFoundError.
 
         Raises:
             ValueError: If neither order_id nor client_order_id is provided
-            OrderNotFoundError: The order is confirmed absent (deterministic)
             ApiError: Just-created order unreadable, or lookup failed -
                 outcome UNKNOWN, must be reconciled later (indeterminate)
         """
@@ -633,10 +628,15 @@ class Account:
         if client_order_id:
             params["client_oid"] = client_order_id
 
-        data = await self.api.post(
-            "private/get-order-detail",
-            {"params": params},
-        )
+        try:
+            data = await self.api.post(
+                "private/get-order-detail",
+                {"params": params},
+            )
+        except OrderNotFoundError:
+            # Coded 40401 is the same confirmed-absent answer as an empty
+            # result; get_order reports absence as None.
+            data = None
         if not data:
             # Structured success with empty result - normally "not there".
             # Exception: an order created moments ago may not be readable
@@ -654,9 +654,7 @@ class Account:
                         "creation - state unknown, reconcile later",
                         method="private/get-order-detail",
                     )
-            raise OrderNotFoundError(
-                "No order data", code=40401, method="private/get-order-detail"
-            )
+            return None
 
         order = Order.create_from_api(
             self.pairs[data["instrument_name"]],
@@ -729,70 +727,82 @@ class Account:
         client_order_id: str,
         timeout: float = 30.0,
         poll_interval: float = 0.5,
-    ) -> Order | None:
-        """Cancel an order and poll until it reaches a terminal status.
+    ) -> bool:
+        """Cancel an order and confirm it is no longer live.
 
-        Absent and already-terminal orders are treated as confirmed success
-        (nothing to cancel). A cancel rejected as not-active re-queries once:
-        a race with FILLED/CANCELED is a valid terminal outcome, not an error.
-
-        Args:
-            pair: Trading pair
-            client_order_id: Client order ID (client_oid) of the order
-            timeout: Max seconds to wait for a terminal status
-            poll_interval: Seconds between status polls
+        All exchange-side races are resolved here: an already-terminal or
+        confirmed-absent order needs no cancel; a cancel rejected as
+        not-active (316) re-queries once, because racing into
+        FILLED/CANCELED/absent is a confirmed outcome, not an error.
 
         Returns:
-            The order in terminal status, or None if the order is confirmed
-            absent from the exchange.
+            True: CONFIRMED not live - cancel reached terminal status, the
+                order was already terminal, or the exchange confirmed it
+                absent. Safe to treat as cancelled.
+            False: cancellation NOT confirmed - cancel timed out (it may
+                still have landed after the last poll) or the order is
+                confirmed still live. Never read False as "cancelled".
 
         Raises:
-            CancelNotConfirmedError: Terminal status not confirmed in time -
-                the cancel may have landed after the last poll.
-            ApiError: Cancel or lookup failed with an indeterminate error -
-                outcome unknown, the caller must reconcile later.
+            ApiError: Cancel or lookup failed indeterminately - outcome
+                unknown, reconcile later.
         """
-        try:
-            order = await self.get_order(
-                client_order_id=client_order_id, ignore_cache=True
-            )
-        except OrderNotFoundError:
-            return None
-        if order.is_terminal:
-            return order
+        order = await self.get_order(client_order_id=client_order_id, ignore_cache=True)
+        if order is None or order.is_terminal:
+            return True
 
         try:
             await self.cancel_order(pair, client_order_id=client_order_id)
         except OrderNotActiveError:
             # Cancel raced a status change - re-query to learn the outcome.
-            try:
-                order = await self.get_order(
-                    client_order_id=client_order_id, ignore_cache=True
-                )
-            except OrderNotFoundError:
-                return None
-            if order.is_terminal:
-                return order
-            raise
+            order = await self.get_order(
+                client_order_id=client_order_id, ignore_cache=True
+            )
+            return order is None or order.is_terminal
         except OrderNotFoundError:
-            return None
+            return True
 
         loop = asyncio.get_running_loop()
         deadline = loop.time() + timeout
         while loop.time() < deadline:
-            try:
-                order = await self.get_order(
-                    client_order_id=client_order_id, ignore_cache=True
-                )
-            except OrderNotFoundError:
-                return None
-            if order.is_terminal:
-                return order
+            order = await self.get_order(
+                client_order_id=client_order_id, ignore_cache=True
+            )
+            if order is None or order.is_terminal:
+                return True
             await asyncio.sleep(poll_interval)
+        return False
 
-        raise CancelNotConfirmedError(
-            f"Order {client_order_id!r} not terminal within {timeout}s "
-            f"(last status: {order.status})"
+    async def resolve_stuck_order(
+        self,
+        pair: Pair,
+        order: Order,
+        stuck_after: float = 300.0,
+        timeout: float = 30.0,
+        poll_interval: float = 0.5,
+    ) -> bool:
+        """Resolve a possibly-stuck resting order (shadow-order mechanic).
+
+        An order is stuck when it sits in NEW (never activated) for longer
+        than ``stuck_after`` seconds AND cancel-and-wait cannot confirm its
+        removal. Anything else (healthy, terminal, NEW but still fresh, or
+        successfully cancelled) is clear to proceed.
+
+        Returns:
+            True: the order is STUCK (cancel attempted, not confirmed).
+            False: clear to proceed - no cancellation was needed or the
+                stuck order was successfully removed.
+
+        Raises:
+            ApiError: cancel or lookup failed indeterminately - unknown is
+                never reported as stuck or clear; reconcile later.
+        """
+        if order.status != OrderStatus.NEW:
+            return False
+        if time.time() - order.created_at <= stuck_after:
+            return False
+        return not await self.cancel_order_and_wait(
+            pair, order.client_id, timeout, poll_interval
         )
 
     async def update_order(

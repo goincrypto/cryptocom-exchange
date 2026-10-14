@@ -2,12 +2,11 @@ import asyncio
 import time
 
 import async_timeout
+import helpers
 import pytest
 
 import cryptocom.exchange as cro
 from cryptocom.exchange.structs import OrderStatus
-
-import helpers
 
 
 @pytest.mark.asyncio
@@ -317,7 +316,7 @@ async def test_account_market_orders(account: cro.Account, market: cro.Market):
 
     assert l_orders
     assert l_balances
-    assert set(o.id for o in l_orders) == set(o.id for o in orders)
+    assert {o.id for o in l_orders} == {o.id for o in orders}
 
     trades = await account.get_trades(
         cro.pairs.CRO_USD, limit=len(order_ids["buy"]) + len(order_ids["sell"])
@@ -383,7 +382,7 @@ async def test_cancel_order_with_client_id(account: cro.Account, market: cro.Mar
     assert order_1.is_active
 
     # Cancel order using client_id
-    returned_order_id, returned_client_oid = await account.cancel_order(
+    _returned_order_id, returned_client_oid = await account.cancel_order(
         cro.pairs.CRO_USD, client_order_id=client_id, check_status=True
     )
 
@@ -437,14 +436,13 @@ async def test_update_order_by_client_id(account: cro.Account, market: cro.Marke
     assert result.id is not None  # Order ID returned
     assert result.client_id == new_client_id  # Matches provided new_client_id
 
-    # Note: After amend, the original order is canceled and a new one is created
-    # The original order should be canceled
-    try:
-        order_1_after = await account.get_order(order_id=original_order_id)
-        assert order_1_after.is_canceled
-    except Exception:
-        # Order might not be found if already removed
-        pass
+    # After amend the original client order is gone; the exchange keeps its
+    # own order id and re-assigns it to the replacement.
+    order_1_after = await account.get_order(order_id=original_order_id)
+    # The exchange REUSES its order id across amends: the same exchange
+    # order_id now belongs to the replacement order, not the original.
+    # (The old assert-then-swallow hid exactly this.)
+    assert order_1_after.client_id == new_client_id
 
 
 @pytest.mark.asyncio
@@ -487,11 +485,11 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
     assert result.client_id == new_client_id  # Matches provided new_client_id
 
     # Original order should be canceled
-    try:
-        order_1_after = await account.get_order(order_id=original_order_id)
-        assert order_1_after.is_canceled
-    except Exception:
-        pass
+    order_1_after = await account.get_order(order_id=original_order_id)
+    # The exchange REUSES its order id across amends: the same exchange
+    # order_id now belongs to the replacement order, not the original.
+    # (The old assert-then-swallow hid exactly this.)
+    assert order_1_after.client_id == new_client_id
 
 
 @pytest.mark.asyncio
@@ -534,8 +532,8 @@ async def test_update_order_quantity_only(account: cro.Account, market: cro.Mark
     assert result.client_id == new_client_id  # Matches provided new_client_id
 
     # Original order should be canceled
-    try:
-        order_1_after = await account.get_order(order_id=original_order_id)
-        assert order_1_after.is_canceled
-    except Exception:
-        pass
+    order_1_after = await account.get_order(order_id=original_order_id)
+    # The exchange REUSES its order id across amends: the same exchange
+    # order_id now belongs to the replacement order, not the original.
+    # (The old assert-then-swallow hid exactly this.)
+    assert order_1_after.client_id == new_client_id

@@ -326,14 +326,6 @@ class MaintenanceError(ExchangeError):
     """Exchange under maintenance (code 9010001). Transient."""
 
 
-class CancelNotConfirmedError(ApiError):
-    """Cancel was not confirmed terminal before the timeout.
-
-    Indeterminate (code is None): the cancel may still have landed after
-    the last poll - the caller must reconcile the order later.
-    """
-
-
 class WaitNotConfirmedError(ApiError):
     """An order did not reach a required status before the timeout.
 

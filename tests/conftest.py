@@ -10,7 +10,6 @@ import cryptocom.exchange as cro
 
 @pytest.fixture
 def api(request):
-    pathlib.Path(__file__).parent
     # Get the test file path relative to tests directory, remove .py extension
     test_file = request.node.location[0].split("::")[0]
     relative_path = pathlib.Path(test_file).with_suffix("").name

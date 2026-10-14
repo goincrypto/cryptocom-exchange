@@ -83,18 +83,18 @@ async def test_order_lifecycle_with_cache(account: cro.Account):
 
         # --- cancel to terminal through the polling primitive --------------
         final = await account.cancel_order_and_wait(PAIR, new_client_id, timeout=20.0)
-        assert final is not None
-        assert final.is_terminal
-        assert final.status in (
-            cro.OrderStatus.CANCELED,
-            cro.OrderStatus.EXPIRED,
-            cro.OrderStatus.REJECTED,
-        )
+        assert final is True  # confirmed not live
 
         # --- terminal entry is now immortal (cached forever) ---------------
         calls_before = detail_calls["n"]
         again = await account.get_order(client_order_id=new_client_id)
-        assert again is final
+        assert again is not None
+        assert again.is_terminal
+        assert again.status in (
+            cro.OrderStatus.CANCELED,
+            cro.OrderStatus.EXPIRED,
+            cro.OrderStatus.REJECTED,
+        )
         assert detail_calls["n"] == calls_before
     finally:
         # Belt and braces: never leave a resting test order behind.

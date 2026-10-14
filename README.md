@@ -105,7 +105,11 @@ response.
 ### Orders
 
 `Account` caches orders by `client_oid` in `Account.order_cache` (the snippets
-here use `from cryptocom.exchange import exceptions`). Terminal
+here use `from cryptocom.exchange import exceptions`). `get_order` returns
+`None` when the exchange CONFIRMS absence (empty result or code 40401) — a
+ definite answer; unknown outcomes raise `ApiError`. (`OrderNotFoundError`
+lives on for endpoints where absence IS the error reply: cancel, amend.)
+Terminal
 entries (`Order.is_terminal`, `TERMINAL_ORDER_STATUSES`) are final and live
 forever; live entries expire after `orders_ttl` seconds (default 5, `0`
 disables live caching). The cache is only written from observed answers: cancel
@@ -124,14 +128,12 @@ order = await account.wait_for_order(
     timeout=5.0,
 )
 
-# Cancel, then poll to a terminal status. Returns the terminal order, or None
-# when the exchange confirms the order is gone.
-try:
-    order = await account.cancel_order_and_wait(pair, client_id, timeout=5.0)
-except exceptions.CancelNotConfirmedError:
-    await reconcile_later(client_id)  # cancel may still land: reconcile
-else:
-    print("terminal:", order.status if order else "absent")
+# Cancel, then poll to terminal. True = CONFIRMED not live (terminal or
+# absent); False = not confirmed (timed out or still live) - never treat
+# False as cancelled. Indeterminate cancel/lookup failures raise ApiError.
+cancelled = await account.cancel_order_and_wait(pair, client_id, timeout=5.0)
+if not cancelled:
+    await reconcile_later(client_id)  # may still land after the last poll
 ```
 
 A websocket feed can answer lookups directly: `updates` wins over cache and
@@ -145,7 +147,7 @@ order = await account.get_order(client_order_id=client_id, updates={client_id: s
 Two guards worth knowing:
 
 - A `client_oid` created moments ago that reads back empty raises an
-  indeterminate `ApiError`, not `OrderNotFoundError`, for `create_race_guard`
+  indeterminate `ApiError` instead of returning `None`, for `create_race_guard`
   seconds (default 2). Absence right after create is not proof of absence.
 - `wait_for_order` raises `exceptions.WaitNotConfirmedError` (indeterminate) on
   timeout instead of returning `None`. `wait_for_status` is deprecated in its

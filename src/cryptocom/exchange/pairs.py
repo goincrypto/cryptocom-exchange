@@ -1,4 +1,4 @@
-from .structs import Pair, InstrumentType, Instrument
+from .structs import Instrument, InstrumentType, Pair
 
 AAVE_USD = Pair(
     exchange_name="AAVE_USD",

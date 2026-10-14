@@ -2,7 +2,7 @@
 
 The cache contract being pinned:
 - UPSERT only from confirmed observations; terminal entries are immortal.
-- POP only on confirmed absence (OrderNotFoundError), with a create-race
+- POP only on confirmed absence (get_order returns None), with a create-race
   guard that refuses to call a just-created order "absent".
 - INVALIDATE on our own actions (cancel, amend) - never write assumed states.
 - Indeterminate errors leave the cache untouched.
@@ -92,8 +92,8 @@ async def test_not_found_pops_cached_entry():
     account.api.order = None  # order disappears on the exchange
 
     # This Account created nothing recently -> absence is confirmed.
-    with pytest.raises(cro.exceptions.OrderNotFoundError):
-        await account.get_order(client_order_id="b1-b1", ignore_cache=True)
+    missing = await account.get_order(client_order_id="b1-b1", ignore_cache=True)
+    assert missing is None
     assert "b1-b1" not in account.order_cache
 
 
@@ -125,8 +125,7 @@ async def test_create_race_reads_as_unknown_not_absent():
 
     # Guard window passed -> absence becomes a confirmed answer again.
     account.create_race_guard = 0.0
-    with pytest.raises(cro.exceptions.OrderNotFoundError):
-        await account.get_order(client_order_id="b1-b9", ignore_cache=True)
+    assert (await account.get_order(client_order_id="b1-b9", ignore_cache=True)) is None
 
 
 @pytest.mark.asyncio

@@ -1,6 +1,6 @@
 import asyncio
-import hmac
 import hashlib
+import hmac
 import os
 import time
 
@@ -8,7 +8,6 @@ import pytest
 
 import cryptocom.exchange as cro
 from cryptocom.exchange.api import params_to_str as our_params_to_str
-
 
 # ==============================================================================
 # Documentation Reference Implementation

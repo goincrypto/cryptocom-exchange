@@ -1,6 +1,7 @@
 """Test client_id validation."""
 
 import pytest
+
 from cryptocom.exchange.account import Account
 
 

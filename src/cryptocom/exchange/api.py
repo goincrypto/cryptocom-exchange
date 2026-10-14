@@ -193,9 +193,9 @@ class ApiProvider:
 
         self.rate_limiters = {}
 
-        for urls in RATE_LIMITS:
+        for urls, limit in RATE_LIMITS.items():
             for url in urls:
-                self.rate_limiters[url] = aiolimiter.AsyncLimiter(*RATE_LIMITS[urls])
+                self.rate_limiters[url] = aiolimiter.AsyncLimiter(*limit)
 
         # limits for not matched methods
         # Private APIs: 3 requests per 100ms (REST API - authenticated)

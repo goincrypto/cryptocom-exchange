@@ -1,9 +1,13 @@
 """Offline behavioral tests for Account.cancel_order_and_wait.
 
-A scripted ApiProvider stands in for the exchange: every cancel race and
-failure mode is deterministic here, which is exactly why this logic belongs
-in the package next to the error taxonomy.
+Bool contract: True = CONFIRMED not live (terminal, absent, or raced into
+either); False = cancellation NOT confirmed (timeout or still live). Only
+indeterminate errors raise. A scripted ApiProvider stands in for the
+exchange: every cancel race and failure mode is deterministic here, which
+is exactly why this logic belongs in the package next to the taxonomy.
 """
+
+import time
 
 import pytest
 
@@ -81,10 +85,10 @@ def _account(**script_kwargs):
 @pytest.mark.asyncio
 async def test_cancel_new_order_confirms_canceled():
     account = _account(order=_order_detail("NEW"), cancel_lands_as="CANCELED")
-    order = await account.cancel_order_and_wait(cro.pairs.CRO_USD, "b1-b1", timeout=2.0)
-    assert order is not None
-    assert order.status == cro.OrderStatus.CANCELED
-    assert order.is_terminal
+    confirmed = await account.cancel_order_and_wait(
+        cro.pairs.CRO_USD, "b1-b1", timeout=2.0
+    )
+    assert confirmed is True
     assert account.api.cancel_calls == 1
     # Terminal found on the first poll - no busy-waiting happened.
     assert account.api.detail_calls == 2
@@ -93,16 +97,20 @@ async def test_cancel_new_order_confirms_canceled():
 @pytest.mark.asyncio
 async def test_already_terminal_order_needs_no_cancel():
     account = _account(order=_order_detail("FILLED"))
-    order = await account.cancel_order_and_wait(cro.pairs.CRO_USD, "b1-b1", timeout=2.0)
-    assert order.status == cro.OrderStatus.FILLED
+    confirmed = await account.cancel_order_and_wait(
+        cro.pairs.CRO_USD, "b1-b1", timeout=2.0
+    )
+    assert confirmed is True
     assert account.api.cancel_calls == 0
 
 
 @pytest.mark.asyncio
-async def test_absent_order_returns_none_without_cancel():
+async def test_absent_order_is_confirmed_not_live_without_cancel():
     account = _account(order=None)
-    order = await account.cancel_order_and_wait(cro.pairs.CRO_USD, "b1-b1", timeout=2.0)
-    assert order is None
+    confirmed = await account.cancel_order_and_wait(
+        cro.pairs.CRO_USD, "b1-b1", timeout=2.0
+    )
+    assert confirmed is True
     assert account.api.cancel_calls == 0
 
 
@@ -122,27 +130,42 @@ async def test_cancel_racing_to_fill_is_terminal_success():
 
     account.api.post = post_that_fills
 
-    order = await account.cancel_order_and_wait(cro.pairs.CRO_USD, "b1-b1", timeout=2.0)
-    assert order.status == cro.OrderStatus.FILLED
+    confirmed = await account.cancel_order_and_wait(
+        cro.pairs.CRO_USD, "b1-b1", timeout=2.0
+    )
+    assert confirmed is True
 
 
 @pytest.mark.asyncio
 async def test_order_vanishing_under_cancel_is_confirmed_absent():
     account = _account(order=_order_detail("ACTIVE"), order_vanishes_on_cancel=True)
-    order = await account.cancel_order_and_wait(cro.pairs.CRO_USD, "b1-b1", timeout=2.0)
-    assert order is None
+    confirmed = await account.cancel_order_and_wait(
+        cro.pairs.CRO_USD, "b1-b1", timeout=2.0
+    )
+    assert confirmed is True
 
 
 @pytest.mark.asyncio
-async def test_timeout_raises_indeterminate_cancel_error():
-    """Never-terminal order => CancelNotConfirmedError, an indeterminate error."""
+async def test_cancel_rejected_order_confirmed_live_returns_false():
+    """316 + re-query still ACTIVE => definitively not cancelled: False."""
     account = _account(order=_order_detail("ACTIVE"))
-    with pytest.raises(cro.exceptions.CancelNotConfirmedError) as exc_info:
-        await account.cancel_order_and_wait(
-            cro.pairs.CRO_USD, "b1-b1", timeout=0.3, poll_interval=0.05
-        )
-    assert exc_info.value.code is None
-    assert exc_info.value.is_indeterminate
+    account.api.cancel_error = cro.exceptions.OrderNotActiveError(
+        "order is not active", code=316, method="private/cancel-order"
+    )
+    confirmed = await account.cancel_order_and_wait(
+        cro.pairs.CRO_USD, "b1-b1", timeout=2.0
+    )
+    assert confirmed is False
+
+
+@pytest.mark.asyncio
+async def test_timeout_returns_false_not_cancelled():
+    """Never-terminal order => False: not confirmed, cancel may still land."""
+    account = _account(order=_order_detail("ACTIVE"))
+    confirmed = await account.cancel_order_and_wait(
+        cro.pairs.CRO_USD, "b1-b1", timeout=0.3, poll_interval=0.05
+    )
+    assert confirmed is False
     assert account.api.cancel_calls == 1
 
 
@@ -156,4 +179,67 @@ async def test_indeterminate_cancel_error_propagates():
     with pytest.raises(cro.exceptions.ApiError) as exc_info:
         await account.cancel_order_and_wait(cro.pairs.CRO_USD, "b1-b1", timeout=2.0)
     assert exc_info.value.is_indeterminate
-    assert not isinstance(exc_info.value, cro.exceptions.CancelNotConfirmedError)
+
+
+# ============================================================================
+# resolve_stuck_order - the shadow-order mechanic
+# ============================================================================
+
+
+def _fresh_order_detail(**kwargs):
+    detail = _order_detail(**kwargs)
+    detail["create_time"] = int(time.time() * 1000)
+    return detail
+
+
+@pytest.mark.asyncio
+async def test_stuck_new_order_cancelled_is_clear():
+    """NEW for > stuck_after and cancelable => clear to proceed (False)."""
+    account = _account(order=_order_detail("NEW"), cancel_lands_as="CANCELED")
+    order = await account.get_order(client_order_id="b1-b1")
+    stuck = await account.resolve_stuck_order(cro.pairs.CRO_USD, order, timeout=1.0)
+    assert stuck is False
+    assert account.api.cancel_calls == 1
+
+
+@pytest.mark.asyncio
+async def test_stuck_new_order_never_removes_is_stuck():
+    """NEW for > stuck_after and NOT removable => stuck (True)."""
+    account = _account(order=_order_detail("NEW"))  # cancel lands, stays NEW
+    order = await account.get_order(client_order_id="b1-b1")
+    stuck = await account.resolve_stuck_order(
+        cro.pairs.CRO_USD, order, timeout=0.2, poll_interval=0.05
+    )
+    assert stuck is True
+
+
+@pytest.mark.asyncio
+async def test_active_order_is_never_stuck():
+    account = _account(order=_order_detail("ACTIVE"))
+    order = await account.get_order(client_order_id="b1-b1")
+    stuck = await account.resolve_stuck_order(cro.pairs.CRO_USD, order)
+    assert stuck is False
+    assert account.api.cancel_calls == 0
+
+
+@pytest.mark.asyncio
+async def test_fresh_new_order_is_not_stuck_yet():
+    """NEW but younger than stuck_after: no cancel attempted."""
+    account = _account(order=_fresh_order_detail(status="NEW"))
+    order = await account.get_order(client_order_id="b1-b1")
+    stuck = await account.resolve_stuck_order(cro.pairs.CRO_USD, order)
+    assert stuck is False
+    assert account.api.cancel_calls == 0
+
+
+@pytest.mark.asyncio
+async def test_stuck_resolution_indeterminate_error_propagates():
+    """Unknown cancel outcome raises - never reported as stuck or clear."""
+    account = _account(order=_order_detail("NEW"))
+    account.api.cancel_error = cro.exceptions.ApiError(
+        "connection reset", method="private/cancel-order"
+    )
+    order = await account.get_order(client_order_id="b1-b1")
+    with pytest.raises(cro.exceptions.ApiError) as exc_info:
+        await account.resolve_stuck_order(cro.pairs.CRO_USD, order)
+    assert exc_info.value.is_indeterminate
