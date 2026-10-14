@@ -336,7 +336,9 @@ class WaitNotConfirmedError(ApiError):
 
 # Code -> exception class. Deterministic codes not listed here fall back to
 # the generic ExchangeError (still NOT retried - unknown code != transient).
-_ERROR_CODE_CLASSES: dict[int, type[ExchangeError]] = {
+# Auth-family codes (InvalidNonceError) ride along: they are ApiErrors whose
+# indeterminate status is the SAFE reading of an auth-time rejection.
+_ERROR_CODE_CLASSES: dict[int, type[ApiError]] = {
     40401: OrderNotFoundError,
     212: OrderNotFoundError,
     306: NotEnoughBalanceError,

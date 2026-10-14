@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+import typing as tp
 import warnings
 from dataclasses import dataclass
 from typing import Any
@@ -332,24 +333,31 @@ class Account:
         precision = pair.quantity_precision
         if type_ == OrderType.MARKET and side == OrderSide.BUY:
             precision = pair.price_precision
-        quantity = "{:.{}f}".format(quantity, precision)
-        if old_quantity and not float(quantity):
+        qty_str = "{:.{}f}".format(quantity, precision)
+        if old_quantity and not float(qty_str):
             raise ValueError(
                 f"Your quantity: {old_quantity} is less then "
-                f"accepted precision: {quantity} "
+                f"accepted precision: {qty_str} "
                 f"for pair: {pair} {type_}, {side}"
             )
         if type_ == OrderType.MARKET and side == OrderSide.BUY:
-            data["notional"] = quantity
-            notional_value = float(quantity)
+            data["notional"] = qty_str
+            notional_value = float(qty_str)
         else:
-            data["quantity"] = quantity
+            data["quantity"] = qty_str
             if type_ == OrderType.MARKET:
-                # Fetch price for market sell orders (for notional validation only)
+                # Fetch price for market sell orders (for notional validation
+                # only). No price => cannot size the order: fail locally,
+                # deterministically, BEFORE anything reaches the exchange.
                 market_price = await self.market.get_price(pair)
-                notional_value = float(quantity) * market_price
+                if market_price is None:
+                    raise ValueError(
+                        f"No market price for {pair} - cannot validate "
+                        "market order notional"
+                    )
+                notional_value = float(qty_str) * market_price
             else:
-                notional_value = float(quantity) * price
+                notional_value = float(qty_str) * price
 
         # Validate order notional against pair limits
         if not pair.validate_order_notional(notional_value):
@@ -478,7 +486,7 @@ class Account:
             await asyncio.sleep(poll_interval)
 
     async def wait_for_status(
-        self, order_id: str, statuses: tuple[OrderStatus, ...], delay: int = 0.1
+        self, order_id: str, statuses: tuple[OrderStatus, ...], delay: float = 0.1
     ) -> None:
         """Wait for order status.
 
@@ -899,7 +907,7 @@ class Account:
 
         return OrderKeys(id=returned_order_id, client_id=returned_client_oid)
 
-    async def cancel_open_orders(self, pair: Pair = None) -> None:
+    async def cancel_open_orders(self, pair: Pair | None = None) -> None:
         """Cancel all open orders."""
         data = {}
         if pair:
@@ -909,12 +917,12 @@ class Account:
             data,
         )
 
-    async def listen_balances(self) -> Balance:
+    async def listen_balances(self) -> tp.AsyncIterator[Balance]:
         async for data in self.api.listen("user", "user.balance", sign=True):
             data = data["data"][0]
             yield Balance.from_api(data)
 
-    async def listen_orders(self, pair: Pair) -> Order:
+    async def listen_orders(self, pair: Pair) -> tp.AsyncIterator[Order]:
         async for data in self.api.listen(
             "user", f"user.order.{pair.exchange_name}", sign=True
         ):
