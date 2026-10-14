@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Download cache for pip
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: ~/.cache/pip
           key: py-${{ matrix.python-version }}-poetry-pip-1.2.2
@@ -48,7 +48,7 @@ jobs:
       - name: Download cache for pre-commit
         if: matrix.python-version == '3.14'
         id: pre-commit-install
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: ~/.cache/pre-commit
           key: py-${{ matrix.python-version }}-pre-commit-install-${{ hashFiles('.pre-commit-config.yaml') }}
