@@ -65,7 +65,7 @@ jobs:
         continue-on-error: true
       - name: Commit & Push changes
         if: matrix.python-version == '3.14' && github.ref == 'refs/heads/main'
-        uses: actions-js/push@v1.3
+        uses: actions-js/push@v1.6
         with:
           author_email: "pair-bot@users.noreply.github.com"
           author_name: "pair-bot"
