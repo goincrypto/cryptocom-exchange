@@ -1,58 +1,59 @@
-"""Test client_id validation."""
+"""helpers.validate_client_id: the client_oid contract in one place.
+
+The exchange accepts client order ids of 1-36 characters. The check lives
+in the plain-function helpers module (exch.helpers.validate_client_id) -
+detached from any class, used by Account before placing or amending, and
+callable by anyone validating a DERIVED id scheme (e.g.
+"<prefix>-buy-<counter>") before the first request is ever sent.
+"""
 
 import pytest
 
-from cryptocom.exchange.account import Account
+from cryptocom.exchange.exceptions import ClientIdError
+from cryptocom.exchange.helpers import CLIENT_ID_MAX_LENGTH, validate_client_id
 
 
-def test_validate_client_id_empty_string():
-    """Test that empty string raises ValueError."""
-    account = Account(api_key="test", api_secret="test")
-    with pytest.raises(ValueError, match="cannot be empty"):
-        account._validate_client_id("", "client_id")
+def test_accepts_max_length_id():
+    assert validate_client_id("a" * CLIENT_ID_MAX_LENGTH) == ("a" * 36)
 
 
-def test_validate_client_id_too_long():
-    """Test that client_id > 36 chars raises ValueError."""
-    account = Account(api_key="test", api_secret="test")
-    with pytest.raises(ValueError, match="<= 36 characters"):
-        account._validate_client_id("a" * 37, "client_id")
+def test_accepts_short_id():
+    assert validate_client_id("b1-buy-1") == "b1-buy-1"
 
 
-def test_validate_client_id_non_string():
-    """Test that non-string raises TypeError."""
-    account = Account(api_key="test", api_secret="test")
+def test_rejects_empty_id():
+    with pytest.raises(ClientIdError, match="must not be empty"):
+        validate_client_id("")
+
+
+def test_rejects_too_long_id_and_names_the_id():
+    too_long = "x" * 37
+    with pytest.raises(ClientIdError, match="<= 36 characters") as exc_info:
+        validate_client_id(too_long)
+    assert repr(too_long) in str(exc_info.value)
+
+
+def test_rejects_non_string():
     with pytest.raises(TypeError, match="must be a string"):
-        account._validate_client_id(12345, "client_id")  # type: ignore
+        validate_client_id(12345)  # type: ignore[arg-type]
 
 
-def test_validate_client_id_max_length():
-    """Test that 36 char client_id is valid."""
-    account = Account(api_key="test", api_secret="test")
-    # Should not raise
-    account._validate_client_id("a" * 36, "client_id")
+def test_param_name_appears_in_error():
+    with pytest.raises(ClientIdError, match="bucket id 'toolongbucketname'"):
+        validate_client_id(
+            "toolongbucketname-buy-999999999999999",
+            "bucket id 'toolongbucketname' (counter-based client ids)",
+        )
 
 
-def test_validate_client_id_short():
-    """Test that short client_id is valid."""
-    account = Account(api_key="test", api_secret="test")
-    # Should not raise
-    account._validate_client_id("short", "client_id")
+def test_validates_derived_counter_schemes_at_their_largest_id():
+    """The bucket pattern: f"{id}-buy-<n>" must fit for EVERY counter."""
+    prefix = "b" * (CLIENT_ID_MAX_LENGTH - len("-sell-999999999"))
+    validate_client_id(f"{prefix}-sell-999999999")  # fits exactly
+    with pytest.raises(ClientIdError):
+        validate_client_id(f"{prefix}x-sell-999999999")
 
 
-def test_validate_client_id_none():
-    """Test that None is valid (triggers auto-generation)."""
-    account = Account(api_key="test", api_secret="test")
-    # Should not raise
-    account._validate_client_id(None, "client_id")
-
-
-def test_validate_client_id_custom_param_name():
-    """Test that custom param name appears in error messages."""
-    account = Account(api_key="test", api_secret="test")
-
-    with pytest.raises(ValueError, match="new_client_id cannot be empty"):
-        account._validate_client_id("", "new_client_id")
-
-    with pytest.raises(ValueError, match="orig_client_oid must be <= 36 characters"):
-        account._validate_client_id("a" * 37, "orig_client_oid")
+def test_client_id_error_is_a_value_error():
+    """Back-compat: existing `except ValueError` sites keep working."""
+    assert issubclass(ClientIdError, ValueError)

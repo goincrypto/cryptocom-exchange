@@ -1,4 +1,4 @@
-from . import exceptions, instruments, pairs
+from . import exceptions, helpers, instruments, pairs
 from .account import (
     MAX_OPEN_ORDERS_PER_ACCOUNT,
     MAX_OPEN_ORDERS_PER_PAIR,
@@ -30,6 +30,7 @@ from .structs import (
 )
 
 __all__ = [
+    "helpers",
     "MAX_OPEN_ORDERS_PER_ACCOUNT",
     "MAX_OPEN_ORDERS_PER_PAIR",
     "Account",

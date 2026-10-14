@@ -326,6 +326,17 @@ class MaintenanceError(ExchangeError):
     """Exchange under maintenance (code 9010001). Transient."""
 
 
+class ClientIdError(ValueError):
+    """A client order id violates the exchange contract (1-36 characters).
+
+    LOCAL pre-flight validation: raised BEFORE any request is sent (or
+    when validating candidate ids against the contract, e.g. a derived
+    "<prefix>-buy-<n>" counter scheme). There is no API code, no request
+    in flight, and nothing to reconcile. A ValueError subclass, so plain
+    `except ValueError` handlers keep working.
+    """
+
+
 class WaitNotConfirmedError(ApiError):
     """An order did not reach a required status before the timeout.
 

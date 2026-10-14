@@ -95,6 +95,12 @@ HTTP statuses route through the same taxonomy in `ApiProvider`: 401/403 →
 → indeterminate `ApiError`; any other 4xx → deterministic `ExchangeError`
 carrying the HTTP status.
 
+Client order ids have a local pre-flight contract: 1–36 characters, checked
+by `helpers.validate_client_id` before any request is sent (empty or too-long
+ids raise `ClientIdError`, a `ValueError` — no request, nothing to
+reconcile). It also validates *derived* id schemes: pass the largest id your
+pattern can produce, e.g. `cro.helpers.validate_client_id(f"{prefix}-buy-999999999")`.
+
 `retries` counts retries *after* the first attempt and is one budget for every
 failure kind, transport errors included; `retry_backoff` sleeps between
 attempts. Only transient failures retry: `RETRYABLE_ERROR_CODES` (40801,

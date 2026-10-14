@@ -14,6 +14,7 @@ from .exceptions import (
     WaitNotConfirmedError,
 )
 from .market import Market
+from .helpers import validate_client_id
 from .structs import (
     Balance,
     DefaultPairDict,
@@ -56,31 +57,6 @@ class Account:
     market: Market
     pairs: DefaultPairDict
     logger: logging.Logger
-
-    def _validate_client_id(
-        self, client_id: str | None, param_name: str = "client_id"
-    ) -> None:
-        """Validate client ID against API constraints.
-
-        Args:
-            client_id: The client ID to validate
-            param_name: Name of the parameter for error messages
-
-        Raises:
-            TypeError: If client_id is not a string
-            ValueError: If client_id is empty or exceeds 36 characters
-        """
-        if client_id is None:
-            return
-
-        if not isinstance(client_id, str):
-            raise TypeError(f"{param_name} must be a string")
-        if len(client_id) == 0:
-            raise ValueError(f"{param_name} cannot be empty")
-        if len(client_id) > 36:
-            raise ValueError(
-                f"{param_name} must be <= 36 characters, got {len(client_id)}"
-            )
 
     def __init__(
         self,
@@ -307,7 +283,7 @@ class Account:
         if client_id is None:
             client_id = uuid4().hex
         else:
-            self._validate_client_id(client_id, "client_id")
+            validate_client_id(client_id, "client_id")
 
         data = {
             "instrument_name": pair.exchange_name,
@@ -864,7 +840,7 @@ class Account:
         if new_client_id is None:
             new_client_id = uuid4().hex
         else:
-            self._validate_client_id(new_client_id, "new_client_id")
+            validate_client_id(new_client_id, "new_client_id")
 
         params = {
             "instrument_name": pair.exchange_name,
