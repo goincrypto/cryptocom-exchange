@@ -37,9 +37,7 @@ async def test_order_lifecycle_with_cache(account: cro.Account):
     price = await account.market.get_price(PAIR)
     # Far below market: resting maker order that will not fill during the test.
     order_price = PAIR.round_price_down(price * 0.8)
-    quantity = PAIR.round_quantity_up(
-        max(2.0 / order_price, 10.0)
-    )
+    quantity = PAIR.round_quantity_up(max(2.0 / order_price, 10.0))
 
     client_id = "cachelive-a1"
     keys = await account.create_order(
@@ -70,9 +68,7 @@ async def test_order_lifecycle_with_cache(account: cro.Account):
         amended = await account.update_order(
             PAIR,
             client_id=client_id,
-            new_price=PAIR.round_price_down(
-                order_price * 0.99
-            ),
+            new_price=PAIR.round_price_down(order_price * 0.99),
             new_quantity=quantity,
             new_client_id=new_client_id,
         )
@@ -86,9 +82,7 @@ async def test_order_lifecycle_with_cache(account: cro.Account):
         assert successor.limit_price < order_price
 
         # --- cancel to terminal through the polling primitive --------------
-        final = await account.cancel_order_and_wait(
-            PAIR, new_client_id, timeout=20.0
-        )
+        final = await account.cancel_order_and_wait(PAIR, new_client_id, timeout=20.0)
         assert final is not None
         assert final.is_terminal
         assert final.status in (

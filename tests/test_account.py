@@ -139,8 +139,7 @@ async def test_no_duplicate_mass_limit_orders(
     # Stagger maker prices safely below market; tick-legal quantity per level.
     prices = [
         pair.round_price_down(
-            helpers.resting_buy_price(pair, current_price)
-            - i * pair.price_tick_size
+            helpers.resting_buy_price(pair, current_price) - i * pair.price_tick_size
         )
         for i in range(orders_count)
     ]
@@ -417,9 +416,7 @@ async def test_update_order_by_client_id(account: cro.Account, market: cro.Marke
     original_order_id = order_1.id
 
     # Update order - amend both price and quantity to tick-legal new values
-    new_price = pair.round_price_up(
-        original_price + 10 * pair.price_tick_size
-    )
+    new_price = pair.round_price_up(original_price + 10 * pair.price_tick_size)
     min_qty_for_new_price = helpers.min_order_quantity(pair, new_price)
     new_qty = max(
         min_qty_for_new_price,
@@ -471,9 +468,7 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
 
     # Change price only; quantity stays at a tick-legal minimum for the
     # new price (API requires both values on amend).
-    new_price = pair.round_price_up(
-        original_price + 10 * pair.price_tick_size
-    )
+    new_price = pair.round_price_up(original_price + 10 * pair.price_tick_size)
     min_qty_for_new_price = helpers.min_order_quantity(pair, new_price)
     new_qty = max(min_qty_for_new_price, original_qty)
 
@@ -500,9 +495,7 @@ async def test_update_order_price_only(account: cro.Account, market: cro.Market)
 
 
 @pytest.mark.asyncio
-async def test_update_order_quantity_only(
-    account: cro.Account, market: cro.Market
-):
+async def test_update_order_quantity_only(account: cro.Account, market: cro.Market):
     """Test updating only order quantity (API requires both values)."""
     pair = cro.pairs.CRO_USD
     current_price = await market.get_price(pair)

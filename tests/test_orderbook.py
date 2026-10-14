@@ -45,9 +45,7 @@ def test_empty_book_raises_clear_error(pair):
     with pytest.raises(ValueError, match="no asks"):
         _ = empty.best_ask
 
-    one_sided = cro.structs.OrderBook(
-        buys=[_level(pair, 0.05)], sells=[], pair=pair
-    )
+    one_sided = cro.structs.OrderBook(buys=[_level(pair, 0.05)], sells=[], pair=pair)
     assert one_sided.best_bid.price == 0.05
     with pytest.raises(ValueError, match="no asks"):
         _ = one_sided.best_ask

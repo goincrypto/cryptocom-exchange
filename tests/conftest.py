@@ -7,6 +7,7 @@ import pytest_asyncio
 
 import cryptocom.exchange as cro
 
+
 @pytest.fixture
 def api(request):
     pathlib.Path(__file__).parent
