@@ -537,3 +537,49 @@ async def test_update_order_quantity_only(account: cro.Account, market: cro.Mark
     # order_id now belongs to the replacement order, not the original.
     # (The old assert-then-swallow hid exactly this.)
     assert order_1_after.client_id == new_client_id
+
+
+@pytest.mark.asyncio
+async def test_exact_min_notional_boundary_is_accepted(
+    account: cro.Account, market: cro.Market
+):
+    """An order at EXACTLY the minimum notional must be accepted, whole.
+
+    Production verification of the tolerant formatters: the smallest
+    placeable quantity at a price sits exactly on the exchange's notional
+    boundary (20 CRO @ $0.05 = $1.00), where IEEE noise (0.29*100-style)
+    used to shave a unit off the payload or our own validation could
+    reject a legal order. Tests elsewhere keep a 1.1 safety margin -
+    this one deliberately does not: it lives ON the boundary.
+    """
+    pair = cro.pairs.CRO_USD
+    current_price = await market.get_price(pair)
+    price = helpers.resting_buy_price(pair, current_price)
+
+    qty = pair.min_order_quantity_at(price)  # EXACT minimum, no margin
+    assert pair.is_orderable(qty, price)
+    assert qty * price >= pair.min_order_notional_usd - 1e-9
+    # the payload the wire formatter will produce is the very value we sized
+    assert pair.floor_quantity(qty) == qty
+    assert pair.round_price_down(price) == price
+
+    client_id = "test-minnotional-boundary"
+    try:
+        await account.buy_limit(pair, qty, price, client_id=client_id)
+
+        # Accepted whole: the exchange stores OUR quantity, not a truncated
+        # one.
+        resting = await account.get_order(client_order_id=client_id)
+        assert resting is not None and resting.is_active
+        assert float(resting.quantity) == pytest.approx(qty), (
+            "the exchange silently reshaped a boundary-exact quantity"
+        )
+
+        confirmed = await account.cancel_order_and_wait(pair, client_id)
+        assert confirmed, "resting boundary order must cancel cleanly"
+        final = await account.get_order(client_order_id=client_id)
+        assert final is not None and final.is_terminal
+    finally:
+        # Never leave a live order behind on ANY failure: a leaked
+        # client_oid would poison the next capture run with a 204.
+        await account.cancel_order_and_wait(pair, client_id)
