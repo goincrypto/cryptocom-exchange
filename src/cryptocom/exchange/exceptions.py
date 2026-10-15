@@ -323,7 +323,16 @@ class InternalError(ExchangeError):
 
 
 class MaintenanceError(ExchangeError):
-    """Exchange under maintenance (code 9010001). Transient."""
+    """Exchange under maintenance (code 9010001). Transient.
+
+    INDETERMINATE: a maintenance window may interrupt processing after the
+    request was received - the caller must reconcile, never assume "did not
+    happen".
+    """
+
+    @property
+    def is_indeterminate(self) -> bool:
+        return True
 
 
 class ClientIdError(ValueError):

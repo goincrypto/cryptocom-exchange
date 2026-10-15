@@ -37,7 +37,12 @@ def test_code_to_class_mapping():
         assert err.code == code
         assert isinstance(err, cro.exceptions.ApiError)
         if issubclass(
-            cls, (cro.exceptions.RequestTimeoutError, cro.exceptions.InternalError)
+            cls,
+            (
+                cro.exceptions.RequestTimeoutError,
+                cro.exceptions.InternalError,
+                cro.exceptions.MaintenanceError,
+            ),
         ):
             # known code, unknown outcome - see dedicated test below
             assert err.is_indeterminate
