@@ -38,17 +38,19 @@ def test_normalization_is_best_first(pair):
     assert 0 < book.spread < 0.01
 
 
-def test_empty_book_raises_clear_error(pair):
-    empty = cro.structs.OrderBook(buys=[], sells=[], pair=pair)
-    with pytest.raises(ValueError, match="no bids"):
-        _ = empty.best_bid
-    with pytest.raises(ValueError, match="no asks"):
-        _ = empty.best_ask
+def test_malformed_book_fails_at_construction(pair):
+    """A book missing either side is malformed INPUT: it must not exist.
 
-    one_sided = cro.structs.OrderBook(buys=[_level(pair, 0.05)], sells=[], pair=pair)
-    assert one_sided.best_bid.price == 0.05
+    Construction-time failure keeps the crash next to the programming
+    error, so downstream consumers (pricing, completion hints) may treat
+    an OrderBook as always having a best bid AND a best ask.
+    """
+    with pytest.raises(ValueError, match="no bids"):
+        cro.structs.OrderBook(buys=[], sells=[], pair=pair)
     with pytest.raises(ValueError, match="no asks"):
-        _ = one_sided.best_ask
+        cro.structs.OrderBook(buys=[_level(pair, 0.05)], sells=[], pair=pair)
+    with pytest.raises(ValueError, match="no bids"):
+        cro.structs.OrderBook(buys=[], sells=[_level(pair, 0.05)], pair=pair)
 
 
 @pytest.mark.asyncio

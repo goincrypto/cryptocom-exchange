@@ -188,3 +188,19 @@ def test_order_is_terminal_for_all_terminal_statuses():
     for status in ("NEW", "PENDING", "ACTIVE"):
         order = cro.Order.create_from_api(cro.pairs.CRO_USD, _order_detail(status), [])
         assert order.is_terminal is False, status
+
+
+def test_round_helpers_survive_scaling_noise() -> None:
+    """The scaling multiply itself introduces noise: 0.29*100 = 28.999999999999996."""
+    from cryptocom.exchange.helpers import round_down, round_up
+
+    assert 0.29 * 100 < 29.0, "the float noise is real (guard the premise)"
+    assert round_down(0.29 * 100, 2) == 29.0  # naked floor would give 28.99
+    assert round_down(2.9, 1) == 2.9
+    assert round_up(2.9, 1) == 2.9
+    # genuine off-grid values keep rounding the honest direction
+    # (tolerance forgives ~1e-9 RELATIVE noise, not real fractions):
+    assert round_down(2.89999, 1) == 2.8
+    assert round_up(2.90001, 1) == 3.0
+    assert round_down(2.9 + 1e-12, 1) == 2.9  # inside noise: stays on grid
+    assert round_down(0.29 * 100, 2) == 29.0  # ledger-product noise case

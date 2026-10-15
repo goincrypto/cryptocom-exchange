@@ -1,3 +1,4 @@
+import math
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -89,6 +90,19 @@ class Pair:
             raise ValueError(
                 f"Invalid pair name: {self.exchange_name}, expected format BASE_QUOTE"
             )
+        # Ticks are ALWAYS present: an unset tick (0.0 from sparse data or a
+        # synthesized fallback pair) is derived from the precision decimal.
+        # Callers can treat quantity_tick_size / price_tick_size as the
+        # authoritative grid step unconditionally - a zero step could wedge
+        # any decrement-to-fit loop.
+        # Pair is frozen (hashable registry member): derive via the
+        # documented escape hatch, inside __post_init__, exactly once.
+        if self.quantity_tick_size <= 0:
+            object.__setattr__(
+                self, "quantity_tick_size", 10.0 ** (-self.quantity_precision)
+            )
+        if self.price_tick_size <= 0:
+            object.__setattr__(self, "price_tick_size", 10.0 ** (-self.price_precision))
 
     @property
     def name(self) -> str:
@@ -171,12 +185,117 @@ class Pair:
 
     def validate_order_notional(self, notional: float) -> bool:
         """Check if order notional value is within allowed limits.
-        Uses round_down for min check to handle floating point precision issues.
-        Example: round_down(1.0, 0) = 1.0, so $1.00 >= $1.0 passes.
+
+        A RELATIVE tolerance forgives binary-product noise: the exchange
+        multiplies DECIMAL representations (0.29 x 100 is exactly 29.0
+        there), so a product that lands within float noise (~1e-16
+        relative) of a limit IS that limit and must pass. The old
+        round_down-to-0 trick accepted the over-noise case but still
+        rejected the sub-noise one (floor(0.9999999999999999) = 0).
+        Genuine sub-minimum notionals stay rejected: noise is ~1e-16,
+        the tolerance is 1e-9 relative.
         """
-        min_check = round_down(notional, 0) >= self.min_order_notional_usd
-        max_check = notional <= self.max_order_notional_usd
+        tol_min = 1e-9 * max(abs(self.min_order_notional_usd), 1.0)
+        min_check = notional + tol_min >= self.min_order_notional_usd
+        tol_max = 1e-9 * max(abs(self.max_order_notional_usd), 1.0)
+        max_check = notional <= self.max_order_notional_usd + tol_max
         return min_check and max_check
+
+    def floor_quantity(self, quantity: float | str) -> float:
+        """Largest exchange-representable quantity <= the given one.
+
+        Snaps to the quantity grid (quantity_tick_size, always present),
+        then applies the conservative precision round-down. Used to derive
+        placeable remainders: a raw float leftover is never placeable as-is.
+        """
+        step = self.quantity_tick_size
+        # +epsilon guards exact grid points eaten by binary floats (2.0000000001)
+        steps = math.floor(float(quantity) / step + 1e-9)
+        return self.round_quantity_down(steps * step)
+
+    def min_order_quantity_at(self, price: float | str) -> float:
+        """Smallest placeable quantity at the given price.
+
+        Must satisfy BOTH the pair's minimum order quantity and the minimum
+        order notional at this price, then snap UP to the quantity grid.
+        Returns 0.0 when no positive price is given.
+        """
+        price = float(price)
+        if price <= 0:
+            return 0.0
+        required = max(
+            self.min_order_quantity,
+            self.min_order_notional_usd / price,
+        )
+        step = self.quantity_tick_size
+        steps = math.ceil(required / step - 1e-9)
+        return self.round_quantity_up(steps * step)
+
+    def has_quantity(self, quantity: float | str) -> bool:
+        """True when the value represents at least one representable unit.
+
+        Sub-grid dust floors to zero, so callers can ask "is there any
+        quantity at all?" without epsilon comparisons - and without the
+        input needing to be grid-aligned.
+        """
+        return self.floor_quantity(quantity) > 0.0
+
+    def same_quantity(self, first: float | str, second: float | str) -> bool:
+        """Grid-tolerant equality: snaps both values to the grid, then
+        compares exactly. Two spellings of the same grid step are equal
+        even when their float representations differ by an ulp.
+        """
+        return self.round_quantity_down(first) == self.round_quantity_down(second)
+
+    def quantity_reaches(self, quantity: float | str, target: float | str) -> bool:
+        """True when quantity has reached target on this pair's grid.
+
+        Accumulation noise around the target snaps onto the grid, so a
+        sum of 199.99999999999997 reaches 200 while a real 199.5 does
+        not - the epsilon judgement is a grid fact, not a tolerance.
+        """
+        return self.round_quantity_down(quantity) >= self.round_quantity_down(target)
+
+    def has_price_value(self, price: float | str) -> bool:
+        """True when the value is a non-zero representable price: noise
+        below one price tick rounds to zero, so "carries no value?" needs
+        no epsilon.
+        """
+        return self.round_price_down(price) > 0.0
+
+    def is_placeable(self, quantity: float | str, price: float | str) -> bool:
+        """True if SOME representation of this quantity is placeable.
+
+        Floors the quantity onto the grid first (raw float leftovers from
+        fill arithmetic are never placeable as-is), then applies the full
+        orderable contract. This is the decide-HOLD-vs-REPLACE predicate:
+        a False result means no re-formatting can rescue the order.
+        """
+        return self.is_orderable(self.floor_quantity(quantity), price)
+
+    def is_orderable(self, quantity: float | str, price: float | str) -> bool:
+        """True if this (quantity, price) can be placed on the exchange.
+
+        Checks the full local contract - grid alignment, minimum quantity,
+        and notional limits - so callers can decide HOLD-vs-REPLACE on the
+        pair's real constraints instead of re-deriving them. A quantity that
+        is not grid-aligned is treated as not placeable (the exchange's own
+        formatting would silently change it).
+        """
+        quantity = float(quantity)
+        price = float(price)
+        if quantity <= 0 or price <= 0:
+            return False
+        step = self.quantity_tick_size
+        off_grid = abs(quantity - self.floor_quantity(quantity)) > 1e-9 * max(1.0, step)
+        if off_grid:
+            return False
+        if (
+            quantity + 1e-9 * max(self.min_order_quantity, 1.0)
+            < self.min_order_quantity
+        ):
+            return False
+        return self.validate_order_notional(quantity * price)
 
 
 class DefaultPairDict(dict[str, Pair]):
@@ -534,19 +653,26 @@ class OrderBook:
     pair: Pair
 
     def __post_init__(self):
+        # A book without BOTH sides is malformed input, not a market state:
+        # fail at construction so the caller of process()/pricing is the
+        # one that crashes on the programming error, far from the exchange.
+        if not self.buys:
+            raise ValueError("Order book has no bids")
+        if not self.sells:
+            raise ValueError("Order book has no asks")
         self.buys.sort(key=lambda level: level.price, reverse=True)
         self.sells.sort(key=lambda level: level.price)
 
     @property
     def best_bid(self) -> OrderInBook:
-        """Top buy level. Raises ValueError on an empty book."""
+        """Top buy level (construction guarantees non-empty books)."""
         if not self.buys:
             raise ValueError("Order book has no bids")
         return self.buys[0]
 
     @property
     def best_ask(self) -> OrderInBook:
-        """Top sell level. Raises ValueError on an empty book."""
+        """Top sell level (construction guarantees non-empty books)."""
         if not self.sells:
             raise ValueError("Order book has no asks")
         return self.sells[0]
@@ -849,14 +975,32 @@ class Order:
             volume=round_down(float(data["order_value"]), pair.price_precision),
             maker_fee_rate=float(data.get("maker_fee_rate", 0)),
             taker_fee_rate=float(data.get("taker_fee_rate", 0)),
-            filled_price=round_down(float(data["avg_price"]), pair.price_precision),
-            filled_quantity=round_down(
-                float(data["cumulative_quantity"]), pair.quantity_precision
+            # PARSE CONTRACT for fill fields: always >= 0.0, and either
+            # EXACTLY 0.0 or exchange-representable - round-down snaps any
+            # sub-precision residue (1e-16 noise, "0.000000001") to 0.0,
+            # and max() clamps malformed negatives. Callers can therefore
+            # test `order.filled_quantity > 0.0` outright: "has it filled"
+            # is a parse guarantee, not an epsilon judgement.
+            filled_price=max(
+                0.0,
+                round_down(float(data.get("avg_price") or 0.0), pair.price_precision),
             ),
-            filled_volume=round_down(
-                float(data["cumulative_value"]), pair.price_precision
+            filled_quantity=max(
+                0.0,
+                round_down(
+                    float(data.get("cumulative_quantity") or 0.0),
+                    pair.quantity_precision,
+                ),
             ),
-            filled_fee=round_down(float(data["cumulative_fee"]), 8),
+            filled_volume=max(
+                0.0,
+                round_down(
+                    float(data.get("cumulative_value") or 0.0), pair.price_precision
+                ),
+            ),
+            filled_fee=max(
+                0.0, round_down(float(data.get("cumulative_fee") or 0.0), 8)
+            ),
             status=OrderStatus(data["status"]),
             update_user_id=data["update_user_id"],
             order_date=data["order_date"],

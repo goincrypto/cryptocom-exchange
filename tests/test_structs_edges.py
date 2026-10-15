@@ -1,6 +1,7 @@
 """Edge tests for structs: pair dict fallback, notional bounds, parsers."""
 
 import cryptocom.exchange as cro
+import pytest
 from cryptocom.exchange.structs import (
     BaseCurrencyConfig,
     DefaultPairDict,
@@ -164,3 +165,122 @@ def test_risk_parameters_parser():
         }
     )
     assert params is not None
+
+
+# ============================================================================
+# Grid normalization, placeability, and fill-field defaults
+# ============================================================================
+
+
+def test_ticks_are_always_present():
+    """An unset tick is derived from the precision decimal at construction.
+
+    A zero grid step would wedge any decrement-to-fit loop downstream -
+    so Pair guarantees a positive tick for BOTH grids, always.
+    """
+    registry = {p.name: p for p in cro.pairs.all()}
+    ghost = DefaultPairDict(**registry)["SOME_UNLISTED_TOKEN_USD"]
+    assert ghost.quantity_tick_size == 1e-8
+    assert ghost.price_tick_size == 1e-8
+
+    sparse = cro.Pair(
+        exchange_name="TEST_USD",
+        price_precision=4,
+        quantity_precision=2,
+        inst_type=cro.InstrumentType.SPOT,
+    )
+    assert sparse.quantity_tick_size == 0.01
+    assert sparse.price_tick_size == 1e-4
+    # authoritative tick survives when provided (CRO trades whole units)
+    assert cro.pairs.CRO_USD.quantity_tick_size == 1.0
+
+
+def test_is_placeable_floors_before_checking():
+    """is_placeable = floor onto the grid, then the orderable contract."""
+    pair = cro.pairs.CRO_USD  # tick 1.0, min quantity/notional from the venue
+    assert pair.is_placeable(20.9, 1.0)  # floors to 20 - placeable
+    assert not pair.is_placeable(0.9, 1.0)  # floors to 0 - nothing left
+    assert not pair.is_placeable(5, 0.0)  # no usable price
+    assert not pair.is_placeable(20.5, 0.01)  # floored notional below minimum
+
+
+def test_order_fill_fields_default_to_zero_float():
+    """A never-filled order parses filled_* as 0.0 floats, never None/KeyError."""
+    payload = {
+        "order_id": "1",
+        "account_id": "a",
+        "client_oid": "c",
+        "order_type": "LIMIT",
+        "time_in_force": "GOOD_TILL_CANCEL",
+        "side": "BUY",
+        "exec_inst": [],
+        "quantity": "20",
+        "limit_price": "0.05",
+        "order_value": "1.0",
+        "status": "ACTIVE",
+        "update_user_id": "u",
+        "order_date": "2026-01-01",
+        "fee_instrument_name": "USD",
+        "create_time": 1,
+        "update_time": 1,
+        "create_time_ns": 1,
+    }
+    order = cro.structs.Order.create_from_api(PAIR, payload)
+    assert order.filled_quantity == 0.0
+    assert order.filled_volume == 0.0
+    assert order.filled_fee == 0.0
+    assert order.filled_price == 0.0
+    # and explicitly-null fields must not sneak None through
+    order2 = cro.structs.Order.create_from_api(
+        PAIR, {**payload, "cumulative_quantity": None, "avg_price": None}
+    )
+    assert order2.filled_quantity == 0.0
+    assert order2.filled_price == 0.0
+
+
+def test_order_fill_fields_normalize_noise_and_negatives():
+    """Parse CONTRACT: fills are exactly 0.0 or exchange-representable.
+
+    Sub-precision residue (float noise, venue dust) and malformed
+    negatives collapse to 0.0 at PARSE time - so callers may test
+    `> 0.0` instead of carrying epsilon comparisons against order fields.
+    """
+    payload = {
+        "order_id": "1",
+        "account_id": "a",
+        "client_oid": "c",
+        "order_type": "LIMIT",
+        "time_in_force": "GOOD_TILL_CANCEL",
+        "side": "BUY",
+        "exec_inst": [],
+        "quantity": "20",
+        "limit_price": "0.05",
+        "order_value": "1.0",
+        "status": "ACTIVE",
+        "update_user_id": "u",
+        "order_date": "2026-01-01",
+        "fee_instrument_name": "USD",
+        "create_time": 1,
+        "update_time": 1,
+        "create_time_ns": 1,
+    }
+    # CRO_USD has quantity_precision 0: anything sub-unit is noise.
+    noisy = cro.structs.Order.create_from_api(
+        PAIR,
+        {
+            **payload,
+            "cumulative_quantity": "1e-16",
+            "cumulative_value": "0.000000001",
+            "avg_price": "-0.0000001",
+            "cumulative_fee": "-1e-12",
+        },
+    )
+    assert noisy.filled_quantity == 0.0
+    assert noisy.filled_volume == 0.0
+    assert noisy.filled_price == 0.0
+    assert noisy.filled_fee == 0.0
+    # a REAL fill close to a grid point is tolerance-snapped, not lost:
+    real = cro.structs.Order.create_from_api(
+        PAIR, {**payload, "cumulative_quantity": "33.999999999"}
+    )
+    assert real.filled_quantity == pytest.approx(34.0)

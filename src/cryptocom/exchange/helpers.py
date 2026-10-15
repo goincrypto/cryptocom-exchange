@@ -36,14 +36,31 @@ def validate_client_id(client_id: str, param_name: str = "client_id") -> str:
 
 
 def round_up(value: float | str, precision: int) -> float:
-    """Rounds number to upper precision 0.13 -> 0.2"""
+    """Rounds number to upper precision 0.13 -> 0.2
+
+    A relative tolerance forgives scaling noise BEFORE ceiling: 0.29 * 100
+    is 28.999999999999996 in IEEE-754, and a naked ceil-to-grid formatter
+    can land a full step off on either side depending on the product.
+    Genuine off-grid values are untouched: real fractions are
+    >=1e-9-relative away from integers, noise is ~1e-16 relative.
+    """
     value = float(value)
     pwr = math.pow(10, precision)
-    return math.ceil(value * pwr) / pwr
+    scaled = value * pwr
+    tol = 1e-9 * max(abs(scaled), 1.0)
+    return math.ceil(scaled - tol) / pwr
 
 
 def round_down(value: float | str, precision: int) -> float:
-    """Rounds number to lower precision 0.13 -> 0.1"""
+    """Rounds number to lower precision 0.13 -> 0.1
+
+    Same relative tolerance as round_up, mirrored: round_down(0.29*100, 2)
+    must return 29.0, not 28.99 (the scaled product is 2899.9999999999995
+    naked). A value truly below the grid point stays below: the tolerance
+    is ~1e-9 relative, real sub-grid amounts are far larger.
+    """
     value = float(value)
     pwr = math.pow(10, precision)
-    return math.floor(value * pwr) / pwr
+    scaled = value * pwr
+    tol = 1e-9 * max(abs(scaled), 1.0)
+    return math.floor(scaled + tol) / pwr
