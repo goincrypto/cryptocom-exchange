@@ -39,6 +39,9 @@ async def test_capture_replay_roundtrip(tmp_path, monkeypatch):
 
     assert first == {"echo": {"x": "1"}}
     assert len(hits) == 1  # really went through the transport seam
+    # POSIX text files end with a newline - the repo's pre-commit
+    # end-of-file-fixer fails CI if a captured file does not.
+    assert cache_file.read_text().endswith("}\n")
     saved = json.loads(cache_file.read_text())
     assert saved["__uuids__"] == [uuid_a.hex, uuid_b.hex]
 

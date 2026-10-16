@@ -525,4 +525,6 @@ class RecordApiProvider(ApiProvider):
             payload = dict(self.records)
             if self.uuid_log:
                 payload["__uuids__"] = self.uuid_log
-            self.cache_file.write_text(json.dumps(payload, indent=2))
+            # Trailing newline: POSIX text files end with one, and the
+            # repo's end-of-file-fixer pre-commit hook fails otherwise.
+            self.cache_file.write_text(json.dumps(payload, indent=2) + "\n")
