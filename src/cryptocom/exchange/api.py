@@ -411,7 +411,20 @@ class ApiProvider:
 
     async def listen(self, url, *channels, sign=False):
         url = urljoin(self.ws_root_url, url)
-        async for ws in websockets.connect(url, open_timeout=self.timeout):
+        # The same egress pin the HTTP client honours: the stream host also
+        # resolves to IPv4+IPv6, and an IP-whitelisted key authenticates as
+        # "Illegal IP" (40103) from the other family. websockets forwards
+        # extra kwargs to loop.create_connection, whose local_addr forces
+        # the source address (and so the address family).
+        if self.local_address is None:
+            connector = websockets.connect(url, open_timeout=self.timeout)
+        else:
+            connector = websockets.connect(
+                url,
+                open_timeout=self.timeout,
+                local_addr=(self.local_address, 0),
+            )
+        async for ws in connector:
             try:
                 dataiterator = ApiListenAsyncIterable(self, ws, channels, sign)
                 async for data in dataiterator:

@@ -119,3 +119,32 @@ async def test_transport_error_propagates():
     it = _iter([ConnectionResetError("boom")])
     with pytest.raises(ConnectionResetError):
         await it.__anext__()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("local_address", ["0.0.0.0", "::", None])
+async def test_listen_pins_source_address_when_configured(monkeypatch, local_address):
+    """local_address must reach loop.create_connection as local_addr so an
+    IP-whitelisted key authenticates from the right family (else 40103).
+    Unset must NOT inject the kwarg (OS picks the family)."""
+    captured = {}
+
+    def fake_connect(url, **kwargs):
+        captured.update(kwargs)
+
+        async def _gen():
+            yield FakeWs([])  # recv raises -> terminates listen()
+
+        return _gen()
+
+    monkeypatch.setattr(cro.api.websockets, "connect", fake_connect)
+    provider = cro.ApiProvider(api_key="k", api_secret="s", local_address=local_address)
+
+    with pytest.raises(cro.exceptions.ApiError):
+        async for _ in provider.listen("public/ticker", "ticker.CRO_USD", sign=False):
+            pass  # pragma: no cover
+
+    if local_address is None:
+        assert "local_addr" not in captured
+    else:
+        assert captured["local_addr"] == (local_address, 0)
