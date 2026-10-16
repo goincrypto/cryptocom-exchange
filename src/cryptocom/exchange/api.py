@@ -432,6 +432,7 @@ class RecordApiProvider(ApiProvider):
         capture: bool = False,
         divide_delay: int = 1,
         fake_account_id: bool = True,
+        local_address: str | None = None,
     ):
         self.capture = capture
         self.cache_file = cache_file
@@ -448,7 +449,9 @@ class RecordApiProvider(ApiProvider):
             if self.cache_file.exists():
                 self.cache_file.unlink()
             self.records = {}
-            super().__init__(from_env=True)
+            # Capture drives the REAL transport, so it needs the same
+            # egress pin an IP-whitelisted key requires in production.
+            super().__init__(from_env=True, local_address=local_address)
         else:
             self.records = {}
             if self.cache_file.exists():
