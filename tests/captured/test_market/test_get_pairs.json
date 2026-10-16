@@ -3522,7 +3522,7 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
+            "margin_buy_enabled": false,
             "margin_sell_enabled": false
           },
           {
@@ -4816,26 +4816,6 @@
             "margin_sell_enabled": false
           },
           {
-            "symbol": "DEGENUSD-PERP",
-            "inst_type": "PERPETUAL_SWAP",
-            "display_name": "DEGENUSD Perpetual",
-            "base_ccy": "DEGEN",
-            "quote_ccy": "USD",
-            "quote_decimals": 8,
-            "quantity_decimals": 0,
-            "price_tick_size": "0.00000001",
-            "qty_tick_size": "100",
-            "max_leverage": "50",
-            "tradable": true,
-            "expiry_timestamp_ms": 0,
-            "beta_product": false,
-            "underlying_symbol": "DEGENUSD-INDEX",
-            "contract_size": "1",
-            "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": false,
-            "margin_sell_enabled": false
-          },
-          {
             "symbol": "DEGEN_USD",
             "inst_type": "CCY_PAIR",
             "display_name": "DEGEN/USD",
@@ -5613,24 +5593,6 @@
             "quantity_decimals": 2,
             "price_tick_size": "0.001",
             "qty_tick_size": "0.01",
-            "max_leverage": "50",
-            "tradable": true,
-            "expiry_timestamp_ms": 0,
-            "beta_product": false,
-            "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": false,
-            "margin_sell_enabled": false
-          },
-          {
-            "symbol": "EPIC_USD",
-            "inst_type": "CCY_PAIR",
-            "display_name": "EPIC/USD",
-            "base_ccy": "EPIC",
-            "quote_ccy": "USD",
-            "quote_decimals": 4,
-            "quantity_decimals": 1,
-            "price_tick_size": "0.0001",
-            "qty_tick_size": "0.1",
             "max_leverage": "50",
             "tradable": true,
             "expiry_timestamp_ms": 0,
@@ -6743,26 +6705,6 @@
             "tradable": true,
             "expiry_timestamp_ms": 0,
             "beta_product": false,
-            "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": false,
-            "margin_sell_enabled": false
-          },
-          {
-            "symbol": "FWOGUSD-PERP",
-            "inst_type": "PERPETUAL_SWAP",
-            "display_name": "FWOGUSD Perpetual",
-            "base_ccy": "FWOG",
-            "quote_ccy": "USD",
-            "quote_decimals": 7,
-            "quantity_decimals": 0,
-            "price_tick_size": "0.0000001",
-            "qty_tick_size": "10",
-            "max_leverage": "50",
-            "tradable": true,
-            "expiry_timestamp_ms": 0,
-            "beta_product": false,
-            "underlying_symbol": "FWOGUSD-INDEX",
-            "contract_size": "1",
             "product_type": "DIGITAL_CURRENCIES",
             "margin_buy_enabled": false,
             "margin_sell_enabled": false
@@ -8142,26 +8084,6 @@
             "margin_sell_enabled": true
           },
           {
-            "symbol": "IKAUSD-PERP",
-            "inst_type": "PERPETUAL_SWAP",
-            "display_name": "IKAUSD Perpetual",
-            "base_ccy": "IKA",
-            "quote_ccy": "USD",
-            "quote_decimals": 6,
-            "quantity_decimals": 0,
-            "price_tick_size": "0.000001",
-            "qty_tick_size": "100",
-            "max_leverage": "50",
-            "tradable": true,
-            "expiry_timestamp_ms": 0,
-            "beta_product": false,
-            "underlying_symbol": "IKAUSD-INDEX",
-            "contract_size": "1",
-            "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": false,
-            "margin_sell_enabled": false
-          },
-          {
             "symbol": "IKA_USD",
             "inst_type": "CCY_PAIR",
             "display_name": "IKA/USD",
@@ -8211,26 +8133,6 @@
             "tradable": true,
             "expiry_timestamp_ms": 0,
             "beta_product": false,
-            "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": false,
-            "margin_sell_enabled": false
-          },
-          {
-            "symbol": "IMUUSD-PERP",
-            "inst_type": "PERPETUAL_SWAP",
-            "display_name": "IMUUSD Perpetual",
-            "base_ccy": "IMU",
-            "quote_ccy": "USD",
-            "quote_decimals": 6,
-            "quantity_decimals": 0,
-            "price_tick_size": "0.000001",
-            "qty_tick_size": "100",
-            "max_leverage": "50",
-            "tradable": true,
-            "expiry_timestamp_ms": 0,
-            "beta_product": false,
-            "underlying_symbol": "IMUUSD-INDEX",
-            "contract_size": "1",
             "product_type": "DIGITAL_CURRENCIES",
             "margin_buy_enabled": false,
             "margin_sell_enabled": false
@@ -8288,7 +8190,7 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
+            "margin_buy_enabled": false,
             "margin_sell_enabled": false
           },
           {
@@ -8306,7 +8208,7 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
+            "margin_buy_enabled": false,
             "margin_sell_enabled": false
           },
           {
@@ -12740,26 +12642,6 @@
             "margin_sell_enabled": false
           },
           {
-            "symbol": "PROMPTUSD-PERP",
-            "inst_type": "PERPETUAL_SWAP",
-            "display_name": "PROMPTUSD Perpetual",
-            "base_ccy": "PROMPT",
-            "quote_ccy": "USD",
-            "quote_decimals": 5,
-            "quantity_decimals": 0,
-            "price_tick_size": "0.00001",
-            "qty_tick_size": "10",
-            "max_leverage": "50",
-            "tradable": true,
-            "expiry_timestamp_ms": 0,
-            "beta_product": false,
-            "underlying_symbol": "PROMPTUSD-INDEX",
-            "contract_size": "1",
-            "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": false,
-            "margin_sell_enabled": false
-          },
-          {
             "symbol": "PROMPT_USD",
             "inst_type": "CCY_PAIR",
             "display_name": "PROMPT/USD",
@@ -13127,24 +13009,6 @@
             "quantity_decimals": 1,
             "price_tick_size": "0.0001",
             "qty_tick_size": "0.1",
-            "max_leverage": "50",
-            "tradable": true,
-            "expiry_timestamp_ms": 0,
-            "beta_product": false,
-            "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": false,
-            "margin_sell_enabled": false
-          },
-          {
-            "symbol": "QUICK_USD",
-            "inst_type": "CCY_PAIR",
-            "display_name": "QUICK/USD",
-            "base_ccy": "QUICK",
-            "quote_ccy": "USD",
-            "quote_decimals": 6,
-            "quantity_decimals": 0,
-            "price_tick_size": "0.000001",
-            "qty_tick_size": "1",
             "max_leverage": "50",
             "tradable": true,
             "expiry_timestamp_ms": 0,
@@ -15153,8 +15017,8 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
-            "margin_sell_enabled": true
+            "margin_buy_enabled": false,
+            "margin_sell_enabled": false
           },
           {
             "symbol": "STRK_USDT",
@@ -15171,8 +15035,8 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
-            "margin_sell_enabled": true
+            "margin_buy_enabled": false,
+            "margin_sell_enabled": false
           },
           {
             "symbol": "STXUSD-PERP",
@@ -15505,8 +15369,8 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
-            "margin_sell_enabled": true
+            "margin_buy_enabled": false,
+            "margin_sell_enabled": false
           },
           {
             "symbol": "TAOUSD-PERP",
@@ -18375,7 +18239,7 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
+            "margin_buy_enabled": false,
             "margin_sell_enabled": false
           },
           {
@@ -18393,7 +18257,7 @@
             "expiry_timestamp_ms": 0,
             "beta_product": false,
             "product_type": "DIGITAL_CURRENCIES",
-            "margin_buy_enabled": true,
+            "margin_buy_enabled": false,
             "margin_sell_enabled": false
           },
           {
@@ -18567,8 +18431,8 @@
             "margin_sell_enabled": false
           }
         ],
-        "exec_time": 0.9074816703796387,
-        "timestamp": 1792000560.8809047
+        "exec_time": 0.7480292320251465,
+        "timestamp": 1792146064.2010407
       }
     ]
   }
