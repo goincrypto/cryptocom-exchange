@@ -174,3 +174,20 @@ async def test_retry_backoff_is_observable():
     start = loop.time()
     assert await api.get("public/ping") == ["ok"]
     assert loop.time() - start >= 0.05
+
+
+@pytest.mark.asyncio
+async def test_local_address_pins_egress_family_on_the_transport():
+    """An IP-whitelisted key must be able to pin the source family: the
+    exchange prefers IPv6 in DNS, but keys are commonly whitelisted to the
+    user's IPv4 - an unpinned client then authenticates from an "unknown"
+    IPv6 address and the key is rejected (40101)."""
+    pinned = cro.ApiProvider(api_key="k", api_secret="s", local_address="0.0.0.0")
+    client = pinned._new_client()
+    assert client._transport._pool._local_address == "0.0.0.0"
+    await client.aclose()
+
+    unpinned = cro.ApiProvider(api_key="k", api_secret="s")
+    client = unpinned._new_client()
+    assert client._transport._pool._local_address is None
+    await client.aclose()

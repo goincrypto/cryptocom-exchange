@@ -177,6 +177,7 @@ class ApiProvider:
         root_url="https://api.crypto.com/exchange/v1/",
         ws_root_url="wss://stream.crypto.com/exchange/v1/",
         retry_backoff: float = 0.0,
+        local_address: str | None = None,
         logger: logging.Logger | None = None,
     ):
         self.logger = logger or logging.getLogger(__name__)
@@ -189,6 +190,11 @@ class ApiProvider:
         self.retries = retries
         # Sleep between retries of transient failures (0 = tight loop).
         self.retry_backoff = retry_backoff
+        # Pin the source address family: the exchange resolves to BOTH IPv4
+        # and IPv6 and clients may prefer IPv6, but an API key can be bound
+        # to a specific IP (typically IPv4). "0.0.0.0" forces IPv4 egress,
+        # "::" forces IPv6; None (default) leaves the OS to choose.
+        self.local_address = local_address
         self.last_request_path = ""
 
         self.rate_limiters = {}
@@ -256,6 +262,20 @@ class ApiProvider:
             else:
                 raise ApiError(f"Wrong path: {path}")
 
+    def _new_client(self) -> httpx.AsyncClient:
+        """Fresh httpx client per attempt. When local_address is set the
+        family is pinned via the transport (local_address is not a client
+        argument in httpx); None leaves OS default selection."""
+        timeout = httpx.Timeout(timeout=self.timeout)
+        if self.local_address is None:
+            return httpx.AsyncClient(timeout=timeout, verify=self.ssl_context)
+        return httpx.AsyncClient(
+            timeout=timeout,
+            transport=httpx.AsyncHTTPTransport(
+                verify=self.ssl_context, local_address=self.local_address
+            ),
+        )
+
     async def _http_request(self, client, method, url, *, params, json_body, headers):
         """Transport seam: the single outbound HTTP call.
 
@@ -307,10 +327,7 @@ class ApiProvider:
         while True:
             attempt += 1
             exhausted = attempt > self.retries
-            client = httpx.AsyncClient(
-                timeout=httpx.Timeout(timeout=self.timeout),
-                verify=self.ssl_context,
-            )
+            client = self._new_client()
             if sign:
                 data = self.sign(path, original_data)
             try:
