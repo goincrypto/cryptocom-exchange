@@ -284,3 +284,66 @@ def test_order_fill_fields_normalize_noise_and_negatives():
         PAIR, {**payload, "cumulative_quantity": "33.999999999"}
     )
     assert real.filled_quantity == pytest.approx(34.0)
+
+
+# ============================================================================
+# MarketTrade timestamp precision - the cursor `get_trades` paginates by
+# ============================================================================
+
+
+def test_market_trade_keeps_full_nanosecond_precision():
+    """A 19-digit ns stamp must survive parsing exactly, int or digit-string.
+
+    A float64 is exact only to 2**53 = 9_007_199_254_740_992, and an ns epoch stamp is ~1.8e18,
+    so routing `tn` through float() rounds it. The old parser lost 7 ns on a real CRO_USD print.
+    """
+    ns = 1792256250893942777
+    for raw_ns in (ns, str(ns)):
+        trade = cro.structs.MarketTrade.from_api(
+            PAIR,
+            {
+                "d": "1",
+                "t": 1792256250893,
+                "tn": raw_ns,
+                "p": "0.05686",
+                "q": "164",
+                "s": "sell",
+            },
+        )
+        assert trade.timestamp_ns == ns, f"lost precision parsing {raw_ns!r}"
+        assert trade.time == ns // 1_000_000_000
+
+
+def test_market_trade_never_collapses_two_prints_in_the_same_second():
+    """Prints one nanosecond apart stay distinct - the collision that hid trades.
+
+    `get_trades` walks `end_ts` back to the oldest print it saw; if two prints share a parsed
+    timestamp, the walk can no longer tell them apart and the rest of that second goes missing.
+    """
+    base = 1792256250893942777
+
+    def parse(ns):
+        return cro.structs.MarketTrade.from_api(
+            PAIR,
+            {
+                "d": str(ns),
+                "t": ns // 1_000_000,
+                "tn": ns,
+                "p": "0.05686",
+                "q": "1",
+                "s": "buy",
+            },
+        )
+
+    first, second = parse(base), parse(base + 1)
+    assert first.timestamp_ns != second.timestamp_ns
+    assert first.id != second.id
+
+
+def test_market_trade_without_nanoseconds_falls_back_to_milliseconds():
+    """WebSocket-sourced rows carry no `tn`; ms must convert without inventing digits."""
+    trade = cro.structs.MarketTrade.from_api(
+        PAIR, {"d": "9", "t": 1792256250893, "p": "0.05686", "q": "1", "s": "buy"}
+    )
+    assert trade.timestamp_ns == 1792256250893 * 1_000_000
+    assert trade.time == 1792256250
