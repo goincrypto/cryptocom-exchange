@@ -126,7 +126,17 @@ class Market:
         yielded_count = 0
         prev_timestamps = set()
 
-        # First request: use end_ts to get latest candles
+        # First request: use end_ts to get latest candles.
+        #
+        # NOTE (deliberate, not an oversight): this differs from `get_trades`, which widens its
+        # window to the end of the final second. Candle opens always land on whole-second
+        # multiples of the timeframe, so nothing can be hiding later inside that second - the
+        # only bar the wider window would add is one OPENING exactly at `end_ts`, whose trades
+        # all happen after the requested end (or which has just opened and is empty). The venue
+        # is exclusive there (`end_ts=T` -> newest bar is T-period; `end_ts=T+999ms` -> T), which
+        # is the more defensible reading of "up to end_ts" for open-timed bars, even though the
+        # yield filter below treats `time == end_ts` as inside. Pinned by
+        # tests/test_candles_pagination.py; change it knowingly, not by analogy to the trades fix.
         current_end = actual_end_ts * 1000
 
         while True:
@@ -242,8 +252,10 @@ class Market:
         yielded_count = 0
         prev_trade_ids = set()
 
-        # First request: use end_ts to get latest trades
-        current_end = actual_end_ts * 1_000_000_000
+        # First request: use end_ts to get latest trades. `end_ts` is documented in SECONDS,
+        # so the window means "up to and including that second" - converting it to the start of
+        # the second would silently exclude every trade printed later in that same second.
+        current_end = actual_end_ts * 1_000_000_000 + 999_999_999
 
         while True:
             # Fetch trades up to 150 ending at current_end
@@ -311,8 +323,17 @@ class Market:
             elif len(unique_trades) < chunk_size:
                 break
 
-            # Continue pagination: next request starts from oldest trade we just processed
-            current_end = unique_trades[-1].time * 1_000_000_000
+            # Continue pagination: next request starts from the oldest trade we just processed,
+            # at NANOSECOND precision. `.time` is second-granular, and the venue answers
+            # `end_ts` with `trade_time_ns <= end_ts`, so a second-aligned cursor skips every
+            # remaining trade in that second - silently, and specifically in busy seconds,
+            # which are the ones that decide an OHLC bar's high and low. Measured on CRO_USD:
+            # one page boundary inside a 141-trade second lost 121 trades and 74% of the
+            # 5-minute bar's volume. `timestamp_ns` is the venue's own precision; fall back to
+            # the second only when a response omits it (websocket-sourced trades have none).
+            current_end = (
+                unique_trades[-1].timestamp_ns or unique_trades[-1].time * 1_000_000_000
+            )
 
     async def get_ticker(self, pair: Pair) -> MarketTicker:
         """Get ticker in for provided pair."""

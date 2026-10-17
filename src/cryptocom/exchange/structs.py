@@ -506,6 +506,26 @@ class OrderSide(str, Enum):
     SELL = "SELL"
 
 
+def _as_int(value: Any) -> int:
+    """Parse an integer field without losing digits to float rounding.
+
+    Accepts what the API has been seen to send - real ints, digit strings, and (for the ms
+    field, historically) float-ish values - and keeps full precision for the first two. The
+    float fallback is only for values that are not plain digits, where there is no exact int
+    to preserve anyway.
+    """
+    if value is None:
+        return 0
+    if isinstance(value, bool):  # bool is an int subclass; a flag is not a timestamp
+        return 0
+    if isinstance(value, int):
+        return value
+    text = str(value).strip()
+    if text.isdigit() or (text.startswith("-") and text[1:].isdigit()):
+        return int(text)
+    return int(float(text or 0))
+
+
 @dataclass
 class MarketTrade:
     """Public market trade with optional nanosecond precision and match ID."""
@@ -533,14 +553,20 @@ class MarketTrade:
         - s: side (BUY/SELL)
         - i: instrument name
         - m: match ID
+
+        Nanoseconds are parsed as integers, never through `float()`: a float64 is exact only to
+        2**53 = 9_007_199_254_740_992, while an ns epoch stamp is ~1.78e18. The old
+        `float(data["tn"])` therefore rounded the stamp (measured: 7 ns off on CRO_USD) and
+        collapsed distinct trades onto the same value - which is exactly the precision
+        `Market.get_trades` now paginates by, and one reason trades vanished inside busy seconds.
         """
-        time_ms = float(data.get("t", 0))
-        time_ns = float(data.get("tn", 0)) or (time_ms * 1_000_000 if time_ms else 0)
+        time_ms = _as_int(data.get("t"))
+        time_ns = _as_int(data.get("tn")) or (time_ms * 1_000_000 if time_ms else 0)
 
         return cls(
             id=data["d"],
-            time=int(time_ns / 1_000_000_000) if time_ns else int(time_ms / 1000),
-            timestamp_ns=int(time_ns) if time_ns else None,
+            time=time_ns // 1_000_000_000 if time_ns else time_ms // 1000,
+            timestamp_ns=time_ns or None,
             price=float(data["p"]),
             quantity=float(data["q"]),
             side=OrderSide(data["s"].upper()),
