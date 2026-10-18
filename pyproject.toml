@@ -7,7 +7,7 @@ packages = [
   {include = "cryptocom", from = "src"},
 ]
 exclude = ["openapi_docs/"]
-version = "2.7.2"
+version = "2.7.3"
 readme = "README.md"
 classifiers = [
   "Operating System :: OS Independent",
