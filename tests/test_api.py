@@ -232,6 +232,106 @@ def test_params_to_str_matches_documentation(test_name, params, expected_substri
         )
 
 
+# ==============================================================================
+# params_to_str: list entries that are NOT dicts
+# ==============================================================================
+# create_order(..., exec_flags=[OrderExecFlag.POST_ONLY]) puts a list of
+# SCALARS (exec_inst=["POST_ONLY"]) into the signed params. The documentation
+# snippet recurses into EVERY list entry as if it were a dict, so a str entry
+# gets `sorted()` into characters and then indexed by a character -> TypeError,
+# raised locally, before the request is signed. Our implementation serialises a
+# non-dict entry as its own value; the dict path stays byte-identical.
+
+
+@pytest.mark.parametrize(
+    "test_name,params,expected",
+    [
+        (
+            "list_of_scalars_exec_inst",
+            {"exec_inst": ["POST_ONLY"]},
+            "exec_instPOST_ONLY",
+        ),
+        (
+            "list_of_scalars_keeps_given_order",
+            {"exec_inst": ["POST_ONLY", "REDUCE_ONLY"]},
+            "exec_instPOST_ONLYREDUCE_ONLY",
+        ),
+        ("list_of_numbers", {"page": [1, 2]}, "page12"),
+        (
+            "heterogeneous_list_does_not_raise",
+            {"mixed": [None, 7, {"k": "v"}, "Z"]},
+            "mixednull7kvZ",
+        ),
+        (
+            "list_of_dicts_unchanged",
+            {
+                "contingency_type": "LIST",
+                "order_list": [
+                    {"instrument_name": "ONE_USDT", "side": "BUY"},
+                    {"instrument_name": "ONE_USDT", "side": "SELL"},
+                ],
+            },
+            "contingency_typeLISTorder_list"
+            "instrument_nameONE_USDTsideBUY"
+            "instrument_nameONE_USDTsideSELL",
+        ),
+        (
+            "scalar_list_nested_inside_dict_list",
+            {"items": [{"a": [1, 2]}, {"b": "x"}]},
+            "itemsa12bx",
+        ),
+        (
+            "level_cap_still_stringifies",
+            {"a": [{"b": [{"c": [{"d": "e"}]}]}]},
+            "abc{'d': 'e'}",
+        ),
+    ],
+)
+def test_params_to_str_list_entries(test_name, params, expected):
+    """Non-dict list entries serialise as their own value; dicts keep old output."""
+    result = our_params_to_str(params, 0)
+    assert result == expected, (
+        f"[{test_name}] Wrong param_str!\nExpected: {expected}\nGot:      {result}"
+    )
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "contingency_type": "LIST",
+            "order_list": [
+                {"instrument_name": "ONE_USDT", "side": "BUY", "type": "LIMIT"},
+                {
+                    "instrument_name": "ONE_USDT",
+                    "side": "SELL",
+                    "type": "STOP_LIMIT",
+                    "trigger_price": "0.26",
+                },
+            ],
+        },
+        {"items": [{"name": "test", "value": "123"}]},
+    ],
+)
+def test_params_to_str_dict_entries_match_documentation(params):
+    """Regression guard: the dict-in-list path every signed request uses today
+    is byte-identical to the documented serialisation."""
+    doc_result = doc_params_to_str(params, 0)
+    our_result = our_params_to_str(params, 0)
+    assert doc_result == our_result, (
+        f"param_str differs from documentation!\nDoc: {doc_result}\nOur: {our_result}"
+    )
+
+
+def test_params_to_str_scalar_list_diverges_from_doc_snippet():
+    """The documented snippet cannot serialise a list of scalars at all; ours
+    must, or exec_inst (POST_ONLY) can never be signed."""
+    params = {"exec_inst": ["POST_ONLY"]}
+    with pytest.raises(TypeError):
+        doc_params_to_str(params, 0)
+    assert our_params_to_str(params, 0) == "exec_instPOST_ONLY"
+
+
 def test_actual_api_sign_method():
     """Test the actual ApiProvider.sign() method produces valid signatures."""
     api = cro.ApiProvider(
@@ -263,6 +363,54 @@ def test_actual_api_sign_method():
     assert signed_data["sig"] is not None
     assert len(signed_data["sig"]) == 64  # SHA256 hex is 64 chars
     int(signed_data["sig"], 16)  # Should not raise
+
+
+def test_actual_api_sign_with_exec_inst():
+    """create_order carrying exec_inst signs instead of crashing locally.
+
+    Params are the shape account.create_order() builds, plus the maker-only
+    flag; the expected param_str is written out literally so the signature is
+    pinned to a payload, not re-derived from the code under test.
+    """
+    api = cro.ApiProvider(
+        api_key="test_key",
+        api_secret="test_secret",
+        auth_required=True,
+    )
+
+    path = "private/create-order"
+    data = {
+        "params": {
+            "instrument_name": "BTC_USDT",
+            "side": "BUY",
+            "type": "LIMIT",
+            "client_oid": "abc123",
+            "time_in_force": "GTC",
+            "exec_inst": ["POST_ONLY"],
+            "fee_instrument_name": "USDT",
+            "quantity": "0.001",
+            "price": "50000.00",
+        }
+    }
+    param_str = (
+        "client_oidabc123exec_instPOST_ONLYfee_instrument_nameUSDT"
+        "instrument_nameBTC_USDTprice50000.00quantity0.001sideBUY"
+        "time_in_forceGTCtypeLIMIT"
+    )
+
+    signed_data = api.sign(path, data)
+
+    payload = (
+        path
+        + str(signed_data["id"])
+        + "test_key"
+        + param_str
+        + str(signed_data["nonce"])
+    )
+    expected_sig = hmac.new(
+        b"test_secret", msg=bytes(payload, "utf-8"), digestmod=hashlib.sha256
+    ).hexdigest()
+    assert signed_data["sig"] == expected_sig
 
 
 def test_actual_api_sign_with_real_credentials():
