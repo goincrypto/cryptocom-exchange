@@ -9,10 +9,15 @@ from .api import ApiError, ApiProvider, RecordApiProvider
 from .exceptions import ApiAuthError, ApiErrorCode, ExchangeError
 from .market import Market
 from .structs import (
+    MAX_FEE_BPS,
     Candle,
     Deposit,
     DepositStatus,
+    FeeCredit,
+    FeeCreditDetail,
+    FeeRate,
     Instrument,
+    InstrumentFeeRate,
     InstrumentType,
     MarketTrade,
     Order,
@@ -31,6 +36,7 @@ from .structs import (
 
 __all__ = [
     "helpers",
+    "MAX_FEE_BPS",
     "MAX_OPEN_ORDERS_PER_ACCOUNT",
     "MAX_OPEN_ORDERS_PER_PAIR",
     "Account",
@@ -42,7 +48,11 @@ __all__ = [
     "Deposit",
     "DepositStatus",
     "ExchangeError",
+    "FeeCredit",
+    "FeeCreditDetail",
+    "FeeRate",
     "Instrument",
+    "InstrumentFeeRate",
     "InstrumentType",
     "Market",
     "MarketTrade",

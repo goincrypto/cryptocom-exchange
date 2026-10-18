@@ -20,8 +20,11 @@ from .structs import (
     DefaultPairDict,
     Deposit,
     DepositStatus,
+    FeeCredit,
+    FeeRate,
     Instrument,
     InstrumentBalance,
+    InstrumentFeeRate,
     Interest,
     Order,
     OrderExecFlag,
@@ -250,6 +253,132 @@ class Account:
             PrivateTrade.create_from_api(self.pairs[trade["instrument_name"]], trade)
             for trade in data
         ]
+
+    async def get_fee_rate(self) -> FeeRate:
+        """Account-wide fee tier and effective maker/taker rates.
+
+        UNITS: rates are BASIS POINTS as the venue sends them (1 bp = 0.01%
+        = 0.0001); ``FeeRate`` also exposes ``*_fraction`` = bps/10_000, the
+        multiplier to apply to a notional. "24.2500000000" -> 24.25 bp ->
+        0.002425. Measured live: spot maker 24.25 bp / taker 48.5 bp, which
+        agrees with the rates this project's bot measures from its own
+        fills - if those ever disagree, one of the two is wrong.
+
+        These are the ACCOUNT TIER rates, not per-instrument rates: a
+        per-instrument promo is invisible here. Measured on the same account
+        in the same minute, this says 24.25 bp maker while
+        ``get_instrument_fee_rate("CRO_USD")`` says 0 bp maker / 4 bp taker.
+        To decide whether ONE pair is tradeable, use that one.
+
+        Returns:
+            FeeRate with both tiers and the four effective rates.
+
+        Raises:
+            ApiError: The call failed, or the payload is missing/absurd in
+                any fee field. ``is_indeterminate`` is True - the fee is
+                UNKNOWN, never 0. A fee decides whether a trade is allowed
+                to make money, so an unreadable answer must stop the
+                decision rather than silently price it at free.
+        """
+        data = await self.api.post("private/get-fee-rate", {"params": {}})
+        return FeeRate.from_api(data)
+
+    async def get_instrument_fee_rate(
+        self, instrument: Pair | str
+    ) -> InstrumentFeeRate:
+        """Fee rate the venue actually charges for ONE instrument.
+
+        Works for SPOT and DERIVATIVES alike (verified live with CRO_USD,
+        BTC_USD and BTCUSD-PERP) - the endpoint is not restricted to one
+        product type. Accepts a ``Pair`` or a raw venue instrument name such
+        as ``"BTCUSD-PERP"``; perpetuals are not in ``Account.pairs``, so
+        the string form is how you reach them.
+
+        This is where promotional rates show up: CRO_USD measures 0 bp
+        maker / 4 bp taker here while the account tier says 24.25/48.5, and
+        BTC_USD measures 25/50 - ABOVE the discounted account rate. Neither
+        endpoint is a proxy for the other; ask the one you need.
+
+        Args:
+            instrument: Pair, or the venue's instrument_name verbatim. The
+                name is NOT case-folded or otherwise rewritten: an unknown
+                name is a deterministic ``InvalidInstrumentError`` (code
+                209) from the venue, and guessing a variant silently queries
+                the fee of a different product.
+
+        Returns:
+            InstrumentFeeRate (maker/taker in bp, plus *_fraction).
+
+        Raises:
+            ValueError: Empty instrument name (local programming error).
+            InvalidInstrumentError: Unknown instrument - code 209, NOT
+                indeterminate: the venue confirmed there is no such thing.
+            ApiError: Call failed, or the payload is missing a field or
+                prices an instrument other than the one asked for
+                (indeterminate - the fee is UNKNOWN).
+        """
+        name = instrument.exchange_name if isinstance(instrument, Pair) else instrument
+        if not name:
+            raise ValueError("instrument must be a Pair or a non-empty name")
+        # The venue's contract is params.instrument_name. Send it under
+        # `params` explicitly: with no `params` key at all the venue answers
+        # 10004 BAD_REQUEST, and with an empty `params` it answers 209
+        # INVALID_INSTRUMENT - both measured live. "10004 BAD_REQUEST on a
+        # real instrument name" means the envelope is wrong, not the name.
+        data = await self.api.post(
+            "private/get-instrument-fee-rate", {"params": {"instrument_name": name}}
+        )
+        return InstrumentFeeRate.from_api(name, data)
+
+    async def get_fee_credit_balances(
+        self, page: int = 0, page_size: int = 200
+    ) -> list[FeeCredit]:
+        """Fee credit balances (promotional fee money), newest expiry first.
+
+        Grouped by expiry date, sorted ascending by the venue. Amount units
+        are the venue's own credit denomination - the published spec does
+        not name a currency, so none is claimed here (see ``FeeCredit``).
+
+        ``page``/``page_size`` are passed through (venue default 200, max
+        200); the reply carries no total/next-page token, so paging is the
+        caller's loop.
+
+        Returns:
+            list[FeeCredit]. AN EMPTY LIST IS A CONFIRMED ANSWER: the venue
+            said this account holds no fee credits. (Measured live: an
+            account paying 0 bp maker on CRO_USD returns [] here, which
+            proves the 0 bp is an instrument-level promo and NOT a credit
+            being consumed - so do not go looking for the explanation of a
+            zero fee in this endpoint alone.)
+
+        Raises:
+            ApiError: Call failed, or ``fee_credits`` was absent/malformed.
+                Absent is NOT read as empty: unknown is never absent.
+        """
+        data = await self.api.post(
+            "private/get-fee-credit-balances",
+            {"params": {"page": page, "page_size": page_size}},
+        )
+        method = "private/get-fee-credit-balances"
+        if not isinstance(data, dict):
+            raise ApiError(
+                f"{method}: expected an object, got {type(data).__name__}",
+                method=method,
+            )
+        credits = data.get("fee_credits")
+        if credits is None:
+            # Spec marks fee_credits required. Absent means the reply is not
+            # the reply, so "no credits" would be a guess.
+            raise ApiError(
+                f"{method}: response has no 'fee_credits' - cannot tell "
+                "whether the account holds credits",  # unknown != empty
+                method=method,
+            )
+        if not isinstance(credits, list):
+            raise ApiError(
+                f"{method}: fee_credits={credits!r} is not a list", method=method
+            )
+        return [FeeCredit.from_api(credit) for credit in credits]
 
     async def create_order(
         self,

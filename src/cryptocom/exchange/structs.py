@@ -8,6 +8,7 @@ from typing import Any, ClassVar
 
 from typing_extensions import override
 
+from .exceptions import ApiError
 from .helpers import round_down, round_up
 
 
@@ -451,6 +452,366 @@ class RiskParameters:
             ],
             perpetual_swap_config=data.get("perpetual_swap_config"),
             futures_config=data.get("futures_config"),
+        )
+
+
+# ============================================================================
+# Fees. A fee is money, so every parser below is strict by construction:
+# a missing, unparseable, negative or absurd field RAISES ApiError with no
+# code, i.e. ``is_indeterminate is True`` - "the fee is UNKNOWN". It is
+# never defaulted to 0.0, because a 0.0 fee silently turns an unprofitable
+# trade into a profitable one. Contrast ``FeeRate``'s handling of a real
+# 0.0 (CRO pairs charge 0 bp maker: that IS the rate and parses to 0.0)
+# with a missing field (raises). "Zero" and "unknown" are different answers
+# and only one of them is allowed to price a trade.
+# ============================================================================
+
+#: Ceiling for a credible fee, in basis points: 10_000 bp is 100% of the
+#: notional, and a fee cannot exceed the money it is charged on. Anything
+#: above this is a parse or unit mistake, not a fee tier - rejecting it is
+#: what keeps a decimal-shift bug (48.5 read as 4850) from being traded on.
+MAX_FEE_BPS = 10_000.0
+
+
+def _fee_amount(
+    data: dict[str, Any],
+    name: str,
+    method: str,
+    *,
+    maximum: float | None = None,
+) -> float:
+    """Parse one REQUIRED numeric fee field, or raise. Never guess, never default.
+
+    The venue sends these as decimal *strings* (``"24.2500000000"``), with a
+    precision that is NOT stable - the same endpoint has been observed
+    sending ``"0"``, ``"4.0000"`` and ``"25.0000"``. So no fixed scale is
+    assumed and no default is applied.
+    """
+    if name not in data or data[name] is None:
+        raise ApiError(
+            f"{method}: response has no {name!r} - the fee is UNKNOWN, "
+            "not zero; refusing to default it",
+            method=method,
+        )
+    raw = data[name]
+    if isinstance(raw, bool):
+        # bool is an int subclass: True would happily become 1.0 bp.
+        raise ApiError(
+            f"{method}: {name}={raw!r} is a bool, not a fee amount",
+            method=method,
+        )
+    try:
+        value = float(raw)
+    except (TypeError, ValueError) as exc:
+        raise ApiError(
+            f"{method}: {name}={raw!r} is not a number - the fee is UNKNOWN",
+            method=method,
+        ) from exc
+    if not math.isfinite(value):
+        raise ApiError(
+            f"{method}: {name}={raw!r} is not finite (nan/inf) - the fee is UNKNOWN",
+            method=method,
+        )
+    if value < 0:
+        raise ApiError(
+            f"{method}: {name}={raw!r} is negative; a fee below zero is not "
+            "a fee this library can trade on",
+            method=method,
+        )
+    if maximum is not None and value > maximum:
+        raise ApiError(
+            f"{method}: {name}={raw!r} exceeds {maximum} - that is a unit or "
+            "parse error, not a fee tier",
+            method=method,
+        )
+    return value
+
+
+def _fee_amount_or_none(data: dict[str, Any], name: str, method: str) -> float | None:
+    """Parse an OPTIONAL numeric fee field: absent -> None, garbage -> raise.
+
+    None means "the venue did not send this field" (spec-optional, e.g. the
+    master-account-only ``distributed_amount``). It is never 0.0, so a
+    caller cannot read an absent amount as a free one.
+    """
+    if name not in data or data[name] is None:
+        return None
+    return _fee_amount(data, name, method)
+
+
+def _fee_int(data: dict[str, Any], name: str, method: str) -> int:
+    """Parse one REQUIRED integer fee field (tiers, epoch-ms dates), or raise.
+
+    Only non-negative integers are accepted: a tier is >= 1 and an epoch-ms
+    date is far positive, so a negative value here is corruption, and letting
+    it through would silently become a 1969 expiry date.
+    """
+    if name not in data or data[name] is None:
+        raise ApiError(
+            f"{method}: response has no {name!r} - value UNKNOWN", method=method
+        )
+    raw = data[name]
+    if isinstance(raw, bool):
+        raise ApiError(
+            f"{method}: {name}={raw!r} is a bool, not an integer", method=method
+        )
+    if isinstance(raw, int):
+        if raw < 0:
+            raise ApiError(
+                f"{method}: {name}={raw!r} is negative - value UNKNOWN",
+                method=method,
+            )
+        return raw
+    text = str(raw).strip()
+    if text.isdigit():
+        return int(text)
+    # Deliberately NOT int(float(text)): a tier or a date that has drifted
+    # into float form is a contract change, and silently truncating it is
+    # how a 100x tier or a rounded expiry date gets shipped.
+    raise ApiError(
+        f"{method}: {name}={raw!r} is not an integer - value UNKNOWN",
+        method=method,
+    )
+
+
+def _require_str(data: dict[str, Any], name: str, method: str) -> str:
+    """Parse one required string field, or raise."""
+    raw = data.get(name)
+    if not isinstance(raw, str) or not raw:
+        raise ApiError(
+            f"{method}: response has no {name!r} string - value UNKNOWN",
+            method=method,
+        )
+    return raw
+
+
+def _require_dict(data: Any, method: str) -> dict[str, Any]:
+    """Assert the unwrapped result is an object, or raise (never crash)."""
+    if not isinstance(data, dict):
+        raise ApiError(
+            f"{method}: expected an object result, got "
+            f"{type(data).__name__} - fee UNKNOWN",
+            method=method,
+        )
+    return data
+
+
+@dataclass(frozen=True)
+class FeeRate:
+    """Account-wide fee tier and effective rates (``private/get-fee-rate``).
+
+    UNITS. The ``*_bps`` fields are BASIS POINTS exactly as the venue sends
+    them: 1 bp = 0.01% = 0.0001 as a fraction. Measured live payload
+    ``effective_spot_maker_rate_bps: "24.2500000000"`` therefore parses to
+    ``spot_maker_bps == 24.25`` and ``spot_maker_fraction == 0.002425``.
+    The ``*_fraction`` properties are the dimensionless multiplier to apply
+    to a notional (``bps / 10_000``); pick either, but never re-scale a
+    value you already read - the suffix is the unit and there is no second
+    convention in this class.
+
+    WHAT THIS IS - AND IS NOT. These are the *account tier* rates over a
+    30-day window. They are NOT per-instrument rates: measured on the same
+    account at the same moment, this endpoint reports CRO/USD at 24.25 bp
+    maker while ``private/get-instrument-fee-rate`` reports CRO_USD at
+    **0 bp maker / 4 bp taker** (a per-instrument promo) and BTC_USD at
+    25/50 (i.e. *above* the discounted account rate). Do not use this class
+    to decide whether one specific pair is profitable: use
+    ``Account.get_instrument_fee_rate()`` for the pair, and this for the tier.
+
+    Raises on construction from a payload with a missing or absurd field
+    (see ``_fee_number``) rather than substituting 0.
+    """
+
+    spot_tier: int
+    deriv_tier: int
+    spot_maker_bps: float
+    spot_taker_bps: float
+    deriv_maker_bps: float
+    deriv_taker_bps: float
+
+    @property
+    def spot_maker_fraction(self) -> float:
+        """Spot maker fee as a notional multiplier (bps / 10_000)."""
+        return self.spot_maker_bps / 10_000
+
+    @property
+    def spot_taker_fraction(self) -> float:
+        """Spot taker fee as a notional multiplier (bps / 10_000)."""
+        return self.spot_taker_bps / 10_000
+
+    @property
+    def deriv_maker_fraction(self) -> float:
+        """Derivatives maker fee as a notional multiplier (bps / 10_000)."""
+        return self.deriv_maker_bps / 10_000
+
+    @property
+    def deriv_taker_fraction(self) -> float:
+        """Derivatives taker fee as a notional multiplier (bps / 10_000)."""
+        return self.deriv_taker_bps / 10_000
+
+    @classmethod
+    def from_api(cls, data: dict[str, Any]) -> "FeeRate":
+        """Build a FeeRate from a ``private/get-fee-rate`` result.
+
+        Raises:
+            ApiError: A field is missing, non-numeric, negative or beyond
+                ``MAX_FEE_BPS``. ``is_indeterminate`` is True: the fee is
+                UNKNOWN, so the caller must not price a trade on it.
+        """
+        method = "private/get-fee-rate"
+        data = _require_dict(data, method)
+        return cls(
+            spot_tier=_fee_int(data, "spot_tier", method),
+            deriv_tier=_fee_int(data, "deriv_tier", method),
+            spot_maker_bps=_fee_amount(
+                data, "effective_spot_maker_rate_bps", method, maximum=MAX_FEE_BPS
+            ),
+            spot_taker_bps=_fee_amount(
+                data, "effective_spot_taker_rate_bps", method, maximum=MAX_FEE_BPS
+            ),
+            deriv_maker_bps=_fee_amount(
+                data, "effective_deriv_maker_rate_bps", method, maximum=MAX_FEE_BPS
+            ),
+            deriv_taker_bps=_fee_amount(
+                data, "effective_deriv_taker_rate_bps", method, maximum=MAX_FEE_BPS
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class InstrumentFeeRate:
+    """Per-instrument fee rate (``private/get-instrument-fee-rate``).
+
+    UNITS: ``maker_bps``/``taker_bps`` are basis points as sent by the venue
+    (1 bp = 0.01% = 0.0001); ``*_fraction`` are the notional multipliers.
+
+    THIS IS WHERE PROMOS SHOW UP. Measured live: CRO_USD -> 0 bp maker /
+    4 bp taker while the account tier says 24.25/48.5. A 0 here is a real
+    promotional rate, not a default - which is exactly why a *missing*
+    field still raises instead of producing one.
+
+    Applies to SPOT and DERIVATIVES alike, not only to one product type:
+    verified live with ``CRO_USD``/``BTC_USD`` (spot) and ``BTCUSD-PERP``
+    (perp). The instrument may therefore be a ``Pair`` or a raw name such
+    as ``"BTCUSD-PERP"``.
+    """
+
+    instrument_name: str
+    maker_bps: float
+    taker_bps: float
+
+    @property
+    def maker_fraction(self) -> float:
+        """Maker fee as a notional multiplier (bps / 10_000)."""
+        return self.maker_bps / 10_000
+
+    @property
+    def taker_fraction(self) -> float:
+        """Taker fee as a notional multiplier (bps / 10_000)."""
+        return self.taker_bps / 10_000
+
+    @classmethod
+    def from_api(cls, requested: str, data: dict[str, Any]) -> "InstrumentFeeRate":
+        """Build an InstrumentFeeRate from the venue result.
+
+        Args:
+            requested: The instrument name that was asked for. The venue
+                echoes the name it priced; a mismatch raises, because a
+                correct rate for the WRONG instrument is the most expensive
+                kind of correct-looking number.
+
+        Raises:
+            ApiError: Missing/non-numeric/absurd field, or the echoed
+                ``instrument_name`` is not the one requested. Indeterminate.
+        """
+        method = "private/get-instrument-fee-rate"
+        data = _require_dict(data, method)
+        echoed = data.get("instrument_name")
+        if echoed is not None and echoed != requested:
+            raise ApiError(
+                f"{method}: asked for {requested!r} but the venue priced "
+                f"{echoed!r} - refusing to apply that rate to {requested!r}",
+                method=method,
+            )
+        return cls(
+            instrument_name=requested,
+            maker_bps=_fee_amount(
+                data, "effective_maker_rate_bps", method, maximum=MAX_FEE_BPS
+            ),
+            taker_bps=_fee_amount(
+                data, "effective_taker_rate_bps", method, maximum=MAX_FEE_BPS
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class FeeCreditDetail:
+    """One campaign's contribution to a fee credit balance."""
+
+    campaign: str
+    #: Epoch SECONDS (the venue sends epoch ms; see ``FeeCredit.expiry_at``).
+    distributed_at: int
+    distributed_amount: float
+
+    @classmethod
+    def from_api(cls, data: dict[str, Any]) -> "FeeCreditDetail":
+        """Build from one element of a fee-credit ``details`` array.
+
+        Raises:
+            ApiError: A required field is missing or not a number/integer.
+        """
+        method = "private/get-fee-credit-balances"
+        return cls(
+            campaign=_require_str(data, "type", method),
+            distributed_at=_fee_int(data, "distribution_date", method) // 1000,
+            distributed_amount=_fee_amount(data, "distributed_amount", method),
+        )
+
+
+@dataclass(frozen=True)
+class FeeCredit:
+    """Fee credit balance grouped by expiry (``private/get-fee-credit-balances``).
+
+    UNITS: ``available_balance``/``distributed_amount`` are amounts in the
+    currency the venue denominates fee credits in. The published spec does
+    NOT name that currency, so this class does not claim one - treat the
+    number as the venue's own credit counterparty, not as USD.
+
+    ``type`` and ``distributed_amount``/``details`` are documented as
+    master-account-only and are ``None``/empty for a sub-account, so they
+    are optional here; ``expiry_at`` and ``available_balance`` are required
+    by the spec and raise if absent.
+    """
+
+    #: Epoch SECONDS (venue sends epoch ms, at "end of day 23:59 UTC").
+    expiry_at: int
+    available_balance: float
+    #: Wire key ``type``: comma-separated campaign names (master accounts).
+    campaigns: str | None = None
+    distributed_amount: float | None = None
+    details: tuple[FeeCreditDetail, ...] = ()
+
+    @classmethod
+    def from_api(cls, data: dict[str, Any]) -> "FeeCredit":
+        """Build one fee-credit entry.
+
+        Raises:
+            ApiError: ``expiry_date``/``available_balance`` is missing or
+                unparseable.
+        """
+        method = "private/get-fee-credit-balances"
+        data = _require_dict(data, method)
+        details = data.get("details")
+        if details is not None and not isinstance(details, list):
+            raise ApiError(
+                f"{method}: details={details!r} is not a list", method=method
+            )
+        return cls(
+            expiry_at=_fee_int(data, "expiry_date", method) // 1000,
+            available_balance=_fee_amount(data, "available_balance", method),
+            campaigns=data.get("type"),
+            distributed_amount=_fee_amount_or_none(data, "distributed_amount", method),
+            details=tuple(FeeCreditDetail.from_api(detail) for detail in details or []),
         )
 
 

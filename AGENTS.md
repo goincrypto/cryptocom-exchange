@@ -7,7 +7,7 @@ Python library for Crypto.com Exchange API with full type safety, logging, and O
 ## Recent Changes (v2.0.0)
 
 ### Major Updates
-- **Enhanced Pair class** - Now includes full instrument metadata (fees, tick sizes, limits)
+- **Enhanced Pair class** - Now includes full instrument metadata (tick sizes, limits). It carries NO fee field and never did: fees are account facts, read them from `Account.get_fee_rate()` (tier) or `Account.get_instrument_fee_rate(pair)` (per-pair, promos included)
 - **Order execution flags** - Changed from single `exec_type` to `exec_flags: list[OrderExecFlag]`
 - **New OrderExecFlag enum** - 7 values: POST_ONLY, REDUCE_ONLY, SMART_POST_ONLY, ISOLATED_MARGIN, MARGIN_ORDER, LIQUIDATION, NOTIONAL_ORDER
 - **Logging infrastructure** - Module-based loggers with DEBUG level showing request/response times
@@ -77,7 +77,7 @@ cryptocom-exchange/
 4. Look at `tests/test_market.py` - Usage examples
 
 **Key Concepts:**
-- **Pair** - Trading pair with full metadata (fees, tick sizes, limits)
+- **Pair** - Trading pair with full metadata (tick sizes, limits). No fee field: `public/get-instruments` reports no fee, so the fee must come from the `Account` fee accessors
 - **InstrumentType** - CCY_PAIR (spot), DERIVATIVES (perps), FUTURES
 - **OrderExecFlag** - Execution instructions (POST_ONLY, REDUCE_ONLY, etc.)
 - **Timeframe** - Candle intervals (1m, 5m, 1h, 1D, etc.)
@@ -284,11 +284,15 @@ python generate.py
 ```
 
 Includes:
-- Fee rates (maker/taker)
 - Tick sizes (price/quantity)
 - Order limits (min/max)
 - Base/quote currencies
 - Instrument types
+
+Not included - fees. `public/get-instruments` does not report them and `Pair`
+has no fee field. A `maker_fee: 0.0` on a Pair would be a number a trading
+bot trusts, and a zero fee silently turns an unprofitable trade into a
+profitable one. Use `Account.get_fee_rate()` / `Account.get_instrument_fee_rate()`.
 
 ## Type Improvements Completed
 

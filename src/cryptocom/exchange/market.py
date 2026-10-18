@@ -45,11 +45,18 @@ class Market:
         """List all available SPOT market pairs with full instrument metadata.
 
         Returns Pairs enriched with:
-        - Fee rates (maker/taker)
         - Order quantity limits
         - Price/quantity tick sizes
         - Base/quote currencies
         - Instrument type
+
+        Pairs carry NO fee data, and never did - ``public/get-instruments``
+        does not report fees and ``Pair`` has no fee field. A fee is an
+        account fact, not an instrument constant: read it from
+        ``Account.get_fee_rate()`` (tier) or
+        ``Account.get_instrument_fee_rate(pair)`` (what this pair actually
+        costs, including promos). Never assume one: a fee guessed at 0 makes
+        an unprofitable trade look profitable.
         """
         data = await self.api.get("public/get-instruments")
         pairs = []
