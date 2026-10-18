@@ -1,0 +1,15 @@
+{
+  "post_private/get-instrument-fee-rate": {
+    "params={'instrument_name': 'CRO_USD'}": [
+      {
+        "response": {
+          "instrument_name": "CRO_USD",
+          "effective_maker_rate_bps": "0",
+          "effective_taker_rate_bps": "4.0000"
+        },
+        "exec_time": 0.32827210426330566,
+        "timestamp": 1792326889.9208052
+      }
+    ]
+  }
+}

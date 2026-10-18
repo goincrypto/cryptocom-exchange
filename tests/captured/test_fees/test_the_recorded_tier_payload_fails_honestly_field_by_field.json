@@ -1,0 +1,18 @@
+{
+  "post_private/get-fee-rate": {
+    "params={}": [
+      {
+        "response": {
+          "spot_tier": "1",
+          "deriv_tier": "1",
+          "effective_spot_maker_rate_bps": "24.2500000000",
+          "effective_spot_taker_rate_bps": "48.5000000000",
+          "effective_deriv_maker_rate_bps": "1.9400000000",
+          "effective_deriv_taker_rate_bps": "3.8800000000"
+        },
+        "exec_time": 0.29709434509277344,
+        "timestamp": 1792326887.6095626
+      }
+    ]
+  }
+}

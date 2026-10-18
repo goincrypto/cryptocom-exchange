@@ -1,0 +1,13 @@
+{
+  "post_private/get-fee-credit-balances": {
+    "params={'page': 0, 'page_size': 200}": [
+      {
+        "response": {
+          "fee_credits": []
+        },
+        "exec_time": 0.3088388442993164,
+        "timestamp": 1792326890.2542887
+      }
+    ]
+  }
+}

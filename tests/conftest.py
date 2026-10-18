@@ -7,6 +7,21 @@ import pytest_asyncio
 
 import cryptocom.exchange as cro
 
+#: Capture drives the REAL transport, and an unpinned signed request does NOT
+#: reach the venue from the address an API key is whitelisted to:
+#: `api.crypto.com` publishes AAAA records and `getaddrinfo` returns them
+#: FIRST, so httpx egresses over IPv6 - a different source address than the
+#: IPv4 one these keys are bound to - and the venue answers
+#: `401 -> 40101 Authentication failure`. Measured on the recording box:
+#: IPv4 egress authenticates (200), IPv6 egress gets 40101. "0.0.0.0" pins
+#: the IPv4 family through `ApiProvider.local_address`; the env var overrides
+#: it ("" lets the OS choose, "::" pins IPv6). Replay mode never opens a
+#: socket, so CI needs no keys and no address - only `API_CAPTURE=true` runs
+#: touch this.
+CAPTURE_LOCAL_ADDRESS: str | None = (
+    os.environ.get("CRYPTOCOM_LOCAL_ADDRESS", "0.0.0.0") or None
+)
+
 
 @pytest.fixture
 def api(request):
@@ -23,6 +38,7 @@ def api(request):
         cache_file=cache_file,
         capture=capture,
         divide_delay=10,
+        local_address=CAPTURE_LOCAL_ADDRESS,
     )
     # client_oids are generated inside account.py - patch THAT name (the old
     # patch of uuid.uuid4 was bypassed by account's `from uuid import uuid4`).

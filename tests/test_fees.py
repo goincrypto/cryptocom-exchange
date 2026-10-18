@@ -7,33 +7,50 @@ and `private/get-fee-credit-balances` are all in this repo's own vendored OpenAP
 specs (`openapi_docs/specs/`). The answer was in the repo while an agent was
 guessing path names and reporting "no fee endpoint exists".
 
-The payloads below are TRANSCRIBED FROM LIVE RESPONSES captured on the operator's
-account on 2026-10-18, not invented, because the interesting facts are ones no
-author would invent:
+TWO KINDS OF COVERAGE, AND WHY BOTH.
+
+* **Captured** (bottom section, `tests/captured/test_fees/*.json`): the strict
+  replay harness serves responses recorded from the operator's live account.
+  These are the tests that say what Crypto.com ACTUALLY sends — field set,
+  stringly-typed numbers and all. Missing capture = failure, never a skip, and
+  no credentials are needed to replay them.
+* **Scripted** (everything above): a venue the tests dictate. It exists for the
+  shapes the real venue will not produce on demand — a missing field, a NaN
+  rate, a tier of `"one"`, a fee-credit page for an account that has no
+  credits. Their payloads are TRANSCRIBED FROM LIVE RESPONSES, not invented,
+  and `test_the_recorded_tier_payload_is_the_payload_this_file_scripts` is what
+  keeps that claim honest: it compares the scripted constants against the
+  recorded truth, so a scripted payload that drifts into fiction goes red.
+
+The facts worth pinning, all of them measured rather than assumed:
 
 * `CRO_USD` costs **0 bp maker / 4 bp taker** at instrument level while the
   account tier says 24.25/48.5 — so the account endpoint and the instrument
   endpoint are NOT proxies for each other, and a caller that asks the wrong one
-  prices a trade wrong.
-* The same endpoint answers `"0"`, `"4.0000"` and `"25.0000"` — the decimal
-  count is NOT stable, so nothing may assume a scale.
+  prices a trade wrong. `NEAR_USD`/`BTC_USD` cost 25/50, i.e. ABOVE the tier.
+* The same endpoint family answers `"0"`, `"4.0000"`, `"25.0000"` and
+  `"50.000"` — the decimal count is NOT stable, so nothing may assume a scale.
 * A 0 bp rate is a real answer here, which is exactly why an ABSENT field must
   raise instead of producing one. `0` and "unknown" have to stay different
   answers: a fee of 0 turns an unprofitable trade into a profitable one.
-
-Like `test_trades_pagination.py`, these tests drive a scripted venue and need no
-capture file and no credentials, so they run anywhere and cannot rot into a
-replay of their own assumptions.
 """
 
 import copy
+import json
 from typing import Any
 
 import pytest
 
 import cryptocom.exchange as cro
 
-#: Live `private/get-fee-rate` result, transcribed verbatim.
+# Wire paths, named once: they are the recorder's keys as well as the strings
+# the accessors post, and a typo here silently retargets a whole test.
+FEE_RATE_PATH = "private/get-fee-rate"
+INSTRUMENT_FEE_PATH = "private/get-instrument-fee-rate"
+FEE_CREDITS_PATH = "private/get-fee-credit-balances"
+
+#: `private/get-fee-rate` result, transcribed from a live response and pinned
+#: against the capture by test_the_recorded_tier_payload_is_the_payload...
 FEE_RATE_LIVE: dict[str, Any] = {
     "spot_tier": "1",
     "deriv_tier": "1",
@@ -43,7 +60,9 @@ FEE_RATE_LIVE: dict[str, Any] = {
     "effective_deriv_taker_rate_bps": "3.8800000000",
 }
 
-#: Live `private/get-instrument-fee-rate` results, transcribed verbatim.
+#: `private/get-instrument-fee-rate` results, transcribed from live responses.
+#: Note the decimal counts differ BOTH across instruments AND inside one
+#: payload: this family sends no fixed scale.
 CRO_USD_LIVE = {
     "instrument_name": "CRO_USD",
     "effective_maker_rate_bps": "0",
@@ -51,6 +70,11 @@ CRO_USD_LIVE = {
 }
 BTC_USD_LIVE = {
     "instrument_name": "BTC_USD",
+    "effective_maker_rate_bps": "25.0000",
+    "effective_taker_rate_bps": "50.000",
+}
+NEAR_USD_LIVE = {
+    "instrument_name": "NEAR_USD",
     "effective_maker_rate_bps": "25.0000",
     "effective_taker_rate_bps": "50.000",
 }
@@ -72,6 +96,9 @@ class ScriptedVenue(cro.ApiProvider):
     failure that motivated this work was an ENVELOPE error (a body with no
     `params` key answers 10004 BAD_REQUEST for a perfectly valid instrument
     name) being misread as "this endpoint does not accept that instrument".
+
+    A response value may be a payload, an Exception to raise, or a callable of
+    the request body. Use `serving()` rather than constructing this directly.
     """
 
     def __init__(self, responses: dict[str, Any]) -> None:
@@ -92,20 +119,18 @@ class ScriptedVenue(cro.ApiProvider):
         # leak into the next test, but it could corrupt this one.
         return copy.deepcopy(reply)
 
-    @property
-    def paths(self) -> list[str]:
-        return [call[0] for call in self.calls]
 
+def serving(path: str, response: Any) -> tuple[ScriptedVenue, cro.Account]:
+    """One venue + the account on it, for the scripted tests.
 
-@pytest.fixture
-def venue() -> ScriptedVenue:
-    """A venue serving the live fee-rate payload."""
-    return ScriptedVenue({"private/get-fee-rate": copy.deepcopy(FEE_RATE_LIVE)})
-
-
-@pytest.fixture
-def account(venue: ScriptedVenue) -> cro.Account:
-    return cro.Account(api=venue, market=cro.Market(api=venue))
+    Every scripted test serves exactly ONE path (a mutated payload, an error,
+    or an empty page) and needs both objects; spelling `ScriptedVenue(...)`
+    plus `Account(api=..., market=Market(api=...))` out twenty-odd times proved
+    nothing and cost forty lines. `ScriptedVenue` stays the single place the
+    scripted wire is defined.
+    """
+    venue = ScriptedVenue({path: response})
+    return venue, cro.Account(api=venue, market=cro.Market(api=venue))
 
 
 # ===========================================================================
@@ -114,15 +139,15 @@ def account(venue: ScriptedVenue) -> cro.Account:
 
 
 @pytest.mark.asyncio
-async def test_the_live_fee_rate_payload_parses_to_the_measured_numbers(
-    account: cro.Account,
-) -> None:
+async def test_the_live_fee_rate_payload_parses_to_the_measured_numbers() -> None:
     """The point of the accessor: the bot's fills and this endpoint must agree.
 
     The consuming bot measures maker 24.25 bp / taker 48.5 bp from its own
     CRO_USD fills. These are the same numbers — the cross-check holds, so a
     future disagreement means one side broke.
     """
+    _, account = serving(FEE_RATE_PATH, FEE_RATE_LIVE)
+
     fees = await account.get_fee_rate()
 
     assert (fees.spot_tier, fees.deriv_tier) == (1, 1)
@@ -133,9 +158,7 @@ async def test_the_live_fee_rate_payload_parses_to_the_measured_numbers(
 
 
 @pytest.mark.asyncio
-async def test_a_bps_string_is_basis_points_and_the_fraction_divides_by_10000(
-    account: cro.Account,
-) -> None:
+async def test_a_bps_string_is_basis_points_and_the_fraction_divides_by_10000() -> None:
     """The unit contract, pinned deliberately: `"24.2500000000"` is 24.25 bp.
 
     Two units exist in this file and each field says which one it holds:
@@ -144,6 +167,7 @@ async def test_a_bps_string_is_basis_points_and_the_fraction_divides_by_10000(
     burned by a fee unit ambiguity, so the suffix IS the unit and there is no
     third convention (no percent, no per-mille) to drift into.
     """
+    _, account = serving(FEE_RATE_PATH, FEE_RATE_LIVE)
     fees = await account.get_fee_rate()
 
     assert fees.spot_maker_bps == 24.25
@@ -162,8 +186,9 @@ async def test_a_bps_string_is_basis_points_and_the_fraction_divides_by_10000(
 
 
 @pytest.mark.asyncio
-async def test_tiers_are_integers_not_the_venue_strings(account: cro.Account) -> None:
+async def test_tiers_are_integers_not_the_venue_strings() -> None:
     """`spot_tier: "1"` becomes the int 1. A tier is compared, not concatenated."""
+    _, account = serving(FEE_RATE_PATH, FEE_RATE_LIVE)
     fees = await account.get_fee_rate()
 
     assert isinstance(fees.spot_tier, int)
@@ -184,8 +209,7 @@ async def test_a_missing_fee_field_raises_indeterminate_rather_than_becoming_zer
     """
     payload = copy.deepcopy(FEE_RATE_LIVE)
     del payload[missing]
-    venue = ScriptedVenue({"private/get-fee-rate": payload})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_RATE_PATH, payload)
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_fee_rate()
@@ -225,8 +249,7 @@ async def test_an_absurd_rate_raises_instead_of_being_traded_on(
     """
     payload = copy.deepcopy(FEE_RATE_LIVE)
     payload[field] = value
-    venue = ScriptedVenue({"private/get-fee-rate": payload})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_RATE_PATH, payload)
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_fee_rate()
@@ -239,8 +262,7 @@ async def test_a_rate_at_the_ceiling_is_accepted_but_a_step_above_is_not() -> No
     """`MAX_FEE_BPS` is a ceiling, not a tripwire on legitimate data."""
     payload = copy.deepcopy(FEE_RATE_LIVE)
     payload["effective_spot_maker_rate_bps"] = str(int(cro.MAX_FEE_BPS))
-    venue = ScriptedVenue({"private/get-fee-rate": payload})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_RATE_PATH, payload)
 
     fees = await account.get_fee_rate()
     assert fees.spot_maker_bps == cro.MAX_FEE_BPS
@@ -251,18 +273,15 @@ async def test_a_rate_at_the_ceiling_is_accepted_but_a_step_above_is_not() -> No
 
 
 @pytest.mark.asyncio
-async def test_a_real_zero_rate_parses_while_an_absent_one_raises(
-    venue: ScriptedVenue,
-) -> None:
+async def test_a_real_zero_rate_parses_while_an_absent_one_raises() -> None:
     """The distinction the whole design rests on: 0 is data, absence is not.
 
     CRO_USD genuinely pays 0 bp maker (see the instrument tests below), so a
     parser may not treat 0 as "missing" — and may not treat missing as 0.
     """
-    payload = copy.deepcopy(FEE_RATE_LIVE)
-    payload["effective_spot_maker_rate_bps"] = "0"
-    venue.responses["private/get-fee-rate"] = payload
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    zero = copy.deepcopy(FEE_RATE_LIVE)
+    zero["effective_spot_maker_rate_bps"] = "0"
+    _, account = serving(FEE_RATE_PATH, zero)
 
     fees = await account.get_fee_rate()
     assert fees.spot_maker_bps == 0.0
@@ -270,15 +289,15 @@ async def test_a_real_zero_rate_parses_while_an_absent_one_raises(
     # The other fields still came through: this is a zero, not a blank reply.
     assert fees.spot_taker_bps == 48.5
 
-    del payload["effective_spot_maker_rate_bps"]
+    absent = copy.deepcopy(FEE_RATE_LIVE)
+    del absent["effective_spot_maker_rate_bps"]
+    _, account = serving(FEE_RATE_PATH, absent)
     with pytest.raises(cro.ApiError):
         await account.get_fee_rate()
 
 
 @pytest.mark.asyncio
-async def test_fee_rate_is_a_signed_private_call_with_an_empty_params_object(
-    account: cro.Account, venue: ScriptedVenue
-) -> None:
+async def test_fee_rate_is_a_signed_private_call_with_an_empty_params_object() -> None:
     """The envelope the venue accepts: `params: {}`, signed.
 
     The spec requires `params` (an empty object) on this endpoint; the live
@@ -286,10 +305,11 @@ async def test_fee_rate_is_a_signed_private_call_with_an_empty_params_object(
     one sent. Signing is pinned because an unsigned private call is a 401 at
     the venue and a silent 401 in an outage-sized bug hunt.
     """
+    venue, account = serving(FEE_RATE_PATH, FEE_RATE_LIVE)
     await account.get_fee_rate()
 
     path, data, sign = venue.calls[0]
-    assert path == "private/get-fee-rate"
+    assert path == FEE_RATE_PATH
     assert data == {"params": {}}
     assert sign is True
 
@@ -303,15 +323,15 @@ async def test_fee_rate_is_a_signed_private_call_with_an_empty_params_object(
         # guards. (A list of strings would NOT: `name not in [...]` succeeds
         # and the missing-field check absorbs it - which is precisely how the
         # first version of this test failed to pin the guard at all.)
-        ("private/get-fee-rate", 5, "rate"),
+        (FEE_RATE_PATH, 5, "rate"),
         # A list has no `.get`, so the instrument parser reaches the guard.
-        ("private/get-instrument-fee-rate", ["BTC_USD"], "instrument"),
+        (INSTRUMENT_FEE_PATH, ["BTC_USD"], "instrument"),
         # A credit ENTRY that is not an object: the entry parser must hold.
-        ("private/get-fee-credit-balances", {"fee_credits": [5]}, "credits"),
+        (FEE_CREDITS_PATH, {"fee_credits": [5]}, "credits"),
         # The credits endpoint's own envelope checks: a non-object reply, and
         # a `fee_credits` that is present but not an array.
-        ("private/get-fee-credit-balances", ["not", "a", "dict"], "credits"),
-        ("private/get-fee-credit-balances", {"fee_credits": "nope"}, "credits"),
+        (FEE_CREDITS_PATH, ["not", "a", "dict"], "credits"),
+        (FEE_CREDITS_PATH, {"fee_credits": "nope"}, "credits"),
     ],
 )
 async def test_a_result_of_the_wrong_shape_raises_rather_than_crashing(
@@ -324,8 +344,7 @@ async def test_a_result_of_the_wrong_shape_raises_rather_than_crashing(
     ApiError. Whatever the venue sends, the fee path answers with the taxonomy
     or with a value - never with a Python internals error.
     """
-    venue = ScriptedVenue({path: payload})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(path, payload)
 
     call = {
         "rate": account.get_fee_rate,
@@ -354,9 +373,7 @@ async def test_instrument_fee_rate_puts_instrument_name_under_params() -> None:
     take NEAR_USD" costs an hour and produces a false "no such endpoint"
     report. The name goes in `params.instrument_name`.
     """
-    venue = ScriptedVenue({"private/get-instrument-fee-rate": BTC_USD_LIVE})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
-
+    venue, account = serving(INSTRUMENT_FEE_PATH, BTC_USD_LIVE)
     await account.get_instrument_fee_rate("BTC_USD")
 
     _path, data, sign = venue.calls[0]
@@ -372,6 +389,7 @@ async def test_instrument_fee_rate_puts_instrument_name_under_params() -> None:
         ("CRO_USD", "CRO_USD", CRO_USD_LIVE),
         (cro.pairs.CRO_USD, "CRO_USD", CRO_USD_LIVE),
         (cro.pairs.BTC_USD, "BTC_USD", BTC_USD_LIVE),
+        (cro.pairs.NEAR_USD, "NEAR_USD", NEAR_USD_LIVE),
         # A perpetual: NOT in Account.pairs, so the string form is how you
         # price one. This is the evidence the endpoint is not deriv-only.
         ("BTCUSD-PERP", "BTCUSD-PERP", BTCUSD_PERP_LIVE),
@@ -381,8 +399,7 @@ async def test_instrument_fee_rate_accepts_spot_pairs_and_perpetuals(
     instrument: Any, expected: str, reply: dict
 ) -> None:
     """Spot `Pair`, spot name and perp name all reach the same accessor."""
-    venue = ScriptedVenue({"private/get-instrument-fee-rate": reply})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    venue, account = serving(INSTRUMENT_FEE_PATH, reply)
 
     rate = await account.get_instrument_fee_rate(instrument)
 
@@ -398,8 +415,7 @@ async def test_cro_usd_instrument_rate_is_the_promo_zero_maker() -> None:
     that reads only `get_fee_rate()` believes a CRO_USD maker fill costs six
     times more than it does.
     """
-    venue = ScriptedVenue({"private/get-instrument-fee-rate": CRO_USD_LIVE})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(INSTRUMENT_FEE_PATH, CRO_USD_LIVE)
 
     rate = await account.get_instrument_fee_rate("CRO_USD")
 
@@ -417,8 +433,7 @@ async def test_a_reply_pricing_another_instrument_is_refused() -> None:
     If the venue ever answers BTC_USD's rate to a CRO_USD question, applying
     it would silently price a real order with someone else's fee schedule.
     """
-    venue = ScriptedVenue({"private/get-instrument-fee-rate": BTC_USD_LIVE})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(INSTRUMENT_FEE_PATH, BTC_USD_LIVE)
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_instrument_fee_rate("CRO_USD")
@@ -435,8 +450,7 @@ async def test_a_missing_instrument_rate_raises(missing: str) -> None:
     """Same rule as the tier endpoint: absence raises, it does not default."""
     payload = dict(BTC_USD_LIVE)
     del payload[missing]
-    venue = ScriptedVenue({"private/get-instrument-fee-rate": payload})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(INSTRUMENT_FEE_PATH, payload)
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_instrument_fee_rate("BTC_USD")
@@ -453,14 +467,12 @@ async def test_an_unknown_instrument_is_determinate_and_propagates() -> None:
     error defers the decision while a determinate one settles it, so this
     distinction is load-bearing: "no such instrument" is a fact.
     """
-    venue = ScriptedVenue(
-        {
-            "private/get-instrument-fee-rate": cro.exceptions.InvalidInstrumentError(
-                "INVALID_INSTRUMENT", code=209, method="private/get-instrument-fee-rate"
-            )
-        }
+    _, account = serving(
+        INSTRUMENT_FEE_PATH,
+        cro.exceptions.InvalidInstrumentError(
+            "INVALID_INSTRUMENT", code=209, method=INSTRUMENT_FEE_PATH
+        ),
     )
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
 
     with pytest.raises(cro.exceptions.InvalidInstrumentError) as excinfo:
         await account.get_instrument_fee_rate("NOT_A_REAL_COIN_USD")
@@ -470,14 +482,14 @@ async def test_an_unknown_instrument_is_determinate_and_propagates() -> None:
 
 
 @pytest.mark.asyncio
-async def test_an_empty_instrument_name_fails_locally_without_a_request(
-    account: cro.Account, venue: ScriptedVenue
-) -> None:
+async def test_an_empty_instrument_name_fails_locally_without_a_request() -> None:
     """A blank name is a programming error, refused before the wire.
 
     The venue would answer 209; failing locally keeps the rate-limit budget
     and points at the caller instead of at the exchange.
     """
+    venue, account = serving(FEE_RATE_PATH, FEE_RATE_LIVE)
+
     with pytest.raises(ValueError):
         await account.get_instrument_fee_rate("")
 
@@ -490,12 +502,9 @@ async def test_an_empty_instrument_name_fails_locally_without_a_request(
 
 
 @pytest.mark.asyncio
-async def test_fee_credit_balances_sends_the_pagination_params(
-    account: cro.Account,
-) -> None:
+async def test_fee_credit_balances_sends_the_pagination_params() -> None:
     """`page`/`page_size` go through as-is (venue default 200, max 200)."""
-    venue = ScriptedVenue({"private/get-fee-credit-balances": {"fee_credits": []}})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    venue, account = serving(FEE_CREDITS_PATH, {"fee_credits": []})
 
     await account.get_fee_credit_balances(page=2, page_size=50)
 
@@ -508,14 +517,14 @@ async def test_fee_credit_balances_sends_the_pagination_params(
 async def test_an_empty_fee_credit_list_is_a_confirmed_answer() -> None:
     """`{"fee_credits": []}` -> `[]`: the venue confirmed there are none.
 
-    Measured live on the account whose CRO_USD maker fee is 0 bp. The credits
-    are EMPTY, which rules out "the 0 bp is a promo credit being burned" and
-    leaves the instrument-level schedule (0 bp, per the tests above) as the
-    explanation. An empty list must be distinguishable from "we could not
-    read the reply", which is the next test.
+    Measured live on the account whose CRO_USD maker fee is 0 bp - and pinned
+    against the capture by `test_the_recorded_fee_credit_page...` below. The
+    credits are EMPTY, which rules out "the 0 bp is a promo credit being
+    burned" and leaves the instrument-level schedule (0 bp, per the tests
+    above) as the explanation. An empty list must be distinguishable from "we
+    could not read the reply", which is the next test.
     """
-    venue = ScriptedVenue({"private/get-fee-credit-balances": {"fee_credits": []}})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_CREDITS_PATH, {"fee_credits": []})
 
     credits = await account.get_fee_credit_balances()
 
@@ -526,14 +535,40 @@ async def test_an_empty_fee_credit_list_is_a_confirmed_answer() -> None:
 async def test_a_response_without_fee_credits_is_not_read_as_no_credits() -> None:
     """Unknown is never absent. `fee_credits` is spec-required; absent means
     the reply is not the reply, and `[]` would be a fabricated fact."""
-    venue = ScriptedVenue({"private/get-fee-credit-balances": {"unexpected": True}})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_CREDITS_PATH, {"unexpected": True})
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_fee_credit_balances()
 
     assert excinfo.value.is_indeterminate
     assert "fee_credits" in str(excinfo.value)
+
+
+#: A master-account credit page, built from the spec's own example values:
+#: this account has no credits to record, so this shape stays scripted (see
+#: `test_the_recorded_fee_credit_page_is_a_confirmed_empty_answer`).
+SPEC_CREDIT_PAGE = {
+    "fee_credits": [
+        {
+            "expiry_date": 1735689540000,
+            "type": "Campaign1, Campaign2",
+            "distributed_amount": "200.00000000",
+            "available_balance": "150.00000000",
+            "details": [
+                {
+                    "type": "Campaign1",
+                    "distribution_date": 1704067140000,
+                    "distributed_amount": "100.00000000",
+                }
+            ],
+        },
+        # A sub-account shape: only the two required fields.
+        {
+            "expiry_date": 1767225540000,
+            "available_balance": "12.50000000",
+        },
+    ]
+}
 
 
 @pytest.mark.asyncio
@@ -545,38 +580,12 @@ async def test_a_fee_credit_page_parses_into_typed_entries() -> None:
     `type` becomes `campaigns`/`campaign` because the wire key tells you
     nothing and `type` shadows a builtin.
     """
-    venue = ScriptedVenue(
-        {
-            "private/get-fee-credit-balances": {
-                "fee_credits": [
-                    {
-                        "expiry_date": 1735689540000,
-                        "type": "Campaign1, Campaign2",
-                        "distributed_amount": "200.00000000",
-                        "available_balance": "150.00000000",
-                        "details": [
-                            {
-                                "type": "Campaign1",
-                                "distribution_date": 1704067140000,
-                                "distributed_amount": "100.00000000",
-                            }
-                        ],
-                    },
-                    # A sub-account shape: only the two required fields.
-                    {
-                        "expiry_date": 1767225540000,
-                        "available_balance": "12.50000000",
-                    },
-                ]
-            }
-        }
-    )
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_CREDITS_PATH, SPEC_CREDIT_PAGE)
 
     credits = await account.get_fee_credit_balances()
 
     assert len(credits) == 2
-    first = credits[0]
+    first, second = credits
     assert first.expiry_at == 1735689540
     assert first.available_balance == 150.0
     assert first.distributed_amount == 200.0
@@ -584,7 +593,6 @@ async def test_a_fee_credit_page_parses_into_typed_entries() -> None:
     assert first.details[0].campaign == "Campaign1"
     assert first.details[0].distributed_at == 1704067140
     assert first.details[0].distributed_amount == 100.0
-    second = credits[1]
     assert second.available_balance == 12.5
     assert second.distributed_amount is None, "absent, NOT 0.0"
     assert second.campaigns is None
@@ -600,8 +608,7 @@ async def test_a_fee_credit_missing_a_required_field_raises(missing: str) -> Non
         "available_balance": "150.00000000",
     }
     del entry[missing]
-    venue = ScriptedVenue({"private/get-fee-credit-balances": {"fee_credits": [entry]}})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_CREDITS_PATH, {"fee_credits": [entry]})
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_fee_credit_balances()
@@ -617,20 +624,16 @@ async def test_the_basis_point_ceiling_does_not_leak_into_credit_amounts() -> No
     only makes sense for a fee percentage — and a wrongly-rejected balance is
     its own kind of missing data.
     """
-    venue = ScriptedVenue(
-        {
-            "private/get-fee-credit-balances": {
-                "fee_credits": [
-                    {
-                        "expiry_date": 1735689540000,
-                        "available_balance": "1500000.00000000",
-                        "distributed_amount": "9000000.00000000",
-                    }
-                ]
+    page = {
+        "fee_credits": [
+            {
+                "expiry_date": 1735689540000,
+                "available_balance": "1500000.00000000",
+                "distributed_amount": "9000000.00000000",
             }
-        }
-    )
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+        ]
+    }
+    _, account = serving(FEE_CREDITS_PATH, page)
 
     credits = await account.get_fee_credit_balances()
 
@@ -641,30 +644,19 @@ async def test_the_basis_point_ceiling_does_not_leak_into_credit_amounts() -> No
 @pytest.mark.asyncio
 async def test_a_fee_detail_missing_its_amount_raises() -> None:
     """The per-campaign breakdown is only trustworthy if it adds up locally."""
-    venue = ScriptedVenue(
-        {
-            "private/get-fee-credit-balances": {
-                "fee_credits": [
-                    {
-                        "expiry_date": 1735689540000,
-                        "available_balance": "150.00000000",
-                        "details": [
-                            {"type": "Campaign1", "distribution_date": 1704067140000}
-                        ],
-                    }
-                ]
+    page = {
+        "fee_credits": [
+            {
+                "expiry_date": 1735689540000,
+                "available_balance": "150.00000000",
+                "details": [{"type": "Campaign1", "distribution_date": 1704067140000}],
             }
-        }
-    )
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+        ]
+    }
+    _, account = serving(FEE_CREDITS_PATH, page)
 
     with pytest.raises(cro.ApiError):
         await account.get_fee_credit_balances()
-
-
-# ===========================================================================
-# The pair path must stay fee-free.
-# ===========================================================================
 
 
 @pytest.mark.asyncio
@@ -687,8 +679,7 @@ async def test_a_tier_that_is_not_a_non_negative_integer_raises(tier: Any) -> No
     """
     payload = copy.deepcopy(FEE_RATE_LIVE)
     payload["spot_tier"] = tier
-    venue = ScriptedVenue({"private/get-fee-rate": payload})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_RATE_PATH, payload)
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_fee_rate()
@@ -706,8 +697,7 @@ async def test_a_tier_sent_as_a_number_rather_than_a_string_is_accepted() -> Non
     payload = copy.deepcopy(FEE_RATE_LIVE)
     payload["spot_tier"] = 2
     payload["deriv_tier"] = 3
-    venue = ScriptedVenue({"private/get-fee-rate": payload})
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+    _, account = serving(FEE_RATE_PATH, payload)
 
     fees = await account.get_fee_rate()
 
@@ -730,20 +720,16 @@ async def test_a_fee_credit_detail_without_a_campaign_name_raises(
     }
     if campaign is not None:
         detail["type"] = campaign
-    venue = ScriptedVenue(
-        {
-            "private/get-fee-credit-balances": {
-                "fee_credits": [
-                    {
-                        "expiry_date": 1735689540000,
-                        "available_balance": "150.00000000",
-                        "details": [detail],
-                    }
-                ]
+    page = {
+        "fee_credits": [
+            {
+                "expiry_date": 1735689540000,
+                "available_balance": "150.00000000",
+                "details": [detail],
             }
-        }
-    )
-    account = cro.Account(api=venue, market=cro.Market(api=venue))
+        ]
+    }
+    _, account = serving(FEE_CREDITS_PATH, page)
 
     with pytest.raises(cro.ApiError) as excinfo:
         await account.get_fee_credit_balances()
@@ -765,3 +751,236 @@ def test_a_pair_carries_no_fee_field_anywhere() -> None:
 
     assert fee_fields == [], f"Pair grew fee state: {fee_fields}"
     assert "fee" not in repr(pair).lower()
+
+
+# ===========================================================================
+# Captured: what the venue REALLY answered.
+#
+# `tests/captured/test_fees/*.json` were recorded from the operator's live
+# account (see tests/conftest.py: capture pins IPv4 egress, because an
+# unpinned signed request leaves over IPv6 and the IP-bound key answers
+# 40101). Replaying needs no credentials; recording needs them. The harness is
+# STRICT — a missing capture, a changed call order or a request whose args
+# differ from the recorded ones fails the test instead of skipping it, which
+# is what makes these assertions about the API and not about this file.
+# ===========================================================================
+
+
+def recorded_payload(
+    api: cro.RecordApiProvider, path: str, instrument: str | None = None
+) -> Any:
+    """The payload the venue really answered for `path` in this test.
+
+    Reads the capture back instead of trusting the accessor's own view, so the
+    assertions below are about what Crypto.com sent (stringly-typed numbers
+    included) and not about what our parser produced. Works in both modes:
+    capture mode flushes the in-memory records first (`save()` is idempotent;
+    the `api` fixture flushes again at teardown), replay mode reads the
+    committed capture unchanged.
+
+    `instrument` selects by the echoed `instrument_name` rather than by the
+    recorder's args key — a test that asked about several instruments must
+    find the answer it is pinning, and the echo is the venue's own label.
+    """
+    if api.capture:
+        api.save()
+    blob = json.loads(api.cache_file.read_text())
+    hits = [
+        entry["response"]
+        for by_args in blob.get(f"post_{path}", {}).values()
+        for entry in by_args
+    ]
+    if instrument is not None:
+        hits = [h for h in hits if h.get("instrument_name") == instrument]
+    assert len(hits) == 1, (
+        f"expected exactly one recorded answer for {path}"
+        + (f" / {instrument}" if instrument else "")
+        + f", found {len(hits)}: {hits}"
+    )
+    return hits[0]
+
+
+@pytest.mark.asyncio
+async def test_the_recorded_tier_payload_is_the_payload_this_file_scripts(
+    api: cro.RecordApiProvider,
+) -> None:
+    """The scripted constants above are not fiction: they ARE the venue reply.
+
+    Everything in the scripted section is built on `FEE_RATE_LIVE`, so this is
+    the test that keeps the whole file honest - if the account's tier changes,
+    or if this file starts inventing fields, the comparison below goes red and
+    says which. Field set and values are the venue's, asserted verbatim.
+    """
+    account = cro.Account(api=api)
+
+    fees = await account.get_fee_rate()
+    raw = recorded_payload(api, FEE_RATE_PATH)
+
+    assert raw == FEE_RATE_LIVE, "the scripted payload diverged from the venue"
+    # Every value arrives as a decimal STRING, ten of them after the point.
+    assert all(isinstance(value, str) for value in raw.values())
+    assert raw["effective_spot_maker_rate_bps"] == "24.2500000000"
+    # And the accessor is faithful to those exact strings, not to a scale:
+    # what float() of the venue's own text says is what the caller gets.
+    assert (fees.spot_maker_bps, fees.spot_taker_bps) == (
+        float(raw["effective_spot_maker_rate_bps"]),
+        float(raw["effective_spot_taker_rate_bps"]),
+    )
+    assert (fees.deriv_maker_bps, fees.deriv_taker_bps) == (
+        float(raw["effective_deriv_maker_rate_bps"]),
+        float(raw["effective_deriv_taker_rate_bps"]),
+    )
+    assert (fees.spot_tier, fees.deriv_tier) == (
+        int(raw["spot_tier"]),
+        int(raw["deriv_tier"]),
+    )
+    # The recording is the account's own state, cross-checked against what the
+    # consuming bot measures from its fills.
+    assert fees.spot_maker_fraction == pytest.approx(0.002425)
+
+
+@pytest.mark.asyncio
+async def test_the_recorded_tier_payload_fails_honestly_field_by_field(
+    api: cro.RecordApiProvider,
+) -> None:
+    """Each REAL field of the recorded reply is required - proved on the reply.
+
+    Same rule as the scripted missing-field test, but the payload here is the
+    venue's own bytes: every one of the six fields it actually sends is
+    mandatory, and dropping any of them must yield an UNKNOWN fee rather than
+    a number. Nothing is invented to be missing here.
+    """
+    account = cro.Account(api=api)
+    await account.get_fee_rate()
+    raw = recorded_payload(api, FEE_RATE_PATH)
+
+    assert set(raw) == set(FEE_RATE_FIELDS)
+    for field in FEE_RATE_FIELDS:
+        broken = {key: value for key, value in raw.items() if key != field}
+        error: cro.ApiError | None = None
+        try:
+            cro.FeeRate.from_api(broken)
+        except cro.ApiError as exc:
+            error = exc
+        assert error is not None, f"dropping {field} produced a fee, not an error"
+        assert error.is_indeterminate, field
+        assert error.code is None, field
+
+
+@pytest.mark.asyncio
+async def test_the_recorded_cro_usd_promo_beats_the_recorded_account_tier(
+    api: cro.RecordApiProvider,
+) -> None:
+    """0 bp maker is a fact about the venue, not a parsing accident.
+
+    Both numbers come from the same recording session, so this is the live
+    evidence that the account tier and the instrument schedule are NOT proxies
+    for each other: a caller that prices CRO_USD from `get_fee_rate()` believes
+    a maker fill costs six times what the venue charges.
+    """
+    account = cro.Account(api=api)
+
+    tier = await account.get_fee_rate()
+    rate = await account.get_instrument_fee_rate(cro.pairs.CRO_USD)
+    raw = recorded_payload(api, INSTRUMENT_FEE_PATH, instrument="CRO_USD")
+
+    assert raw == CRO_USD_LIVE, "the scripted payload diverged from the venue"
+    # `"0"` is the venue's whole answer for maker: zero, with no decimals.
+    assert rate.maker_bps == 0.0
+    assert rate.maker_fraction == 0.0
+    assert rate.taker_bps == 4.0
+    assert (rate.maker_bps, rate.taker_bps) == (
+        float(raw["effective_maker_rate_bps"]),
+        float(raw["effective_taker_rate_bps"]),
+    )
+    assert rate.maker_bps < tier.spot_maker_bps
+    assert rate.taker_bps < tier.spot_taker_bps
+
+
+@pytest.mark.asyncio
+async def test_the_recorded_instrument_schedules_genuinely_differ(
+    api: cro.RecordApiProvider,
+) -> None:
+    """Three instruments, three schedules, one recording session.
+
+    CRO_USD 0/4, NEAR_USD and BTC_USD 25/50 (ABOVE the account tier's
+    24.25/48.5), BTCUSD-PERP 2/4 - so no accessor can be inferred from
+    another, and the decimal counts (`"0"`, `"4.0000"`, `"25.0000"`,
+    `"50.000"`) differ within one endpoint family, which is why no parser here
+    assumes a scale.
+    """
+    account = cro.Account(api=api)
+
+    rates = {
+        name: await account.get_instrument_fee_rate(name)
+        for name in ("CRO_USD", "NEAR_USD", "BTC_USD", "BTCUSD-PERP")
+    }
+
+    assert recorded_payload(api, INSTRUMENT_FEE_PATH, "NEAR_USD") == NEAR_USD_LIVE
+    assert recorded_payload(api, INSTRUMENT_FEE_PATH, "BTC_USD") == BTC_USD_LIVE
+    assert recorded_payload(api, INSTRUMENT_FEE_PATH, "BTCUSD-PERP") == BTCUSD_PERP_LIVE
+    assert [rate.maker_bps for rate in rates.values()] == [0.0, 25.0, 25.0, 2.0]
+    assert [rate.taker_bps for rate in rates.values()] == [4.0, 50.0, 50.0, 4.0]
+    # The promo pair is cheaper than the venue's plain spot schedule...
+    assert rates["CRO_USD"].maker_bps < rates["NEAR_USD"].maker_bps
+    # ...and the plain spot schedule is priced ABOVE the discounted tier, so
+    # the tier answers neither question.
+    assert rates["NEAR_USD"].maker_bps > 24.25
+    assert rates["NEAR_USD"].taker_bps > 48.5
+    # A perp is reachable by name and priced on its own schedule.
+    assert rates["BTCUSD-PERP"].maker_bps != rates["BTC_USD"].maker_bps
+
+
+@pytest.mark.asyncio
+async def test_the_recorded_instrument_payload_fails_honestly_field_by_field(
+    api: cro.RecordApiProvider,
+) -> None:
+    """The recorded instrument reply carries two fee fields and needs both.
+
+    `instrument_name` is deliberately excluded: the accessor treats the name IT
+    asked for as authoritative and only refuses a MISMATCH, so an absent echo
+    is survivable while an absent rate is not.
+    """
+    account = cro.Account(api=api)
+    await account.get_instrument_fee_rate("CRO_USD")
+    raw = recorded_payload(api, INSTRUMENT_FEE_PATH, instrument="CRO_USD")
+
+    assert set(raw) == {
+        "instrument_name",
+        "effective_maker_rate_bps",
+        "effective_taker_rate_bps",
+    }
+    for field in ("effective_maker_rate_bps", "effective_taker_rate_bps"):
+        broken = {key: value for key, value in raw.items() if key != field}
+        error: cro.ApiError | None = None
+        try:
+            cro.InstrumentFeeRate.from_api("CRO_USD", broken)
+        except cro.ApiError as exc:
+            error = exc
+        assert error is not None, f"dropping {field} produced a fee, not an error"
+        assert error.is_indeterminate, field
+
+
+@pytest.mark.asyncio
+async def test_the_recorded_fee_credit_page_is_a_confirmed_empty_answer(
+    api: cro.RecordApiProvider,
+) -> None:
+    """The venue's whole answer for credits is `{"fee_credits": []}`.
+
+    Empty is CONFIRMED here, not inferred: the reply is well-formed and says
+    there are none. On the same account CRO_USD pays 0 bp maker, which pins
+    the explanation of that zero at the instrument schedule rather than at a
+    credit being burned.
+
+    WHAT THIS CAPTURE CANNOT PROVE: the account holds no credits, so
+    `FeeCredit`'s field handling (epoch ms -> seconds, `type` -> campaigns,
+    absent `distributed_amount`) is covered only by the scripted spec page
+    above. Re-record this test on an account that has one.
+    """
+    account = cro.Account(api=api)
+
+    credits = await account.get_fee_credit_balances()
+    raw = recorded_payload(api, FEE_CREDITS_PATH)
+
+    assert raw == {"fee_credits": []}
+    assert credits == []

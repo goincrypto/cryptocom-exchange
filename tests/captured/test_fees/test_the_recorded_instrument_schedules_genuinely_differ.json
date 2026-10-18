@@ -1,0 +1,48 @@
+{
+  "post_private/get-instrument-fee-rate": {
+    "params={'instrument_name': 'CRO_USD'}": [
+      {
+        "response": {
+          "instrument_name": "CRO_USD",
+          "effective_maker_rate_bps": "0",
+          "effective_taker_rate_bps": "4.0000"
+        },
+        "exec_time": 0.36177849769592285,
+        "timestamp": 1792326888.5926888
+      }
+    ],
+    "params={'instrument_name': 'NEAR_USD'}": [
+      {
+        "response": {
+          "instrument_name": "NEAR_USD",
+          "effective_maker_rate_bps": "25.0000",
+          "effective_taker_rate_bps": "50.000"
+        },
+        "exec_time": 0.30325818061828613,
+        "timestamp": 1792326888.9544976
+      }
+    ],
+    "params={'instrument_name': 'BTC_USD'}": [
+      {
+        "response": {
+          "instrument_name": "BTC_USD",
+          "effective_maker_rate_bps": "25.0000",
+          "effective_taker_rate_bps": "50.000"
+        },
+        "exec_time": 0.32509446144104004,
+        "timestamp": 1792326889.2577765
+      }
+    ],
+    "params={'instrument_name': 'BTCUSD-PERP'}": [
+      {
+        "response": {
+          "instrument_name": "BTCUSD-PERP",
+          "effective_maker_rate_bps": "2.0000",
+          "effective_taker_rate_bps": "4.0000"
+        },
+        "exec_time": 0.3310737609863281,
+        "timestamp": 1792326889.5829115
+      }
+    ]
+  }
+}
