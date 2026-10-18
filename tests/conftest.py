@@ -59,6 +59,44 @@ REBALANCE_MIN_TOTAL_USD = 10.0
 REBALANCE_TOLERANCE = 0.02  # stop when |imbalance| < 2% of total value
 REBALANCE_MAX_ROUNDS = 3
 
+#: The `account` fixture SPENDS MONEY. `_rebalance_50_50` places live CRO/USD
+#: market orders on whatever account the environment keys name, and capture mode
+#: drives the real transport - so `API_CAPTURE=true` plus any test that asks for
+#: `account` trades real money on the way to re-recording a capture. Opting in
+#: is deliberately untypo-able: the exact sentinel, not "1"/"true"/"yes".
+LIVE_TRADE_OPT_IN_ENV = "CRYPTOCOM_ALLOW_LIVE_TRADES"
+LIVE_TRADE_OPT_IN = "I-AM-SPENDING-REAL-MONEY"
+
+
+class LiveTradeNotOptedInError(RuntimeError):
+    """Raised when a capture run asks for the trading `account` fixture."""
+
+
+def require_live_trade_opt_in(capture: bool) -> None:
+    """Refuse live trading unless capture mode was explicitly opted into.
+
+    Fails closed: capture mode raises unless `CRYPTOCOM_ALLOW_LIVE_TRADES` holds
+    the exact sentinel value. Replay mode - the mode CI runs, and the mode every
+    existing `account` test uses - opens no socket and needs no opt-in, so no
+    legitimate replay test is weakened by this guard.
+    """
+    if not capture or os.environ.get(LIVE_TRADE_OPT_IN_ENV) == LIVE_TRADE_OPT_IN:
+        return
+    raise LiveTradeNotOptedInError(
+        f"the `account` fixture is a TRADING fixture and API_CAPTURE=true makes it "
+        f"real: `_rebalance_50_50` would place live CRO/USD MARKET orders on the "
+        f"account behind CRYPTOCOM_API_KEY - up to {REBALANCE_MAX_ROUNDS} rounds, "
+        f"sized from the live price and {cro.pairs.CRO_USD}'s minimums, whenever "
+        f"the account holds at least {REBALANCE_MIN_TOTAL_USD} USD - before any "
+        f"test body runs.\n"
+        f"To proceed deliberately, re-run ONLY the node you mean to re-record and "
+        f"say so with the exact opt-in:\n"
+        f"  {LIVE_TRADE_OPT_IN_ENV}={LIVE_TRADE_OPT_IN} API_CAPTURE=true "
+        f"poetry run pytest tests/test_account.py::test_the_one_you_mean\n"
+        f"Anything weaker than that exact value is a typo, not an opt-in. Without "
+        f"API_CAPTURE (replay, what CI runs) this fixture trades nothing."
+    )
+
 
 async def _rebalance_50_50(acc: cro.Account) -> None:
     """Bring the USD/CRO balance to ~50/50 with pair-legal market orders.
@@ -109,10 +147,23 @@ async def _rebalance_50_50(acc: cro.Account) -> None:
             print(f"Rebalance[{round_}] trade failed: {exc}")
 
 
-@pytest_asyncio.fixture
-async def account(api: cro.RecordApiProvider) -> cro.Account:
+async def live_account(api: cro.RecordApiProvider) -> cro.Account:
+    """Build the trading account the `account` fixture hands out.
+
+    Split out of the fixture so the guard is testable without pytest machinery,
+    and deliberately the FIRST statement: with no keys in the environment a
+    capture-flagged provider must raise `LiveTradeNotOptedInError`, not a key
+    error, which proves nothing reaches the venue ahead of the refusal.
+    """
+    require_live_trade_opt_in(api.capture)
     acc = cro.Account(from_env=True, api=api)
     await _rebalance_50_50(acc)
+    return acc
+
+
+@pytest_asyncio.fixture
+async def account(api: cro.RecordApiProvider) -> cro.Account:
+    acc = await live_account(api)
     yield acc
 
     # Cleanup: never leave resting orders behind.

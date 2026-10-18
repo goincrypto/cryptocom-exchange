@@ -271,6 +271,11 @@ poetry run pytest tests/test_private.py -v
   unpinned gets 40101, `"0.0.0.0"` gets 200.
 - **Replay mode opens no socket**, so CI needs neither keys nor a pin - only
   `API_CAPTURE=true` runs touch any of this.
+- **`account` is a TRADING fixture**: it calls `_rebalance_50_50`, which places live
+  CRO/USD market orders on the account the keys name. Under `API_CAPTURE=true` that
+  spends real money on the way to re-recording, so the fixture refuses unless
+  `CRYPTOCOM_ALLOW_LIVE_TRADES=I-AM-SPENDING-REAL-MONEY` is set - deliberately only for
+  the single node you mean to re-record. Replay mode needs no opt-in and is unaffected.
 
 ```python
 # Capture mode
