@@ -59,10 +59,39 @@ version_toml = [
   "pyproject.toml:tool.poetry.version",
 ]
 branch = "main"
-parser_angular_allowed_types="build,chore,ci,docs,feat,fix,perf,style,refactor,test,sync"
-parser_angular_minor_types = "feat"
-parser_angular_patch_types = "fix,perf,sync,test,refactor"
+# Release types are declared ONCE, in the v9+ table at the end of this section.
+# The flat `parser_angular_*` keys that used to sit here (and promised that
+# `test`/`refactor`/`sync` were patch types) are pre-v9 naming: the release job
+# installs python-semantic-release UNPINNED (10.7.0 today) and 10.x ignores
+# unknown keys without a word of warning. Dead config since 2022-05-15
+# (bd155b9); measured 2026-10-18, a `test:`-only push (2f0a41c) computed no
+# version while those lines promised a patch.
+# `changelog_sections` below is pre-v9 naming too, and inert: CHANGELOG.md has
+# not been regenerated since v2.2.0 and the published notes come from
+# `gh release create --generate-notes`. Not a live setting - do not trust it.
 changelog_sections="feature,fix,sync,perf,breaking,documentation,performance,:boom:,:sparkles:,:children_crossing:,:lipstick:,:iphone:,:egg:,:chart_with_upwards_trend:,:ambulance:,:lock:,:bug:,:zap:,:goal_net:,:alien:,:wheelchair:,:speech_balloon:,:mag:,:apple:,:penguin:,:checkered_flag:,:robot:,:green_apple:,Other"
+
+# The live knob (v9+ naming), and unlike the keys it replaces it FAILS LOUDLY on
+# a wrong shape: these are lists, a comma-joined string is a hard validation
+# error. Measured against 10.7.0 with `semantic-release --noop version`, a push
+# to main bumps: `feat:` -> minor, `fix:`/`perf:` -> patch, `!` or a BREAKING
+# CHANGE footer -> major. Everything in `other_allowed_tags` is recognised and
+# publishes NOTHING on its own - including `sync:` (the pair-bot's regenerated
+# instruments ride the next fix/feat, and 10.x lists them in no changelog
+# section because they never bump). See AGENTS.md > Releases.
+[tool.semantic_release.commit_parser_options]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]
+other_allowed_tags = [
+  "build",
+  "chore",
+  "ci",
+  "docs",
+  "style",
+  "refactor",
+  "test",
+  "sync",
+]
 
 [dependency-groups]
 dev = [
