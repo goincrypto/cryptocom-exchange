@@ -261,6 +261,17 @@ poetry run pytest tests/test_private.py -v
 2. **Capture mode** - Record responses for replay
 3. **Replay mode** - Use captured responses (fast, no API)
 
+- **Capture mode 401ing is an egress-family question, not a key question.**
+  `api.crypto.com` publishes AAAA and answers it first, so an unpinned signed request
+  leaves over IPv6 and an IP-bound key is answered `401 -> 40101 Authentication
+  failure` from a source address the key was never bound to.
+- `tests/conftest.py` pins the family for capture runs via `CAPTURE_LOCAL_ADDRESS`,
+  read from `CRYPTOCOM_LOCAL_ADDRESS` (default `"0.0.0.0"` = force IPv4 egress, which
+  authenticates; `""` lets the OS choose, `"::"` pins IPv6). Same box, same keys:
+  unpinned gets 40101, `"0.0.0.0"` gets 200.
+- **Replay mode opens no socket**, so CI needs neither keys nor a pin - only
+  `API_CAPTURE=true` runs touch any of this.
+
 ```python
 # Capture mode
 api = RecordApiProvider(capture=True)
