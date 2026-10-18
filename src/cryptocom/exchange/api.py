@@ -81,7 +81,16 @@ def params_to_str(obj, level) -> str:
             return_str += "null"
         elif isinstance(obj[key], list):
             for sub_obj in obj[key]:
-                return_str += params_to_str(sub_obj, level + 1)
+                # A list of SCALARS (e.g. exec_inst=["POST_ONLY"]) is not a list of dicts:
+                # recursing into a str makes `sorted(obj)` yield characters and then index
+                # the string by a character -> TypeError, locally, before any request is
+                # signed. Serialise non-dict entries as their own value.
+                if isinstance(sub_obj, dict):
+                    return_str += params_to_str(sub_obj, level + 1)
+                elif sub_obj is None:
+                    return_str += "null"
+                else:
+                    return_str += str(sub_obj)
         else:
             return_str += str(obj[key])
     return return_str
