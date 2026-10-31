@@ -7515,21 +7515,6 @@ VARA_USD = Pair(
     min_order_notional_usd=1.0,
     max_order_notional_usd=1000000.0,
 )
-VELODROME_USD = Pair(
-    exchange_name="VELODROME_USD",
-    price_precision=5,
-    quantity_precision=0,
-    inst_type=InstrumentType.SPOT,
-    display_name="VELODROME/USD",
-    base_currency=Instrument("VELODROME"),
-    quote_currency=Instrument("USD"),
-    quantity_tick_size=1.0,
-    price_tick_size=1e-05,
-    min_order_quantity=0.0,
-    max_order_quantity=0.0,
-    min_order_notional_usd=1.0,
-    max_order_notional_usd=1000000.0,
-)
 VELO_USD = Pair(
     exchange_name="VELO_USD",
     price_precision=7,
