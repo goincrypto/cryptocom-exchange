@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Download cache for pip
@@ -89,7 +89,7 @@ jobs:
       contents: write
     steps:
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
         with:
           python-version: '3.14'
       - name: Checkout code
